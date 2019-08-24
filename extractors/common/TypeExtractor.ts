@@ -1,4 +1,4 @@
-import { Type, PropertyDeclaration } from "ts-morph";
+import { Type, PropertyDeclaration, ParameterDeclaration } from "ts-morph";
 import { TypeInfo } from "./TypeInfo";
 import { TypeKind } from "./TypeKind";
 import { JsonTypeInfo } from './JsonTypeInfo';
@@ -25,8 +25,9 @@ export class TypeExtractor {
                             type: x.getValueDeclaration() === undefined
                                 ? undefined
                                 : new TypeExtractor().extract(x.getValueDeclarationOrThrow().getType()),
-                            isOptional: /\?\s*\:/.test(x.getDeclarations().map(x => x.getFullText()).join())
-                        };
+                            isOptional: x.getValueDeclaration() === undefined
+                                ? false
+                                : (x.getValueDeclarationOrThrow() as ParameterDeclaration).isOptional()                        };
                     });
                     result.push({ name: name, returnType: returnType, params: params });
                 });

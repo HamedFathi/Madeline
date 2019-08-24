@@ -40,21 +40,18 @@ export class StringUtils {
         return safeStringify(obj);
     }
 
-    public detectImport(text: string): string[] {
-        let result: string[] = [];
+    public detectImport(text: string): [string, string] {
+        let result: [string, string] = ['',''];
         let regex = /import\(.+\)./;
         if (regex.test(text)) {
           let name = text.replace(regex, '');
           // @ts-ignore
           let imp = text.match(regex)[0].replace('import("', '').replace('").', '');
-          result.push(name.trim());
-          result.push(imp.trim());
+          result = [name.trim(),imp.trim()];
         }
         else {
-          result.push(text.trim());
-          result.push('');
+          result = [text.trim(),''];
         }
-        console.log(result);
         return result;
     }
 }

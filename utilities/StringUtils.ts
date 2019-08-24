@@ -39,4 +39,22 @@ export class StringUtils {
     public safeStringify(obj: unknown): string {
         return safeStringify(obj);
     }
+
+    public detectImport(text: string): string[] {
+        let result: string[] = [];
+        let regex = /import\(.+\)./;
+        if (regex.test(text)) {
+          let name = text.replace(regex, '');
+          // @ts-ignore
+          let imp = text.match(regex)[0].replace('import("', '').replace('").', '');
+          result.push(name.trim());
+          result.push(imp.trim());
+        }
+        else {
+          result.push(text.trim());
+          result.push('');
+        }
+        console.log(result);
+        return result;
+    }
 }

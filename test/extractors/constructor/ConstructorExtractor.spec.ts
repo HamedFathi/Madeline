@@ -50,7 +50,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
-            "params": [{
+            "parameters": [{
                 "name": "ic",
                 "type": {
                     "kind": 8,
@@ -99,7 +99,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": true,
             "isImplementation": true,
             "isOverload": false,
-            "params": undefined
+            "parameters": undefined
         }];
         // Class G - multiple constructors - Type 1
         let expectedResult3: any = [{
@@ -109,7 +109,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
-            "params": [{
+            "parameters": [{
                 "name": "obj",
                 "type": {
                     "kind": 1,
@@ -132,7 +132,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": true,
             "isImplementation": true,
             "isOverload": false,
-            "params": undefined
+            "parameters": undefined
         }, {
             "trailingComments": undefined,
             "leadingComments": undefined,
@@ -140,7 +140,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
-            "params": [{
+            "parameters": [{
                 "name": "value",
                 "type": {
                     "kind": 8,
@@ -162,7 +162,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
-            "params": [{
+            "parameters": [{
                 "name": "value",
                 "type": {
                     "kind": 8,
@@ -187,7 +187,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
-            "params": [{
+            "parameters": [{
                 "name": "bar",
                 "type": {
                     "kind": 15,

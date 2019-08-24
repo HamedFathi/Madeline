@@ -22,7 +22,7 @@ export class MethodExtractor {
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                     decorators: new DecoratorExtractor().extract(x),
-                    params: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
+                    parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),
                             type: new TypeExtractor().extract(y.getType()),

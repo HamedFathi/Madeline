@@ -1,6 +1,7 @@
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { TypeParameterInfo } from '../common/TypeParameterInfo';
 
 export interface ClassInfo {
     name: string | undefined;
@@ -12,4 +13,5 @@ export interface ClassInfo {
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
     namespaces: NamespaceInfo[] | undefined;
+    typeParameters: TypeParameterInfo[] | undefined;
 }

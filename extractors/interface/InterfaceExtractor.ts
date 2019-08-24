@@ -6,6 +6,14 @@ import { NamespaceExtractor } from '../namespace/NamespaceExtractor';
 
 export class InterfaceExtractor {
     public extract(node: InterfaceDeclaration): InterfaceInfo {
+        let typeParameters = node.getTypeParameters().map(y => {
+            return {
+                name: y.getName(),
+                constraint: y.getConstraint() === undefined
+                    ? undefined
+                    : y.getConstraintOrThrow().getType().getText()
+            }
+        });
         let result: InterfaceInfo = {
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
@@ -16,6 +24,7 @@ export class InterfaceExtractor {
                 ? undefined
                 : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
             namespaces: new NamespaceExtractor().extract(node),
+            typeParameters: typeParameters.length === 0 ? undefined : typeParameters,
             properties: node.getProperties().length === 0 ? undefined : node.getProperties().map(x => {
                 return {
                     name: x.getName(),
@@ -39,7 +48,7 @@ export class InterfaceExtractor {
                     leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
-                    params: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
+                    parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),
                             type: new TypeExtractor().extract(y.getType()),
@@ -66,7 +75,7 @@ export class InterfaceExtractor {
                     leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
-                    params: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
+                    parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),
                             type: new TypeExtractor().extract(y.getType()),
@@ -100,7 +109,7 @@ export class InterfaceExtractor {
                     leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
-                    params: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
+                    parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),
                             type: new TypeExtractor().extract(y.getType()),

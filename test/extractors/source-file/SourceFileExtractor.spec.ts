@@ -131,7 +131,7 @@ describe('Source File Extractor', function () {
                     "isParameterLess": false,
                     "isImplementation": true,
                     "isOverload": false,
-                    "params": [{
+                    "parameters": [{
                         "name": "name",
                         "type": {
                             "kind": 15,
@@ -160,7 +160,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "decorators": undefined,
-                    "params": [{
+                    "parameters": [{
                         "name": "distanceInMeters",
                         "type": {
                             "kind": 13,
@@ -192,7 +192,7 @@ describe('Source File Extractor', function () {
                     "isParameterLess": false,
                     "isImplementation": true,
                     "isOverload": false,
-                    "params": [{
+                    "parameters": [{
                         "name": "name",
                         "type": {
                             "kind": 15,
@@ -221,7 +221,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "decorators": undefined,
-                    "params": [{
+                    "parameters": [{
                         "name": "distanceInMeters",
                         "type": {
                             "kind": 13,
@@ -253,7 +253,7 @@ describe('Source File Extractor', function () {
                     "isParameterLess": false,
                     "isImplementation": true,
                     "isOverload": false,
-                    "params": [{
+                    "parameters": [{
                         "name": "name",
                         "type": {
                             "kind": 15,
@@ -282,7 +282,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "decorators": undefined,
-                    "params": [{
+                    "parameters": [{
                         "name": "distanceInMeters",
                         "type": {
                             "kind": 13,

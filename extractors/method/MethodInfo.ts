@@ -6,7 +6,7 @@ export interface MethodInfo {
     modifiers: string[] | undefined;
     returnType: TypeInfo;
     isGenerator: boolean;
-    params: MethodParamInfo[] | undefined;
+    parameters: MethodParamInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
 }

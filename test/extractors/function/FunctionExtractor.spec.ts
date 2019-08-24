@@ -33,7 +33,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": [{
+            "typeParameters": undefined,
+            "parameters": [{
                 "name": "numbers",
                 "type": {
                     "kind": 2,
@@ -55,8 +56,9 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
+            "typeParameters": undefined,
             "namespaces": undefined,
-            "params": undefined
+            "parameters": undefined
         }, {
             "name": "calculate",
             "modifiers": undefined,
@@ -66,7 +68,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": [{
+            "typeParameters": undefined,
+            "parameters": [{
                 "name": "price",
                 "type": {
                     "kind": 13,
@@ -101,7 +104,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": [{
+            "typeParameters": undefined,
+            "parameters": [{
                 "name": "firstName",
                 "type": {
                     "kind": 15,
@@ -136,7 +140,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": [{
+            "typeParameters": undefined,
+            "parameters": [{
                 "name": "x",
                 "type": {
                     "kind": 2,
@@ -159,7 +164,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": [{
+            "typeParameters": undefined,
+            "parameters": [{
                 "name": "x",
                 "type": {
                     "kind": 13,
@@ -182,7 +188,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": [{
+            "typeParameters": undefined,
+            "parameters": [{
                 "name": "x",
                 "type": {
                     "kind": 1,
@@ -205,7 +212,8 @@ describe('Function Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
-            "params": undefined
+            "typeParameters": undefined,
+            "parameters": undefined
         }];
 
         file.forEachDescendant(x => {

@@ -5,7 +5,7 @@ export interface ConstructorInfo {
     isImplementation: boolean;
     isOverload: boolean;
     modifiers: string[] | undefined;
-    params: ConstructorParamInfo[] | undefined;
+    parameters: ConstructorParamInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
 }

@@ -3,5 +3,5 @@ import { CallSignatureParamTypeInfo } from './CallSignatureParamTypeInfo';
 export interface CallSignatureTypeInfo {
     returnType: TypeInfo;
     name: string;
-    params: CallSignatureParamTypeInfo[] | undefined;
+    parameters: CallSignatureParamTypeInfo[] | undefined;
 }

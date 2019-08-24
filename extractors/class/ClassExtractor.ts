@@ -9,6 +9,14 @@ export class ClassExtractor {
         let trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         let leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         let decorators = new DecoratorExtractor().extract(node);
+        let typeParameters = node.getTypeParameters().map(y => {
+            return {
+                name: y.getName(),
+                constraint: y.getConstraint() === undefined
+                    ? undefined
+                    : y.getConstraintOrThrow().getType().getText()
+            }
+        });
         return {
             name: node.getName(),
             text: node.getFullText(),
@@ -18,7 +26,8 @@ export class ClassExtractor {
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             decorators: decorators,
-            namespaces: new NamespaceExtractor().extract(node)
+            namespaces: new NamespaceExtractor().extract(node),
+            typeParameters: typeParameters.length === 0 ? undefined : typeParameters
         }
     }
 }

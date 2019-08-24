@@ -29,7 +29,7 @@ export class TypeExtractor {
                                 ? false
                                 : (x.getValueDeclarationOrThrow() as ParameterDeclaration).isOptional()                        };
                     });
-                    result.push({ name: name, returnType: returnType, params: params });
+                    result.push({ name: name, returnType: returnType, parameters: params });
                 });
                 typeInfo.kind = TypeKind.CallSignature;
                 typeInfo.kindName = TypeKind[TypeKind.CallSignature];

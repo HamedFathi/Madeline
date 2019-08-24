@@ -11,7 +11,7 @@ export class DecoratorExtractor {
                 return {
                     isDecoratorFactory: x.isDecoratorFactory(),
                     name: x.getName(),
-                    params: x.getArguments().length === 0 ? undefined : x.getArguments().map(x => new TypeExtractor().extract(x.getType()))
+                    parameters: x.getArguments().length === 0 ? undefined : x.getArguments().map(x => new TypeExtractor().extract(x.getType()))
                 }
             });
         if (decorators.length === 0) return undefined;

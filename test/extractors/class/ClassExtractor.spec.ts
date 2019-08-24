@@ -54,10 +54,10 @@ describe('Class Extractor', function () {
                 "kind": 0,
                 "description": ["This a test class."],
                 "tags": undefined
-            }
-            ],
+            }],
             "decorators": undefined,
-            "namespaces": undefined
+            "namespaces": undefined,
+            "typeParameters": undefined
         },
         {
             "name": "B",
@@ -88,12 +88,11 @@ describe('Class Extractor', function () {
                     "name": ["IC,ID"],
                     "defaultValue": undefined,
                     "description": undefined
-                }
-                ]
-            }
-            ],
+                }]
+            }],
             "decorators": undefined,
-            "namespaces": undefined
+            "namespaces": undefined,
+            "typeParameters": undefined
         },
         {
             "name": "Greeter",
@@ -106,18 +105,16 @@ describe('Class Extractor', function () {
             "decorators": [{
                 "isDecoratorFactory": true,
                 "name": "test",
-                "params": [{
+                "parameters": [{
                     "kind": 10,
                     "kindName": "Json",
                     "type": [{
                         "name": "a",
                         "value": "1"
-                    }
-                    ]
-                }
-                ]
-            }
-            ],
+                    }]
+                }]
+            }],
+            "typeParameters": undefined,
             "namespaces": [{
                 "name": "NS3",
                 "isModule": false,

@@ -2,6 +2,6 @@ import { TypeInfo } from '../common/TypeInfo';
 
 export interface DecoratorInfo {
     name: string;
-    params: TypeInfo[] | undefined;
+    parameters: TypeInfo[] | undefined;
     isDecoratorFactory: boolean;
 }

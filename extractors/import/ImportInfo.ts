@@ -5,4 +5,5 @@ export interface ImportInfo {
     alias: string | undefined;
     module: string;
     kind: ImportKind;
+    kindName: string;
 }

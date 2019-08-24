@@ -39,7 +39,7 @@ describe('Method Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined,
-            "params": undefined
+            "parameters": undefined
         }, {
             "name": "move",
             "modifiers": ["async"],
@@ -52,7 +52,7 @@ describe('Method Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined,
-            "params": [{
+            "parameters": [{
                 "name": "distanceInMeters",
                 "type": {
                     "kind": 13,
@@ -79,7 +79,7 @@ describe('Method Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined,
-            "params": [{
+            "parameters": [{
                 "name": "firstName",
                 "type": {
                     "kind": 15,

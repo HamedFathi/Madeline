@@ -36,7 +36,7 @@ export class ConstructorExtractor {
                 isParameterLess: params.length === 0,
                 isImplementation: isImplementation,
                 isOverload: isOverload,
-                params: params.length === 0 ? undefined : params
+                parameters: params.length === 0 ? undefined : params
             });
         });
         return result;

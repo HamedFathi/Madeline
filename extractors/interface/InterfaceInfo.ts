@@ -6,6 +6,7 @@ import { InterfaceIndexerInfo } from './InterfaceIndexerInfo';
 import { InterfaceConstructorInfo } from './InterfaceConstructorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { TypeParameterInfo } from '../common/TypeParameterInfo';
 
 export interface InterfaceInfo {
     name: string;
@@ -19,4 +20,5 @@ export interface InterfaceInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     namespaces: NamespaceInfo[] | undefined;
+    typeParameters: TypeParameterInfo[] | undefined;
 }

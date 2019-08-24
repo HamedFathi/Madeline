@@ -46,6 +46,7 @@ describe('Interface Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
             "properties": [{
                 "name": "color",
                 "type": {
@@ -90,6 +91,7 @@ describe('Interface Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
             "properties": [{
                 "name": "interval",
                 "type": {
@@ -111,7 +113,7 @@ describe('Interface Extractor', function () {
                 },
                 "trailingComments": undefined,
                 "leadingComments": undefined,
-                "params": undefined
+                "parameters": undefined
             }, {
                 "name": "set",
                 "returnType": {
@@ -121,7 +123,7 @@ describe('Interface Extractor', function () {
                 },
                 "trailingComments": undefined,
                 "leadingComments": undefined,
-                "params": [{
+                "parameters": [{
                     "name": "name",
                     "type": {
                         "kind": 15,
@@ -160,7 +162,7 @@ describe('Interface Extractor', function () {
                 },
                 "trailingComments": undefined,
                 "leadingComments": undefined,
-                "params": [{
+                "parameters": [{
                     "name": "start",
                     "type": {
                         "kind": 13,
@@ -183,6 +185,7 @@ describe('Interface Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
             "properties": [{
                 "name": "color",
                 "type": {
@@ -206,6 +209,7 @@ describe('Interface Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
             "properties": [{
                 "name": "penWidth",
                 "type": {
@@ -229,6 +233,7 @@ describe('Interface Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
             "properties": [{
                 "name": "sideLength",
                 "type": {
@@ -267,6 +272,7 @@ describe('Interface Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
             "properties": undefined,
             "methods": undefined,
             "extends": undefined,
@@ -280,7 +286,7 @@ describe('Interface Extractor', function () {
                 },
                 "trailingComments": undefined,
                 "leadingComments": undefined,
-                "params": [{
+                "parameters": [{
                     "name": "n",
                     "type": {
                         "kind": 15,

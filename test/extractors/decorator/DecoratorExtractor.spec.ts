@@ -34,7 +34,7 @@ describe('Decorator Extractor', function () {
         let expectedResult: any[] = [[{
             "isDecoratorFactory": true,
             "name": "test1",
-            "params": [{
+            "parameters": [{
                 "kind": 13,
                 "kindName": "Number",
                 "type": "1"
@@ -54,7 +54,7 @@ describe('Decorator Extractor', function () {
         ], [{
             "isDecoratorFactory": true,
             "name": "test2",
-            "params": [{
+            "parameters": [{
                 "kind": 10,
                 "kindName": "Json",
                 "type": [{
@@ -70,7 +70,7 @@ describe('Decorator Extractor', function () {
         ], undefined, undefined, [{
             "isDecoratorFactory": true,
             "name": "test3",
-            "params": [{
+            "parameters": [{
                 "kind": 10,
                 "kindName": "Json",
                 "type": [{
@@ -90,12 +90,12 @@ describe('Decorator Extractor', function () {
         ], [{
             "isDecoratorFactory": false,
             "name": "test4",
-            "params": undefined
+            "parameters": undefined
         }
         ], [{
             "isDecoratorFactory": true,
             "name": "test5",
-            "params": undefined
+            "parameters": undefined
         }
         ]];
         file.forEachDescendant(x => {

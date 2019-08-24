@@ -27,62 +27,74 @@ describe('Import Extractor', function () {
             "name": "defaultExport",
             "module": "module-name",
             "alias": undefined,
-            "kind": 1
+            "kind": 1,
+            "kindName": "DefaultImport"
         }, {
             "name": "name",
             "module": "module-name",
             "alias": undefined,
-            "kind": 0
+            "kind": 0,
+            "kindName": "NamespaceImport"
         }, {
             "name": "export1",
             "module": "module-name",
             "alias": undefined,
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "export1",
             "alias": "alias1",
             "module": "module-name",
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "export1",
             "module": "module-name",
             "alias": undefined,
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "export2",
             "module": "module-name",
             "alias": undefined,
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "export1",
             "alias": "alias1",
             "module": "module-name",
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "export2",
             "alias": "alias2",
             "module": "module-name",
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "export1",
             "module": "module-name",
             "alias": undefined,
-            "kind": 2
+            "kind": 2,
+            "kindName": "NamedImport"
         }, {
             "name": "defaultExport",
             "module": "module-name",
             "alias": undefined,
-            "kind": 1
+            "kind": 1,
+            "kindName": "DefaultImport"
         }, {
             "name": "defaultExport",
             "module": "module-name",
             "alias": undefined,
-            "kind": 1
+            "kind": 1,
+            "kindName": "DefaultImport"
         }, {
             "name": "name",
             "module": "module-name",
             "alias": undefined,
-            "kind": 0
+            "kind": 0,
+            "kindName": "NamespaceImport"
         }];
 
         let imp = new ImportExtractor();

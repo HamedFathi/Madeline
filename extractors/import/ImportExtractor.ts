@@ -25,7 +25,8 @@ export class ImportExtractor {
                                 name: name,
                                 alias: alias,
                                 module: module,
-                                kind: kind
+                                kind: kind,
+                                kindName: ImportKind[kind]
                             });
                         });
                     }
@@ -37,7 +38,8 @@ export class ImportExtractor {
                             name: name,
                             alias: alias,
                             module: module,
-                            kind: kind
+                            kind: kind,
+                            kindName: ImportKind[kind]
                         });
                     }
                     if (namespaceImport) {
@@ -48,7 +50,8 @@ export class ImportExtractor {
                             name: name,
                             alias: alias,
                             module: module,
-                            kind: kind
+                            kind: kind,
+                            kindName: ImportKind[kind]
                         });
                     }
                     break;

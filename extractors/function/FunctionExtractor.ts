@@ -16,6 +16,7 @@ export class FunctionExtractor {
                     : y.getConstraintOrThrow().getType().getText()
             }
         });
+        let returnType = node.getReturnType() === undefined ? undefined : new TypeExtractor().extract(node.getReturnType());
         let result: FunctionInfo = {
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
@@ -26,6 +27,7 @@ export class FunctionExtractor {
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             namespaces: new NamespaceExtractor().extract(node),
             typeParameters: typeParameters.length === 0 ? undefined : typeParameters,
+            returnType: returnType,
             parameters: node.getParameters().length === 0 ? undefined : node.getParameters().map(x => {
                 return {
                     name: x.getName(),

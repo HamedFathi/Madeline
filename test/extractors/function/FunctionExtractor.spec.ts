@@ -24,7 +24,7 @@ describe('Function Extractor', function () {
         });
         const file = project.createSourceFile("test.ts", funcSample);
         let actualResult: FunctionInfo[] = [];
-        let expectedResult: FunctionInfo[] = [{
+        let expectedResult: FunctionInfo[] =[{
             "name": "addNumbers",
             "modifiers": undefined,
             "isGenerator": false,
@@ -34,19 +34,24 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 21,
+                "kindName": "Void",
+                "type": "void"
+            },
             "parameters": [{
-                "name": "numbers",
-                "type": {
-                    "kind": 2,
-                    "kindName": "Array",
-                    "type": "number[]"
-                },
-                "modifiers": undefined,
-                "isOptional": true,
-                "isRest": true,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }
+                    "name": "numbers",
+                    "type": {
+                        "kind": 2,
+                        "kindName": "Array",
+                        "type": "number[]"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": true,
+                    "isRest": true,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }
             ]
         }, {
             "name": "addNumbers",
@@ -56,8 +61,13 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "typeParameters": undefined,
             "namespaces": undefined,
+            "typeParameters": undefined,
+            "returnType": {
+                "kind": 21,
+                "kindName": "Void",
+                "type": "void"
+            },
             "parameters": undefined
         }, {
             "name": "calculate",
@@ -69,32 +79,36 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 21,
+                "kindName": "Void",
+                "type": "void"
+            },
             "parameters": [{
-                "name": "price",
-                "type": {
-                    "kind": 13,
-                    "kindName": "Number",
-                    "type": "number"
-                },
-                "modifiers": undefined,
-                "isOptional": false,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }, {
-                "name": "rate",
-                "type": {
-                    "kind": 13,
-                    "kindName": "Number",
-                    "type": "number"
-                },
-                "modifiers": undefined,
-                "isOptional": true,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": "0.50"
-            }
-            ]
+                    "name": "price",
+                    "type": {
+                        "kind": 13,
+                        "kindName": "Number",
+                        "type": "number"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": false,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }, {
+                    "name": "rate",
+                    "type": {
+                        "kind": 13,
+                        "kindName": "Number",
+                        "type": "number"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": true,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": "0.50"
+                }            ]
         }, {
             "name": "buildName",
             "modifiers": ["export", "default"],
@@ -105,32 +119,36 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 21,
+                "kindName": "Void",
+                "type": "void"
+            },
             "parameters": [{
-                "name": "firstName",
-                "type": {
-                    "kind": 15,
-                    "kindName": "String",
-                    "type": "string"
-                },
-                "modifiers": undefined,
-                "isOptional": false,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }, {
-                "name": "lastName",
-                "type": {
-                    "kind": 15,
-                    "kindName": "String",
-                    "type": "string"
-                },
-                "modifiers": undefined,
-                "isOptional": true,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }
-            ]
+                    "name": "firstName",
+                    "type": {
+                        "kind": 15,
+                        "kindName": "String",
+                        "type": "string"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": false,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }, {
+                    "name": "lastName",
+                    "type": {
+                        "kind": 15,
+                        "kindName": "String",
+                        "type": "string"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": true,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }            ]
         }, {
             "name": "pickCard",
             "modifiers": undefined,
@@ -141,20 +159,24 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 13,
+                "kindName": "Number",
+                "type": "number"
+            },
             "parameters": [{
-                "name": "x",
-                "type": {
-                    "kind": 2,
-                    "kindName": "Array",
-                    "type": "{ suit: string; card: number; }[]"
-                },
-                "modifiers": undefined,
-                "isOptional": false,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }
-            ]
+                    "name": "x",
+                    "type": {
+                        "kind": 2,
+                        "kindName": "Array",
+                        "type": "{ suit: string; card: number; }[]"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": false,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }            ]
         }, {
             "name": "pickCard",
             "modifiers": undefined,
@@ -165,20 +187,30 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 10,
+                "kindName": "Json",
+                "type": [{
+                        "name": "suit",
+                        "value": "string"
+                    }, {
+                        "name": "card",
+                        "value": "number"
+                    }                ]
+            },
             "parameters": [{
-                "name": "x",
-                "type": {
-                    "kind": 13,
-                    "kindName": "Number",
-                    "type": "number"
-                },
-                "modifiers": undefined,
-                "isOptional": false,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }
-            ]
+                    "name": "x",
+                    "type": {
+                        "kind": 13,
+                        "kindName": "Number",
+                        "type": "number"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": false,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }            ]
         }, {
             "name": "pickCard",
             "modifiers": undefined,
@@ -189,20 +221,24 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 1,
+                "kindName": "Any",
+                "type": "any"
+            },
             "parameters": [{
-                "name": "x",
-                "type": {
-                    "kind": 1,
-                    "kindName": "Any",
-                    "type": "any"
-                },
-                "modifiers": undefined,
-                "isOptional": false,
-                "isRest": false,
-                "isParameterProperty": false,
-                "defaultValue": undefined
-            }
-            ]
+                    "name": "x",
+                    "type": {
+                        "kind": 1,
+                        "kindName": "Any",
+                        "type": "any"
+                    },
+                    "modifiers": undefined,
+                    "isOptional": false,
+                    "isRest": false,
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
+                }            ]
         }, {
             "name": "asyncCall",
             "modifiers": ["async"],
@@ -213,8 +249,14 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "namespaces": undefined,
             "typeParameters": undefined,
+            "returnType": {
+                "kind": 22,
+                "kindName": "Promise",
+                "type": "Promise<void>"
+            },
             "parameters": undefined
-        }];
+        }
+    ]    ;
 
         file.forEachDescendant(x => {
             switch (x.getKind()) {

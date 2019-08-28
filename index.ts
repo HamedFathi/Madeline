@@ -1,3 +1,8 @@
+import { Project, ScriptTarget, SyntaxKind, FunctionDeclaration, ExpressionStatement, ExpressionWithTypeArguments, NewExpression, VariableStatement, ObjectLiteralExpression } from 'ts-morph';
+import { FunctionExtractor } from './extractors/function/FunctionExtractor';
+import { TypeExtractor } from './extractors/common/TypeExtractor';
+import { VariableExtractor } from './extractors/variable/VariableExtractor';
+
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -27,6 +32,8 @@ export * from './extractors/doc-coverage/CoverageResult';
 export * from './extractors/enum/EnumExtractor';
 export * from './extractors/enum/EnumInfo';
 export * from './extractors/enum/EnumMember';
+export * from './extractors/expression/ExpressionExtractor';
+export * from './extractors/expression/ExpressionInfo';
 export * from './extractors/function/FunctionExtractor';
 export * from './extractors/function/FunctionInfo';
 export * from './extractors/function/FunctionParamInfo';
@@ -57,5 +64,7 @@ export * from './extractors/source-file/SourceFileExtractor';
 export * from './extractors/source-file/SourceFileInfo';
 export * from './extractors/type-alias/TypeAliasExtractor';
 export * from './extractors/type-alias/TypeAliasInfo';
+export * from './extractors/variable/VariableExtractor';
+export * from './extractors/variable/VariableInfo';
 export * from './utilities/JsonUtils';
 export * from './utilities/StringUtils';

@@ -1,8 +1,3 @@
-import { Project, ScriptTarget, SyntaxKind, FunctionDeclaration, ExpressionStatement, ExpressionWithTypeArguments, NewExpression, VariableStatement, ObjectLiteralExpression } from 'ts-morph';
-import { FunctionExtractor } from './extractors/function/FunctionExtractor';
-import { TypeExtractor } from './extractors/common/TypeExtractor';
-import { VariableExtractor } from './extractors/variable/VariableExtractor';
-
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';

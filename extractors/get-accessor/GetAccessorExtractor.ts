@@ -3,6 +3,7 @@ import { GetAccessorInfo } from './GetAccessorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
+import { VariableExtractor } from '../variable/VariableExtractor';
 
 export class GetAccessorExtractor {
 
@@ -20,7 +21,11 @@ export class GetAccessorExtractor {
                         : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                     leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
                         ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges())
+                        : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                    variables: x.getVariableStatements().map(y=> new VariableExtractor().extract(y)).length === 0
+                        ? undefined
+                        : x.getVariableStatements().map(y=> new VariableExtractor().extract(y))
+
                 }
             });
         if (getAccessors.length === 0) return undefined;

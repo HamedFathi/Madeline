@@ -5,6 +5,7 @@ import { InterfaceInfo } from '../interface/InterfaceInfo';
 import { TypeAliasInfo } from '../type-alias/TypeAliasInfo';
 import { SourceFileCoverageInfo } from "./SourceFileCoverageInfo";
 import { SourceFileClassInfo } from "./SourceFileClassInfo";
+import { VariableInfo } from '../variable/VariableInfo';
 export interface SourceFileInfo {
     isDeclarationFile: boolean,
     isFromExternalLibrary: boolean,
@@ -16,4 +17,5 @@ export interface SourceFileInfo {
     interfaces: InterfaceInfo[] | undefined;
     typeAliases: TypeAliasInfo[] | undefined;
     coverage: SourceFileCoverageInfo | undefined;
+    variables: VariableInfo[][] | undefined;
 }

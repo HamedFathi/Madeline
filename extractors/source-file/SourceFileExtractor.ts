@@ -1,4 +1,4 @@
-import { SourceFile, SyntaxKind, EnumDeclaration, FunctionDeclaration, TypeAliasDeclaration, InterfaceDeclaration, ClassDeclaration, ScriptTarget, Project } from 'ts-morph';
+import { SourceFile, SyntaxKind, EnumDeclaration, FunctionDeclaration, TypeAliasDeclaration, InterfaceDeclaration, ClassDeclaration, ScriptTarget, Project, VariableStatement } from 'ts-morph';
 import { EnumInfo } from '../enum/EnumInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { InterfaceInfo } from '../interface/InterfaceInfo';
@@ -20,6 +20,8 @@ import { MethodExtractor } from '../method/MethodExtractor';
 import { GetAccessorExtractor } from '../get-accessor/GetAccessorExtractor';
 import { ConstructorExtractor } from '../constructor/ConstructorExtractor';
 import * as fs from 'fs';
+import { VariableExtractor } from '../variable/VariableExtractor';
+import { VariableInfo } from '../variable/VariableInfo';
 
 export class SourceFileExtractor {
 
@@ -60,6 +62,7 @@ export class SourceFileExtractor {
         let typeAliases: TypeAliasInfo[] = [];
         let interfaces: InterfaceInfo[] = [];
         let classes: SourceFileClassInfo[] = [];
+        let variables: VariableInfo[][] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.EnumDeclaration:
@@ -73,6 +76,9 @@ export class SourceFileExtractor {
                     break;
                 case SyntaxKind.InterfaceDeclaration:
                     interfaces.push(new InterfaceExtractor().extract(<InterfaceDeclaration>node));
+                    break;
+                    case SyntaxKind.VariableStatement:
+                    variables.push(new VariableExtractor().extract(<VariableStatement>node));
                     break;
                 case SyntaxKind.ClassDeclaration:
                     let info = new ClassExtractor().extract(<ClassDeclaration>node);
@@ -98,7 +104,6 @@ export class SourceFileExtractor {
                     break;
             }
         });
-
         let result = {
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
@@ -109,7 +114,8 @@ export class SourceFileExtractor {
             functions: functions.length === 0 ? undefined : functions,
             typeAliases: typeAliases.length === 0 ? undefined : typeAliases,
             interfaces: interfaces.length === 0 ? undefined : interfaces,
-            classes: classes.length === 0 ? undefined : classes
+            classes: classes.length === 0 ? undefined : classes,
+            variables: variables.length === 0 ? undefined : variables
         };
         return result;
     }

@@ -3,6 +3,7 @@ import { CommentInfo } from '../comment/CommentInfo';
 import { NamespaceInfo } from '../namespace/NamespaceInfo';
 import { TypeParameterInfo } from '../common/TypeParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
+import { VariableInfo } from '../variable/VariableInfo';
 export interface FunctionInfo {
     name: string | undefined;
     modifiers: string[] | undefined;
@@ -15,5 +16,5 @@ export interface FunctionInfo {
     namespaces: NamespaceInfo[] | undefined;
     parameters: FunctionParamInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
-
+    variables: VariableInfo[][] | undefined;
 }

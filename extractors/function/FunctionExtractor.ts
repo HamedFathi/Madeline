@@ -3,6 +3,7 @@ import { FunctionInfo } from './FunctionInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { NamespaceExtractor } from '../namespace/NamespaceExtractor';
+import { VariableExtractor } from '../variable/VariableExtractor';
 
 export class FunctionExtractor {
     public extract(node: FunctionDeclaration): FunctionInfo {
@@ -17,6 +18,7 @@ export class FunctionExtractor {
             }
         });
         let returnType = node.getReturnType() === undefined ? undefined : new TypeExtractor().extract(node.getReturnType());
+        let variables = node.getVariableStatements().map(x=> new VariableExtractor().extract(x));
         let result: FunctionInfo = {
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
@@ -28,6 +30,7 @@ export class FunctionExtractor {
             namespaces: new NamespaceExtractor().extract(node),
             typeParameters: typeParameters.length === 0 ? undefined : typeParameters,
             returnType: returnType,
+            variables: variables.length === 0 ? undefined : variables,
             parameters: node.getParameters().length === 0 ? undefined : node.getParameters().map(x => {
                 return {
                     name: x.getName(),

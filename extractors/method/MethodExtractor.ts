@@ -3,6 +3,7 @@ import { MethodInfo } from './MethodInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
+import { VariableExtractor } from '../variable/VariableExtractor';
 
 export class MethodExtractor {
 
@@ -22,6 +23,9 @@ export class MethodExtractor {
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                     decorators: new DecoratorExtractor().extract(x),
+                    variables: x.getVariableStatements().map(y=> new VariableExtractor().extract(y)).length === 0
+                    ? undefined
+                    : x.getVariableStatements().map(y=> new VariableExtractor().extract(y)),
                     parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),

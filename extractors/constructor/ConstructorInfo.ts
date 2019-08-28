@@ -1,5 +1,6 @@
 import { ConstructorParamInfo } from './ConstructorParamInfo';
 import { CommentInfo } from '../comment/CommentInfo';
+import { VariableInfo } from '../variable/VariableInfo';
 export interface ConstructorInfo {
     isParameterLess: boolean;
     isImplementation: boolean;
@@ -8,4 +9,5 @@ export interface ConstructorInfo {
     parameters: ConstructorParamInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
+    variables: VariableInfo[][] | undefined
 }

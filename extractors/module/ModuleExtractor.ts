@@ -1,8 +1,8 @@
-import { Node, SyntaxKind, ClassDeclaration, EnumDeclaration, FunctionDeclaration, InterfaceDeclaration, TypeAliasDeclaration } from 'ts-morph';
+import { Node, SyntaxKind, ClassDeclaration, EnumDeclaration, FunctionDeclaration, InterfaceDeclaration, TypeAliasDeclaration, VariableStatement } from 'ts-morph';
 import { ModuleInfo } from './ModuleInfo';
 
 export class ModuleExtractor {
-    public extract(node: ClassDeclaration | EnumDeclaration | FunctionDeclaration | InterfaceDeclaration | TypeAliasDeclaration): ModuleInfo[] | undefined {
+    public extract(node: ClassDeclaration | EnumDeclaration | FunctionDeclaration | InterfaceDeclaration | TypeAliasDeclaration | VariableStatement): ModuleInfo[] | undefined {
         let result = this.getInfo(node);
         return result;
     }

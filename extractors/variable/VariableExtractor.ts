@@ -2,6 +2,7 @@ import { VariableStatement } from 'ts-morph';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { VariableInfo } from './VariableInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
+import { ModuleExtractor } from '../module/ModuleExtractor';
 
 export class VariableExtractor {
     public extract(node : VariableStatement): VariableInfo[] {
@@ -10,6 +11,7 @@ export class VariableExtractor {
         let kindName = node.getDeclarationKind().toString();
         let trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         let leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        let modules = new ModuleExtractor().extract(node);
         let variables = node.getDeclarationList().getDeclarations().map(x => {
             return {
                 name: x.getName(),
@@ -23,7 +25,8 @@ export class VariableExtractor {
                 kind: kind,
                 kindName: kindName,
                 trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-                leadingComments: leadingComments.length === 0 ? undefined : leadingComments
+                leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                modules: modules
             };
         });
         return variables;

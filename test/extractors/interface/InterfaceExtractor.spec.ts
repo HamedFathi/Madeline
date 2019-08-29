@@ -45,7 +45,7 @@ describe('Interface Extractor', function () {
             "modifiers": ["export", "default"],
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "properties": [{
                 "name": "color",
@@ -90,7 +90,7 @@ describe('Interface Extractor', function () {
             "modifiers": ["export"],
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "properties": [{
                 "name": "interval",
@@ -184,7 +184,7 @@ describe('Interface Extractor', function () {
             "modifiers": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "properties": [{
                 "name": "color",
@@ -208,7 +208,7 @@ describe('Interface Extractor', function () {
             "modifiers": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "properties": [{
                 "name": "penWidth",
@@ -232,7 +232,7 @@ describe('Interface Extractor', function () {
             "modifiers": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "properties": [{
                 "name": "sideLength",
@@ -271,7 +271,7 @@ describe('Interface Extractor', function () {
             "modifiers": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "properties": undefined,
             "methods": undefined,

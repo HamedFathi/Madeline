@@ -1,6 +1,6 @@
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
-import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { ModuleInfo } from '../module/ModuleInfo';
 
 export interface TypeAliasInfo {
     name: string;
@@ -9,5 +9,5 @@ export interface TypeAliasInfo {
     members: TypeInfo;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
-    namespaces: NamespaceInfo[] | undefined;
+    modules: ModuleInfo[] | undefined;
 }

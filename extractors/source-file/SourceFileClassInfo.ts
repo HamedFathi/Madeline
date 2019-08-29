@@ -5,7 +5,7 @@ import { MethodInfo } from '../method/MethodInfo';
 import { PropertyInfo } from '../property/PropertyInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
-import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { ModuleInfo } from '../module/ModuleInfo';
 export interface SourceFileClassInfo {
     name: string | undefined;
     text: string;
@@ -15,7 +15,7 @@ export interface SourceFileClassInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
-    namespaces: NamespaceInfo[] | undefined;
+    modules: ModuleInfo[] | undefined;
     constructors: ConstructorInfo[] | undefined;
     getAccessors: GetAccessorInfo[] | undefined;
     methods: MethodInfo[] | undefined;

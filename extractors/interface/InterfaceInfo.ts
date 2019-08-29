@@ -5,7 +5,7 @@ import { InterfaceCallSignatureInfo } from './InterfaceCallSignatureInfo';
 import { InterfaceIndexerInfo } from './InterfaceIndexerInfo';
 import { InterfaceConstructorInfo } from './InterfaceConstructorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
-import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../common/TypeParameterInfo';
 
 export interface InterfaceInfo {
@@ -19,6 +19,6 @@ export interface InterfaceInfo {
     extends: InterfaceExtendsInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
-    namespaces: NamespaceInfo[] | undefined;
+    modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
 }

@@ -56,7 +56,7 @@ describe('Class Extractor', function () {
                 "tags": undefined
             }],
             "decorators": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined
         },
         {
@@ -91,7 +91,7 @@ describe('Class Extractor', function () {
                 }]
             }],
             "decorators": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined
         },
         {
@@ -115,19 +115,19 @@ describe('Class Extractor', function () {
                 }]
             }],
             "typeParameters": undefined,
-            "namespaces": [{
+            "modules": [{
                 "name": "NS3",
-                "isModule": false,
+                "isNamespace": true,
                 "modifiers": undefined,
                 "level": 1
             }, {
                 "name": "NS2",
-                "isModule": true,
+                "isNamespace": false,
                 "modifiers": undefined,
                 "level": 2
             }, {
                 "name": "NS1",
-                "isModule": false,
+                "isNamespace": true,
                 "modifiers": ["export"],
                 "level": 3
             }]

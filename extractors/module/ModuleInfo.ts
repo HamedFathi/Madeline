@@ -1,5 +1,5 @@
-export interface NamespaceInfo {
-    isModule: boolean;
+export interface ModuleInfo {
+    isNamespace: boolean;
     modifiers: string[] | undefined;
     name: string;
     level: number

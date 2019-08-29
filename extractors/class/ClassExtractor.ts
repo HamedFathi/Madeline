@@ -2,7 +2,7 @@ import { ClassDeclaration } from 'ts-morph';
 import { ClassInfo } from './ClassInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
-import { NamespaceExtractor } from '../namespace/NamespaceExtractor';
+import { ModuleExtractor } from '../module/ModuleExtractor';
 
 export class ClassExtractor {
     public extract(node: ClassDeclaration): ClassInfo {
@@ -26,7 +26,7 @@ export class ClassExtractor {
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             decorators: decorators,
-            namespaces: new NamespaceExtractor().extract(node),
+            modules: new ModuleExtractor().extract(node),
             typeParameters: typeParameters.length === 0 ? undefined : typeParameters
         }
     }

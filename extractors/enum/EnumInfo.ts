@@ -1,6 +1,6 @@
 import { EnumMember } from './EnumMember';
 import { CommentInfo } from '../comment/CommentInfo';
-import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { ModuleInfo } from '../module/ModuleInfo';
 
 export interface EnumInfo {
     name: string;
@@ -9,5 +9,5 @@ export interface EnumInfo {
     isConst: boolean;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
-    namespaces: NamespaceInfo[] | undefined;
+    modules: ModuleInfo[] | undefined;
 }

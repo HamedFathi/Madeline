@@ -2,7 +2,7 @@ import { InterfaceDeclaration } from 'ts-morph';
 import { InterfaceInfo } from './InterfaceInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
-import { NamespaceExtractor } from '../namespace/NamespaceExtractor';
+import { ModuleExtractor } from '../module/ModuleExtractor';
 
 export class InterfaceExtractor {
     public extract(node: InterfaceDeclaration): InterfaceInfo {
@@ -23,7 +23,7 @@ export class InterfaceExtractor {
             leadingComments: new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
                 ? undefined
                 : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
-            namespaces: new NamespaceExtractor().extract(node),
+            modules: new ModuleExtractor().extract(node),
             typeParameters: typeParameters.length === 0 ? undefined : typeParameters,
             properties: node.getProperties().length === 0 ? undefined : node.getProperties().map(x => {
                 return {

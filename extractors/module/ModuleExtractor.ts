@@ -1,13 +1,13 @@
 import { Node, SyntaxKind, ClassDeclaration, EnumDeclaration, FunctionDeclaration, InterfaceDeclaration, TypeAliasDeclaration } from 'ts-morph';
-import { NamespaceInfo } from './NamespaceInfo';
+import { ModuleInfo } from './ModuleInfo';
 
-export class NamespaceExtractor {
-    public extract(node: ClassDeclaration | EnumDeclaration | FunctionDeclaration | InterfaceDeclaration | TypeAliasDeclaration): NamespaceInfo[] | undefined {
+export class ModuleExtractor {
+    public extract(node: ClassDeclaration | EnumDeclaration | FunctionDeclaration | InterfaceDeclaration | TypeAliasDeclaration): ModuleInfo[] | undefined {
         let result = this.getInfo(node);
         return result;
     }
 
-    private getInfo(node: Node, info?: NamespaceInfo[], level?: number): NamespaceInfo[] | undefined {
+    private getInfo(node: Node, info?: ModuleInfo[], level?: number): ModuleInfo[] | undefined {
         if (!info) {
             info = [];
         }
@@ -19,9 +19,9 @@ export class NamespaceExtractor {
             let declaration = block.getParentIfKind(SyntaxKind.ModuleDeclaration)
             if (declaration) {
                 let name = declaration.getName();
-                let isModule = declaration.hasModuleKeyword();
+                let isNamespace = declaration.hasNamespaceKeyword();
                 let modifiers = declaration.getModifiers().length === 0 ? undefined : declaration.getModifiers().map(x => x.getText());
-                info.push({ name: name, isModule: isModule, modifiers: modifiers, level: level });
+                info.push({ name: name, isNamespace: isNamespace, modifiers: modifiers, level: level });
                 this.getInfo(declaration, info, ++level);
             }
         }

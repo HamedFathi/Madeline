@@ -95,7 +95,7 @@ export class SourceFileExtractor {
                         trailingComments: info.trailingComments,
                         leadingComments: info.leadingComments,
                         decorators: info.decorators,
-                        namespaces: info.namespaces,
+                        modules: info.modules,
                         constructors: constructors,
                         properties: properties,
                         getAccessors: getAccessors,

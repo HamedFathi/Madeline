@@ -45,7 +45,7 @@ describe('Enum Extractor', function () {
             "isConst": false,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "members": [{
                 "name": "Book",
                 "value": 10,
@@ -78,7 +78,7 @@ describe('Enum Extractor', function () {
             "isConst": false,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "members": [{
                 "name": "\"on\"",
                 "value": 0,
@@ -96,7 +96,7 @@ describe('Enum Extractor', function () {
             "isConst": false,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "members": [{
                 "name": "No",
                 "value": 0,
@@ -114,7 +114,7 @@ describe('Enum Extractor', function () {
             "isConst": false,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "members": [{
                 "name": "No",
                 "value": 0,
@@ -132,7 +132,7 @@ describe('Enum Extractor', function () {
             "isConst": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "members": [{
                 "name": "A",
                 "value": 1,

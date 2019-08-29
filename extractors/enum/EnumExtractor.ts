@@ -1,7 +1,7 @@
 import { EnumDeclaration } from 'ts-morph';
 import { EnumInfo } from './EnumInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
-import { NamespaceExtractor } from '../namespace/NamespaceExtractor';
+import { ModuleExtractor } from '../module/ModuleExtractor';
 
 export class EnumExtractor {
     public extract(node: EnumDeclaration): EnumInfo {
@@ -13,7 +13,7 @@ export class EnumExtractor {
             isConst: node.isConstEnum(),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
-            namespaces: new NamespaceExtractor().extract(node),
+            modules: new ModuleExtractor().extract(node),
             members: node.getMembers().map(x => {
                 return {
                     name: x.getName(),

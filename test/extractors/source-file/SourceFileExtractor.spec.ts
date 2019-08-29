@@ -123,7 +123,7 @@ describe('Source File Extractor', function () {
                 "trailingComments": undefined,
                 "leadingComments": undefined,
                 "decorators": undefined,
-                "namespaces": undefined,
+                "modules": undefined,
                 "constructors": [{
                     "trailingComments": undefined,
                     "leadingComments": undefined,
@@ -184,7 +184,7 @@ describe('Source File Extractor', function () {
                 "trailingComments": undefined,
                 "leadingComments": undefined,
                 "decorators": undefined,
-                "namespaces": undefined,
+                "modules": undefined,
                 "constructors": [{
                     "trailingComments": undefined,
                     "leadingComments": undefined,
@@ -245,7 +245,7 @@ describe('Source File Extractor', function () {
                 "trailingComments": undefined,
                 "leadingComments": undefined,
                 "decorators": undefined,
-                "namespaces": undefined,
+                "modules": undefined,
                 "constructors": [{
                     "trailingComments": undefined,
                     "leadingComments": undefined,

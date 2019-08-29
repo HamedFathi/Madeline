@@ -32,7 +32,7 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 21,
@@ -61,7 +61,7 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 21,
@@ -77,7 +77,7 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 21,
@@ -117,7 +117,7 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 21,
@@ -157,7 +157,7 @@ describe('Function Extractor', function () {
             "isImplementation": false,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 13,
@@ -185,7 +185,7 @@ describe('Function Extractor', function () {
             "isImplementation": false,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 10,
@@ -219,7 +219,7 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 1,
@@ -247,7 +247,7 @@ describe('Function Extractor', function () {
             "isImplementation": true,
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "namespaces": undefined,
+            "modules": undefined,
             "typeParameters": undefined,
             "returnType": {
                 "kind": 22,

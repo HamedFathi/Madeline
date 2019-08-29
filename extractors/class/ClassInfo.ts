@@ -1,6 +1,6 @@
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
-import { NamespaceInfo } from '../namespace/NamespaceInfo';
+import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../common/TypeParameterInfo';
 
 export interface ClassInfo {
@@ -12,6 +12,6 @@ export interface ClassInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
-    namespaces: NamespaceInfo[] | undefined;
+    modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
 }

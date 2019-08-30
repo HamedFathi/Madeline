@@ -39,7 +39,9 @@ describe('Method Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined,
-            "parameters": undefined
+            "variables": undefined,
+            "parameters": undefined,
+            "expressions": undefined
         }, {
             "name": "move",
             "modifiers": ["async"],
@@ -52,6 +54,7 @@ describe('Method Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined,
+            "variables": undefined,
             "parameters": [{
                 "name": "distanceInMeters",
                 "type": {
@@ -66,6 +69,18 @@ describe('Method Extractor', function () {
                 "defaultValue": "5",
                 "decorators": undefined
             }
+            ],
+            "expressions": [{
+                "text": "console.log(\"Slithering...\");",
+                "trailingComments": undefined,
+                "leadingComments": undefined,
+                "modules": undefined
+            }, {
+                "text": "super.move(distanceInMeters);",
+                "trailingComments": undefined,
+                "leadingComments": undefined,
+                "modules": undefined
+            }
             ]
         }, {
             "name": "getFullName",
@@ -79,6 +94,7 @@ describe('Method Extractor', function () {
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined,
+            "variables": undefined,
             "parameters": [{
                 "name": "firstName",
                 "type": {
@@ -118,7 +134,8 @@ describe('Method Extractor', function () {
                 "modifiers": undefined,
                 "defaultValue": undefined,
                 "decorators": undefined
-            }]
+            }],
+            "expressions": undefined
         }];
         file.forEachDescendant(x => {
             switch (x.getKind()) {

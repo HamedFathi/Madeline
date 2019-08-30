@@ -34,6 +34,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 21,
                 "kindName": "Void",
@@ -63,6 +65,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 21,
                 "kindName": "Void",
@@ -79,6 +83,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 21,
                 "kindName": "Void",
@@ -119,6 +125,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 21,
                 "kindName": "Void",
@@ -159,6 +167,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 13,
                 "kindName": "Number",
@@ -187,6 +197,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 10,
                 "kindName": "Json",
@@ -221,6 +233,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 1,
                 "kindName": "Any",
@@ -249,6 +263,8 @@ describe('Function Extractor', function () {
             "leadingComments": undefined,
             "modules": undefined,
             "typeParameters": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "returnType": {
                 "kind": 22,
                 "kindName": "Promise",

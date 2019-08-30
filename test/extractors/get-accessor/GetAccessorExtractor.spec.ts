@@ -34,6 +34,8 @@ describe('GetAccessor Extractor', function () {
             },
             "modifiers": undefined,
             "decorators": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined
         }, {
@@ -45,6 +47,8 @@ describe('GetAccessor Extractor', function () {
             },
             "modifiers": undefined,
             "decorators": undefined,
+            "variables": undefined,
+            "expressions": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined
         }];

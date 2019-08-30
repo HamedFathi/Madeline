@@ -144,8 +144,11 @@ describe('Source File Extractor', function () {
                         "isParameterProperty": true,
                         "defaultValue": undefined,
                         "decorators": undefined
-                    }                    ]
-                }                ],
+                    }
+                    ],
+                    "variables": undefined
+                }
+                ],
                 "properties": undefined,
                 "getAccessors": undefined,
                 "methods": [{
@@ -160,6 +163,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "decorators": undefined,
+                    "variables": undefined,
                     "parameters": [{
                         "name": "distanceInMeters",
                         "type": {
@@ -173,8 +177,17 @@ describe('Source File Extractor', function () {
                         "modifiers": undefined,
                         "defaultValue": "0",
                         "decorators": undefined
-                    }                    ]
-                }                ]
+                    }
+                    ],
+                    "expressions": [{
+                        "text": "console.log(distanceInMeters);",
+                        "trailingComments": undefined,
+                        "leadingComments": undefined,
+                        "modules": undefined
+                    }
+                    ]
+                }
+                ]
             }, {
                 "name": "Snake",
                 "text": "  \nclass Snake extends Animal {\n  constructor(name: string) {\n    super(name);\n  }\n  move(distanceInMeters = 5) {\n    console.log(\"Slithering...\");\n    super.move(distanceInMeters);\n  }\n}",
@@ -205,8 +218,11 @@ describe('Source File Extractor', function () {
                         "isParameterProperty": false,
                         "defaultValue": undefined,
                         "decorators": undefined
-                    }                    ]
-                }                ],
+                    }
+                    ],
+                    "variables": undefined
+                }
+                ],
                 "properties": undefined,
                 "getAccessors": undefined,
                 "methods": [{
@@ -221,6 +237,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "decorators": undefined,
+                    "variables": undefined,
                     "parameters": [{
                         "name": "distanceInMeters",
                         "type": {
@@ -234,8 +251,22 @@ describe('Source File Extractor', function () {
                         "modifiers": undefined,
                         "defaultValue": "5",
                         "decorators": undefined
-                    }                    ]
-                }                ]
+                    }
+                    ],
+                    "expressions": [{
+                        "text": "console.log(\"Slithering...\");",
+                        "trailingComments": undefined,
+                        "leadingComments": undefined,
+                        "modules": undefined
+                    }, {
+                        "text": "super.move(distanceInMeters);",
+                        "trailingComments": undefined,
+                        "leadingComments": undefined,
+                        "modules": undefined
+                    }
+                    ]
+                }
+                ]
             }, {
                 "name": "Horse",
                 "text": "  \nclass Horse extends Animal {\n  constructor(name: string) {\n    super(name);\n  }\n  move(distanceInMeters = 45) {\n    console.log(\"Galloping...\");\n    super.move(distanceInMeters);\n  }\n}",
@@ -266,8 +297,11 @@ describe('Source File Extractor', function () {
                         "isParameterProperty": false,
                         "defaultValue": undefined,
                         "decorators": undefined
-                    }                    ]
-                }                ],
+                    }
+                    ],
+                    "variables": undefined
+                }
+                ],
                 "properties": undefined,
                 "getAccessors": undefined,
                 "methods": [{
@@ -282,6 +316,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "decorators": undefined,
+                    "variables": undefined,
                     "parameters": [{
                         "name": "distanceInMeters",
                         "type": {
@@ -295,8 +330,66 @@ describe('Source File Extractor', function () {
                         "modifiers": undefined,
                         "defaultValue": "45",
                         "decorators": undefined
-                    }]
-                }]
+                    }
+                    ],
+                    "expressions": [{
+                        "text": "console.log(\"Galloping...\");",
+                        "trailingComments": undefined,
+                        "leadingComments": undefined,
+                        "modules": undefined
+                    }, {
+                        "text": "super.move(distanceInMeters);",
+                        "trailingComments": undefined,
+                        "leadingComments": undefined,
+                        "modules": undefined
+                    }
+                    ]
+                }
+                ]
+            }
+            ],
+            "variables": [[{
+                "name": "sam",
+                "type": {
+                    "kind": 6,
+                    "kindName": "Class",
+                    "type": "Snake"
+                },
+                "modifiers": undefined,
+                "defaultValue": "new Snake(\"Sammy the Python\")",
+                "kind": "let",
+                "kindName": "let",
+                "trailingComments": undefined,
+                "leadingComments": undefined,
+                "modules": undefined
+            }
+            ], [{
+                "name": "tom",
+                "type": {
+                    "kind": 6,
+                    "kindName": "Class",
+                    "type": "Animal"
+                },
+                "modifiers": undefined,
+                "defaultValue": "new Horse(\"Tommy the Palomino\")",
+                "kind": "let",
+                "kindName": "let",
+                "trailingComments": undefined,
+                "leadingComments": undefined,
+                "modules": undefined
+            }
+            ]],
+            "exportAssignments": undefined,
+            "expressions": [{
+                "text": "sam.move();",
+                "trailingComments": undefined,
+                "leadingComments": undefined,
+                "modules": undefined
+            }, {
+                "text": "tom.move(34);",
+                "trailingComments": undefined,
+                "leadingComments": undefined,
+                "modules": undefined
             }]
         };
         let srcExtractor = new SourceFileExtractor();

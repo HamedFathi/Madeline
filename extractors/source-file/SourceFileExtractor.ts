@@ -1,4 +1,4 @@
-import { SourceFile, SyntaxKind, EnumDeclaration, FunctionDeclaration, TypeAliasDeclaration, InterfaceDeclaration, ClassDeclaration, ScriptTarget, Project, VariableStatement } from 'ts-morph';
+import { SourceFile, SyntaxKind, EnumDeclaration, FunctionDeclaration, TypeAliasDeclaration, InterfaceDeclaration, ClassDeclaration, ScriptTarget, Project, VariableStatement, ExpressionStatement } from 'ts-morph';
 import { EnumInfo } from '../enum/EnumInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { InterfaceInfo } from '../interface/InterfaceInfo';
@@ -22,6 +22,9 @@ import { ConstructorExtractor } from '../constructor/ConstructorExtractor';
 import * as fs from 'fs';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { VariableInfo } from '../variable/VariableInfo';
+import { ExportAssignmentExtractor } from '../export-assignment/ExportAssignmentExtractor';
+import { ExpressionExtractor } from '../expression/ExpressionExtractor';
+import { ExpressionInfo } from '../expression/ExpressionInfo';
 
 export class SourceFileExtractor {
 
@@ -49,6 +52,7 @@ export class SourceFileExtractor {
     public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): SourceFileInfo | undefined {
 
         let imports = new ImportExtractor().extract(sourceFile);
+        let exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
         let coverageDetail = new CoverageExtractor().extract(sourceFile, option);
         let coverageInfo = new CoverageCalculator(coverageDetail).calculate();
         let coverage: SourceFileCoverageInfo = {
@@ -63,6 +67,7 @@ export class SourceFileExtractor {
         let interfaces: InterfaceInfo[] = [];
         let classes: SourceFileClassInfo[] = [];
         let variables: VariableInfo[][] = [];
+        let expressions: ExpressionInfo[] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.EnumDeclaration:
@@ -77,8 +82,17 @@ export class SourceFileExtractor {
                 case SyntaxKind.InterfaceDeclaration:
                     interfaces.push(new InterfaceExtractor().extract(<InterfaceDeclaration>node));
                     break;
-                    case SyntaxKind.VariableStatement:
-                    variables.push(new VariableExtractor().extract(<VariableStatement>node));
+                case SyntaxKind.VariableStatement:
+                    let isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
+                    if (isVariableInSourceFile) {
+                        variables.push(new VariableExtractor().extract(<VariableStatement>node));
+                    }
+                    break;
+                case SyntaxKind.ExpressionStatement:
+                    let isExpressionInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
+                    if (isExpressionInSourceFile) {
+                        expressions.push(new ExpressionExtractor().extract(<ExpressionStatement>node));
+                    }
                     break;
                 case SyntaxKind.ClassDeclaration:
                     let info = new ClassExtractor().extract(<ClassDeclaration>node);
@@ -115,7 +129,9 @@ export class SourceFileExtractor {
             typeAliases: typeAliases.length === 0 ? undefined : typeAliases,
             interfaces: interfaces.length === 0 ? undefined : interfaces,
             classes: classes.length === 0 ? undefined : classes,
-            variables: variables.length === 0 ? undefined : variables
+            variables: variables.length === 0 ? undefined : variables,
+            exportAssignments: exportAssignments,
+            expressions: expressions
         };
         return result;
     }

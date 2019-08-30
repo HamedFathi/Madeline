@@ -1,11 +1,30 @@
-import { ClassDeclaration } from 'ts-morph';
+import { ClassDeclaration, MethodDeclaration, SyntaxKind } from 'ts-morph';
 import { MethodInfo } from './MethodInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
+import { ExpressionInfo } from '../expression/ExpressionInfo';
+import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 
 export class MethodExtractor {
+    private getExpressionStatements(methodDeclaration: MethodDeclaration): undefined | ExpressionInfo[] {
+        let result: ExpressionInfo[] = [];
+        if (methodDeclaration.getBody()) {
+            let expressions = methodDeclaration.getBodyOrThrow().getDescendantsOfKind(SyntaxKind.ExpressionStatement);
+            if (expressions.length === 0) {
+                return undefined
+            }
+            else {
+                expressions.forEach(exp => {
+                    result.push(new ExpressionExtractor().extract(exp));
+                });
+                return result;
+            }
+        }
+        return undefined;
+    }
+
 
     public extract(node: ClassDeclaration): MethodInfo[] | undefined {
         let methods = node
@@ -23,9 +42,9 @@ export class MethodExtractor {
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                     decorators: new DecoratorExtractor().extract(x),
-                    variables: x.getVariableStatements().map(y=> new VariableExtractor().extract(y)).length === 0
-                    ? undefined
-                    : x.getVariableStatements().map(y=> new VariableExtractor().extract(y)),
+                    variables: x.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
+                        ? undefined
+                        : x.getVariableStatements().map(y => new VariableExtractor().extract(y)),
                     parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),
@@ -37,7 +56,8 @@ export class MethodExtractor {
                             defaultValue: y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
                             decorators: new DecoratorExtractor().extract(y)
                         }
-                    })
+                    }),
+                    expressions : this.getExpressionStatements(x)
                 }
             });
         if (methods.length === 0) return undefined;

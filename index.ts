@@ -27,6 +27,8 @@ export * from './extractors/doc-coverage/CoverageResult';
 export * from './extractors/enum/EnumExtractor';
 export * from './extractors/enum/EnumInfo';
 export * from './extractors/enum/EnumMember';
+export * from './extractors/export-assignment/ExportAssignmentExtractor';
+export * from './extractors/export-assignment/ExportAssignmentInfo';
 export * from './extractors/expression/ExpressionExtractor';
 export * from './extractors/expression/ExpressionInfo';
 export * from './extractors/function/FunctionExtractor';

@@ -2,6 +2,7 @@ import { MethodParamInfo } from "./MethodParamInfo";
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';
+import { ExpressionInfo } from '../expression/ExpressionInfo';
 export interface MethodInfo {
     name: string;
     modifiers: string[] | undefined;
@@ -11,4 +12,6 @@ export interface MethodInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[][] | undefined;
+    expressions: ExpressionInfo[] | undefined;
+
 }

@@ -6,6 +6,8 @@ import { TypeAliasInfo } from '../type-alias/TypeAliasInfo';
 import { SourceFileCoverageInfo } from "./SourceFileCoverageInfo";
 import { SourceFileClassInfo } from "./SourceFileClassInfo";
 import { VariableInfo } from '../variable/VariableInfo';
+import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
+import { ExpressionInfo } from '../expression/ExpressionInfo';
 export interface SourceFileInfo {
     isDeclarationFile: boolean,
     isFromExternalLibrary: boolean,
@@ -18,4 +20,6 @@ export interface SourceFileInfo {
     typeAliases: TypeAliasInfo[] | undefined;
     coverage: SourceFileCoverageInfo | undefined;
     variables: VariableInfo[][] | undefined;
+    exportAssignments: ExportAssignmentInfo[] | undefined;
+    expressions: ExpressionInfo[] | undefined;
 }

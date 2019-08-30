@@ -4,6 +4,7 @@ import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../common/TypeParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { VariableInfo } from '../variable/VariableInfo';
+import { ExpressionInfo } from '../expression/ExpressionInfo';
 export interface FunctionInfo {
     name: string | undefined;
     modifiers: string[] | undefined;
@@ -17,4 +18,6 @@ export interface FunctionInfo {
     parameters: FunctionParamInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
     variables: VariableInfo[][] | undefined;
+    expressions: ExpressionInfo[] | undefined;
+
 }

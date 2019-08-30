@@ -1,6 +1,5 @@
-import { CommentInfo } from '../../dist/es2015/extractors/comment/CommentInfo';
-import { TypeParameterInfo } from '../common/TypeParameterInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
+import { CommentInfo } from '../comment/CommentInfo';
 
 export interface ExpressionInfo {
     trailingComments: CommentInfo[] | undefined;

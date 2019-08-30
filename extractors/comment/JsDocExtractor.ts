@@ -66,18 +66,18 @@ export class JsDocExtractor {
                     }
 
                     let names = this.stringUtils.isEmptyOrWhitespace(line.trim()) ? undefined : line.trim();
-                    if (names && names[0] === this.DOUBLE_QUOTE && names[names.length - 1] === this.DOUBLE_QUOTE ) {
+                    if (names && names[0] === this.DOUBLE_QUOTE && names[names.length - 1] === this.DOUBLE_QUOTE) {
                         names = names.substring(1);
                         names = names.substring(0, names.length - 1);
                     }
-                    if (names && names[0] === this.SINGLE_QUOTE && names[names.length - 1] === this.SINGLE_QUOTE ) {
+                    if (names && names[0] === this.SINGLE_QUOTE && names[names.length - 1] === this.SINGLE_QUOTE) {
                         names = names.substring(1);
                         names = names.substring(0, names.length - 1);
                     }
                     tags.push({
                         tag: tag,
                         type: type === null ? undefined : type,
-                        name: names === undefined ? undefined : names.split('.').filter(x=>x.length !== 0),
+                        name: names === undefined ? undefined : names.split('.').filter(x => x.length !== 0),
                         defaultValue: defaultValue === null ? undefined : defaultValue,
                         description: description === null ? undefined : [description]
                     });
@@ -97,6 +97,7 @@ export class JsDocExtractor {
         return {
             text: new StringUtils().isEmptyOrWhitespace(text) ? undefined : text,
             kind: kind,
+            kindName: kind === CommentKind.Html ? 'HTML' : (kind === CommentKind.JsSingleLine ? 'JsSingleLine' : 'JsMultiLine'),
             description: generalDescription.length === 0 ? undefined : generalDescription,
             tags: tags.length === 0 ? undefined : tags
         }

@@ -23,8 +23,9 @@ export class HtmlCommentExtractor {
                         let endLine = <number>node['sourceCodeLocation']['endLine'];
                     */
                     let comment = new JsDocExtractor().extract(data, kind);
-                    if (comment)
+                    if (comment) {
                         result.push(comment);
+                    }
                 }
             }
         });

@@ -1,145 +1,103 @@
 import { assert } from "chai";
-import { Project, ScriptTarget, SyntaxKind, ClassDeclaration } from 'ts-morph';
-import { ClassExtractor } from '../../../extractors/class/ClassExtractor';
-import { ClassInfo } from '../../../extractors/class/ClassInfo';
-import { StringUtils } from '../../../utilities/StringUtils';
+import { Project, ScriptTarget, SyntaxKind, ClassDeclaration, ExpressionStatement } from 'ts-morph';
+import { ExpressionExtractor } from '../../../extractors/expression/ExpressionExtractor';
+import { ExpressionInfo } from '../../../extractors/expression/ExpressionInfo';
 
-const classSample = `
-// This a test class.
-export default class A {}
-export interface IC {}
-export interface ID {}
-/**
-* This is a test.
-* Class number 2
-*
-* @class B
-* @extends A
-* @implements IC,ID
-*/
-export class B extends A implements IC, ID {}
-export namespace NS1 {
-	module NS2 {
-		namespace NS3 {
-			@test({a:1})
-			class Greeter {
-				greeting: string;
-				constructor(message: string) {
-					this.greeting = message;
+const expSample = `
+(x: number, y: number): number => {
+	return x + y;
+};
+
+Vue.component('base-checkbox', {
+	model: {
+		prop: 'checked',
+		event: 'change'
+	},
+	props: {
+		checked: Boolean
+	},
+	template: ""
+});
+
+Vue.use(Router);
+
+export class App {
+	configureRouter(config, router) {
+		this.router = router;
+		config.title = 'Aurelia';
+		config.map([{
+					route: ['', 'home'],
+					name: 'home',
+					moduleId: 'home/index'
+				}, {
+					route: 'users',
+					name: 'users',
+					moduleId: 'users/index',
+					nav: true,
+					title: 'Users'
+				}, {
+					route: 'users/:id/detail',
+					name: 'userDetail',
+					moduleId: 'users/detail'
+				}, {
+					route: 'files/*path',
+					name: 'files',
+					moduleId: 'files/index',
+					nav: 0,
+					title: 'Files',
+					href: '#files'
 				}
-			}
-		}
+			]);
 	}
 }
 `;
 
-describe('Class Extractor', function () {
-    it('should return correct ClassInfo', function () {
+describe('Expression Extractor', function () {
+    it('should return correct ExpressionInfo', function () {
         const project = new Project({
             compilerOptions: {
                 target: ScriptTarget.ES5
             }
         });
-        const file = project.createSourceFile("test.ts", classSample);
-        let actualResult: ClassInfo[] = [];
-        let expectedResult: ClassInfo[] = [{
-            "name": "A",
-            "text": "\n// This a test class.\nexport default class A {}",
-            "modifiers": ["export", "default"],
-            "extends": undefined,
-            "implements": undefined,
-            "trailingComments": undefined,
-            "leadingComments": [{
-                "text": "// This a test class.",
-                "kind": 0,
-                "kindName": "JsSingleLine",
-                "description": ["This a test class."],
-                "tags": undefined
-            }],
-            "decorators": undefined,
-            "modules": undefined,
-            "typeParameters": undefined
-        },
-        {
-            "name": "B",
-            "text": "\n/**\n* This is a test.\n* Class number 2\n*\n* @class B\n* @extends A\n* @implements IC,ID\n*/\nexport class B extends A implements IC, ID {}",
-            "modifiers": ["export"],
-            "extends": "A",
-            "implements": ["IC", "ID"],
-            "trailingComments": undefined,
-            "leadingComments": [{
-                "text": "/**\n* This is a test.\n* Class number 2\n*\n* @class B\n* @extends A\n* @implements IC,ID\n*/",
-                "kind": 1,
-                "kindName": "JsMultiLine",
-                "description": ["This is a test.", "Class number 2"],
-                "tags": [{
-                    "tag": "@class",
-                    "type": undefined,
-                    "name": ["B"],
-                    "defaultValue": undefined,
-                    "description": undefined
-                }, {
-                    "tag": "@extends",
-                    "type": undefined,
-                    "name": ["A"],
-                    "defaultValue": undefined,
-                    "description": undefined
-                }, {
-                    "tag": "@implements",
-                    "type": undefined,
-                    "name": ["IC,ID"],
-                    "defaultValue": undefined,
-                    "description": undefined
-                }]
-            }],
-            "decorators": undefined,
-            "modules": undefined,
-            "typeParameters": undefined
-        },
-        {
-            "name": "Greeter",
-            "text": "\n\t\t\t@test({a:1})\n\t\t\tclass Greeter {\n\t\t\t\tgreeting: string;\n\t\t\t\tconstructor(message: string) {\n\t\t\t\t\tthis.greeting = message;\n\t\t\t\t}\n\t\t\t}",
-            "modifiers": undefined,
-            "extends": undefined,
-            "implements": undefined,
+        const file = project.createSourceFile("test.ts", expSample);
+        let actualResult: ExpressionInfo[] = [];
+        let expectedResult: ExpressionInfo[] = [{
+            "text": "(x: number, y: number): number => {\n\treturn x + y;\n};",
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "decorators": [{
-                "isDecoratorFactory": true,
-                "name": "test",
-                "parameters": [{
-                    "kind": 10,
-                    "kindName": "Json",
-                    "type": [{
-                        "name": "a",
-                        "value": "1"
-                    }]
-                }]
-            }],
-            "typeParameters": undefined,
-            "modules": [{
-                "name": "NS3",
-                "isNamespace": true,
-                "modifiers": undefined,
-                "level": 1
-            }, {
-                "name": "NS2",
-                "isNamespace": false,
-                "modifiers": undefined,
-                "level": 2
-            }, {
-                "name": "NS1",
-                "isNamespace": true,
-                "modifiers": ["export"],
-                "level": 3
-            }]
+            "modules": undefined
+        }, {
+            "text": "Vue.component('base-checkbox', {\n\tmodel: {\n\t\tprop: 'checked',\n\t\tevent: 'change'\n\t},\n\tprops: {\n\t\tchecked: Boolean\n\t},\n\ttemplate: \"\"\n});",
+            "trailingComments": undefined,
+            "leadingComments": undefined,
+            "modules": undefined
+        }, {
+            "text": "Vue.use(Router);",
+            "trailingComments": undefined,
+            "leadingComments": undefined,
+            "modules": undefined
+        }, {
+            "text": "this.router = router;",
+            "trailingComments": undefined,
+            "leadingComments": undefined,
+            "modules": undefined
+        }, {
+            "text": "config.title = 'Aurelia';",
+            "trailingComments": undefined,
+            "leadingComments": undefined,
+            "modules": undefined
+        }, {
+            "text": "config.map([{\n\t\t\t\t\troute: ['', 'home'],\n\t\t\t\t\tname: 'home',\n\t\t\t\t\tmoduleId: 'home/index'\n\t\t\t\t}, {\n\t\t\t\t\troute: 'users',\n\t\t\t\t\tname: 'users',\n\t\t\t\t\tmoduleId: 'users/index',\n\t\t\t\t\tnav: true,\n\t\t\t\t\ttitle: 'Users'\n\t\t\t\t}, {\n\t\t\t\t\troute: 'users/:id/detail',\n\t\t\t\t\tname: 'userDetail',\n\t\t\t\t\tmoduleId: 'users/detail'\n\t\t\t\t}, {\n\t\t\t\t\troute: 'files/*path',\n\t\t\t\t\tname: 'files',\n\t\t\t\t\tmoduleId: 'files/index',\n\t\t\t\t\tnav: 0,\n\t\t\t\t\ttitle: 'Files',\n\t\t\t\t\thref: '#files'\n\t\t\t\t}\n\t\t\t]);",
+            "trailingComments": undefined,
+            "leadingComments": undefined,
+            "modules": undefined
         }];
         file.forEachDescendant(x => {
             switch (x.getKind()) {
-                case SyntaxKind.ClassDeclaration:
-                    let clsVisitor = new ClassExtractor();
-                    let cls = clsVisitor.extract(<ClassDeclaration>x);
-                    actualResult.push(cls);
+                case SyntaxKind.ExpressionStatement:
+                    let expVisitor = new ExpressionExtractor();
+                    let expressions = expVisitor.extract(<ExpressionStatement>x);
+                    actualResult.push(expressions);
                     break;
             }
         });

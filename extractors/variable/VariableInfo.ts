@@ -11,4 +11,5 @@ export interface VariableInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
+    value: string | undefined;
 }

@@ -356,7 +356,7 @@ describe('Source File Extractor', function () {
                     "type": "Snake"
                 },
                 "modifiers": undefined,
-                "defaultValue": "new Snake(\"Sammy the Python\")",
+                "value": "new Snake(\"Sammy the Python\")",
                 "kind": "let",
                 "kindName": "let",
                 "trailingComments": undefined,
@@ -371,7 +371,7 @@ describe('Source File Extractor', function () {
                     "type": "Animal"
                 },
                 "modifiers": undefined,
-                "defaultValue": "new Horse(\"Tommy the Palomino\")",
+                "value": "new Horse(\"Tommy the Palomino\")",
                 "kind": "let",
                 "kindName": "let",
                 "trailingComments": undefined,

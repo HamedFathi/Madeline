@@ -2,7 +2,6 @@ import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ExportAssignmentInfo } from './ExportAssignmentInfo';
 import { ExportAssignment, SyntaxKind, SourceFile } from 'ts-morph';
-
 export class ExportAssignmentExtractor {
     public extract(sourceFile: SourceFile): ExportAssignmentInfo[] | undefined {
         let result: ExportAssignmentInfo[] = [];

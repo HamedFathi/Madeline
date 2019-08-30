@@ -19,7 +19,7 @@ export class VariableExtractor {
                 modifiers: modifiers.length === 0
                     ? undefined
                     : modifiers,
-                defaultValue: x.getInitializer() === undefined
+                value: x.getInitializer() === undefined
                     ? undefined
                     : x.getInitializerOrThrow().getText(),
                 kind: kind,

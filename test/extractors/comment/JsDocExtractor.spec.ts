@@ -29,6 +29,7 @@ describe('JsDoc Extractor', function () {
         let expectedResult: CommentInfo = {
             "text": "\n/**\n* Group description A\n* Group description B\n* Group description C\n*\n* @tagname1\n* @tagname2 name2\n* @return this is a test1.\n* @tagname3 name3 - description3 \n* @tagname4 {type}\n* Description4\n* @tagname5 {type5} name5\n* @tagname6 {type6} \"name6 name6\" - description6\n* Description6.1\n* Description6.2\n* @tagname7 {type7} [defaultValue=name7] - description7\n*/\n",
             "kind": 1,
+            "kindName": "JsMultiLine",
             "description": ["Group description A", "Group description B", "Group description C"],
             "tags": [{
                     "tag": "@tagname1",

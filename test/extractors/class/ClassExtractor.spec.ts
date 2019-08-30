@@ -52,6 +52,7 @@ describe('Class Extractor', function () {
             "leadingComments": [{
                 "text": "// This a test class.",
                 "kind": 0,
+                "kindName": "JsSingleLine",
                 "description": ["This a test class."],
                 "tags": undefined
             }],
@@ -69,6 +70,7 @@ describe('Class Extractor', function () {
             "leadingComments": [{
                 "text": "/**\n* This is a test.\n* Class number 2\n*\n* @class B\n* @extends A\n* @implements IC,ID\n*/",
                 "kind": 1,
+                "kindName": "JsMultiLine",
                 "description": ["This is a test.", "Class number 2"],
                 "tags": [{
                     "tag": "@class",

@@ -128,6 +128,7 @@ describe('Source File Extractor', function () {
                     "trailingComments": undefined,
                     "leadingComments": undefined,
                     "modifiers": undefined,
+                    "expressions": undefined,
                     "isParameterLess": false,
                     "isImplementation": true,
                     "isOverload": false,
@@ -205,6 +206,14 @@ describe('Source File Extractor', function () {
                     "isParameterLess": false,
                     "isImplementation": true,
                     "isOverload": false,
+                    "expressions": [
+                        {
+                            "leadingComments": undefined,
+                            "modules": undefined,
+                            "text": "super(name);",
+                            "trailingComments": undefined
+                        }
+                    ],
                     "parameters": [{
                         "name": "name",
                         "type": {
@@ -284,6 +293,14 @@ describe('Source File Extractor', function () {
                     "isParameterLess": false,
                     "isImplementation": true,
                     "isOverload": false,
+                    "expressions": [
+                        {
+                            "leadingComments": undefined,
+                            "modules": undefined,
+                            "text": "super(name);",
+                            "trailingComments": undefined
+                        }
+                    ],
                     "parameters": [{
                         "name": "name",
                         "type": {

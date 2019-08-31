@@ -51,6 +51,14 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
+            "expressions": [
+                {
+                    "leadingComments": undefined,
+                    "modules": undefined,
+                    "text": "super();",
+                    "trailingComments": undefined
+                }
+            ],
             "parameters": [{
                 "name": "ic",
                 "type": {
@@ -98,6 +106,7 @@ describe('Constructor Extractor', function () {
             "leadingComments": undefined,
             "modifiers": undefined,
             "isParameterLess": true,
+            "expressions": undefined,
             "variables": undefined,
             "isImplementation": true,
             "isOverload": false,
@@ -109,6 +118,7 @@ describe('Constructor Extractor', function () {
             "leadingComments": undefined,
             "modifiers": undefined,
             "isParameterLess": false,
+            "expressions": undefined,
             "isImplementation": true,
             "variables": undefined,
             "isOverload": false,
@@ -133,6 +143,7 @@ describe('Constructor Extractor', function () {
             "leadingComments": undefined,
             "variables": undefined,
             "modifiers": undefined,
+            "expressions": undefined,
             "isParameterLess": true,
             "isImplementation": true,
             "isOverload": false,
@@ -144,6 +155,7 @@ describe('Constructor Extractor', function () {
             "variables": undefined,
             "isParameterLess": false,
             "isImplementation": true,
+            "expressions": undefined,
             "isOverload": false,
             "parameters": [{
                 "name": "value",
@@ -168,6 +180,7 @@ describe('Constructor Extractor', function () {
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,
+            "expressions": undefined,
             "parameters": [{
                 "name": "value",
                 "type": {
@@ -191,6 +204,7 @@ describe('Constructor Extractor', function () {
             "leadingComments": undefined,
             "modifiers": undefined,
             "variables": undefined,
+            "expressions": undefined,
             "isParameterLess": false,
             "isImplementation": true,
             "isOverload": false,

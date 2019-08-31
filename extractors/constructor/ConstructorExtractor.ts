@@ -1,13 +1,31 @@
-import { ClassDeclaration } from 'ts-morph';
+import { ClassDeclaration, ConstructorDeclaration, SyntaxKind } from 'ts-morph';
 import { ConstructorParamInfo } from './ConstructorParamInfo';
 import { ConstructorInfo } from "./ConstructorInfo";
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
+import { ExpressionInfo } from '../expression/ExpressionInfo';
+import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 
 export class ConstructorExtractor {
 
+    private getExpressionStatements(constructorDeclaration: ConstructorDeclaration): undefined | ExpressionInfo[] {
+        let result: ExpressionInfo[] = [];
+        if (constructorDeclaration.getBody()) {
+            let expressions = constructorDeclaration.getBodyOrThrow().getDescendantsOfKind(SyntaxKind.ExpressionStatement);
+            if (expressions.length === 0) {
+                return undefined
+            }
+            else {
+                expressions.forEach(exp => {
+                    result.push(new ExpressionExtractor().extract(exp));
+                });
+                return result;
+            }
+        }
+        return undefined;
+    }
     public extract(node: ClassDeclaration): ConstructorInfo[] | undefined {
         let result: ConstructorInfo[] = [];
         let ctors = node.getConstructors();
@@ -18,7 +36,8 @@ export class ConstructorExtractor {
             let trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
             let leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
             let modifiers = ctor.getModifiers().length === 0 ? undefined : ctor.getModifiers().map(x => x.getText());
-            let variables = ctor.getVariableStatements().map(x=> new VariableExtractor().extract(x));
+            let variables = ctor.getVariableStatements().map(x => new VariableExtractor().extract(x));
+            let expressions = this.getExpressionStatements(ctor);
             let params: ConstructorParamInfo[] = ctor.getParameters().map(x => {
                 return {
                     name: x.getName(),
@@ -39,7 +58,8 @@ export class ConstructorExtractor {
                 isImplementation: isImplementation,
                 isOverload: isOverload,
                 parameters: params.length === 0 ? undefined : params,
-                variables: variables.length === 0 ? undefined : variables
+                variables: variables.length === 0 ? undefined : variables,
+                expressions: expressions
             });
         });
         return result;

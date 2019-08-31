@@ -1,6 +1,6 @@
 {
   "name": "madeline",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An experimental library to extract information from Javascript/Typescript source files.",
   "keywords": [
     "typescript",

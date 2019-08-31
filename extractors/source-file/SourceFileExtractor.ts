@@ -131,7 +131,7 @@ export class SourceFileExtractor {
             classes: classes.length === 0 ? undefined : classes,
             variables: variables.length === 0 ? undefined : variables,
             exportAssignments: exportAssignments,
-            expressions: expressions
+            expressions: expressions.length === 0 ? undefined : expressions
         };
         return result;
     }

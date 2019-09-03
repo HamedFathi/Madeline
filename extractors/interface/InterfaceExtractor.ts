@@ -55,6 +55,7 @@ export class InterfaceExtractor {
                             isOptional: y.isOptional(),
                             isRest: y.isRestParameter(),
                             isParameterProperty: y.isParameterProperty(),
+                            defaultValue: y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
                             modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
                         }
                     })
@@ -75,6 +76,14 @@ export class InterfaceExtractor {
                     leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
                         ? undefined
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                    typeParameters: node.getTypeParameters().map(y => {
+                        return {
+                            name: y.getName(),
+                            constraint: y.getConstraint() === undefined
+                                ? undefined
+                                : y.getConstraintOrThrow().getType().getText()
+                        }
+                    }),
                     parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
                         return {
                             name: y.getName(),
@@ -82,7 +91,8 @@ export class InterfaceExtractor {
                             modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
                             isOptional: y.isOptional(),
                             isRest: y.isRestParameter(),
-                            isParameterProperty: y.isParameterProperty()
+                            isParameterProperty: y.isParameterProperty(),
+                            defaultValue: y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
                         }
                     })
                 }
@@ -117,6 +127,7 @@ export class InterfaceExtractor {
                             isOptional: y.isOptional(),
                             isRest: y.isRestParameter(),
                             isParameterProperty: y.isParameterProperty(),
+                            defaultValue: y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
                         }
                     })
                 }

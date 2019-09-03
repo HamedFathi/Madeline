@@ -97,11 +97,11 @@ export class SourceFileExtractor {
                     break;
                 case SyntaxKind.ClassDeclaration:
                     let info = new ClassExtractor().extract(<ClassDeclaration>node);
-                    let constructors = new ConstructorExtractor().extract(<ClassDeclaration>node);
-                    let properties = new PropertyExtractor().extract(<ClassDeclaration>node);
-                    let methods = new MethodExtractor().extract(<ClassDeclaration>node);
-                    let getAccessors = new GetAccessorExtractor().extract(<ClassDeclaration>node);
-                    let setAccessors = new SetAccessorExtractor().extract(<ClassDeclaration>node);
+                    let constructors = new ConstructorExtractor().extractFromClass(<ClassDeclaration>node);
+                    let properties = new PropertyExtractor().extractFromClass(<ClassDeclaration>node);
+                    let methods = new MethodExtractor().extractFromClass(<ClassDeclaration>node);
+                    let getAccessors = new GetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
+                    let setAccessors = new SetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
                     classes.push({
                         name: info.name,
                         text: info.text,

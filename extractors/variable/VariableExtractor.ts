@@ -3,9 +3,10 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { VariableInfo } from './VariableInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
+import { VariableInitializerExtractor } from './VariableInitializerExtractor';
 
 export class VariableExtractor {
-    public extract(node : VariableStatement): VariableInfo[] {
+    public extract(node: VariableStatement): VariableInfo[] {
         let modifiers = node.getModifiers().map(x => x.getText());
         let kind = node.getDeclarationKind();
         let kindName = node.getDeclarationKind().toString();
@@ -21,7 +22,7 @@ export class VariableExtractor {
                     : modifiers,
                 value: x.getInitializer() === undefined
                     ? undefined
-                    : x.getInitializerOrThrow().getText(),
+                    : new VariableInitializerExtractor().extract(x.getInitializerOrThrow()),
                 kind: kind,
                 kindName: kindName,
                 trailingComments: trailingComments.length === 0 ? undefined : trailingComments,

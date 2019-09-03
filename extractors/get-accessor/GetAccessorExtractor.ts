@@ -26,28 +26,29 @@ export class GetAccessorExtractor {
         return undefined;
     }
 
-    public extract(node: ClassDeclaration): GetAccessorInfo[] | undefined {
+    public extract(node: GetAccessorDeclaration): GetAccessorInfo {
+        return {
+            name: node.getName(),
+            returnType: new TypeExtractor().extract(node.getReturnType()),
+            expressions: this.getExpressionStatements(node),
+            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
+            decorators: new DecoratorExtractor().extract(node),
+            trailingComments: new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
+                ? undefined
+                : new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()),
+            leadingComments: new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
+                ? undefined
+                : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
+            variables: node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
+                ? undefined
+                : node.getVariableStatements().map(y => new VariableExtractor().extract(y))
+        }
+    }
+
+    public extractFromClass(node: ClassDeclaration): GetAccessorInfo[] | undefined {
         let getAccessors = node
             .getGetAccessors()
-            .map(x => {
-                return {
-                    name: x.getName(),
-                    returnType: new TypeExtractor().extract(x.getReturnType()),
-                    expressions: this.getExpressionStatements(x),
-                    modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                    decorators: new DecoratorExtractor().extract(x),
-                    trailingComments: new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                        ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
-                    leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                        ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
-                    variables: x.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
-                        ? undefined
-                        : x.getVariableStatements().map(y => new VariableExtractor().extract(y))
-
-                }
-            });
+            .map(x => this.extract(x));
         if (getAccessors.length === 0) return undefined;
         return getAccessors;
     }

@@ -3,6 +3,7 @@ import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 import { ExpressionInfo } from '../expression/ExpressionInfo';
+import { DecoratorInfo } from '../decorator/DecoratorInfo';
 export interface MethodInfo {
     name: string;
     modifiers: string[] | undefined;
@@ -13,5 +14,5 @@ export interface MethodInfo {
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[][] | undefined;
     expressions: ExpressionInfo[] | undefined;
-
+    decorators: DecoratorInfo[] | undefined;
 }

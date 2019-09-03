@@ -9,12 +9,12 @@ export interface FunctionInfo {
     name: string | undefined;
     modifiers: string[] | undefined;
     isGenerator: boolean;
-    isOverload: boolean;
-    isImplementation: boolean;
+    isOverload?: boolean;
+    isImplementation?: boolean;
     returnType : TypeInfo | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
-    modules: ModuleInfo[] | undefined;
+    modules?: ModuleInfo[] | undefined;
     parameters: FunctionParamInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
     variables: VariableInfo[][] | undefined;

@@ -1,3 +1,6 @@
+import { Project, ScriptTarget } from 'ts-morph';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -68,3 +71,64 @@ export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
 export * from './utilities/JsonUtils';
 export * from './utilities/StringUtils';
+
+
+
+
+const sample = `
+export const DefaultBindingLanguage = [
+	DefaultBindingCommandRegistration,
+	OneTimeBindingCommandRegistration,
+	FromViewBindingCommandRegistration,
+	ToViewBindingCommandRegistration,
+	TwoWayBindingCommandRegistration,
+	CallBindingCommandRegistration,
+	ForBindingCommandRegistration
+  ];
+  
+const obj = {
+	propertyAssignment2: (s:string, c?:number,f:string='hhh') : boolean => {
+		return true;
+	},
+    propertyAssignment: 5,
+    shorthandPropertyAssignment,
+    ...spreadAssignment,
+    get getAccessor() {
+        return 5;
+    },
+    set setAccessor(value: number) {
+        // do something
+    },
+    method() {
+        return "some string"
+    }
+};
+export const BasicConfiguration = {
+	/**
+	 * Apply this configuration to the provided container.
+	 */
+	register(container: IContainer): IContainer {
+		return RuntimeBasicConfiguration
+		.register(container)
+		.register(
+			...DefaultComponents,
+			...DefaultBindingSyntax,
+			...DefaultBindingLanguage);
+	},
+	/**
+	 * Create a new container with this configuration applied to it.
+	 */
+	createContainer(): IContainer {
+		return this.register(DI.createContainer());
+	}
+}; 
+`;
+
+const project = new Project({
+    compilerOptions: {
+        target: ScriptTarget.ES5
+    }
+});
+const file = project.createSourceFile("test.ts", sample);
+let result = new SourceFileExtractor().extract(file);
+const a = 8;

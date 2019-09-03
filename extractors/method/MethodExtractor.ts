@@ -24,42 +24,42 @@ export class MethodExtractor {
         }
         return undefined;
     }
+    public extract(node: MethodDeclaration): MethodInfo {
+        return {
+            name: node.getName(),
+            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
+            returnType: new TypeExtractor().extract(node.getReturnType()),
+            isGenerator: node.isGenerator(),
+            trailingComments: new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
+                ? undefined
+                : new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()),
+            leadingComments: new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
+                ? undefined
+                : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
+            decorators: new DecoratorExtractor().extract(node),
+            variables: node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
+                ? undefined
+                : node.getVariableStatements().map(y => new VariableExtractor().extract(y)),
+            parameters: node.getParameters().length === 0 ? undefined : node.getParameters().map(y => {
+                return {
+                    name: y.getName(),
+                    type: new TypeExtractor().extract(y.getType()),
+                    isOptional: y.isOptional(),
+                    isRest: y.isRestParameter(),
+                    isParameterProperty: y.isParameterProperty(),
+                    modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
+                    defaultValue: y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
+                    decorators: new DecoratorExtractor().extract(y)
+                }
+            }),
+            expressions: this.getExpressionStatements(node)
+        }
+    }
 
-
-    public extract(node: ClassDeclaration): MethodInfo[] | undefined {
+    public extractFromClass(node: ClassDeclaration): MethodInfo[] | undefined {
         let methods = node
             .getMethods()
-            .map(x => {
-                return {
-                    name: x.getName(),
-                    modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                    returnType: new TypeExtractor().extract(x.getReturnType()),
-                    isGenerator: x.isGenerator(),
-                    trailingComments: new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                        ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
-                    leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                        ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
-                    decorators: new DecoratorExtractor().extract(x),
-                    variables: x.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
-                        ? undefined
-                        : x.getVariableStatements().map(y => new VariableExtractor().extract(y)),
-                    parameters: x.getParameters().length === 0 ? undefined : x.getParameters().map(y => {
-                        return {
-                            name: y.getName(),
-                            type: new TypeExtractor().extract(y.getType()),
-                            isOptional: y.isOptional(),
-                            isRest: y.isRestParameter(),
-                            isParameterProperty: y.isParameterProperty(),
-                            modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
-                            defaultValue: y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
-                            decorators: new DecoratorExtractor().extract(y)
-                        }
-                    }),
-                    expressions : this.getExpressionStatements(x)
-                }
-            });
+            .map(x => this.extract(x));
         if (methods.length === 0) return undefined;
         return methods;
     }

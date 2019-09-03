@@ -25,35 +25,35 @@ export class SetAccessorExtractor {
         }
         return undefined;
     }
+    public extract(node: SetAccessorDeclaration): SetAccessorInfo {
+        return {
+            name: node.getName(),
+            parameter: node.getParameters().map(y => {
+                return {
+                    name: y.getName(),
+                    modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(z => z.getText()),
+                    type: new TypeExtractor().extract(y.getType()),
+                }
+            })[0],
+            expressions: this.getExpressionStatements(node),
+            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
+            decorators: new DecoratorExtractor().extract(node),
+            trailingComments: new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
+                ? undefined
+                : new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()),
+            leadingComments: new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
+                ? undefined
+                : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
+            variables: node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
+                ? undefined
+                : node.getVariableStatements().map(y => new VariableExtractor().extract(y))
 
-    public extract(node: ClassDeclaration): SetAccessorInfo[] | undefined {
+        }
+    }
+    public extractFromClass(node: ClassDeclaration): SetAccessorInfo[] | undefined {
         let setAccessors = node
             .getSetAccessors()
-            .map(x => {
-                return {
-                    name: x.getName(),
-                    parameter: x.getParameters().map(y => {
-                        return {
-                            name: y.getName(),
-                            modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(z => z.getText()),
-                            type: new TypeExtractor().extract(y.getType()),
-                        }
-                    })[0],
-                    expressions: this.getExpressionStatements(x),
-                    modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                    decorators: new DecoratorExtractor().extract(x),
-                    trailingComments: new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                        ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
-                    leadingComments: new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                        ? undefined
-                        : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
-                    variables: x.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
-                        ? undefined
-                        : x.getVariableStatements().map(y => new VariableExtractor().extract(y))
-
-                }
-            });
+            .map(x => this.extract(x));
         if (setAccessors.length === 0) return undefined;
         return setAccessors;
     }

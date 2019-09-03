@@ -6,6 +6,7 @@ import { PropertyInfo } from '../property/PropertyInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
+import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
 export interface SourceFileClassInfo {
     name: string | undefined;
     text: string;
@@ -18,6 +19,7 @@ export interface SourceFileClassInfo {
     modules: ModuleInfo[] | undefined;
     constructors: ConstructorInfo[] | undefined;
     getAccessors: GetAccessorInfo[] | undefined;
+    setAccessors: SetAccessorInfo[] | undefined;
     methods: MethodInfo[] | undefined;
     properties: PropertyInfo[] | undefined;
 }

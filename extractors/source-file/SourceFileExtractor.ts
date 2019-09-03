@@ -25,6 +25,7 @@ import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentExtractor } from '../export-assignment/ExportAssignmentExtractor';
 import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 import { ExpressionInfo } from '../expression/ExpressionInfo';
+import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 
 export class SourceFileExtractor {
 
@@ -100,6 +101,7 @@ export class SourceFileExtractor {
                     let properties = new PropertyExtractor().extract(<ClassDeclaration>node);
                     let methods = new MethodExtractor().extract(<ClassDeclaration>node);
                     let getAccessors = new GetAccessorExtractor().extract(<ClassDeclaration>node);
+                    let setAccessors = new SetAccessorExtractor().extract(<ClassDeclaration>node);
                     classes.push({
                         name: info.name,
                         text: info.text,
@@ -113,6 +115,7 @@ export class SourceFileExtractor {
                         constructors: constructors,
                         properties: properties,
                         getAccessors: getAccessors,
+                        setAccessors: setAccessors,
                         methods: methods
                     });
                     break;

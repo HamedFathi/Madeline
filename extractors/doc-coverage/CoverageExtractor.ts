@@ -10,7 +10,11 @@ export class CoverageExtractor {
             SyntaxKind.PropertyDeclaration,
             SyntaxKind.InterfaceDeclaration,
             SyntaxKind.EnumDeclaration,
-            SyntaxKind.FunctionDeclaration
+            SyntaxKind.FunctionDeclaration,
+            SyntaxKind.GetAccessor,
+            SyntaxKind.SetAccessor,
+            SyntaxKind.ExportAssignment,
+            SyntaxKind.TypeAliasDeclaration
         ];
         let invalid: SyntaxKind[] = [];
         let result: CoverageExtractorInfo[] = [];

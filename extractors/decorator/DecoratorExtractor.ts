@@ -1,10 +1,9 @@
-import { ClassDeclaration, MethodDeclaration, PropertyDeclaration, GetAccessorDeclaration, ParameterDeclaration } from 'ts-morph';
+import { ClassDeclaration, MethodDeclaration, PropertyDeclaration, GetAccessorDeclaration, ParameterDeclaration, SetAccessorDeclaration } from 'ts-morph';
 import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
-import { StringUtils } from '../../utilities/StringUtils';
 
 export class DecoratorExtractor {
-    public extract(node: ClassDeclaration | MethodDeclaration | PropertyDeclaration | GetAccessorDeclaration | ParameterDeclaration): DecoratorInfo[] | undefined {
+    public extract(node: ClassDeclaration | MethodDeclaration | PropertyDeclaration | GetAccessorDeclaration | SetAccessorDeclaration | ParameterDeclaration): DecoratorInfo[] | undefined {
         let decorators = node
             .getDecorators()
             .map(x => {

@@ -50,7 +50,7 @@ describe('Source File Extractor', function () {
             "isInNodeModules": false,
             "imports": undefined,
             "coverage": {
-                "detail": [{
+                "details": [{
                     "name": "Animal",
                     "kind": 241,
                     "kindName": "ClassDeclaration",

@@ -56,7 +56,7 @@ export class SourceFileExtractor {
         let coverageDetail = new CoverageExtractor().extract(sourceFile, option);
         let coverageInfo = new CoverageCalculator(coverageDetail).calculate();
         let coverage: SourceFileCoverageInfo = {
-            detail: coverageDetail,
+            details: coverageDetail,
             items: coverageInfo.items,
             documented: coverageInfo.documented,
             undocumented: coverageInfo.undocumented

@@ -24,6 +24,7 @@
     "node_modules",
     "wwwroot",
     "typings",
-    "test"
+    "test",
+    "dist"
   ]
 }

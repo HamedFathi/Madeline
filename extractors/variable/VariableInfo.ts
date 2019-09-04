@@ -15,5 +15,5 @@ export interface VariableInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
-    value: VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | undefined;
+    value: TypeInfo | VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | undefined;
 }

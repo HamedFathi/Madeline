@@ -122,9 +122,6 @@ export const BasicConfiguration = {
 		return this.register(DI.createContainer());
 	}
 }; 
-
-let myIdentity: <T>(arg: T) => T = identity;
-
 `;
 
 const project = new Project({

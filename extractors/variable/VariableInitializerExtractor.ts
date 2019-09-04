@@ -31,15 +31,13 @@ export class VariableInitializerExtractor {
 
                 if (isPropertyAssignment) {
                     let propertyAssignment = x as PropertyAssignment;
-                    let value = propertyAssignment.getInitializer() === undefined ? undefined : this.extract(propertyAssignment.getInitializerOrThrow())
-                    let type = new TypeExtractor().extract(propertyAssignment.getType());
+                    let type = propertyAssignment.getInitializer() === undefined ? undefined : this.extract(propertyAssignment.getInitializerOrThrow())
                     let name = propertyAssignment.getName();
                     assignments.push({
                         isShorthand: false,
                         isSpread: false,
                         name: name,
-                        type: type,
-                        value: value
+                        type: type
                     });
                 }
                 if (isShorthandPropertyAssignment) {
@@ -50,8 +48,7 @@ export class VariableInitializerExtractor {
                         isShorthand: true,
                         isSpread: false,
                         name: name,
-                        type: type,
-                        value: null
+                        type: type
                     });
                 }
                 if (isSpreadAssignment) {
@@ -62,8 +59,7 @@ export class VariableInitializerExtractor {
                         isShorthand: false,
                         isSpread: true,
                         name: name,
-                        type: type,
-                        value: null
+                        type: type
                     });
                 }
                 if (isGetAccessorDeclaration) {

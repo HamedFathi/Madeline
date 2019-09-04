@@ -5,9 +5,8 @@ import { FunctionInfo } from '../function/FunctionInfo';
 import { CallSignatureInfo } from './CallSignatureInfo';
 
 export interface AssignmentInfo {
-    name: string;
-    type: TypeInfo;
-    value: VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | null | undefined;
+    name: string,
+    type: TypeInfo | VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | null | undefined;
     isShorthand: boolean;
     isSpread: boolean;
 }

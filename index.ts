@@ -1,6 +1,3 @@
-import { Project, ScriptTarget } from 'ts-morph';
-import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
-
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -67,7 +64,14 @@ export * from './extractors/source-file/SourceFileExtractor';
 export * from './extractors/source-file/SourceFileInfo';
 export * from './extractors/type-alias/TypeAliasExtractor';
 export * from './extractors/type-alias/TypeAliasInfo';
+export * from './extractors/variable/ArrayLiteralInfo';
+export * from './extractors/variable/AssignmentInfo';
+export * from './extractors/variable/CallSignatureInfo';
+export * from './extractors/variable/CallSignatureParamInfo';
+export * from './extractors/variable/VariableArrayLiteralInfo';
 export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
+export * from './extractors/variable/VariableInitializerExtractor';
+export * from './extractors/variable/VariableObjectLiteralInfo';
 export * from './utilities/JsonUtils';
 export * from './utilities/StringUtils';

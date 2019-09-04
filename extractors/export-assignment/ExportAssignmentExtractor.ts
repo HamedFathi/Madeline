@@ -9,6 +9,7 @@ export class ExportAssignmentExtractor {
             switch (node.getKind()) {
                 case SyntaxKind.ExportAssignment:
                     let x = <ExportAssignment>node;
+                    let isExportDefault = !x.isExportEquals();
                     let trailingComments = new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges());
                     let leadingComments = new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges());
                     let expression: ExportAssignmentInfo =
@@ -16,7 +17,8 @@ export class ExportAssignmentExtractor {
                         text: x.getText(),
                         trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
                         leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
-                        modules: new ModuleExtractor().extract(x)
+                        modules: new ModuleExtractor().extract(x),
+                        isExportDefault: isExportDefault
                     }
                     result.push(expression);
                     break;

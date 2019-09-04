@@ -6,4 +6,5 @@ export interface ExportAssignmentInfo {
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
     text: string;
+    isExportDefault: boolean;
 }

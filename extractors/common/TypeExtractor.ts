@@ -9,7 +9,7 @@ export class TypeExtractor {
         let typeInfo: TypeInfo = {
             kind: TypeKind.NotSpecified,
             kindName: TypeKind[TypeKind.NotSpecified],
-            type: ""
+            type: node.getText()
         };
         try {
             let callSignatures = node.getCallSignatures();
@@ -180,7 +180,6 @@ export class TypeExtractor {
             }
         }
         catch (e) {
-            typeInfo.type = node.getText();
         }
         return typeInfo;
     }

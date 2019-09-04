@@ -3,7 +3,7 @@ import { GetAccessorExtractor } from '../get-accessor/GetAccessorExtractor';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { MethodExtractor } from '../method/MethodExtractor';
-import { VariableArrayLiteralInfo } from './VariableInitializerInfo';
+import { VariableArrayLiteralInfo } from './VariableArrayLiteralInfo';
 import { VariableObjectLiteralInfo } from "./VariableObjectLiteralInfo";
 import { AssignmentInfo } from './AssignmentInfo';
 import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
@@ -31,13 +31,15 @@ export class VariableInitializerExtractor {
 
                 if (isPropertyAssignment) {
                     let propertyAssignment = x as PropertyAssignment;
-                    let type = propertyAssignment.getInitializer() === undefined ? undefined : this.extract(propertyAssignment.getInitializerOrThrow())
+                    let value = propertyAssignment.getInitializer() === undefined ? undefined : this.extract(propertyAssignment.getInitializerOrThrow())
+                    let type = new TypeExtractor().extract(propertyAssignment.getType());
                     let name = propertyAssignment.getName();
                     assignments.push({
                         isShorthand: false,
                         isSpread: false,
                         name: name,
-                        type: type
+                        type: type,
+                        value: value
                     });
                 }
                 if (isShorthandPropertyAssignment) {
@@ -48,7 +50,8 @@ export class VariableInitializerExtractor {
                         isShorthand: true,
                         isSpread: false,
                         name: name,
-                        type: type
+                        type: type,
+                        value: null
                     });
                 }
                 if (isSpreadAssignment) {
@@ -59,7 +62,8 @@ export class VariableInitializerExtractor {
                         isShorthand: false,
                         isSpread: true,
                         name: name,
-                        type: type
+                        type: type,
+                        value: null
                     });
                 }
                 if (isGetAccessorDeclaration) {
@@ -95,7 +99,7 @@ export class VariableInitializerExtractor {
             let callSignature = arrowFunction as unknown as CallSignatureDeclaration;
             return {
                 returnType: new TypeExtractor().extract(callSignature.getReturnType()),
-                typeParameters: callSignature.getTypeParameters().map(y => {
+                typeParameters: callSignature.getTypeParameters().length === 0 ? undefined : callSignature.getTypeParameters().map(y => {
                     return {
                         name: y.getName(),
                         constraint: y.getConstraint() === undefined
@@ -129,8 +133,7 @@ export class VariableInitializerExtractor {
             }
         }
         else {
-            let text = node.getText();
-            return text;
+            return node.getText();
         }
     }
 }

@@ -72,9 +72,6 @@ export * from './extractors/variable/VariableInfo';
 export * from './utilities/JsonUtils';
 export * from './utilities/StringUtils';
 
-
-
-
 const sample = `
 export const DefaultBindingLanguage = [
 	DefaultBindingCommandRegistration,
@@ -131,4 +128,5 @@ const project = new Project({
 });
 const file = project.createSourceFile("test.ts", sample);
 let result = new SourceFileExtractor().extract(file);
+console.log(JSON.stringify(result));
 const a = 8;

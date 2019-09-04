@@ -1,12 +1,13 @@
 import { TypeInfo } from '../common/TypeInfo';
 import { VariableObjectLiteralInfo } from './VariableObjectLiteralInfo';
-import { VariableArrayLiteralInfo } from './VariableInitializerInfo';
+import { VariableArrayLiteralInfo } from './VariableArrayLiteralInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { CallSignatureInfo } from './CallSignatureInfo';
 
-export interface AssignmentInfo {
+export interface AssignmentInfo  {
     name: string,
-    type: TypeInfo | VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | null | undefined;
+    value: VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | null | undefined;
+    type: TypeInfo;
     isShorthand: boolean;
     isSpread: boolean;
 }

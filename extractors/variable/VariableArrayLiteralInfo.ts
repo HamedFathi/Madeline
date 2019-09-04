@@ -1,6 +1,6 @@
 import { ArrayLiteralInfo } from './ArrayLiteralInfo';
 
-export interface VariableArrayLiteralInfo {
+export interface VariableArrayLiteralInfo  {
     elements: ArrayLiteralInfo[]
 }
 

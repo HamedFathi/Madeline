@@ -1,4 +1,4 @@
-import { Expression, TypeGuards, ObjectLiteralExpression, ArrayLiteralExpression, GetAccessorDeclaration, PropertyAssignment, ShorthandPropertyAssignment, SetAccessorDeclaration, MethodDeclaration, SpreadAssignment, FunctionDeclaration, FunctionExpression, ArrowFunction, CallSignatureDeclaration } from 'ts-morph';
+import { Expression, TypeGuards, ObjectLiteralExpression, ArrayLiteralExpression, GetAccessorDeclaration, PropertyAssignment, ShorthandPropertyAssignment, SetAccessorDeclaration, MethodDeclaration, SpreadAssignment, FunctionDeclaration, FunctionExpression, ArrowFunction, CallSignatureDeclaration, AsExpression, SyntaxKind } from 'ts-morph';
 import { GetAccessorExtractor } from '../get-accessor/GetAccessorExtractor';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
@@ -15,6 +15,16 @@ import { CallSignatureInfo } from './CallSignatureInfo';
 
 export class VariableInitializerExtractor {
     public extract(node: Expression): VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string {
+        if(TypeGuards.isAsExpression(node))
+        {
+            const obj = node as AsExpression;
+            let types = obj.getDescendantsOfKind(SyntaxKind.TypeReference);
+            if(types.length > 0)
+            {
+                var refType = types[types.length - 1];
+                return refType.getText();
+            }
+        }
         if (TypeGuards.isObjectLiteralExpression(node)) {
             const obj = node as ObjectLiteralExpression;
             let assignments: AssignmentInfo[] = [];

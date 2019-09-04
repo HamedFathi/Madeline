@@ -1,4 +1,4 @@
-import { VariableStatement } from 'ts-morph';
+import { VariableStatement, SyntaxKind } from 'ts-morph';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { VariableInfo } from './VariableInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
@@ -13,7 +13,11 @@ export class VariableExtractor {
         let trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         let leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         let modules = new ModuleExtractor().extract(node);
-        let variables = node.getDeclarationList().getDeclarations().map(x => {
+        let declarations = node.getDeclarationList().getDeclarations();
+        let asExpressions = declarations
+            .filter(x=>x.getInitializer() !== undefined)
+            .map(x=>x.getInitializerOrThrow().getDescendantsOfKind(SyntaxKind.AsExpression))[0];            
+        let variables = declarations.map(x => {
             return {
                 name: x.getName(),
                 type: new TypeExtractor().extract(x.getType()),
@@ -27,7 +31,8 @@ export class VariableExtractor {
                 kindName: kindName,
                 trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
                 leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
-                modules: modules
+                modules: modules,
+                hasAsExpression : (asExpressions === undefined || asExpressions.length === 0) ? false : true
             };
         });
         return variables;

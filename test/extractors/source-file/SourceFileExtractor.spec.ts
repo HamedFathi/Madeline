@@ -152,6 +152,7 @@ describe('Source File Extractor', function () {
                 ],
                 "properties": undefined,
                 "getAccessors": undefined,
+                "setAccessors": undefined,
                 "methods": [{
                     "name": "move",
                     "modifiers": undefined,
@@ -234,6 +235,7 @@ describe('Source File Extractor', function () {
                 ],
                 "properties": undefined,
                 "getAccessors": undefined,
+                "setAccessors": undefined,
                 "methods": [{
                     "name": "move",
                     "modifiers": undefined,
@@ -321,6 +323,7 @@ describe('Source File Extractor', function () {
                 ],
                 "properties": undefined,
                 "getAccessors": undefined,
+                "setAccessors": undefined,
                 "methods": [{
                     "name": "move",
                     "modifiers": undefined,
@@ -376,6 +379,7 @@ describe('Source File Extractor', function () {
                 "value": "new Snake(\"Sammy the Python\")",
                 "kind": "let",
                 "kindName": "let",
+                "hasAsExpression": false,
                 "trailingComments": undefined,
                 "leadingComments": undefined,
                 "modules": undefined
@@ -391,12 +395,14 @@ describe('Source File Extractor', function () {
                 "value": "new Horse(\"Tommy the Palomino\")",
                 "kind": "let",
                 "kindName": "let",
+                "hasAsExpression": false,
                 "trailingComments": undefined,
                 "leadingComments": undefined,
                 "modules": undefined
             }
             ]],
             "exportAssignments": undefined,
+            "exports": undefined,
             "expressions": [{
                 "text": "sam.move();",
                 "trailingComments": undefined,

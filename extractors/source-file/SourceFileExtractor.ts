@@ -30,7 +30,7 @@ import { ExportExtractor } from '../export/ExportExtractor';
 
 export class SourceFileExtractor {
 
-    public extractFromFile(sourceFile: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extractFromTextFile(sourceFile: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
         let sourceText = fs.readFileSync(sourceFile, 'utf8');
         const project = new Project({
             compilerOptions: {

@@ -15,7 +15,7 @@ export class ExportExtractor {
                 })
             }
         })
-        return result;
+        return result.length === 0 ? undefined : result;
     }
 }
 

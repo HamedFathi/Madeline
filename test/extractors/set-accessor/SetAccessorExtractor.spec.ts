@@ -58,7 +58,8 @@ describe('SetAccessor Extractor', function () {
                 "kindName": "const",
                 "trailingComments": undefined,
                 "leadingComments": undefined,
-                "modules": undefined
+                "modules": undefined,
+                "hasAsExpression": false
             }]]
         }];
 
@@ -66,7 +67,7 @@ describe('SetAccessor Extractor', function () {
             switch (x.getKind()) {
                 case SyntaxKind.ClassDeclaration:
                     let setEx = new SetAccessorExtractor();
-                    let setAccessors = setEx.extract(<ClassDeclaration>x);
+                    let setAccessors = setEx.extractFromClass(<ClassDeclaration>x);
                     actualResult = setAccessors;
                     break;
             }

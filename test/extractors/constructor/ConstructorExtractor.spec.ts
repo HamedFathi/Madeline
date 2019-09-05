@@ -230,7 +230,7 @@ describe('Constructor Extractor', function () {
             switch (x.getKind()) {
                 case SyntaxKind.ClassDeclaration:
                     let ctorVisitor = new ConstructorExtractor();
-                    let ctor = ctorVisitor.extract(<ClassDeclaration>x);
+                    let ctor = ctorVisitor.extractFromClass(<ClassDeclaration>x);
                     actualResult.push(ctor);
                     break;
             }

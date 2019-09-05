@@ -57,7 +57,7 @@ describe('GetAccessor Extractor', function () {
             switch (x.getKind()) {
                 case SyntaxKind.ClassDeclaration:
                     let getEx = new GetAccessorExtractor();
-                    let getAccessors = getEx.extract(<ClassDeclaration>x);
+                    let getAccessors = getEx.extractFromClass(<ClassDeclaration>x);
                     actualResult = getAccessors;
                     break;
             }

@@ -80,7 +80,7 @@ describe('Property Extractor', function () {
             switch (x.getKind()) {
                 case SyntaxKind.ClassDeclaration:
                     let propEx = new PropertyExtractor();
-                    let props = propEx.extract(<ClassDeclaration>x);
+                    let props = propEx.extractFromClass(<ClassDeclaration>x);
                     actualResult = props;
                     break;
             }

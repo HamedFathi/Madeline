@@ -34,7 +34,8 @@ describe('Variable Extractor', function () {
             "kindName": "const",
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "modules": undefined
+            "modules": undefined,
+            "hasAsExpression": false
         }],
         [{
             "name": "a",
@@ -49,7 +50,8 @@ describe('Variable Extractor', function () {
             "kindName": "let",
             "trailingComments": undefined,
             "leadingComments": undefined,
-            "modules": undefined
+            "modules": undefined,
+            "hasAsExpression": false
         }]];
 
         file.forEachDescendant(x => {

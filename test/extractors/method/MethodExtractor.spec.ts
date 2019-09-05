@@ -141,7 +141,7 @@ describe('Method Extractor', function () {
             switch (x.getKind()) {
                 case SyntaxKind.ClassDeclaration:
                     let methodEx = new MethodExtractor();
-                    let methods = methodEx.extract(<ClassDeclaration>x);
+                    let methods = methodEx.extractFromClass(<ClassDeclaration>x);
                     actualResult = methods;
                     break;
             }

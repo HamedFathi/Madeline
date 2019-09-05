@@ -133,6 +133,7 @@ describe('Interface Extractor', function () {
                     "isOptional": false,
                     "isRest": false,
                     "isParameterProperty": false,
+                    "defaultValue": undefined,
                     "modifiers": undefined
                 }, {
                     "name": "obj",
@@ -148,7 +149,8 @@ describe('Interface Extractor', function () {
                     "isOptional": false,
                     "isRest": false,
                     "isParameterProperty": false,
-                    "modifiers": undefined
+                    "modifiers": undefined,
+                    "defaultValue": undefined
                 }
                 ]
             }
@@ -162,6 +164,7 @@ describe('Interface Extractor', function () {
                 },
                 "trailingComments": undefined,
                 "leadingComments": undefined,
+                "typeParameters": undefined,
                 "parameters": [{
                     "name": "start",
                     "type": {
@@ -172,7 +175,9 @@ describe('Interface Extractor', function () {
                     "modifiers": undefined,
                     "isOptional": false,
                     "isRest": false,
-                    "isParameterProperty": false
+                    "isParameterProperty": false,
+                    "defaultValue": undefined,
+
                 }
                 ]
             }
@@ -296,7 +301,8 @@ describe('Interface Extractor', function () {
                     "modifiers": undefined,
                     "isOptional": false,
                     "isRest": false,
-                    "isParameterProperty": false
+                    "isParameterProperty": false,
+                    "defaultValue": undefined
                 }]
             }]
         }];

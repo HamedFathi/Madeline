@@ -14,7 +14,9 @@ export interface VariableInfo {
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
     value: VariableObjectLiteralInfo | VariableArrayLiteralInfo | FunctionInfo | CallSignatureInfo | string | undefined;
-    hasAsExpression : boolean;
+    hasAsExpression: boolean;
+    kind: VariableDeclarationKind;
+    kindName: string;
 }
 
 

@@ -37,6 +37,7 @@ describe('Export Assignment Extractor', function () {
       "text": "export default new Router({\n      routes: [\n        {\n          path: '/',\n          name: 'HelloWorld',\n          component: HelloWorld\n        },\n        {\n          path: '/vueexamples/vueIntroduction',\n          name: 'VueIntroduction',\n          component: VueIntroduction\n        }\n    \n      ]\n    })",
       "trailingComments": undefined,
       "leadingComments": undefined,
+      "isExportDefault": true,
       "modules": [{
         "name": "B",
         "isNamespace": false,

@@ -26,6 +26,7 @@ import { ExportAssignmentExtractor } from '../export-assignment/ExportAssignment
 import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 import { ExpressionInfo } from '../expression/ExpressionInfo';
 import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
+import { ExportExtractor } from '../export/ExportExtractor';
 
 export class SourceFileExtractor {
 
@@ -53,6 +54,7 @@ export class SourceFileExtractor {
     public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): SourceFileInfo | undefined {
 
         let imports = new ImportExtractor().extract(sourceFile);
+        let exports = new ExportExtractor().extract(sourceFile);
         let exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
         let coverageDetail = new CoverageExtractor().extract(sourceFile, option);
         let coverageInfo = new CoverageCalculator(coverageDetail).calculate();
@@ -134,7 +136,8 @@ export class SourceFileExtractor {
             classes: classes.length === 0 ? undefined : classes,
             variables: variables.length === 0 ? undefined : variables,
             exportAssignments: exportAssignments,
-            expressions: expressions.length === 0 ? undefined : expressions
+            expressions: expressions.length === 0 ? undefined : expressions,
+            exports: exports
         };
         return result;
     }

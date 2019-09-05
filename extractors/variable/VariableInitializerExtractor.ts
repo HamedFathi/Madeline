@@ -60,8 +60,8 @@ export class VariableInitializerExtractor {
                         isShorthand: true,
                         isSpread: false,
                         name: name,
-                        type: type,
-                        value: null
+                        type: type, 
+                        value: undefined
                     });
                 }
                 if (isSpreadAssignment) {
@@ -73,7 +73,7 @@ export class VariableInitializerExtractor {
                         isSpread: true,
                         name: name,
                         type: type,
-                        value: null
+                        value: undefined
                     });
                 }
                 if (isGetAccessorDeclaration) {

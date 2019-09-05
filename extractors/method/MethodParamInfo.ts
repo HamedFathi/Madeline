@@ -1,4 +1,5 @@
 import { TypeInfo } from '../common/TypeInfo';
+import { DecoratorInfo } from '../decorator/DecoratorInfo';
 
 export interface MethodParamInfo {
     name: string;
@@ -8,4 +9,5 @@ export interface MethodParamInfo {
     isRest: boolean;
     isParameterProperty: boolean;
     defaultValue: string | undefined;
+    decorators: DecoratorInfo[] | undefined;
 }

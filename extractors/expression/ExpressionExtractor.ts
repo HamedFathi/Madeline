@@ -5,16 +5,14 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 
 export class ExpressionExtractor {
     public extract(node: ExpressionStatement): ExpressionInfo {
-        let trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
-        let leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
-        let exp: ExpressionInfo =
-        {
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const exp: ExpressionInfo = {
             text: node.getText(),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
-            modules: new ModuleExtractor().extract(node)
-        }
+            modules: new ModuleExtractor().extract(node),
+        };
         return exp;
     }
 }
-

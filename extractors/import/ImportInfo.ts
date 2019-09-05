@@ -1,5 +1,5 @@
 import { SyntaxKind } from 'ts-morph';
-import { ImportKind } from "./ImportKind";
+import { ImportKind } from './ImportKind';
 export interface ImportInfo {
     name: string;
     alias: string | undefined;

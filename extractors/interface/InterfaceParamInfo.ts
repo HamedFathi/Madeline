@@ -6,7 +6,6 @@ export interface InterfaceParamInfo {
     isOptional: boolean;
     isRest: boolean;
     isParameterProperty: boolean;
-    modifiers:string[] | undefined;
+    modifiers: string[] | undefined;
     defaultValue: string | undefined;
 }
-

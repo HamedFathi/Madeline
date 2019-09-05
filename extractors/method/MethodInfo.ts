@@ -1,4 +1,4 @@
-import { MethodParamInfo } from "./MethodParamInfo";
+import { MethodParamInfo } from './MethodParamInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';

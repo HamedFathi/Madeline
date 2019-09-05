@@ -1,4 +1,4 @@
 export interface TypeParameterInfo {
-    name: string,
+    name: string;
     constraint: string | undefined;
 }

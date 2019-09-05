@@ -22,5 +22,5 @@ export enum TypeKind {
     Unknown,
     Void,
     Promise,
-    NotSpecified
+    NotSpecified,
 }

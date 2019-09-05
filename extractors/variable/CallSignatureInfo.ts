@@ -7,4 +7,3 @@ export interface CallSignatureInfo {
     returnType: TypeInfo;
     typeParameters: TypeParameterInfo[] | undefined;
 }
-

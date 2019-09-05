@@ -1,7 +1,6 @@
-const safeStringify = require('fast-safe-stringify')
+const safeStringify = require('fast-safe-stringify');
 
 export class StringUtils {
-
     public isEmptyOrWhitespace(text: string): boolean {
         return text === null || text.match(/^ *$/) !== null;
     }
@@ -11,20 +10,18 @@ export class StringUtils {
     }
 
     public removeFirstLastQuote(text: any): any {
-        if (typeof text === "string") {
-            if (text[0] === '"')
-                text = text.substring(1);
-            if (text[text.length - 1] === '"')
-                text = text.substring(0, text.length - 1);
+        if (typeof text === 'string') {
+            if (text[0] === '"') text = text.substring(1);
+            if (text[text.length - 1] === '"') text = text.substring(0, text.length - 1);
             return text;
         }
         return text;
     }
 
     public getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
-        let afterStart = text.split(startDelimiter)[1];
+        const afterStart = text.split(startDelimiter)[1];
         if (afterStart !== undefined) {
-            let result = afterStart.split(endDelimiter)[0];
+            const result = afterStart.split(endDelimiter)[0];
             if (result !== undefined) {
                 return result;
             }
@@ -33,7 +30,7 @@ export class StringUtils {
     }
 
     public stringify(obj: unknown): string {
-        return JSON.stringify(obj, (k, v) => v === undefined ? null : v);
+        return JSON.stringify(obj, (k, v) => (v === undefined ? null : v));
     }
 
     public safeStringify(obj: unknown): string {
@@ -41,16 +38,18 @@ export class StringUtils {
     }
 
     public detectImport(text: string): [string, string] {
-        let result: [string, string] = ['',''];
-        let regex = /import\(.+\)./;
+        let result: [string, string] = ['', ''];
+        const regex = /import\(.+\)./;
         if (regex.test(text)) {
-          let name = text.replace(regex, '');
-          // @ts-ignore
-          let imp = text.match(regex)[0].replace('import("', '').replace('").', '');
-          result = [name.trim(),imp.trim()];
-        }
-        else {
-          result = [text.trim(),''];
+            const name = text.replace(regex, '');
+            // @ts-ignore
+            const imp = text
+                .match(regex)[0]
+                .replace('import("', '')
+                .replace('").', '');
+            result = [name.trim(), imp.trim()];
+        } else {
+            result = [text.trim(), ''];
         }
         return result;
     }

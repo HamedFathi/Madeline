@@ -1,33 +1,39 @@
-import { Type, PropertyDeclaration, ParameterDeclaration } from "ts-morph";
-import { TypeInfo } from "./TypeInfo";
-import { TypeKind } from "./TypeKind";
+import { Type, PropertyDeclaration, ParameterDeclaration } from 'ts-morph';
+import { TypeInfo } from './TypeInfo';
+import { TypeKind } from './TypeKind';
 import { JsonTypeInfo } from './JsonTypeInfo';
 import { CallSignatureTypeInfo } from './CallSignatureTypeInfo';
 
 export class TypeExtractor {
     public extract(node: Type): TypeInfo {
-        let typeInfo: TypeInfo = {
+        const typeInfo: TypeInfo = {
             kind: TypeKind.NotSpecified,
             kindName: TypeKind[TypeKind.NotSpecified],
-            type: node.getText()
+            type: node.getText(),
         };
         try {
-            let callSignatures = node.getCallSignatures();
+            const callSignatures = node.getCallSignatures();
             if (callSignatures.length > 0) {
                 typeInfo.kind = TypeKind.CallSignature;
-                let result: CallSignatureTypeInfo[] = [];
+                const result: CallSignatureTypeInfo[] = [];
                 callSignatures.forEach(signature => {
-                    let returnType = new TypeExtractor().extract(signature.getReturnType());
-                    let name = signature.getDeclaration().getType().getText();
-                    let params = signature.getParameters().map(x => {
+                    const returnType = new TypeExtractor().extract(signature.getReturnType());
+                    const name = signature
+                        .getDeclaration()
+                        .getType()
+                        .getText();
+                    const params = signature.getParameters().map(x => {
                         return {
                             name: x.getName(),
-                            type: x.getValueDeclaration() === undefined
-                                ? undefined
-                                : new TypeExtractor().extract(x.getValueDeclarationOrThrow().getType()),
-                            isOptional: x.getValueDeclaration() === undefined
-                                ? false
-                                : (x.getValueDeclarationOrThrow() as ParameterDeclaration).isOptional()                        };
+                            type:
+                                x.getValueDeclaration() === undefined
+                                    ? undefined
+                                    : new TypeExtractor().extract(x.getValueDeclarationOrThrow().getType()),
+                            isOptional:
+                                x.getValueDeclaration() === undefined
+                                    ? false
+                                    : (x.getValueDeclarationOrThrow() as ParameterDeclaration).isOptional(),
+                        };
                     });
                     result.push({ name: name, returnType: returnType, parameters: params });
                 });
@@ -36,49 +42,49 @@ export class TypeExtractor {
                 typeInfo.type = result;
                 return typeInfo;
             }
-            if (node.getText() === "void") {
+            if (node.getText() === 'void') {
                 typeInfo.kind = TypeKind.Void;
                 typeInfo.kindName = TypeKind[TypeKind.Void];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "never") {
+            if (node.getText() === 'never') {
                 typeInfo.kind = TypeKind.Never;
                 typeInfo.kindName = TypeKind[TypeKind.Never];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "unknown") {
+            if (node.getText() === 'unknown') {
                 typeInfo.kind = TypeKind.Unknown;
                 typeInfo.kindName = TypeKind[TypeKind.Unknown];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "undefined") {
+            if (node.getText() === 'undefined') {
                 typeInfo.kind = TypeKind.Undefined;
                 typeInfo.kindName = TypeKind[TypeKind.Undefined];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "null") {
+            if (node.getText() === 'null') {
                 typeInfo.kind = TypeKind.Null;
                 typeInfo.kindName = TypeKind[TypeKind.Null];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "object") {
+            if (node.getText() === 'object') {
                 typeInfo.kind = TypeKind.Object;
                 typeInfo.kindName = TypeKind[TypeKind.Object];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "bigint") {
+            if (node.getText() === 'bigint') {
                 typeInfo.kind = TypeKind.BigInt;
                 typeInfo.kindName = TypeKind[TypeKind.BigInt];
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.getText() === "symbol" || node.getText() === "Symbol") {
+            if (node.getText() === 'symbol' || node.getText() === 'Symbol') {
                 typeInfo.kind = TypeKind.Symbol;
                 typeInfo.kindName = TypeKind[TypeKind.Symbol];
                 typeInfo.type = node.getText();
@@ -102,7 +108,7 @@ export class TypeExtractor {
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-            if (node.isBoolean() || node.getText() === "true" || node.getText() === "false") {
+            if (node.isBoolean() || node.getText() === 'true' || node.getText() === 'false') {
                 typeInfo.kind = TypeKind.Boolean;
                 typeInfo.kindName = TypeKind[TypeKind.Boolean];
                 typeInfo.type = node.getText();
@@ -159,15 +165,18 @@ export class TypeExtractor {
             if (node.getProperties().length > 0) {
                 typeInfo.kind = TypeKind.Json;
                 typeInfo.kindName = TypeKind[TypeKind.Json];
-                let json: JsonTypeInfo[] = node.getProperties().map(x => {
+                const json: JsonTypeInfo[] = node.getProperties().map(x => {
                     return {
                         name: x.getName(),
-                        value: x.getValueDeclaration() === undefined
-                            ? undefined
-                            : (x.getValueDeclarationOrThrow() as PropertyDeclaration).getInitializer() === undefined
+                        value:
+                            x.getValueDeclaration() === undefined
+                                ? undefined
+                                : (x.getValueDeclarationOrThrow() as PropertyDeclaration).getInitializer() === undefined
                                 ? (x.getValueDeclarationOrThrow() as PropertyDeclaration).getType().getText()
-                                : (x.getValueDeclarationOrThrow() as PropertyDeclaration).getInitializerOrThrow().getText()
-                    }
+                                : (x.getValueDeclarationOrThrow() as PropertyDeclaration)
+                                      .getInitializerOrThrow()
+                                      .getText(),
+                    };
                 });
                 typeInfo.type = json;
                 return typeInfo;
@@ -178,9 +187,7 @@ export class TypeExtractor {
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-        }
-        catch (e) {
-        }
+        } catch (e) {}
         return typeInfo;
     }
 }

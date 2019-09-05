@@ -4,7 +4,7 @@ import { ModuleInfo } from '../module/ModuleInfo';
 
 export interface EnumInfo {
     name: string;
-    modifiers: string[] | undefined,
+    modifiers: string[] | undefined;
     members: EnumMember[];
     isConst: boolean;
     trailingComments: CommentInfo[] | undefined;

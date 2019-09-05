@@ -1,4 +1,4 @@
-import { FunctionParamInfo } from "./FunctionParamInfo";
+import { FunctionParamInfo } from './FunctionParamInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../common/TypeParameterInfo';
@@ -11,7 +11,7 @@ export interface FunctionInfo {
     isGenerator: boolean;
     isOverload?: boolean;
     isImplementation?: boolean;
-    returnType : TypeInfo | undefined;
+    returnType: TypeInfo | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     modules?: ModuleInfo[] | undefined;
@@ -19,5 +19,4 @@ export interface FunctionInfo {
     typeParameters: TypeParameterInfo[] | undefined;
     variables: VariableInfo[][] | undefined;
     expressions: ExpressionInfo[] | undefined;
-
 }

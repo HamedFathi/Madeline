@@ -1,4 +1,4 @@
-import { TypeInfo } from "./TypeInfo";
+import { TypeInfo } from './TypeInfo';
 import { CallSignatureParamTypeInfo } from './CallSignatureParamTypeInfo';
 export interface CallSignatureTypeInfo {
     returnType: TypeInfo;

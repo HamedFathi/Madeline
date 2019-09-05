@@ -1,6 +1,6 @@
 import { ClassDeclaration, ConstructorDeclaration, SyntaxKind } from 'ts-morph';
 import { ConstructorParamInfo } from './ConstructorParamInfo';
-import { ConstructorInfo } from "./ConstructorInfo";
+import { ConstructorInfo } from './ConstructorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
@@ -9,15 +9,15 @@ import { ExpressionInfo } from '../expression/ExpressionInfo';
 import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 
 export class ConstructorExtractor {
-
     private getExpressionStatements(constructorDeclaration: ConstructorDeclaration): undefined | ExpressionInfo[] {
-        let result: ExpressionInfo[] = [];
+        const result: ExpressionInfo[] = [];
         if (constructorDeclaration.getBody()) {
-            let expressions = constructorDeclaration.getBodyOrThrow().getDescendantsOfKind(SyntaxKind.ExpressionStatement);
+            const expressions = constructorDeclaration
+                .getBodyOrThrow()
+                .getDescendantsOfKind(SyntaxKind.ExpressionStatement);
             if (expressions.length === 0) {
-                return undefined
-            }
-            else {
+                return undefined;
+            } else {
                 expressions.forEach(exp => {
                     result.push(new ExpressionExtractor().extract(exp));
                 });
@@ -27,16 +27,15 @@ export class ConstructorExtractor {
         return undefined;
     }
 
-
     public extract(node: ConstructorDeclaration): ConstructorInfo {
-        let isImplementation = node.isImplementation();
-        let isOverload = node.isOverload();
-        let trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
-        let leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
-        let modifiers = node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText());
-        let variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
-        let expressions = this.getExpressionStatements(node);
-        let params: ConstructorParamInfo[] = node.getParameters().map(x => {
+        const isImplementation = node.isImplementation();
+        const isOverload = node.isOverload();
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const modifiers = node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText());
+        const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
+        const expressions = this.getExpressionStatements(node);
+        const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
                 type: new TypeExtractor().extract(x.getType()),
@@ -45,8 +44,8 @@ export class ConstructorExtractor {
                 isRest: x.isRestParameter(),
                 isParameterProperty: x.isParameterProperty(),
                 defaultValue: x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
-                decorators: new DecoratorExtractor().extract(x)
-            }
+                decorators: new DecoratorExtractor().extract(x),
+            };
         });
         return {
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
@@ -57,13 +56,13 @@ export class ConstructorExtractor {
             isOverload: isOverload,
             parameters: params.length === 0 ? undefined : params,
             variables: variables.length === 0 ? undefined : variables,
-            expressions: expressions
+            expressions: expressions,
         };
     }
 
     public extractFromClass(node: ClassDeclaration): ConstructorInfo[] | undefined {
-        let result: ConstructorInfo[] = [];
-        let ctors = node.getConstructors();
+        const result: ConstructorInfo[] = [];
+        const ctors = node.getConstructors();
         if (ctors.length === 0) return undefined;
         ctors.forEach(ctor => {
             result.push(this.extract(ctor));
@@ -71,5 +70,3 @@ export class ConstructorExtractor {
         return result;
     }
 }
-
-

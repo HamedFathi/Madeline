@@ -1,5 +1,5 @@
-import { JSDoc, SourceFile, SyntaxKind } from "ts-morph";
-import { CoverageExtractorOption } from "./CoverageExtractorOption";
+import { JSDoc, SourceFile, SyntaxKind } from 'ts-morph';
+import { CoverageExtractorOption } from './CoverageExtractorOption';
 import { CoverageExtractorInfo } from './CoverageExtractorInfo';
 
 export class CoverageExtractor {
@@ -14,26 +14,26 @@ export class CoverageExtractor {
             SyntaxKind.GetAccessor,
             SyntaxKind.SetAccessor,
             SyntaxKind.ExportAssignment,
-            SyntaxKind.TypeAliasDeclaration
+            SyntaxKind.TypeAliasDeclaration,
         ];
         let invalid: SyntaxKind[] = [];
-        let result: CoverageExtractorInfo[] = [];
+        const result: CoverageExtractorInfo[] = [];
         if (option) {
             valid = option.include;
             invalid = option.exclude;
         }
         sourceFile.forEachDescendant(node => {
             if (valid.includes(node.getKind()) && !invalid.includes(node.getKind())) {
-                let name = "";
+                let name = '';
                 //@ts-ignore
                 if (typeof node.getName !== 'undefined') {
                     //@ts-ignore
                     name = node.getName();
                 }
-                let kind = node.getKind();
-                let kindName = node.getKindName();
-                let hasLeadingComment = node.getLeadingCommentRanges().length > 0;
-                let hasTrailingComment = node.getTrailingCommentRanges().length > 0;
+                const kind = node.getKind();
+                const kindName = node.getKindName();
+                const hasLeadingComment = node.getLeadingCommentRanges().length > 0;
+                const hasTrailingComment = node.getTrailingCommentRanges().length > 0;
                 let hasJsDoc = false;
                 //@ts-ignore
                 if (typeof node.getJsDocs !== 'undefined') {
@@ -46,11 +46,10 @@ export class CoverageExtractor {
                     kindName: kindName,
                     hasLeadingComment: hasLeadingComment,
                     hasTrailingComment: hasTrailingComment,
-                    hasJsDoc: hasJsDoc
+                    hasJsDoc: hasJsDoc,
                 });
             }
         });
         return result;
     }
 }
-

@@ -4,6 +4,6 @@ import { CoverageResult } from '../doc-coverage/CoverageResult';
 export interface SourceFileCoverageInfo {
     details: CoverageExtractorInfo[];
     items: number;
-    documented: CoverageResult,
-    undocumented: CoverageResult
+    documented: CoverageResult;
+    undocumented: CoverageResult;
 }

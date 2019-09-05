@@ -1,4 +1,16 @@
-import { SourceFile, SyntaxKind, EnumDeclaration, FunctionDeclaration, TypeAliasDeclaration, InterfaceDeclaration, ClassDeclaration, ScriptTarget, Project, VariableStatement, ExpressionStatement } from 'ts-morph';
+import {
+    SourceFile,
+    SyntaxKind,
+    EnumDeclaration,
+    FunctionDeclaration,
+    TypeAliasDeclaration,
+    InterfaceDeclaration,
+    ClassDeclaration,
+    ScriptTarget,
+    Project,
+    VariableStatement,
+    ExpressionStatement,
+} from 'ts-morph';
 import { EnumInfo } from '../enum/EnumInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { InterfaceInfo } from '../interface/InterfaceInfo';
@@ -29,48 +41,46 @@ import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { ExportExtractor } from '../export/ExportExtractor';
 
 export class SourceFileExtractor {
-
     public extractFromTextFile(sourceFile: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
-        let sourceText = fs.readFileSync(sourceFile, 'utf8');
+        const sourceText = fs.readFileSync(sourceFile, 'utf8');
         const project = new Project({
             compilerOptions: {
-                target: ScriptTarget.ES5
-            }
+                target: ScriptTarget.ES5,
+            },
         });
-        const source = project.createSourceFile("source.ts", sourceText);
+        const source = project.createSourceFile('source.ts', sourceText);
         return this.extract(source, option);
     }
 
     public extractFromText(sourceText: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
         const project = new Project({
             compilerOptions: {
-                target: ScriptTarget.ES5
-            }
+                target: ScriptTarget.ES5,
+            },
         });
-        const source = project.createSourceFile("source.ts", sourceText);
+        const source = project.createSourceFile('source.ts', sourceText);
         return this.extract(source, option);
     }
 
     public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): SourceFileInfo | undefined {
-
-        let imports = new ImportExtractor().extract(sourceFile);
-        let exports = new ExportExtractor().extract(sourceFile);
-        let exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
-        let coverageDetail = new CoverageExtractor().extract(sourceFile, option);
-        let coverageInfo = new CoverageCalculator(coverageDetail).calculate();
-        let coverage: SourceFileCoverageInfo = {
+        const imports = new ImportExtractor().extract(sourceFile);
+        const exports = new ExportExtractor().extract(sourceFile);
+        const exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
+        const coverageDetail = new CoverageExtractor().extract(sourceFile, option);
+        const coverageInfo = new CoverageCalculator(coverageDetail).calculate();
+        const coverage: SourceFileCoverageInfo = {
             details: coverageDetail,
             items: coverageInfo.items,
             documented: coverageInfo.documented,
-            undocumented: coverageInfo.undocumented
-        }
-        let enums: EnumInfo[] = [];
-        let functions: FunctionInfo[] = [];
-        let typeAliases: TypeAliasInfo[] = [];
-        let interfaces: InterfaceInfo[] = [];
-        let classes: SourceFileClassInfo[] = [];
-        let variables: VariableInfo[][] = [];
-        let expressions: ExpressionInfo[] = [];
+            undocumented: coverageInfo.undocumented,
+        };
+        const enums: EnumInfo[] = [];
+        const functions: FunctionInfo[] = [];
+        const typeAliases: TypeAliasInfo[] = [];
+        const interfaces: InterfaceInfo[] = [];
+        const classes: SourceFileClassInfo[] = [];
+        const variables: VariableInfo[][] = [];
+        const expressions: ExpressionInfo[] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.EnumDeclaration:
@@ -86,24 +96,24 @@ export class SourceFileExtractor {
                     interfaces.push(new InterfaceExtractor().extract(<InterfaceDeclaration>node));
                     break;
                 case SyntaxKind.VariableStatement:
-                    let isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
+                    const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
                         variables.push(new VariableExtractor().extract(<VariableStatement>node));
                     }
                     break;
                 case SyntaxKind.ExpressionStatement:
-                    let isExpressionInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
+                    const isExpressionInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isExpressionInSourceFile) {
                         expressions.push(new ExpressionExtractor().extract(<ExpressionStatement>node));
                     }
                     break;
                 case SyntaxKind.ClassDeclaration:
-                    let info = new ClassExtractor().extract(<ClassDeclaration>node);
-                    let constructors = new ConstructorExtractor().extractFromClass(<ClassDeclaration>node);
-                    let properties = new PropertyExtractor().extractFromClass(<ClassDeclaration>node);
-                    let methods = new MethodExtractor().extractFromClass(<ClassDeclaration>node);
-                    let getAccessors = new GetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
-                    let setAccessors = new SetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
+                    const info = new ClassExtractor().extract(<ClassDeclaration>node);
+                    const constructors = new ConstructorExtractor().extractFromClass(<ClassDeclaration>node);
+                    const properties = new PropertyExtractor().extractFromClass(<ClassDeclaration>node);
+                    const methods = new MethodExtractor().extractFromClass(<ClassDeclaration>node);
+                    const getAccessors = new GetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
+                    const setAccessors = new SetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
                     classes.push({
                         name: info.name,
                         text: info.text,
@@ -118,12 +128,12 @@ export class SourceFileExtractor {
                         properties: properties,
                         getAccessors: getAccessors,
                         setAccessors: setAccessors,
-                        methods: methods
+                        methods: methods,
                     });
                     break;
             }
         });
-        let result = {
+        const result = {
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
             isInNodeModules: sourceFile.isInNodeModules(),
@@ -137,9 +147,8 @@ export class SourceFileExtractor {
             variables: variables.length === 0 ? undefined : variables,
             exportAssignments: exportAssignments,
             expressions: expressions.length === 0 ? undefined : expressions,
-            exports: exports
+            exports: exports,
         };
         return result;
     }
 }
-

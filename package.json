@@ -25,7 +25,8 @@
   "scripts": {
     "build": "./node_modules/.bin/gulp build",
     "test": "mocha -r  ts-node/register --timeout 999999 test/**/*.ts",
-    "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha -r ts-node/register  --timeout 999999 test/**/*.ts && nyc report"
+    "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha -r ts-node/register  --timeout 999999 test/**/*.ts && nyc report",
+    "eslint": "./node_modules/.bin/eslint --fix ./**/*.ts"
   },
   "nyc": {
     "extension": [
@@ -46,8 +47,8 @@
     "parse5": "^5.1.0",
     "parse5-htmlparser2-tree-adapter": "^5.1.0",
     "parse5-traverse": "^1.0.3",
-    "ts-morph": "^4.0.0",
-    "traverse": "^0.6.6"
+    "traverse": "^0.6.6",
+    "ts-morph": "^4.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.0",
@@ -57,15 +58,21 @@
     "@types/parse5": "^5.0.2",
     "@types/parse5-htmlparser2-tree-adapter": "^5.0.1",
     "@types/traverse": "^0.6.32",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
     "chai": "^4.2.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-typescript": "^5.0.1",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
+    "prettier": "^1.18.2",
     "source-map-support": "^0.5.13",
     "ts-node": "^8.3.0",
-    "typescript": "^3.6.2",
-    "tslib": "^1.10.0"
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.2"
   }
 }

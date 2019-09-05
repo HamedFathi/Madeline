@@ -18,5 +18,3 @@ export interface VariableInfo {
     kind: VariableDeclarationKind;
     kindName: string;
 }
-
-

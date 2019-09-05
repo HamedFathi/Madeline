@@ -1,65 +1,63 @@
-import {    SyntaxKind,    ImportDeclaration,    SourceFile} from 'ts-morph';
+import { SyntaxKind, ImportDeclaration, SourceFile } from 'ts-morph';
 import { ImportInfo } from './ImportInfo';
 import { ImportKind } from './ImportKind';
 
 export class ImportExtractor {
     public extract(sourceFile: SourceFile): ImportInfo[] | undefined {
-        let result: ImportInfo[] = [];
+        const result: ImportInfo[] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
-                    let module = (<ImportDeclaration>node).getModuleSpecifierValue();
-                    let namedImports = (<ImportDeclaration>node).getNamedImports();
-                    let defaultImport = (<ImportDeclaration>node).getDefaultImport();
-                    let namespaceImport = (<ImportDeclaration>node).getNamespaceImport();
+                    const module = (<ImportDeclaration>node).getModuleSpecifierValue();
+                    const namedImports = (<ImportDeclaration>node).getNamedImports();
+                    const defaultImport = (<ImportDeclaration>node).getDefaultImport();
+                    const namespaceImport = (<ImportDeclaration>node).getNamespaceImport();
                     if (namedImports && namedImports.length > 0) {
                         namedImports.forEach(imp => {
-                            let name = imp.getName();
-                            let aliasNode = imp.getAliasNode();
+                            const name = imp.getName();
+                            const aliasNode = imp.getAliasNode();
                             let alias = undefined;
                             if (aliasNode) {
                                 alias = aliasNode.getText();
                             }
-                            let kind = ImportKind.NamedImport;
+                            const kind = ImportKind.NamedImport;
                             result.push({
                                 name: name,
                                 alias: alias,
                                 module: module,
                                 kind: kind,
-                                kindName: ImportKind[kind]
+                                kindName: ImportKind[kind],
                             });
                         });
                     }
                     if (defaultImport) {
-                        let name = defaultImport.getText();
-                        let alias = undefined;
-                        let kind = ImportKind.DefaultImport;
+                        const name = defaultImport.getText();
+                        const alias = undefined;
+                        const kind = ImportKind.DefaultImport;
                         result.push({
                             name: name,
                             alias: alias,
                             module: module,
                             kind: kind,
-                            kindName: ImportKind[kind]
+                            kindName: ImportKind[kind],
                         });
                     }
                     if (namespaceImport) {
-                        let name = namespaceImport.getText();
-                        let alias = undefined;
-                        let kind = ImportKind.NamespaceImport;
+                        const name = namespaceImport.getText();
+                        const alias = undefined;
+                        const kind = ImportKind.NamespaceImport;
                         result.push({
                             name: name,
                             alias: alias,
                             module: module,
                             kind: kind,
-                            kindName: ImportKind[kind]
+                            kindName: ImportKind[kind],
                         });
                     }
                     break;
             }
         });
-        if(result.length === 0) return undefined;
+        if (result.length === 0) return undefined;
         return result;
     }
 }
-
-

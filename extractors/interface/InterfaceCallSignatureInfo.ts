@@ -8,5 +8,4 @@ export interface InterfaceCallSignatureInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
-
 }

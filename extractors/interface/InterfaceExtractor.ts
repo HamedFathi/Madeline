@@ -38,7 +38,7 @@ export class InterfaceExtractor {
                           return {
                               name: x.getName(),
                               type: new TypeExtractor().extract(x.getType()),
-                              isOptional: x.getQuestionTokenNode() !== undefined,
+                              isOptional: x.hasQuestionToken(),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                                       ? undefined

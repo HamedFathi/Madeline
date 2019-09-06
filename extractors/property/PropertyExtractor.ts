@@ -10,7 +10,7 @@ export class PropertyExtractor {
             name: node.getName(),
             type: new TypeExtractor().extract(node.getType()),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
-            isOptional: node.getQuestionTokenNode() !== undefined,
+            isOptional: node.hasQuestionToken(),
             defaultValue: node.getInitializer() === undefined ? undefined : node.getInitializerOrThrow().getText(),
             trailingComments:
                 new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0

@@ -1,4 +1,3 @@
-import { ClassInfo } from '../class/ClassInfo';
 import { ConstructorInfo } from '../constructor/ConstructorInfo';
 import { GetAccessorInfo } from '../get-accessor/GetAccessorInfo';
 import { MethodInfo } from '../method/MethodInfo';

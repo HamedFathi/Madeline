@@ -1,4 +1,4 @@
-import { ExpressionStatement, NewExpression, SyntaxKind } from 'ts-morph';
+import { ExpressionStatement } from 'ts-morph';
 import { ExpressionInfo } from './ExpressionInfo';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';

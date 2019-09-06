@@ -1,4 +1,3 @@
-import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { VariableInfo } from '../variable/VariableInfo';

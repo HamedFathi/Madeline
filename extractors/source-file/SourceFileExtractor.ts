@@ -84,36 +84,36 @@ export class SourceFileExtractor {
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.EnumDeclaration:
-                    enums.push(new EnumExtractor().extract(<EnumDeclaration>node));
+                    enums.push(new EnumExtractor().extract(node as EnumDeclaration));
                     break;
                 case SyntaxKind.FunctionDeclaration:
-                    functions.push(new FunctionExtractor().extract(<FunctionDeclaration>node));
+                    functions.push(new FunctionExtractor().extract(node as FunctionDeclaration));
                     break;
                 case SyntaxKind.TypeAliasDeclaration:
-                    typeAliases.push(new TypeAliasExtractor().extract(<TypeAliasDeclaration>node));
+                    typeAliases.push(new TypeAliasExtractor().extract(node as TypeAliasDeclaration));
                     break;
                 case SyntaxKind.InterfaceDeclaration:
-                    interfaces.push(new InterfaceExtractor().extract(<InterfaceDeclaration>node));
+                    interfaces.push(new InterfaceExtractor().extract(node as InterfaceDeclaration));
                     break;
                 case SyntaxKind.VariableStatement:
                     const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
-                        variables.push(new VariableExtractor().extract(<VariableStatement>node));
+                        variables.push(new VariableExtractor().extract(node as VariableStatement));
                     }
                     break;
                 case SyntaxKind.ExpressionStatement:
                     const isExpressionInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isExpressionInSourceFile) {
-                        expressions.push(new ExpressionExtractor().extract(<ExpressionStatement>node));
+                        expressions.push(new ExpressionExtractor().extract(node as ExpressionStatement));
                     }
                     break;
                 case SyntaxKind.ClassDeclaration:
-                    const info = new ClassExtractor().extract(<ClassDeclaration>node);
-                    const constructors = new ConstructorExtractor().extractFromClass(<ClassDeclaration>node);
-                    const properties = new PropertyExtractor().extractFromClass(<ClassDeclaration>node);
-                    const methods = new MethodExtractor().extractFromClass(<ClassDeclaration>node);
-                    const getAccessors = new GetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
-                    const setAccessors = new SetAccessorExtractor().extractFromClass(<ClassDeclaration>node);
+                    const info = new ClassExtractor().extract(node as ClassDeclaration);
+                    const constructors = new ConstructorExtractor().extractFromClass(node as ClassDeclaration);
+                    const properties = new PropertyExtractor().extractFromClass(node as ClassDeclaration);
+                    const methods = new MethodExtractor().extractFromClass(node as ClassDeclaration);
+                    const getAccessors = new GetAccessorExtractor().extractFromClass(node as ClassDeclaration);
+                    const setAccessors = new SetAccessorExtractor().extractFromClass(node as ClassDeclaration);
                     classes.push({
                         name: info.name,
                         text: info.text,

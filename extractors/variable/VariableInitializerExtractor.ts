@@ -9,7 +9,6 @@ import {
     SetAccessorDeclaration,
     MethodDeclaration,
     SpreadAssignment,
-    FunctionDeclaration,
     FunctionExpression,
     ArrowFunction,
     CallSignatureDeclaration,

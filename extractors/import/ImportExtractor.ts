@@ -8,10 +8,10 @@ export class ImportExtractor {
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
-                    const module = (<ImportDeclaration>node).getModuleSpecifierValue();
-                    const namedImports = (<ImportDeclaration>node).getNamedImports();
-                    const defaultImport = (<ImportDeclaration>node).getDefaultImport();
-                    const namespaceImport = (<ImportDeclaration>node).getNamespaceImport();
+                    const module = (node as ImportDeclaration).getModuleSpecifierValue();
+                    const namedImports = (node as ImportDeclaration).getNamedImports();
+                    const defaultImport = (node as ImportDeclaration).getDefaultImport();
+                    const namespaceImport = (node as ImportDeclaration).getNamespaceImport();
                     if (namedImports && namedImports.length > 0) {
                         namedImports.forEach(imp => {
                             const name = imp.getName();

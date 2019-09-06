@@ -8,7 +8,7 @@ export class ExportAssignmentExtractor {
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.ExportAssignment:
-                    const x = <ExportAssignment>node;
+                    const x = node as ExportAssignment;
                     const isExportDefault = !x.isExportEquals();
                     const trailingComments = new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges());
                     const leadingComments = new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges());

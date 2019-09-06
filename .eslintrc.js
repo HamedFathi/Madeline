@@ -10,8 +10,11 @@ module.exports = {
         sourceType: 'module',
         project: path.resolve(__dirname, "./tsconfig.json"),
         tsconfigRootDir: './',
+        "warnOnUnsupportedTypeScriptVersion": false
     },
     rules: {
-
+        "@typescript-eslint/ban-ts-ignore": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     }
 }

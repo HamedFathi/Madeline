@@ -38,7 +38,7 @@ export class CoverageExtractor {
                 //@ts-ignore
                 if (typeof node.getJsDocs !== 'undefined') {
                     //@ts-ignore
-                    hasJsDoc = (<JSDoc[]>node.getJsDocs()).length > 0;
+                    hasJsDoc = (node.getJsDocs() as JSDoc[]).length > 0;
                 }
                 result.push({
                     name: name,

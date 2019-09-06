@@ -1,5 +1,4 @@
 import { SourceFile } from 'ts-morph';
-import { SourceFileExtractor } from '../source-file/SourceFileExtractor';
 import { ExportInfo } from './ExportInfo';
 
 export class ExportExtractor {

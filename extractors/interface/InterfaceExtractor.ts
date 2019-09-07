@@ -87,11 +87,11 @@ export class InterfaceExtractor {
                           };
                       }),
             extends:
-                node.getBaseDeclarations().length === 0
+                node.getExtends().length === 0
                     ? undefined
-                    : node.getBaseDeclarations().map(x => {
+                    : node.getExtends().map(x => {
                           return {
-                              name: x.getName(),
+                              name: x.getText(),
                               type: new TypeExtractor().extract(x.getType()),
                           };
                       }),

@@ -26,6 +26,16 @@ export class JsonUtils {
         return false;
     }
 
+    public convertJsObjectToJson(jsObject: string): any {
+        try {
+            let obj = JSON.stringify(eval('(' + jsObject + ')'));
+            let isJson = this.isJson(obj);
+            return isJson ? JSON.parse(obj) : undefined;
+        } catch {
+            return undefined;
+        }
+    }
+
     public traverse(object: unknown, func: (node: any) => void): void {
         traverse(object).forEach(func);
     }

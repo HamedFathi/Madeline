@@ -9,10 +9,15 @@ export class StringUtils {
         return text.replace(/\s\s+/g, ' ');
     }
 
-    public removeFirstLastQuote(text: any): any {
-        if (typeof text === 'string') {
+    public removeFirstAndLastQuote(text: any): any {
+        if (typeof text === 'string' && text[0] === '"' && text[text.length - 1] === '"') {
             if (text[0] === '"') text = text.substring(1);
             if (text[text.length - 1] === '"') text = text.substring(0, text.length - 1);
+            return text;
+        }
+        if (typeof text === 'string' && text[0] === "'" && text[text.length - 1] === "'") {
+            if (text[0] === "'") text = text.substring(1);
+            if (text[text.length - 1] === "'") text = text.substring(0, text.length - 1);
             return text;
         }
         return text;

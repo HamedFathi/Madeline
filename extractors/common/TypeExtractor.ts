@@ -5,6 +5,7 @@ import { JsonLikeTypeInfo } from './JsonLikeTypeInfo';
 import { CallSignatureTypeInfo } from './CallSignatureTypeInfo';
 import { JsonUtils } from '../../utilities/JsonUtils';
 import { ImportInType } from './ImportInType';
+import { StringUtils } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
     private readonly jsonUtils = new JsonUtils();
@@ -195,18 +196,14 @@ export class TypeExtractor {
     }
 
     public detectImportInType(text: string): ImportInType | undefined {
-        const regex = /import\(.+\)./;
-        if (regex.test(text)) {
-            const name = text.replace(regex, '');
-            // @ts-ignore
-            const imported = text
-                .match(regex)[0]
-                .replace('import("', '')
-                .replace('").', '');
+        const regex = /import\((.+)\).(default\.)?(.*)/;
+        const match = regex.exec(text);
+        if (match) {
             return {
-                name: name.trim(),
-                importedFrom: imported.trim(),
-                isDefault: false
+                name: new StringUtils().removeFirstAndLastQuote((match[1] as string).trim()),
+                importedFrom: (match[3] as string).trim(),
+                isDefault: match[2] !== undefined,
+                text: text
             };
         } else {
             return undefined;

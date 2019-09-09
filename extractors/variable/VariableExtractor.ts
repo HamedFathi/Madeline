@@ -13,10 +13,10 @@ import { CommonVariableInfo } from './CommonVariableInfo';
 
 export class VariableExtractor {
     public extract(node: VariableStatement): VariableInfo {
-        let literal = new LiteralExtractor().extract(node);
-        let destructuring = new DestructuringExtractor().extract(node);
+        let literals = new LiteralExtractor().extract(node);
+        let destructions = new DestructuringExtractor().extract(node);
         let commons: CommonVariableInfo[] = [];
-        if (!literal && !destructuring) {
+        if (!literals && !destructions) {
             const modifiers = node.getModifiers().map(x => x.getText());
             const kind = node.getDeclarationKind();
             const kindName = node.getDeclarationKind().toString();
@@ -51,8 +51,8 @@ export class VariableExtractor {
             });
         }
         return {
-            literals: literal,
-            destructuring: destructuring,
+            literals: literals,
+            destructions: destructions,
             commons: commons.length === 0 ? undefined : commons
         }
     }

@@ -1,4 +1,4 @@
-import { TypeInfo } from '../common/TypeInfo';
+import { TypeInfo } from './TypeInfo';
 export interface CallSignatureParamInfo {
     name: string | undefined;
     type: TypeInfo;

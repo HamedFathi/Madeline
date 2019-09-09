@@ -17,6 +17,6 @@ export interface FunctionInfo {
     modules?: ModuleInfo[] | undefined;
     parameters: FunctionParamInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
-    variables: VariableInfo[][] | undefined;
+    variables: VariableInfo[] | undefined;
     expressions: ExpressionInfo[] | undefined;
 }

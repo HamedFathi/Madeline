@@ -10,6 +10,6 @@ export interface ConstructorInfo {
     parameters: ConstructorParamInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
-    variables: VariableInfo[][] | undefined;
+    variables: VariableInfo[] | undefined;
     expressions: ExpressionInfo[] | undefined;
 }

@@ -1,4 +1,4 @@
-import { TypeInfo } from '../common/TypeInfo';
+import { TypeInfo } from './TypeInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 import { CallSignatureParamInfo } from './CallSignatureParamInfo';
 

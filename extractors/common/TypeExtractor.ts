@@ -4,6 +4,7 @@ import { TypeKind } from './TypeKind';
 import { JsonLikeTypeInfo } from './JsonLikeTypeInfo';
 import { CallSignatureTypeInfo } from './CallSignatureTypeInfo';
 import { JsonUtils } from '../../utilities/JsonUtils';
+import { ImportInType } from './ImportInType';
 
 export class TypeExtractor {
     private readonly jsonUtils = new JsonUtils();
@@ -213,8 +214,3 @@ export class TypeExtractor {
     }
 }
 
-export interface ImportInType {
-    importedFrom: string;
-    name: string;
-    isDefault: boolean;
-}

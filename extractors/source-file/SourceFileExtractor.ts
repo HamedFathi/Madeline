@@ -79,7 +79,7 @@ export class SourceFileExtractor {
         const typeAliases: TypeAliasInfo[] = [];
         const interfaces: InterfaceInfo[] = [];
         const classes: SourceFileClassInfo[] = [];
-        const variables: VariableInfo[][] = [];
+        const variables: VariableInfo[] = [];
         const expressions: ExpressionInfo[] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
@@ -98,7 +98,7 @@ export class SourceFileExtractor {
                 case SyntaxKind.VariableStatement:
                     const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
-                        variables.push(new VariableExtractor().extract(node as VariableStatement));
+                        variables.push(new VariableExtractor().extract(node as VariableStatement) as any);
                     }
                     break;
                 case SyntaxKind.ExpressionStatement:

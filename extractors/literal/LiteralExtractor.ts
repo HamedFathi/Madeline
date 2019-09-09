@@ -7,7 +7,7 @@ import { MethodExtractor } from '../method/MethodExtractor';
 import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { GetAccessorExtractor } from '../get-accessor/GetAccessorExtractor';
 import { FunctionExtractor } from '../function/FunctionExtractor';
-import { CallSignatureInfo } from '../variable/CallSignatureInfo';
+import { CallSignatureInfo } from '../common/CallSignatureInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { LiteralAssignmentInfo } from './LiteralAssignmentInfo';
 import { LiteralInfo } from './LiteralInfo';

@@ -10,6 +10,6 @@ export interface SetAccessorInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
-    variables: VariableInfo[][] | undefined;
+    variables: VariableInfo[] | undefined;
     expressions: ExpressionInfo[] | undefined;
 }

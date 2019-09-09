@@ -12,7 +12,7 @@ export interface MethodInfo {
     parameters: MethodParamInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
-    variables: VariableInfo[][] | undefined;
+    variables: VariableInfo[] | undefined;
     expressions: ExpressionInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
 }

@@ -21,7 +21,7 @@ export interface SourceFileInfo {
     interfaces: InterfaceInfo[] | undefined;
     typeAliases: TypeAliasInfo[] | undefined;
     coverage: SourceFileCoverageInfo | undefined;
-    variables: VariableInfo[][] | undefined;
+    variables: VariableInfo[] | undefined;
     exportAssignments: ExportAssignmentInfo[] | undefined;
     expressions: ExpressionInfo[] | undefined;
 }

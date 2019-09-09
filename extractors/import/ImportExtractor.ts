@@ -1,4 +1,4 @@
-import { SyntaxKind, ImportDeclaration, SourceFile } from 'ts-morph';
+import { SyntaxKind, ImportDeclaration, SourceFile, ImportEqualsDeclaration } from 'ts-morph';
 import { ImportInfo } from './ImportInfo';
 import { ImportKind } from './ImportKind';
 
@@ -8,10 +8,12 @@ export class ImportExtractor {
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
-                    const module = (node as ImportDeclaration).getModuleSpecifierValue();
-                    const namedImports = (node as ImportDeclaration).getNamedImports();
-                    const defaultImport = (node as ImportDeclaration).getDefaultImport();
-                    const namespaceImport = (node as ImportDeclaration).getNamespaceImport();
+                    const importDeclaration = (node as ImportDeclaration);
+                    const textDeclaration = importDeclaration.getText();
+                    const moduleValue = importDeclaration.getModuleSpecifierValue();
+                    const namedImports = importDeclaration.getNamedImports();
+                    const defaultImport = importDeclaration.getDefaultImport();
+                    const namespaceImport = importDeclaration.getNamespaceImport();
                     if (namedImports && namedImports.length > 0) {
                         namedImports.forEach(imp => {
                             const name = imp.getName();
@@ -24,9 +26,10 @@ export class ImportExtractor {
                             result.push({
                                 name: name,
                                 alias: alias,
-                                module: module,
+                                module: moduleValue,
                                 kind: kind,
                                 kindName: ImportKind[kind],
+                                text: textDeclaration
                             });
                         });
                     }
@@ -37,9 +40,10 @@ export class ImportExtractor {
                         result.push({
                             name: name,
                             alias: alias,
-                            module: module,
+                            module: moduleValue,
                             kind: kind,
                             kindName: ImportKind[kind],
+                            text: textDeclaration
                         });
                     }
                     if (namespaceImport) {
@@ -49,11 +53,27 @@ export class ImportExtractor {
                         result.push({
                             name: name,
                             alias: alias,
-                            module: module,
+                            module: moduleValue,
                             kind: kind,
                             kindName: ImportKind[kind],
+                            text: textDeclaration
                         });
                     }
+                    break;
+                case SyntaxKind.ImportEqualsDeclaration:
+                    const importEquals = node as ImportEqualsDeclaration;
+                    const moduleRefValue = importEquals.getModuleReference().getText();
+                    const text = importEquals.getText();
+                    const name = importEquals.getName();
+                    const kind = ImportKind.ImportEquals;
+                    result.push({
+                        name: name,
+                        alias: undefined,
+                        module: moduleRefValue,
+                        kind: kind,
+                        kindName: ImportKind[kind],
+                        text: text
+                    });
                     break;
             }
         });

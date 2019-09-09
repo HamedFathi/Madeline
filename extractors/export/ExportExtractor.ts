@@ -12,7 +12,7 @@ export class ExportExtractor {
                         : x.getNamedExports().map(y => {
                               return {
                                   name: y.getName(),
-                                  as: y.getSymbol() === undefined ? undefined : y.getSymbolOrThrow().getName(),
+                                  alias: y.getSymbol() === undefined ? undefined : y.getSymbolOrThrow().getName(),
                               };
                           }),
             };

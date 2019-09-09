@@ -40,12 +40,13 @@ export class ModuleExtractor {
             const declaration = block.getParentIfKind(SyntaxKind.ModuleDeclaration);
             if (declaration) {
                 const name = declaration.getName();
+                const text = declaration.getText();
                 const isNamespace = declaration.hasNamespaceKeyword();
                 const modifiers =
                     declaration.getModifiers().length === 0
                         ? undefined
                         : declaration.getModifiers().map(x => x.getText());
-                info.push({ name: name, isNamespace: isNamespace, modifiers: modifiers, level: level });
+                info.push({ name: name, text: text, isNamespace: isNamespace, modifiers: modifiers, level: level });
                 this.getInfo(declaration, info, ++level);
             }
         }

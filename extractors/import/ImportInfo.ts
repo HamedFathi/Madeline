@@ -5,4 +5,5 @@ export interface ImportInfo {
     module: string;
     kind: ImportKind;
     kindName: string;
+    text: string;
 }

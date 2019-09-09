@@ -1,10 +1,12 @@
 import { Type, PropertyDeclaration, ParameterDeclaration } from 'ts-morph';
 import { TypeInfo } from './TypeInfo';
 import { TypeKind } from './TypeKind';
-import { JsonTypeInfo } from './JsonTypeInfo';
+import { JsonLikeTypeInfo } from './JsonLikeTypeInfo';
 import { CallSignatureTypeInfo } from './CallSignatureTypeInfo';
+import { JsonUtils } from '../../utilities/JsonUtils';
 
 export class TypeExtractor {
+    private readonly jsonUtils = new JsonUtils();
     public extract(node: Type): TypeInfo {
         const typeInfo: TypeInfo = {
             kind: TypeKind.NotSpecified,
@@ -162,23 +164,23 @@ export class TypeExtractor {
                 typeInfo.type = node.getIntersectionTypes().map(x => x.getText());
                 return typeInfo;
             }
-            if (node.getProperties().length > 0) {
-                typeInfo.kind = TypeKind.Json;
-                typeInfo.kindName = TypeKind[TypeKind.Json];
-                const json: JsonTypeInfo[] = node.getProperties().map(x => {
+            if (this.jsonUtils.isJsonLike(node.getText())) {
+                typeInfo.kind = TypeKind.JsonLike;
+                typeInfo.kindName = TypeKind[TypeKind.JsonLike];
+                const jsonLike: JsonLikeTypeInfo[] = node.getProperties().map(x => {
                     return {
                         name: x.getName(),
                         value:
                             x.getValueDeclaration() === undefined
                                 ? undefined
                                 : (x.getValueDeclarationOrThrow() as PropertyDeclaration).getInitializer() === undefined
-                                ? (x.getValueDeclarationOrThrow() as PropertyDeclaration).getType().getText()
-                                : (x.getValueDeclarationOrThrow() as PropertyDeclaration)
-                                      .getInitializerOrThrow()
-                                      .getText(),
+                                    ? (x.getValueDeclarationOrThrow() as PropertyDeclaration).getType().getText()
+                                    : (x.getValueDeclarationOrThrow() as PropertyDeclaration)
+                                        .getInitializerOrThrow()
+                                        .getText(),
                     };
                 });
-                typeInfo.type = json;
+                typeInfo.type = jsonLike;
                 return typeInfo;
             }
             if (node.isAnonymous()) {
@@ -187,7 +189,32 @@ export class TypeExtractor {
                 typeInfo.type = node.getText();
                 return typeInfo;
             }
-        } catch (e) {}
+        } catch (e) { }
         return typeInfo;
     }
+
+    public detectImportInType(text: string): ImportInType | undefined {
+        const regex = /import\(.+\)./;
+        if (regex.test(text)) {
+            const name = text.replace(regex, '');
+            // @ts-ignore
+            const imported = text
+                .match(regex)[0]
+                .replace('import("', '')
+                .replace('").', '');
+            return {
+                name: name.trim(),
+                importedFrom: imported.trim(),
+                isDefault: false
+            };
+        } else {
+            return undefined;
+        }
+    }
+}
+
+export interface ImportInType {
+    importedFrom: string;
+    name: string;
+    isDefault: boolean;
 }

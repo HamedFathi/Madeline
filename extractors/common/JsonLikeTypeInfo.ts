@@ -1,4 +1,4 @@
-export interface JsonTypeInfo {
+export interface JsonLikeTypeInfo {
     name: string;
     value: string | undefined;
 }

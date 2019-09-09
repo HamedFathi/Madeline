@@ -26,6 +26,10 @@ export class JsonUtils {
         return false;
     }
 
+    public isJsonLike(text: string): boolean {
+        return this.convertJsObjectToJson(text) !== undefined;
+    }
+
     public convertJsObjectToJson(jsObject: string): any {
         try {
             let obj = JSON.stringify(eval('(' + jsObject + ')'));

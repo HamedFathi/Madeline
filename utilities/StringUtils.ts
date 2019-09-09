@@ -5,7 +5,7 @@ export class StringUtils {
         return text === null || text.match(/^ *$/) !== null;
     }
 
-    public convertToAWhitespace(text: string): string {
+    public convertToOneWhitespace(text: string): string {
         return text.replace(/\s\s+/g, ' ');
     }
 
@@ -35,22 +35,5 @@ export class StringUtils {
 
     public safeStringify(obj: unknown): string {
         return safeStringify(obj);
-    }
-
-    public detectImport(text: string): [string, string] {
-        let result: [string, string] = ['', ''];
-        const regex = /import\(.+\)./;
-        if (regex.test(text)) {
-            const name = text.replace(regex, '');
-            // @ts-ignore
-            const imp = text
-                .match(regex)[0]
-                .replace('import("', '')
-                .replace('").', '');
-            result = [name.trim(), imp.trim()];
-        } else {
-            result = [text.trim(), ''];
-        }
-        return result;
     }
 }

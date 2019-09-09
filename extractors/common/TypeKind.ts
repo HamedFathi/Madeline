@@ -9,7 +9,7 @@ export enum TypeKind {
     Enum,
     Interface,
     Intersection,
-    Json,
+    JsonLike,
     Never,
     Null,
     Number,

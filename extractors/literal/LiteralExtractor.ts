@@ -118,7 +118,9 @@ export class LiteralExtractor {
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
-                    typeReference: typeReference
+                    typeReference: typeReference,
+                    name: declaration.getName(),
+                    type: new TypeExtractor().extract(declaration.getType())
                 });
             }
             if (arrayLiteral) {
@@ -132,7 +134,9 @@ export class LiteralExtractor {
                     elements: members,
                     isArrayLiteral: true,
                     text: node.getText(),
-                    typeReference: typeReference
+                    typeReference: typeReference,
+                    name: declaration.getName(),
+                    type: new TypeExtractor().extract(declaration.getType())
                 })
             }
         });

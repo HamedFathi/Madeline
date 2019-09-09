@@ -166,7 +166,7 @@ export class TypeExtractor {
                 typeInfo.type = node.getIntersectionTypes().map(x => x.getText());
                 return typeInfo;
             }
-            if (this.jsonUtils.isJsonLike(node.getText())) {
+            if (node.getProperties().length > 0) {
                 typeInfo.kind = TypeKind.JsonLike;
                 typeInfo.kindName = TypeKind[TypeKind.JsonLike];
                 const jsonLike: JsonLikeTypeInfo[] = node.getProperties().map(x => {

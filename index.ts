@@ -84,3 +84,6 @@ export * from './extractors/variable/VariableInfo';
 export * from './utilities/JsonUtils';
 export * from './utilities/StringUtils';
 export * from './utilities/FsUtils';
+
+export * from './utilities/AureliaSourceFile';
+export * from './utilities/AureliaSourceFileUtils';

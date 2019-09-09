@@ -12,6 +12,7 @@ import { FunctionInfo } from '../function/FunctionInfo';
 import { LiteralAssignmentInfo } from './LiteralAssignmentInfo';
 import { LiteralInfo } from './LiteralInfo';
 import { LiteralExpressionInfo } from './LiteralExpressionInfo';
+import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 /*
 const obj = {
@@ -228,21 +229,7 @@ export class LiteralExtractor {
             const callSignature = arrowFunction as unknown as CallSignatureDeclaration;
             return {
                 returnType: new TypeExtractor().extract(callSignature.getReturnType()),
-                typeParameters:
-                    callSignature.getTypeParameters().length === 0
-                        ? undefined
-                        : callSignature.getTypeParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                constraint:
-                                    y.getConstraint() === undefined
-                                        ? undefined
-                                        : y
-                                            .getConstraintOrThrow()
-                                            .getType()
-                                            .getText(),
-                            };
-                        }),
+                typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? undefined

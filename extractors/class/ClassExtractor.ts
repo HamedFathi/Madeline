@@ -3,24 +3,13 @@ import { ClassInfo } from './ClassInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
+import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class ClassExtractor {
     public extract(node: ClassDeclaration): ClassInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const decorators = new DecoratorExtractor().extract(node);
-        const typeParameters = node.getTypeParameters().map(y => {
-            return {
-                name: y.getName(),
-                constraint:
-                    y.getConstraint() === undefined
-                        ? undefined
-                        : y
-                              .getConstraintOrThrow()
-                              .getType()
-                              .getText(),
-            };
-        });
         return {
             name: node.getName(),
             text: node.getFullText(),
@@ -31,7 +20,7 @@ export class ClassExtractor {
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             decorators: decorators,
             modules: new ModuleExtractor().extract(node),
-            typeParameters: typeParameters.length === 0 ? undefined : typeParameters,
+            typeParameters: new TypeParameterExtractor().extract(node),
         };
     }
 }

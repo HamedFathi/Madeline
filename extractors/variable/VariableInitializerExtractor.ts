@@ -28,6 +28,7 @@ import { MethodInfo } from '../method/MethodInfo';
 import { FunctionExtractor } from '../function/FunctionExtractor';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { CallSignatureInfo } from './CallSignatureInfo';
+import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class VariableInitializerExtractor {
     public extract(
@@ -126,41 +127,27 @@ export class VariableInitializerExtractor {
             const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
                 returnType: new TypeExtractor().extract(callSignature.getReturnType()),
-                typeParameters:
-                    callSignature.getTypeParameters().length === 0
-                        ? undefined
-                        : callSignature.getTypeParameters().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  constraint:
-                                      y.getConstraint() === undefined
-                                          ? undefined
-                                          : y
-                                                .getConstraintOrThrow()
-                                                .getType()
-                                                .getText(),
-                              };
-                          }),
+                typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? undefined
                         : callSignature.getParameters().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType()),
-                                  modifiers:
-                                      y.getModifiers().length === 0
-                                          ? undefined
-                                          : y.getModifiers().map(x => x.getText()),
-                                  isOptional: y.isOptional(),
-                                  isRest: y.isRestParameter(),
-                                  isParameterProperty: y.isParameterProperty(),
-                                  defaultValue:
-                                      y.getInitializer() === undefined
-                                          ? undefined
-                                          : y.getInitializerOrThrow().getText(),
-                              };
-                          }),
+                            return {
+                                name: y.getName(),
+                                type: new TypeExtractor().extract(y.getType()),
+                                modifiers:
+                                    y.getModifiers().length === 0
+                                        ? undefined
+                                        : y.getModifiers().map(x => x.getText()),
+                                isOptional: y.isOptional(),
+                                isRest: y.isRestParameter(),
+                                isParameterProperty: y.isParameterProperty(),
+                                defaultValue:
+                                    y.getInitializer() === undefined
+                                        ? undefined
+                                        : y.getInitializerOrThrow().getText(),
+                            };
+                        }),
             };
         } else if (TypeGuards.isArrayLiteralExpression(node)) {
             const obj = node as ArrayLiteralExpression;

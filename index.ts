@@ -76,6 +76,7 @@ export * from './extractors/source-file/SourceFileExtractor';
 export * from './extractors/source-file/SourceFileInfo';
 export * from './extractors/type-alias/TypeAliasExtractor';
 export * from './extractors/type-alias/TypeAliasInfo';
+export * from './extractors/type-parameter/TypeParameterExtractor';
 export * from './extractors/variable/ArrayLiteralInfo';
 export * from './extractors/variable/AssignmentInfo';
 export * from './extractors/variable/CallSignatureInfo';

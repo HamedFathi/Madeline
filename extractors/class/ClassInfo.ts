@@ -1,7 +1,7 @@
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
-import { TypeParameterInfo } from '../common/TypeParameterInfo';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 
 export interface ClassInfo {
     name: string | undefined;

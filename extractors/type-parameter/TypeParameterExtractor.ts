@@ -1,5 +1,5 @@
 import { MethodDeclaration, InterfaceDeclaration, ClassDeclaration, FunctionDeclaration, CallSignatureDeclaration, ConstructSignatureDeclaration, MethodSignature, FunctionExpression } from 'ts-morph';
-import { TypeParameterInfo } from '../common/TypeParameterInfo';
+import { TypeParameterInfo } from './TypeParameterInfo';
 
 export class TypeParameterExtractor {
     public extract(node: MethodDeclaration | MethodSignature | FunctionExpression | ConstructSignatureDeclaration | CallSignatureDeclaration | InterfaceDeclaration | ClassDeclaration | FunctionDeclaration): TypeParameterInfo[] | undefined {

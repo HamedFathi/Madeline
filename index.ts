@@ -12,7 +12,7 @@ export * from './extractors/common/JsonLikeTypeInfo';
 export * from './extractors/common/TypeExtractor';
 export * from './extractors/common/TypeInfo';
 export * from './extractors/common/TypeKind';
-export * from './extractors/common/TypeParameterInfo';
+export * from './extractors/type-parameter/TypeParameterInfo';
 export * from './extractors/common/VariableKind';
 export * from './extractors/common/VariableKindDetector';
 export * from './extractors/constructor/ConstructorExtractor';

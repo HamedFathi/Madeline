@@ -6,7 +6,7 @@ import { InterfaceIndexerInfo } from './InterfaceIndexerInfo';
 import { InterfaceConstructorInfo } from './InterfaceConstructorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
-import { TypeParameterInfo } from '../common/TypeParameterInfo';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 
 export interface InterfaceInfo {
     name: string;

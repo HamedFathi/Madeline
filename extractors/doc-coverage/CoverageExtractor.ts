@@ -2,6 +2,7 @@ import { JSDoc, SourceFile, SyntaxKind } from 'ts-morph';
 import { CoverageExtractorOption } from './CoverageExtractorOption';
 import { CoverageExtractorInfo } from './CoverageExtractorInfo';
 
+// TODO: support exportable node only. export class ,...
 export class CoverageExtractor {
     public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): CoverageExtractorInfo[] {
         let valid = [
@@ -15,6 +16,7 @@ export class CoverageExtractor {
             SyntaxKind.SetAccessor,
             SyntaxKind.ExportAssignment,
             SyntaxKind.TypeAliasDeclaration,
+            /*SyntaxKind.VariableStatement*/
         ];
         let invalid: SyntaxKind[] = [];
         const result: CoverageExtractorInfo[] = [];

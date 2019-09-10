@@ -1,5 +1,3 @@
-import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -84,14 +82,14 @@ export * from './extractors/variable/VariableInfo';
 export * from './utilities/JsonUtils';
 export * from './utilities/StringUtils';
 export * from './utilities/FsUtils';
-
 export * from './utilities/AureliaSourceFile';
 export * from './utilities/AureliaSourceFileUtils';
 
+/*
+import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 
-let x = new AureliaSourceFileUtils();
-let a = x.getSourceFiles('C:/Users/MyLaptop/Desktop/aurelia-master');
-if (a)
-    x.save(a);
-
-const c = 1;
+let files = new AureliaSourceFileUtils();
+let result = files.getSourceFiles('...');
+if (result)
+    files.save(result);
+*/

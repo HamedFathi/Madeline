@@ -19,17 +19,19 @@ const allowedKinds: SyntaxKind[] = [
     SyntaxKind.Parameter,
 ];
 
+export type DecoratableType =
+    | ClassDeclaration
+    | MethodDeclaration
+    | PropertyDeclaration
+    | GetAccessorDeclaration
+    | SetAccessorDeclaration
+    | ParameterDeclaration;
+
 export class DecoratorExtractor {
     public extract(
-        node:
-            | ClassDeclaration
-            | MethodDeclaration
-            | PropertyDeclaration
-            | GetAccessorDeclaration
-            | SetAccessorDeclaration
-            | ParameterDeclaration,
-        filterStrategy?: (info: DecoratorInfo) => boolean,
-    ): DecoratorInfo[] | undefined {
+        node: DecoratableType,
+        filterStrategy?: (info: DecoratorInfo) => boolean): DecoratorInfo[] | undefined {
+
         if (!allowedKinds.includes(node.getKind())) {
             // the specified node does not allowed to have decorators
             return undefined;

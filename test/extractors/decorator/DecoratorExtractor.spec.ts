@@ -1,7 +1,6 @@
 import { assert } from "chai";
 import { Project, ScriptTarget, SyntaxKind, GetAccessorDeclaration, ClassDeclaration, PropertyDeclaration, MethodDeclaration, ParameterDeclaration } from 'ts-morph';
-import { DecoratorExtractor } from '../../../extractors/decorator/DecoratorExtractor';
-import { StringUtils } from '../../../utilities/StringUtils';
+import { DecoratorExtractor, DecoratableType } from '../../../extractors/decorator/DecoratorExtractor';
 import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
 
 const decoratorSample = `
@@ -47,7 +46,7 @@ describe('DecoratorExtractor', function () {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+                let decoratorDescriptor = decoratorExtractor.extract(<DecoratableType>node);
 
                 if (decoratorDescriptor !== undefined) {
                     // assert
@@ -71,7 +70,7 @@ describe('DecoratorExtractor', function () {
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
 
-                let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+                let decoratorDescriptor = decoratorExtractor.extract(<DecoratableType>node);
 
                 if (decoratorDescriptor !== undefined) {
                     // assert
@@ -93,13 +92,14 @@ describe('DecoratorExtractor', function () {
         export class Test{}`;
         const file = project.createSourceFile('sut.ts', sut);
 
+
         const filterStrategy = (d:DecoratorInfo) => {
             return d.name === 'filterDecorator';
         };
 
         // act
         file.forEachDescendant(node => {
-            let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node,
+            let decoratorDescriptor = decoratorExtractor.extract(<DecoratableType>node,
                 filterStrategy);
 
             if (decoratorDescriptor !== undefined) {

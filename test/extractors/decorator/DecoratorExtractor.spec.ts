@@ -53,7 +53,6 @@ describe('DecoratorExtractor', function () {
                     assert.equal(decoratorDescriptor.length, 1);
                     assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
                     assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                    // @ts-ignore
                     assert.equal(decoratorDescriptor[0].text, '@autoinject');
                     assert.equal(decoratorDescriptor[0].parameters, undefined);
                 }
@@ -77,7 +76,6 @@ describe('DecoratorExtractor', function () {
                     assert.equal(decoratorDescriptor.length, 1);
                     assert.equal(decoratorDescriptor[0].isDecoratorFactory, true);
                     assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                    // @ts-ignore
                     assert.equal(decoratorDescriptor[0].text, '@autoinject()');
                     assert.equal(decoratorDescriptor[0].parameters, undefined);
                 }
@@ -107,7 +105,6 @@ describe('DecoratorExtractor', function () {
                 assert.equal(decoratorDescriptor.length, 1);
                 assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
                 assert.equal(decoratorDescriptor[0].name, 'filterDecorator');
-                // @ts-ignore
                 assert.equal(decoratorDescriptor[0].text, '@filterDecorator');
                 assert.equal(decoratorDescriptor[0].parameters, undefined);
             }

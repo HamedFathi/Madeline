@@ -307,3 +307,5 @@ index.js.map
 index.d.ts
 coverage/
 .nyc_output/
+
+.DS_Store

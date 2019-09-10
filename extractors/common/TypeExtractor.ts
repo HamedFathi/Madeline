@@ -196,13 +196,18 @@ export class TypeExtractor {
     }
 
     public detectImportInType(text: string): ImportInType | undefined {
-        const regex = /import\((.+)\).(default\.)?(.*)/;
+        const regex = /import\((.+)\).(.+\.)?(.*)/;
         const match = regex.exec(text);
         if (match) {
+            let importedFrom: string = new StringUtils().removeFirstAndLastQuote((match[1] as string).trim());
+            let name: string = (match[3] as string).trim();
+            let preType: string | undefined = match[2] === undefined ? undefined : (match[2] as string).replace(".", "");
+            let fromNodeModules: string | undefined = importedFrom.split('node_modules')[1];
             return {
-                name: new StringUtils().removeFirstAndLastQuote((match[1] as string).trim()),
-                importedFrom: (match[3] as string).trim(),
-                isDefault: match[2] !== undefined,
+                importedFrom: importedFrom,
+                name: name,
+                preType: preType,
+                fromNodeModules: fromNodeModules,
                 text: text
             };
         } else {

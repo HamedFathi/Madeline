@@ -1,6 +1,7 @@
 export interface ImportInType {
     importedFrom: string;
     name: string;
-    isDefault: boolean;
+    preType: string | undefined;
+    fromNodeModules: string | undefined;
     text: string;
 }

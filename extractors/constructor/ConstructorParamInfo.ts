@@ -8,6 +8,7 @@ export interface ConstructorParamInfo {
     isOptional: boolean;
     isRest: boolean;
     isParameterProperty: boolean;
-    defaultValue: string | undefined;
+    initializer: string | undefined;
     decorators: DecoratorInfo[] | undefined;
+    text: string;
 }

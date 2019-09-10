@@ -6,6 +6,7 @@ export class TypeParameterExtractor {
         let result = node.getTypeParameters().map(y => {
             return {
                 name: y.getName(),
+                text: y.getText(),
                 constraint:
                     y.getConstraint() === undefined
                         ? undefined

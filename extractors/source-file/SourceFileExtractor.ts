@@ -9,7 +9,6 @@ import {
     ScriptTarget,
     Project,
     VariableStatement,
-    ExpressionStatement,
 } from 'ts-morph';
 import { EnumInfo } from '../enum/EnumInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
@@ -35,8 +34,6 @@ import * as fs from 'fs';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentExtractor } from '../export-assignment/ExportAssignmentExtractor';
-import { ExpressionExtractor } from '../expression/ExpressionExtractor';
-import { ExpressionInfo } from '../expression/ExpressionInfo';
 import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { ExportExtractor } from '../export/ExportExtractor';
 
@@ -80,7 +77,6 @@ export class SourceFileExtractor {
         const interfaces: InterfaceInfo[] = [];
         const classes: SourceFileClassInfo[] = [];
         const variables: VariableInfo[] = [];
-        const expressions: ExpressionInfo[] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.EnumDeclaration:
@@ -99,12 +95,6 @@ export class SourceFileExtractor {
                     const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
                         variables.push(new VariableExtractor().extract(node as VariableStatement) as any);
-                    }
-                    break;
-                case SyntaxKind.ExpressionStatement:
-                    const isExpressionInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
-                    if (isExpressionInSourceFile) {
-                        expressions.push(new ExpressionExtractor().extract(node as ExpressionStatement));
                     }
                     break;
                 case SyntaxKind.ClassDeclaration:
@@ -146,7 +136,6 @@ export class SourceFileExtractor {
             classes: classes.length === 0 ? undefined : classes,
             variables: variables.length === 0 ? undefined : variables,
             exportAssignments: exportAssignments,
-            expressions: expressions.length === 0 ? undefined : expressions,
             exports: exports,
         };
         return result;

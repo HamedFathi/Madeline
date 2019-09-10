@@ -36,7 +36,7 @@ export class VariableExtractor {
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(declaration.getType()),
                     modifiers: modifiers.length === 0 ? undefined : modifiers,
-                    defaultValue:
+                    initializer:
                         declaration.getInitializer() === undefined
                             ? undefined
                             : this.getExpressionInfo(declaration.getInitializerOrThrow()),
@@ -82,7 +82,7 @@ export class VariableExtractor {
                                 isOptional: y.isOptional(),
                                 isRest: y.isRestParameter(),
                                 isParameterProperty: y.isParameterProperty(),
-                                defaultValue:
+                                initializer:
                                     y.getInitializer() === undefined
                                         ? undefined
                                         : y.getInitializerOrThrow().getText(),

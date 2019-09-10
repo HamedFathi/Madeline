@@ -5,6 +5,7 @@ import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface InterfaceCallSignatureInfo {
     parameters: InterfaceParamInfo[] | undefined;
     returnType: TypeInfo;
+    text: string;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;

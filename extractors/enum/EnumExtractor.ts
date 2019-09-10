@@ -14,10 +14,12 @@ export class EnumExtractor {
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),
+            text: node.getText(),
             members: node.getMembers().map(x => {
                 return {
                     name: x.getName(),
                     value: x.getValue(),
+                    text: x.getText(),
                     trailingComments:
                         new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                             ? undefined

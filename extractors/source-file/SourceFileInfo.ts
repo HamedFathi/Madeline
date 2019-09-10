@@ -7,7 +7,6 @@ import { SourceFileCoverageInfo } from './SourceFileCoverageInfo';
 import { SourceFileClassInfo } from './SourceFileClassInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
-import { ExpressionInfo } from '../expression/ExpressionInfo';
 import { ExportInfo } from '../export/ExportInfo';
 export interface SourceFileInfo {
     isDeclarationFile: boolean;
@@ -23,5 +22,4 @@ export interface SourceFileInfo {
     coverage: SourceFileCoverageInfo | undefined;
     variables: VariableInfo[] | undefined;
     exportAssignments: ExportAssignmentInfo[] | undefined;
-    expressions: ExpressionInfo[] | undefined;
 }

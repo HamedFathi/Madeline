@@ -27,13 +27,15 @@ export class DestructuringExtractor {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const modules = new ModuleExtractor().extract(node);
+        const nodeText = node.getText();
         node.getDeclarations().forEach(declaration => {
             let elements: DestructuringElementInfo[] = [];
             let bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
             if (bindingElements.length > 0) {
                 let typeReference: string | undefined = undefined;
                 let initValue = declaration.getInitializer();
-                let defaultValue = initValue === undefined ? undefined : declaration.getInitializerOrThrow().getText();
+                let text = declaration.getText();
+                let initializer = initValue === undefined ? undefined : declaration.getInitializerOrThrow().getText();
                 if (initValue) {
                     let typeRef = declaration.getDescendantsOfKind(SyntaxKind.TypeReference);
                     typeReference = typeRef.length === 0 ? undefined : typeRef[0].getText();
@@ -47,20 +49,22 @@ export class DestructuringExtractor {
                     elements.push({
                         name: name,
                         propertyName: propertyName,
-                        isRest: isRest
+                        isRest: isRest,
+                        text: text
                     });
                 });
                 result.push({
                     isArrayDestructuring: isArrayDestructuring,
                     elements: elements,
-                    defaultValue: defaultValue,
+                    initializer: initializer,
                     kind: kind,
                     kindName: kindName,
                     leadingComments: leadingComments,
                     trailingComments: trailingComments,
                     modifiers: modifiers,
                     modules: modules,
-                    typeReference: typeReference
+                    typeReference: typeReference,
+                    text: nodeText
                 });
             }
         });

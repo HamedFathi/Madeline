@@ -1,15 +1,14 @@
-import { Type, PropertyDeclaration, ParameterDeclaration } from 'ts-morph';
+import { Type/*, PropertyDeclaration, ParameterDeclaration*/ } from 'ts-morph';
 import { TypeInfo } from './TypeInfo';
-import { TypeKind } from './TypeKind';
+/*import { TypeKind } from './TypeKind';
 import { JsonLikeTypeInfo } from './JsonLikeTypeInfo';
 import { CallSignatureTypeInfo } from './CallSignatureTypeInfo';
-import { JsonUtils } from '../../utilities/JsonUtils';
+import { JsonUtils } from '../../utilities/JsonUtils';*/
 import { ImportInType } from './ImportInType';
 import { StringUtils } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
-    private readonly jsonUtils = new JsonUtils();
-    public extract(node: Type): TypeInfo {
+    /*public extract(node: Type): TypeInfo {
         const typeInfo: TypeInfo = {
             kind: TypeKind.NotSpecified,
             kindName: TypeKind[TypeKind.NotSpecified],
@@ -193,8 +192,10 @@ export class TypeExtractor {
             }
         } catch (e) { }
         return typeInfo;
+    }*/
+    public extract(node: Type): TypeInfo {
+        return this.detectImportInType(node.getText()) as TypeInfo;
     }
-
     public detectImportInType(text: string): ImportInType | undefined {
         const regex = /import\((.+)\).(.+\.)?(.*)/;
         const match = regex.exec(text);

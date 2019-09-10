@@ -70,7 +70,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": false,
                 "isRest": false,
                 "isParameterProperty": false,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }, {
                 "name": "id",
@@ -83,7 +83,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": false,
                 "isRest": false,
                 "isParameterProperty": false,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }, {
                 "name": "ie",
@@ -96,7 +96,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": true,
                 "isRest": false,
                 "isParameterProperty": false,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }]
         }];
@@ -133,7 +133,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": true,
                 "isRest": false,
                 "isParameterProperty": false,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }]
         }];
@@ -168,7 +168,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": true,
                 "isRest": false,
                 "isParameterProperty": true,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }
             ]
@@ -192,7 +192,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": false,
                 "isRest": false,
                 "isParameterProperty": true,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }]
         }];
@@ -219,7 +219,7 @@ describe('Constructor Extractor', function () {
                 "isOptional": true,
                 "isRest": false,
                 "isParameterProperty": false,
-                "defaultValue": "\"bar\"",
+                "initializer": "\"bar\"",
                 "decorators": undefined
             }]
         }];

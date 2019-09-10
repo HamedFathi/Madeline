@@ -10,7 +10,7 @@ export class TypeAliasExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         return {
             name: node.getName(),
-            text: node.getFullText(),
+            text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             members: new TypeExtractor().extract(node.getType()),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,

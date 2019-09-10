@@ -5,4 +5,5 @@ export interface EnumMember {
     value: string | number | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
+    text: string;
 }

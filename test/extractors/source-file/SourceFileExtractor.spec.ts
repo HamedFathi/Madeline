@@ -143,7 +143,7 @@ describe('Source File Extractor', function () {
                         "isOptional": false,
                         "isRest": false,
                         "isParameterProperty": true,
-                        "defaultValue": undefined,
+                        "initializer": undefined,
                         "decorators": undefined
                     }
                     ],
@@ -177,7 +177,7 @@ describe('Source File Extractor', function () {
                         "isRest": false,
                         "isParameterProperty": false,
                         "modifiers": undefined,
-                        "defaultValue": "0",
+                        "initializer": "0",
                         "decorators": undefined
                     }
                     ],
@@ -226,7 +226,7 @@ describe('Source File Extractor', function () {
                         "isOptional": false,
                         "isRest": false,
                         "isParameterProperty": false,
-                        "defaultValue": undefined,
+                        "initializer": undefined,
                         "decorators": undefined
                     }
                     ],
@@ -260,7 +260,7 @@ describe('Source File Extractor', function () {
                         "isRest": false,
                         "isParameterProperty": false,
                         "modifiers": undefined,
-                        "defaultValue": "5",
+                        "initializer": "5",
                         "decorators": undefined
                     }
                     ],
@@ -314,7 +314,7 @@ describe('Source File Extractor', function () {
                         "isOptional": false,
                         "isRest": false,
                         "isParameterProperty": false,
-                        "defaultValue": undefined,
+                        "initializer": undefined,
                         "decorators": undefined
                     }
                     ],
@@ -348,7 +348,7 @@ describe('Source File Extractor', function () {
                         "isRest": false,
                         "isParameterProperty": false,
                         "modifiers": undefined,
-                        "defaultValue": "45",
+                        "initializer": "45",
                         "decorators": undefined
                     }
                     ],

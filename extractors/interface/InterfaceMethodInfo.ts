@@ -5,6 +5,7 @@ import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 
 export interface InterfaceMethodInfo {
     name: string | undefined;
+    text: string;
     parameters: InterfaceParamInfo[] | undefined;
     returnType: TypeInfo;
     trailingComments: CommentInfo[] | undefined;

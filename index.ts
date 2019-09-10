@@ -1,3 +1,5 @@
+import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
+
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -37,8 +39,6 @@ export * from './extractors/export/ExportInfo';
 export * from './extractors/export/NamedExportInfo';
 export * from './extractors/export-assignment/ExportAssignmentExtractor';
 export * from './extractors/export-assignment/ExportAssignmentInfo';
-export * from './extractors/expression/ExpressionExtractor';
-export * from './extractors/expression/ExpressionInfo';
 export * from './extractors/function/FunctionExtractor';
 export * from './extractors/function/FunctionInfo';
 export * from './extractors/function/FunctionParamInfo';
@@ -87,3 +87,11 @@ export * from './utilities/FsUtils';
 
 export * from './utilities/AureliaSourceFile';
 export * from './utilities/AureliaSourceFileUtils';
+
+
+let x = new AureliaSourceFileUtils();
+let a = x.getSourceFiles('C:/Users/MyLaptop/Desktop/aurelia-master');
+if (a)
+    x.save(a);
+
+const c = 1;

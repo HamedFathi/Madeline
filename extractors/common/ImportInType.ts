@@ -1,5 +1,5 @@
 export interface ImportInType {
-    importedFrom: string;
+    importedFrom: string | undefined;
     name: string;
     preType: string | undefined;
     fromNodeModules: string | undefined;

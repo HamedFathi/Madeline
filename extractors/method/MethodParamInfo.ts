@@ -4,10 +4,11 @@ import { DecoratorInfo } from '../decorator/DecoratorInfo';
 export interface MethodParamInfo {
     name: string;
     type: TypeInfo;
+    text: string;
     modifiers: string[] | undefined;
     isOptional: boolean;
     isRest: boolean;
     isParameterProperty: boolean;
-    defaultValue: string | undefined;
+    initializer: string | undefined;
     decorators: DecoratorInfo[] | undefined;
 }

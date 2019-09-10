@@ -11,6 +11,7 @@ export class InterfaceExtractor {
     public extract(node: InterfaceDeclaration): InterfaceInfo {
         const result: InterfaceInfo = {
             name: node.getName(),
+            text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             trailingComments:
                 new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
@@ -28,6 +29,7 @@ export class InterfaceExtractor {
                     : node.getProperties().map(x => {
                         return {
                             name: x.getName(),
+                            text: x.getText(),
                             type: new TypeExtractor().extract(x.getType()),
                             isOptional: x.hasQuestionToken(),
                             trailingComments:
@@ -46,6 +48,7 @@ export class InterfaceExtractor {
                     : node.getMethods().map(x => {
                         return {
                             name: x.getName(),
+                            text: x.getText(),
                             typeParameters: this.typeParameterExtractor.extract(x),
                             returnType: new TypeExtractor().extract(x.getReturnType()),
                             trailingComments:
@@ -62,11 +65,12 @@ export class InterfaceExtractor {
                                     : x.getParameters().map(y => {
                                         return {
                                             name: y.getName(),
+                                            text: y.getText(),
                                             type: new TypeExtractor().extract(y.getType()),
                                             isOptional: y.isOptional(),
                                             isRest: y.isRestParameter(),
                                             isParameterProperty: y.isParameterProperty(),
-                                            defaultValue:
+                                            initializer:
                                                 y.getInitializer() === undefined
                                                     ? undefined
                                                     : y.getInitializerOrThrow().getText(),
@@ -93,6 +97,7 @@ export class InterfaceExtractor {
                     : node.getCallSignatures().map(x => {
                         return {
                             returnType: new TypeExtractor().extract(x.getReturnType()),
+                            text: x.getText(),
                             typeParameters: this.typeParameterExtractor.extract(x),
                             trailingComments:
                                 new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
@@ -108,6 +113,7 @@ export class InterfaceExtractor {
                                     : x.getParameters().map(y => {
                                         return {
                                             name: y.getName(),
+                                            text: x.getText(),
                                             type: new TypeExtractor().extract(y.getType()),
                                             modifiers:
                                                 y.getModifiers().length === 0
@@ -116,7 +122,7 @@ export class InterfaceExtractor {
                                             isOptional: y.isOptional(),
                                             isRest: y.isRestParameter(),
                                             isParameterProperty: y.isParameterProperty(),
-                                            defaultValue:
+                                            initializer:
                                                 y.getInitializer() === undefined
                                                     ? undefined
                                                     : y.getInitializerOrThrow().getText(),
@@ -130,6 +136,7 @@ export class InterfaceExtractor {
                     : node.getIndexSignatures().map(x => {
                         return {
                             returnType: new TypeExtractor().extract(x.getReturnType()),
+                            text: x.getText(),
                             key: x.getKeyName(),
                             value: x.getKeyType().getText(),
                             trailingComments:
@@ -148,6 +155,7 @@ export class InterfaceExtractor {
                     : node.getConstructSignatures().map(x => {
                         return {
                             returnType: new TypeExtractor().extract(x.getReturnType()),
+                            text: x.getText(),
                             typeParameters: this.typeParameterExtractor.extract(x),
                             trailingComments:
                                 new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
@@ -163,6 +171,7 @@ export class InterfaceExtractor {
                                     : x.getParameters().map(y => {
                                         return {
                                             name: y.getName(),
+                                            text: y.getText(),
                                             type: new TypeExtractor().extract(y.getType()),
                                             modifiers:
                                                 y.getModifiers().length === 0
@@ -171,7 +180,7 @@ export class InterfaceExtractor {
                                             isOptional: y.isOptional(),
                                             isRest: y.isRestParameter(),
                                             isParameterProperty: y.isParameterProperty(),
-                                            defaultValue:
+                                            initializer:
                                                 y.getInitializer() === undefined
                                                     ? undefined
                                                     : y.getInitializerOrThrow().getText(),

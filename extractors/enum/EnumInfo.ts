@@ -10,4 +10,5 @@ export interface EnumInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
+    text: string;
 }

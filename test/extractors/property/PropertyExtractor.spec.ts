@@ -31,7 +31,7 @@ describe('Property Extractor', function () {
             },
             "modifiers": undefined,
             "isOptional": false,
-            "defaultValue": "false",
+            "initializer": "false",
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined
@@ -44,7 +44,7 @@ describe('Property Extractor', function () {
             },
             "modifiers": undefined,
             "isOptional": false,
-            "defaultValue": "5000",
+            "initializer": "5000",
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined
@@ -57,7 +57,7 @@ describe('Property Extractor', function () {
             },
             "modifiers": undefined,
             "isOptional": true,
-            "defaultValue": undefined,
+            "initializer": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined
@@ -70,7 +70,7 @@ describe('Property Extractor', function () {
             },
             "modifiers": undefined,
             "isOptional": false,
-            "defaultValue": undefined,
+            "initializer": undefined,
             "trailingComments": undefined,
             "leadingComments": undefined,
             "decorators": undefined

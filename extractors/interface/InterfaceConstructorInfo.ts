@@ -9,4 +9,5 @@ export interface InterfaceConstructorInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
+    text: string;
 }

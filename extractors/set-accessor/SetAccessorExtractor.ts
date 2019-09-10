@@ -3,39 +3,21 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
-import { ExpressionExtractor } from '../expression/ExpressionExtractor';
-import { ExpressionInfo } from '../expression/ExpressionInfo';
 import { SetAccessorInfo } from './SetAccessorInfo';
 
 export class SetAccessorExtractor {
-    private getExpressionStatements(setAccessorDeclaration: SetAccessorDeclaration): undefined | ExpressionInfo[] {
-        const result: ExpressionInfo[] = [];
-        if (setAccessorDeclaration.getBody()) {
-            const expressions = setAccessorDeclaration
-                .getBodyOrThrow()
-                .getDescendantsOfKind(SyntaxKind.ExpressionStatement);
-            if (expressions.length === 0) {
-                return undefined;
-            } else {
-                expressions.forEach(exp => {
-                    result.push(new ExpressionExtractor().extract(exp));
-                });
-                return result;
-            }
-        }
-        return undefined;
-    }
     public extract(node: SetAccessorDeclaration): SetAccessorInfo {
         return {
             name: node.getName(),
+            text: node.getText(),
             parameter: node.getParameters().map(y => {
                 return {
                     name: y.getName(),
+                    text: y.getText(),
                     modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(z => z.getText()),
                     type: new TypeExtractor().extract(y.getType()),
                 };
             })[0],
-            expressions: this.getExpressionStatements(node),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
             trailingComments:

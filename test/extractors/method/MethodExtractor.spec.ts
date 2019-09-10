@@ -66,7 +66,7 @@ describe('Method Extractor', function () {
                 "isRest": false,
                 "isParameterProperty": false,
                 "modifiers": undefined,
-                "defaultValue": "5",
+                "initializer": "5",
                 "decorators": undefined
             }
             ],
@@ -106,7 +106,7 @@ describe('Method Extractor', function () {
                 "isRest": false,
                 "isParameterProperty": false,
                 "modifiers": undefined,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }, {
                 "name": "lastName",
@@ -119,7 +119,7 @@ describe('Method Extractor', function () {
                 "isRest": false,
                 "isParameterProperty": false,
                 "modifiers": undefined,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }, {
                 "name": "middleName",
@@ -132,7 +132,7 @@ describe('Method Extractor', function () {
                 "isRest": false,
                 "isParameterProperty": false,
                 "modifiers": undefined,
-                "defaultValue": undefined,
+                "initializer": undefined,
                 "decorators": undefined
             }],
             "expressions": undefined

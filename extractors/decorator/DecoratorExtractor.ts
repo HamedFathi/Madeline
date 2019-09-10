@@ -23,6 +23,7 @@ export class DecoratorExtractor {
             return {
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
+                text:x.getText(),
                 parameters:
                     x.getArguments().length === 0
                         ? undefined

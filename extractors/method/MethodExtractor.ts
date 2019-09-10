@@ -4,28 +4,13 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
-import { ExpressionInfo } from '../expression/ExpressionInfo';
-import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 
 export class MethodExtractor {
-    private getExpressionStatements(methodDeclaration: MethodDeclaration): undefined | ExpressionInfo[] {
-        const result: ExpressionInfo[] = [];
-        if (methodDeclaration.getBody()) {
-            const expressions = methodDeclaration.getBodyOrThrow().getDescendantsOfKind(SyntaxKind.ExpressionStatement);
-            if (expressions.length === 0) {
-                return undefined;
-            } else {
-                expressions.forEach(exp => {
-                    result.push(new ExpressionExtractor().extract(exp));
-                });
-                return result;
-            }
-        }
-        return undefined;
-    }
+
     public extract(node: MethodDeclaration): MethodInfo {
         return {
             name: node.getName(),
+            text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             returnType: new TypeExtractor().extract(node.getReturnType()),
             isGenerator: node.isGenerator(),
@@ -46,20 +31,20 @@ export class MethodExtractor {
                 node.getParameters().length === 0
                     ? undefined
                     : node.getParameters().map(y => {
-                          return {
-                              name: y.getName(),
-                              type: new TypeExtractor().extract(y.getType()),
-                              isOptional: y.isOptional(),
-                              isRest: y.isRestParameter(),
-                              isParameterProperty: y.isParameterProperty(),
-                              modifiers:
-                                  y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
-                              defaultValue:
-                                  y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
-                              decorators: new DecoratorExtractor().extract(y),
-                          };
-                      }),
-            expressions: this.getExpressionStatements(node),
+                        return {
+                            name: y.getName(),
+                            text: y.getText(),
+                            type: new TypeExtractor().extract(y.getType()),
+                            isOptional: y.isOptional(),
+                            isRest: y.isRestParameter(),
+                            isParameterProperty: y.isParameterProperty(),
+                            modifiers:
+                                y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
+                            initializer:
+                                y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
+                            decorators: new DecoratorExtractor().extract(y),
+                        };
+                    })
         };
     }
 

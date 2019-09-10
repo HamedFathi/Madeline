@@ -7,5 +7,7 @@ export interface FunctionParamInfo {
     isOptional: boolean;
     isRest: boolean;
     isParameterProperty: boolean;
-    defaultValue: string | undefined;
+    initializer: string | undefined;
+    text: string;
+
 }

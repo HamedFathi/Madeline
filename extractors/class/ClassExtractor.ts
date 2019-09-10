@@ -12,7 +12,7 @@ export class ClassExtractor {
         const decorators = new DecoratorExtractor().extract(node);
         return {
             name: node.getName(),
-            text: node.getFullText(),
+            text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             extends: node.getExtends() === undefined ? undefined : node.getExtendsOrThrow().getText(),
             implements: node.getImplements().length === 0 ? undefined : node.getImplements().map(x => x.getText()),

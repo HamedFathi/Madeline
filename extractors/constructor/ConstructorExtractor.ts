@@ -5,28 +5,8 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
-import { ExpressionInfo } from '../expression/ExpressionInfo';
-import { ExpressionExtractor } from '../expression/ExpressionExtractor';
 
 export class ConstructorExtractor {
-    private getExpressionStatements(constructorDeclaration: ConstructorDeclaration): undefined | ExpressionInfo[] {
-        const result: ExpressionInfo[] = [];
-        if (constructorDeclaration.getBody()) {
-            const expressions = constructorDeclaration
-                .getBodyOrThrow()
-                .getDescendantsOfKind(SyntaxKind.ExpressionStatement);
-            if (expressions.length === 0) {
-                return undefined;
-            } else {
-                expressions.forEach(exp => {
-                    result.push(new ExpressionExtractor().extract(exp));
-                });
-                return result;
-            }
-        }
-        return undefined;
-    }
-
     public extract(node: ConstructorDeclaration): ConstructorInfo {
         const isImplementation = node.isImplementation();
         const isOverload = node.isOverload();
@@ -34,7 +14,6 @@ export class ConstructorExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const modifiers = node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText());
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
-        const expressions = this.getExpressionStatements(node);
         const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
@@ -43,8 +22,9 @@ export class ConstructorExtractor {
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),
                 isParameterProperty: x.isParameterProperty(),
-                defaultValue: x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
+                initializer: x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
                 decorators: new DecoratorExtractor().extract(x),
+                text: x.getText()
             };
         });
         return {
@@ -56,7 +36,7 @@ export class ConstructorExtractor {
             isOverload: isOverload,
             parameters: params.length === 0 ? undefined : params,
             variables: variables.length === 0 ? undefined : variables,
-            expressions: expressions,
+            text: node.getText()
         };
     }
 

@@ -4,33 +4,13 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
-import { ExpressionExtractor } from '../expression/ExpressionExtractor';
-import { ExpressionInfo } from '../expression/ExpressionInfo';
 
 export class GetAccessorExtractor {
-    private getExpressionStatements(getAccessorDeclaration: GetAccessorDeclaration): undefined | ExpressionInfo[] {
-        const result: ExpressionInfo[] = [];
-        if (getAccessorDeclaration.getBody()) {
-            const expressions = getAccessorDeclaration
-                .getBodyOrThrow()
-                .getDescendantsOfKind(SyntaxKind.ExpressionStatement);
-            if (expressions.length === 0) {
-                return undefined;
-            } else {
-                expressions.forEach(exp => {
-                    result.push(new ExpressionExtractor().extract(exp));
-                });
-                return result;
-            }
-        }
-        return undefined;
-    }
-
     public extract(node: GetAccessorDeclaration): GetAccessorInfo {
         return {
             name: node.getName(),
+            text: node.getText(),
             returnType: new TypeExtractor().extract(node.getReturnType()),
-            expressions: this.getExpressionStatements(node),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
             trailingComments:

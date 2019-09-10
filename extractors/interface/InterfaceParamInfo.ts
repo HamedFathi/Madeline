@@ -7,5 +7,6 @@ export interface InterfaceParamInfo {
     isRest: boolean;
     isParameterProperty: boolean;
     modifiers: string[] | undefined;
-    defaultValue: string | undefined;
+    initializer: string | undefined;
+    text: string;
 }

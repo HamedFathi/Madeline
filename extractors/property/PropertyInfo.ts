@@ -7,8 +7,9 @@ export interface PropertyInfo {
     type: TypeInfo;
     modifiers: string[] | undefined;
     isOptional: boolean;
-    defaultValue: string | undefined;
+    initializer: string | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
+    text: string;
 }

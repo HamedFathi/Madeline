@@ -8,10 +8,11 @@ export class PropertyExtractor {
     public extract(node: PropertyDeclaration): PropertyInfo {
         return {
             name: node.getName(),
+            text: node.getText(),
             type: new TypeExtractor().extract(node.getType()),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             isOptional: node.hasQuestionToken(),
-            defaultValue: node.getInitializer() === undefined ? undefined : node.getInitializerOrThrow().getText(),
+            initializer: node.getInitializer() === undefined ? undefined : node.getInitializerOrThrow().getText(),
             trailingComments:
                 new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
                     ? undefined

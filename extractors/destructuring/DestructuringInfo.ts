@@ -5,7 +5,7 @@ import { VariableDeclarationKind } from 'ts-morph';
 export interface DestructuringInfo {
     isArrayDestructuring: boolean;
     elements: DestructuringElementInfo[];
-    defaultValue: string | undefined;
+    initializer: string | undefined;
     modifiers: string[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
@@ -13,4 +13,5 @@ export interface DestructuringInfo {
     kind: VariableDeclarationKind;
     kindName: string;
     typeReference: string | undefined;
+    text: string;
 }

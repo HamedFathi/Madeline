@@ -6,5 +6,5 @@ export interface CallSignatureParamInfo {
     isRest: boolean;
     isParameterProperty: boolean;
     modifiers: string[] | undefined;
-    defaultValue: string | undefined;
+    initializer: string | undefined;
 }

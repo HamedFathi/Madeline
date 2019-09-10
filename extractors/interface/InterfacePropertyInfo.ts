@@ -7,4 +7,5 @@ export interface InterfacePropertyInfo {
     isOptional: boolean;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
+    text: string;
 }

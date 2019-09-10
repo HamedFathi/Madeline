@@ -10,6 +10,7 @@ import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 
 export interface InterfaceInfo {
     name: string;
+    text: string;
     modifiers: string[] | undefined;
     constructors: InterfaceConstructorInfo[] | undefined;
     properties: InterfacePropertyInfo[] | undefined;

@@ -248,7 +248,7 @@ export class LiteralExtractor {
                                 isOptional: y.isOptional(),
                                 isRest: y.isRestParameter(),
                                 isParameterProperty: y.isParameterProperty(),
-                                defaultValue:
+                                initializer:
                                     y.getInitializer() === undefined
                                         ? undefined
                                         : y.getInitializerOrThrow().getText(),

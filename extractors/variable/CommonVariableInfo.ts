@@ -12,7 +12,7 @@ export interface CommonVariableInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
-    defaultValue: FunctionInfo | CallSignatureInfo | string | undefined;
+    initializer: FunctionInfo | CallSignatureInfo | string | undefined;
     kind: VariableDeclarationKind;
     kindName: string;
     typeReference: string | undefined;

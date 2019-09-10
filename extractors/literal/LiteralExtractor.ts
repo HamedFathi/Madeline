@@ -1,4 +1,20 @@
-import { VariableStatement, SyntaxKind, ObjectLiteralExpression, ArrayLiteralExpression, TypeGuards, PropertyAssignment, ShorthandPropertyAssignment, SpreadAssignment, GetAccessorDeclaration, SetAccessorDeclaration, MethodDeclaration, Expression, ArrowFunction, FunctionExpression, CallSignatureDeclaration } from 'ts-morph';
+import {
+    VariableStatement,
+    SyntaxKind,
+    ObjectLiteralExpression,
+    ArrayLiteralExpression,
+    TypeGuards,
+    PropertyAssignment,
+    ShorthandPropertyAssignment,
+    SpreadAssignment,
+    GetAccessorDeclaration,
+    SetAccessorDeclaration,
+    MethodDeclaration,
+    Expression,
+    ArrowFunction,
+    FunctionExpression,
+    CallSignatureDeclaration,
+} from 'ts-morph';
 import { GetAccessorInfo } from '../get-accessor/GetAccessorInfo';
 import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
 import { MethodInfo } from '../method/MethodInfo';
@@ -94,40 +110,39 @@ export const BasicConfiguration = {
 */
 export class LiteralExtractor {
     public extract(node: VariableStatement): LiteralInfo[] | undefined {
-        let result: LiteralInfo[] = [];
+        const result: LiteralInfo[] = [];
         node.getDeclarations().forEach(declaration => {
-            let hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
+            const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = undefined;
             let objectLiteral: ObjectLiteralExpression | undefined = undefined;
             let arrayLiteral: ArrayLiteralExpression | undefined = undefined;
             if (hasTypeReference) {
-                let asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
-                let typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
+                const asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
+                const typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
                 typeReference = typeRef === undefined ? undefined : typeRef.getText();
                 objectLiteral = asExpression.getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression)[0];
                 arrayLiteral = asExpression.getDescendantsOfKind(SyntaxKind.ArrayLiteralExpression)[0];
-            }
-            else {
+            } else {
                 objectLiteral = declaration.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
                 arrayLiteral = declaration.getInitializerIfKind(SyntaxKind.ArrayLiteralExpression);
             }
 
             if (objectLiteral) {
-                let elements = this.getExpressionInfo(objectLiteral);
+                const elements = this.getExpressionInfo(objectLiteral);
                 result.push({
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType())
+                    type: new TypeExtractor().extract(declaration.getType()),
                 });
             }
             if (arrayLiteral) {
-                let elements = arrayLiteral.getElements();
-                let members: LiteralExpressionInfo[] = [];
+                const elements = arrayLiteral.getElements();
+                const members: LiteralExpressionInfo[] = [];
                 elements.forEach(element => {
-                    let info = this.getExpressionInfo(element);
+                    const info = this.getExpressionInfo(element);
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
@@ -136,8 +151,8 @@ export class LiteralExtractor {
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType())
-                })
+                    type: new TypeExtractor().extract(declaration.getType()),
+                });
             }
         });
 
@@ -164,7 +179,7 @@ export class LiteralExtractor {
                     const value =
                         propertyAssignment.getInitializer() === undefined
                             ? undefined
-                            : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow())
+                            : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow());
                     const type = new TypeExtractor().extract(propertyAssignment.getType());
                     const name = propertyAssignment.getName();
                     assignments.push({
@@ -221,16 +236,15 @@ export class LiteralExtractor {
                 setAccessors: setAccessors,
                 methods: methods,
                 text: text,
-                isObjectLiteral: true
+                isObjectLiteral: true,
             };
-        }
-        else if (TypeGuards.isFunctionExpression(node)) {
+        } else if (TypeGuards.isFunctionExpression(node)) {
             const functionExpression = node as FunctionExpression;
             const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression);
             return functionDeclarationInfo;
         } else if (TypeGuards.isArrowFunction(node)) {
             const arrowFunction = node as ArrowFunction;
-            const callSignature = arrowFunction as unknown as CallSignatureDeclaration;
+            const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
                 returnType: new TypeExtractor().extract(callSignature.getReturnType()),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
@@ -238,34 +252,31 @@ export class LiteralExtractor {
                     callSignature.getParameters().length === 0
                         ? undefined
                         : callSignature.getParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                type: new TypeExtractor().extract(y.getType()),
-                                modifiers:
-                                    y.getModifiers().length === 0
-                                        ? undefined
-                                        : y.getModifiers().map(x => x.getText()),
-                                isOptional: y.isOptional(),
-                                isRest: y.isRestParameter(),
-                                isParameterProperty: y.isParameterProperty(),
-                                initializer:
-                                    y.getInitializer() === undefined
-                                        ? undefined
-                                        : y.getInitializerOrThrow().getText(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  type: new TypeExtractor().extract(y.getType()),
+                                  modifiers:
+                                      y.getModifiers().length === 0
+                                          ? undefined
+                                          : y.getModifiers().map(x => x.getText()),
+                                  isOptional: y.isOptional(),
+                                  isRest: y.isRestParameter(),
+                                  isParameterProperty: y.isParameterProperty(),
+                                  initializer:
+                                      y.getInitializer() === undefined
+                                          ? undefined
+                                          : y.getInitializerOrThrow().getText(),
+                              };
+                          }),
             };
-        }
-        else
+        } else
             return {
                 assignments: undefined,
                 getAccessors: undefined,
                 setAccessors: undefined,
                 methods: undefined,
                 text: node.getText(),
-                isObjectLiteral: false
-            };;
+                isObjectLiteral: false,
+            };
     }
 }
-
-

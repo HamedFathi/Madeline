@@ -1,4 +1,4 @@
-import { ClassDeclaration, SyntaxKind, SetAccessorDeclaration } from 'ts-morph';
+import { ClassDeclaration, SetAccessorDeclaration } from 'ts-morph';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';

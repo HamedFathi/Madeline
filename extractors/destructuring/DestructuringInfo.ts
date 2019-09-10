@@ -1,4 +1,4 @@
-import { DestructuringElementInfo } from "./DestructuringElementInfo";
+import { DestructuringElementInfo } from './DestructuringElementInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { VariableDeclarationKind } from 'ts-morph';

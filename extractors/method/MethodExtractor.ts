@@ -1,4 +1,4 @@
-import { ClassDeclaration, MethodDeclaration, SyntaxKind } from 'ts-morph';
+import { ClassDeclaration, MethodDeclaration } from 'ts-morph';
 import { MethodInfo } from './MethodInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
@@ -6,7 +6,6 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
 
 export class MethodExtractor {
-
     public extract(node: MethodDeclaration): MethodInfo {
         return {
             name: node.getName(),
@@ -31,20 +30,20 @@ export class MethodExtractor {
                 node.getParameters().length === 0
                     ? undefined
                     : node.getParameters().map(y => {
-                        return {
-                            name: y.getName(),
-                            text: y.getText(),
-                            type: new TypeExtractor().extract(y.getType()),
-                            isOptional: y.isOptional(),
-                            isRest: y.isRestParameter(),
-                            isParameterProperty: y.isParameterProperty(),
-                            modifiers:
-                                y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
-                            initializer:
-                                y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
-                            decorators: new DecoratorExtractor().extract(y),
-                        };
-                    })
+                          return {
+                              name: y.getName(),
+                              text: y.getText(),
+                              type: new TypeExtractor().extract(y.getType()),
+                              isOptional: y.isOptional(),
+                              isRest: y.isRestParameter(),
+                              isParameterProperty: y.isParameterProperty(),
+                              modifiers:
+                                  y.getModifiers().length === 0 ? undefined : y.getModifiers().map(x => x.getText()),
+                              initializer:
+                                  y.getInitializer() === undefined ? undefined : y.getInitializerOrThrow().getText(),
+                              decorators: new DecoratorExtractor().extract(y),
+                          };
+                      }),
         };
     }
 

@@ -1,4 +1,4 @@
-import { Type/*, PropertyDeclaration, ParameterDeclaration*/ } from 'ts-morph';
+import { Type /*, PropertyDeclaration, ParameterDeclaration*/ } from 'ts-morph';
 import { TypeInfo } from './TypeInfo';
 /*import { TypeKind } from './TypeKind';
 import { JsonLikeTypeInfo } from './JsonLikeTypeInfo';
@@ -200,20 +200,20 @@ export class TypeExtractor {
         const regex = /import\((.+)\).(.+\.)?(.*)/;
         const match = regex.exec(text);
         if (match) {
-            let importedFrom: string = new StringUtils().removeFirstAndLastQuote((match[1] as string).trim());
-            let name: string = (match[3] as string).trim();
-            let preType: string | undefined = match[2] === undefined ? undefined : (match[2] as string).replace(".", "");
-            let fromNodeModules: string | undefined = importedFrom.split('node_modules')[1];
+            const importedFrom: string = new StringUtils().removeFirstAndLastQuote((match[1] as string).trim());
+            const name: string = (match[3] as string).trim();
+            const preType: string | undefined =
+                match[2] === undefined ? undefined : (match[2] as string).replace('.', '');
+            const fromNodeModules: string | undefined = importedFrom.split('node_modules')[1];
             return {
                 importedFrom: importedFrom,
                 name: name,
                 preType: preType,
                 fromNodeModules: fromNodeModules,
-                text: text
+                text: text,
             };
         } else {
             return undefined;
         }
     }
 }
-

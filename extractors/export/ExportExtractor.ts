@@ -11,11 +11,11 @@ export class ExportExtractor {
                     x.getNamedExports().length === 0
                         ? undefined
                         : x.getNamedExports().map(y => {
-                            return {
-                                name: y.getName(),
-                                alias: y.getSymbol() === undefined ? undefined : y.getSymbolOrThrow().getName(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  alias: y.getSymbol() === undefined ? undefined : y.getSymbolOrThrow().getName(),
+                              };
+                          }),
             };
         });
         return result.length === 0 ? undefined : result;

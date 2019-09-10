@@ -32,8 +32,8 @@ export class JsonUtils {
 
     public convertJsObjectToJson(jsObject: string): any {
         try {
-            let obj = JSON.stringify(eval('(' + jsObject + ')'));
-            let isJson = this.isJson(obj);
+            const obj = JSON.stringify(eval('(' + jsObject + ')'));
+            const isJson = this.isJson(obj);
             return isJson ? JSON.parse(obj) : undefined;
         } catch {
             return undefined;

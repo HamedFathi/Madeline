@@ -5,9 +5,19 @@ import {
     GetAccessorDeclaration,
     ParameterDeclaration,
     SetAccessorDeclaration,
+    SyntaxKind,
 } from 'ts-morph';
 import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
+
+const allowedKinds: SyntaxKind[] = [
+    SyntaxKind.ClassDeclaration,
+    SyntaxKind.MethodDeclaration,
+    SyntaxKind.PropertyDeclaration,
+    SyntaxKind.GetAccessor,
+    SyntaxKind.SetAccessor,
+    SyntaxKind.Parameter
+];
 
 export class DecoratorExtractor {
     public extract(
@@ -17,10 +27,16 @@ export class DecoratorExtractor {
             | PropertyDeclaration
             | GetAccessorDeclaration
             | SetAccessorDeclaration
-            | ParameterDeclaration,
-    ): DecoratorInfo[] | undefined {
-        const decorators = node.getDecorators().map(x => {
-            return {
+            | ParameterDeclaration
+        , filterStrategy?: (info: DecoratorInfo) => boolean): DecoratorInfo[] | undefined {
+
+        if (!allowedKinds.includes(node.getKind())) {
+            // the specified node does not allowed to have decorators
+            return undefined;
+        }
+
+        let decorators = node.getDecorators().map(x => {
+            let di = {
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),
@@ -29,8 +45,16 @@ export class DecoratorExtractor {
                         ? undefined
                         : x.getArguments().map(x => new TypeExtractor().extract(x.getType())),
             };
+
+            return di;
         });
+
+        if (filterStrategy) {
+            decorators = decorators.filter(filterStrategy);
+        }
+
         if (decorators.length === 0) return undefined;
+
         return decorators;
     }
 }

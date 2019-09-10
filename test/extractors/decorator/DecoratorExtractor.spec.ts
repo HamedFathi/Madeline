@@ -2,6 +2,7 @@ import { assert } from "chai";
 import { Project, ScriptTarget, SyntaxKind, GetAccessorDeclaration, ClassDeclaration, PropertyDeclaration, MethodDeclaration, ParameterDeclaration } from 'ts-morph';
 import { DecoratorExtractor } from '../../../extractors/decorator/DecoratorExtractor';
 import { StringUtils } from '../../../utilities/StringUtils';
+import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
 
 const decoratorSample = `
 @test1(1,'A',{w:2})
@@ -45,16 +46,18 @@ describe('DecoratorExtractor', function () {
 
         // act
         file.forEachDescendant(node => {
-            let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+            if (node.getKind() === SyntaxKind.ClassDeclaration) {
+                let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
 
-            if (decoratorDescriptor !== undefined) {
-                // assert
-                assert.equal(decoratorDescriptor.length, 1);
-                assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
-                assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                // @ts-ignore
-                assert.equal(decoratorDescriptor[0].text, '@autoinject');
-                assert.equal(decoratorDescriptor[0].parameters, undefined);
+                if (decoratorDescriptor !== undefined) {
+                    // assert
+                    assert.equal(decoratorDescriptor.length, 1);
+                    assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
+                    assert.equal(decoratorDescriptor[0].name, 'autoinject');
+                    // @ts-ignore
+                    assert.equal(decoratorDescriptor[0].text, '@autoinject');
+                    assert.equal(decoratorDescriptor[0].parameters, undefined);
+                }
             }
         });
     });
@@ -66,15 +69,46 @@ describe('DecoratorExtractor', function () {
 
         // act
         file.forEachDescendant(node => {
-            let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+            if (node.getKind() === SyntaxKind.ClassDeclaration) {
+
+                let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+
+                if (decoratorDescriptor !== undefined) {
+                    // assert
+                    assert.equal(decoratorDescriptor.length, 1);
+                    assert.equal(decoratorDescriptor[0].isDecoratorFactory, true);
+                    assert.equal(decoratorDescriptor[0].name, 'autoinject');
+                    // @ts-ignore
+                    assert.equal(decoratorDescriptor[0].text, '@autoinject()');
+                    assert.equal(decoratorDescriptor[0].parameters, undefined);
+                }
+            }
+        });
+    });
+
+    it('should filter non-decorator factory "filterDecorator" from class', () => {
+        // arrange
+        const sut = `@autoinject
+        @filterDecorator
+        export class Test{}`;
+        const file = project.createSourceFile('sut.ts', sut);
+
+        const filterStrategy = (d:DecoratorInfo) => {
+            return d.name === 'filterDecorator';
+        };
+
+        // act
+        file.forEachDescendant(node => {
+            let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node,
+                filterStrategy);
 
             if (decoratorDescriptor !== undefined) {
                 // assert
                 assert.equal(decoratorDescriptor.length, 1);
-                assert.equal(decoratorDescriptor[0].isDecoratorFactory, true);
-                assert.equal(decoratorDescriptor[0].name, 'autoinject');
+                assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
+                assert.equal(decoratorDescriptor[0].name, 'filterDecorator');
                 // @ts-ignore
-                assert.equal(decoratorDescriptor[0].text, '@autoinject');
+                assert.equal(decoratorDescriptor[0].text, '@filterDecorator');
                 assert.equal(decoratorDescriptor[0].parameters, undefined);
             }
         });

@@ -4,4 +4,5 @@ export interface DecoratorInfo {
     name: string;
     parameters: TypeInfo[] | undefined;
     isDecoratorFactory: boolean;
+    text: string;
 }

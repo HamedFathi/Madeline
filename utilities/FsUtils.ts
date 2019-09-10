@@ -1,2 +1,1 @@
-export class FsUtils {
-}
+export class FsUtils {}

@@ -20,7 +20,7 @@ const { "some property": someProperty } = obj as unknown as any as x;
 */
 export class DestructuringExtractor {
     public extract(node: VariableStatement): DestructuringInfo[] | undefined {
-        let result: DestructuringInfo[] = [];
+        const result: DestructuringInfo[] = [];
         const modifiers = node.getModifiers().map(x => x.getText());
         const kind = node.getDeclarationKind();
         const kindName = node.getDeclarationKind().toString();
@@ -29,28 +29,31 @@ export class DestructuringExtractor {
         const modules = new ModuleExtractor().extract(node);
         const nodeText = node.getText();
         node.getDeclarations().forEach(declaration => {
-            let elements: DestructuringElementInfo[] = [];
-            let bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
+            const elements: DestructuringElementInfo[] = [];
+            const bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
             if (bindingElements.length > 0) {
                 let typeReference: string | undefined = undefined;
-                let initValue = declaration.getInitializer();
-                let text = declaration.getText();
-                let initializer = initValue === undefined ? undefined : declaration.getInitializerOrThrow().getText();
+                const initValue = declaration.getInitializer();
+                const text = declaration.getText();
+                const initializer = initValue === undefined ? undefined : declaration.getInitializerOrThrow().getText();
                 if (initValue) {
-                    let typeRef = declaration.getDescendantsOfKind(SyntaxKind.TypeReference);
+                    const typeRef = declaration.getDescendantsOfKind(SyntaxKind.TypeReference);
                     typeReference = typeRef.length === 0 ? undefined : typeRef[0].getText();
                 }
-                let isArrayDestructuring = declaration.getDescendantsOfKind(SyntaxKind.ArrayBindingPattern).length > 0;
+                const isArrayDestructuring =
+                    declaration.getDescendantsOfKind(SyntaxKind.ArrayBindingPattern).length > 0;
                 bindingElements.forEach(element => {
-                    let name = element.getName();
-                    let propertyName = element.getPropertyNameNode() === undefined
-                        ? undefined : element.getPropertyNameNodeOrThrow().getText()
-                    let isRest = element.getDotDotDotToken() !== undefined;
+                    const name = element.getName();
+                    const propertyName =
+                        element.getPropertyNameNode() === undefined
+                            ? undefined
+                            : element.getPropertyNameNodeOrThrow().getText();
+                    const isRest = element.getDotDotDotToken() !== undefined;
                     elements.push({
                         name: name,
                         propertyName: propertyName,
                         isRest: isRest,
-                        text: text
+                        text: text,
                     });
                 });
                 result.push({
@@ -64,11 +67,10 @@ export class DestructuringExtractor {
                     modifiers: modifiers,
                     modules: modules,
                     typeReference: typeReference,
-                    text: nodeText
+                    text: nodeText,
                 });
             }
         });
         return result.length === 0 ? undefined : result;
     }
 }
-

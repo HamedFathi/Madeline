@@ -9,5 +9,4 @@ export interface FunctionParamInfo {
     isParameterProperty: boolean;
     initializer: string | undefined;
     text: string;
-
 }

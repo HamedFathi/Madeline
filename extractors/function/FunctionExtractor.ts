@@ -1,4 +1,4 @@
-import { FunctionDeclaration, SyntaxKind, FunctionExpression } from 'ts-morph';
+import { FunctionDeclaration, FunctionExpression } from 'ts-morph';
 import { FunctionInfo } from './FunctionInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
@@ -7,7 +7,6 @@ import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class FunctionExtractor {
-
     public extractFromExpression(node: FunctionExpression): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
@@ -28,19 +27,19 @@ export class FunctionExtractor {
                 node.getParameters().length === 0
                     ? undefined
                     : node.getParameters().map(x => {
-                        return {
-                            name: x.getName(),
-                            text: x.getText(),
-                            type: new TypeExtractor().extract(x.getType()),
-                            modifiers:
-                                x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                            isOptional: x.isOptional(),
-                            isRest: x.isRestParameter(),
-                            isParameterProperty: x.isParameterProperty(),
-                            initializer:
-                                x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
-                        };
-                    }),
+                          return {
+                              name: x.getName(),
+                              text: x.getText(),
+                              type: new TypeExtractor().extract(x.getType()),
+                              modifiers:
+                                  x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
+                              isOptional: x.isOptional(),
+                              isRest: x.isRestParameter(),
+                              isParameterProperty: x.isParameterProperty(),
+                              initializer:
+                                  x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
+                          };
+                      }),
         };
         return result;
     }
@@ -68,19 +67,19 @@ export class FunctionExtractor {
                 node.getParameters().length === 0
                     ? undefined
                     : node.getParameters().map(x => {
-                        return {
-                            name: x.getName(),
-                            text: node.getText(),
-                            type: new TypeExtractor().extract(x.getType()),
-                            modifiers:
-                                x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                            isOptional: x.isOptional(),
-                            isRest: x.isRestParameter(),
-                            isParameterProperty: x.isParameterProperty(),
-                            initializer:
-                                x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
-                        };
-                    }),
+                          return {
+                              name: x.getName(),
+                              text: node.getText(),
+                              type: new TypeExtractor().extract(x.getType()),
+                              modifiers:
+                                  x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
+                              isOptional: x.isOptional(),
+                              isRest: x.isRestParameter(),
+                              isParameterProperty: x.isParameterProperty(),
+                              initializer:
+                                  x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
+                          };
+                      }),
         };
         return result;
     }

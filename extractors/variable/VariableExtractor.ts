@@ -1,4 +1,12 @@
-import { VariableStatement, SyntaxKind, Expression, FunctionExpression, ArrowFunction, CallSignatureDeclaration, TypeGuards } from 'ts-morph';
+import {
+    VariableStatement,
+    SyntaxKind,
+    Expression,
+    FunctionExpression,
+    ArrowFunction,
+    CallSignatureDeclaration,
+    TypeGuards,
+} from 'ts-morph';
 import { VariableInfo } from './VariableInfo';
 import { LiteralExtractor } from '../literal/LiteralExtractor';
 import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
@@ -13,9 +21,9 @@ import { CommonVariableInfo } from './CommonVariableInfo';
 
 export class VariableExtractor {
     public extract(node: VariableStatement): VariableInfo {
-        let literals = new LiteralExtractor().extract(node);
-        let destructions = new DestructuringExtractor().extract(node);
-        let commons: CommonVariableInfo[] = [];
+        const literals = new LiteralExtractor().extract(node);
+        const destructions = new DestructuringExtractor().extract(node);
+        const commons: CommonVariableInfo[] = [];
         if (!literals && !destructions) {
             const modifiers = node.getModifiers().map(x => x.getText());
             const kind = node.getDeclarationKind();
@@ -25,11 +33,11 @@ export class VariableExtractor {
             const modules = new ModuleExtractor().extract(node);
             const text = node.getText();
             node.getDeclarations().forEach(declaration => {
-                let hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
+                const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
                 let typeReference: string | undefined = undefined;
                 if (hasTypeReference) {
-                    let asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
-                    let typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
+                    const asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
+                    const typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
                     typeReference = typeRef === undefined ? undefined : typeRef.getText();
                 }
                 commons.push({
@@ -46,15 +54,15 @@ export class VariableExtractor {
                     leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
                     modules: modules,
                     text: text,
-                    typeReference: typeReference
+                    typeReference: typeReference,
                 });
             });
         }
         return {
             literals: literals,
             destructions: destructions,
-            commons: commons.length === 0 ? undefined : commons
-        }
+            commons: commons.length === 0 ? undefined : commons,
+        };
     }
 
     private getExpressionInfo(node: Expression): FunctionInfo | CallSignatureInfo | string {
@@ -64,7 +72,7 @@ export class VariableExtractor {
             return functionDeclarationInfo;
         } else if (TypeGuards.isArrowFunction(node)) {
             const arrowFunction = node as ArrowFunction;
-            const callSignature = arrowFunction as unknown as CallSignatureDeclaration;
+            const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
                 returnType: new TypeExtractor().extract(callSignature.getReturnType()),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
@@ -72,26 +80,23 @@ export class VariableExtractor {
                     callSignature.getParameters().length === 0
                         ? undefined
                         : callSignature.getParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                type: new TypeExtractor().extract(y.getType()),
-                                modifiers:
-                                    y.getModifiers().length === 0
-                                        ? undefined
-                                        : y.getModifiers().map(x => x.getText()),
-                                isOptional: y.isOptional(),
-                                isRest: y.isRestParameter(),
-                                isParameterProperty: y.isParameterProperty(),
-                                initializer:
-                                    y.getInitializer() === undefined
-                                        ? undefined
-                                        : y.getInitializerOrThrow().getText(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  type: new TypeExtractor().extract(y.getType()),
+                                  modifiers:
+                                      y.getModifiers().length === 0
+                                          ? undefined
+                                          : y.getModifiers().map(x => x.getText()),
+                                  isOptional: y.isOptional(),
+                                  isRest: y.isRestParameter(),
+                                  isParameterProperty: y.isParameterProperty(),
+                                  initializer:
+                                      y.getInitializer() === undefined
+                                          ? undefined
+                                          : y.getInitializerOrThrow().getText(),
+                              };
+                          }),
             };
-        }
-        else
-            return node.getText();
+        } else return node.getText();
     }
 }
-

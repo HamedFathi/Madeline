@@ -1,4 +1,4 @@
-import { ClassDeclaration, ConstructorDeclaration, SyntaxKind } from 'ts-morph';
+import { ClassDeclaration, ConstructorDeclaration } from 'ts-morph';
 import { ConstructorParamInfo } from './ConstructorParamInfo';
 import { ConstructorInfo } from './ConstructorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
@@ -24,7 +24,7 @@ export class ConstructorExtractor {
                 isParameterProperty: x.isParameterProperty(),
                 initializer: x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
                 decorators: new DecoratorExtractor().extract(x),
-                text: x.getText()
+                text: x.getText(),
             };
         });
         return {
@@ -36,7 +36,7 @@ export class ConstructorExtractor {
             isOverload: isOverload,
             parameters: params.length === 0 ? undefined : params,
             variables: variables.length === 0 ? undefined : variables,
-            text: node.getText()
+            text: node.getText(),
         };
     }
 

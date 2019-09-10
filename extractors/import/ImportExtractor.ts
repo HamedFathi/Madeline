@@ -8,7 +8,7 @@ export class ImportExtractor {
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
-                    const importDeclaration = (node as ImportDeclaration);
+                    const importDeclaration = node as ImportDeclaration;
                     const textDeclaration = importDeclaration.getText();
                     const moduleValue = importDeclaration.getModuleSpecifierValue();
                     const namedImports = importDeclaration.getNamedImports();
@@ -29,7 +29,7 @@ export class ImportExtractor {
                                 module: moduleValue,
                                 kind: kind,
                                 kindName: ImportKind[kind],
-                                text: textDeclaration
+                                text: textDeclaration,
                             });
                         });
                     }
@@ -43,7 +43,7 @@ export class ImportExtractor {
                             module: moduleValue,
                             kind: kind,
                             kindName: ImportKind[kind],
-                            text: textDeclaration
+                            text: textDeclaration,
                         });
                     }
                     if (namespaceImport) {
@@ -56,7 +56,7 @@ export class ImportExtractor {
                             module: moduleValue,
                             kind: kind,
                             kindName: ImportKind[kind],
-                            text: textDeclaration
+                            text: textDeclaration,
                         });
                     }
                     break;
@@ -72,7 +72,7 @@ export class ImportExtractor {
                         module: moduleRefValue,
                         kind: kind,
                         kindName: ImportKind[kind],
-                        text: text
+                        text: text,
                     });
                     break;
             }

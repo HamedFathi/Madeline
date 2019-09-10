@@ -10,7 +10,7 @@
             "name": "Launch Program",
             "program": "${workspaceRoot}/index.ts",
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "tsc",            
+            "preLaunchTask": "tsc",   
             "outFiles": [
                 "${workspaceRoot}/**/*.js"
             ],

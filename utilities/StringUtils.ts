@@ -37,6 +37,12 @@ export class StringUtils {
         return lines.join(separator);
     }
 
+    public nbspGenerator(repetition?: number) {
+        if (!repetition || repetition === 0) return '';
+        const r = repetition && repetition > 0 ? repetition : 1;
+        return '&nbsp;'.repeat(r);
+    }
+
     public getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
         const afterStart = text.split(startDelimiter)[1];
         if (afterStart !== undefined) {

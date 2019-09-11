@@ -2,6 +2,7 @@ import { ScriptTarget, Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import { ClassExtractor } from './extractors/class/ClassExtractor';
 import { ClassToMarkdownConverter, CommentToMarkdownConverter } from './markdown/class/ClassToMarkdownConverter';
 import { PrettierUtils } from './utilities/PrettifierUtils';
+import { ModuleToMdConverter } from './markdown/module/ModuleToMdConverter';
 
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
@@ -142,18 +143,42 @@ export class Statistics {
     }
 }
 `;
+const moduleSample = `
+module NS1 {
+	export namespace NS2 {
+		module NS3 {
+            // aaaaa
+			namespace NS4 {
+				class Greeter {
+					greeting: string;
+					constructor(message: string) {
+						this.greeting = message;
+					}
+				}
+			}
+		}
+	}
+}
+`;
 
 const project = new Project({
     compilerOptions: {
         target: ScriptTarget.ES5,
     },
 });
-const file = project.createSourceFile('test.ts', docSample);
+const file = project.createSourceFile('test.ts', moduleSample);
+
 file.forEachDescendant(x => {
     switch (x.getKind()) {
         case SyntaxKind.ClassDeclaration:
             const clsVisitor = new ClassExtractor();
             const cls = clsVisitor.extract(x as ClassDeclaration);
+            if (cls.modules) {
+                const aaa = new ModuleToMdConverter().convert(cls.modules);
+                aaa.forEach(aa => {
+                    console.log(aa);
+                });
+            }
             const src = new PrettierUtils().prettify(cls.text);
             const src2 = new PrettierUtils().prettify(htmlSample, 'html');
             if (cls.leadingComments) {

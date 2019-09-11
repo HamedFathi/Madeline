@@ -30,7 +30,8 @@ export class CommentToMarkdownConverter {
                             {
                                 p: !appendDescriptions
                                     ? commentInfo.description
-                                    : new StringUtils().joinLines(commentInfo.description, ' '),                            },
+                                    : new StringUtils().joinLines(commentInfo.description, ' '),
+                            },
                         ]);
                         md.push(info);
                     }

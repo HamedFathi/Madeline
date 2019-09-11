@@ -15,7 +15,7 @@ export class HtmlCommentExtractor {
             pre(node: any, parent: any) {
                 /* eslint-disable */
                 if (node['type'] && node['type'] === 'comment') {
-                    const data = <string>node['data'];
+                    const data = <string>node['data'];                    
                     const kind = CommentKind.Html;
                     /*
                         let pos = <number>node['sourceCodeLocation']['startOffset'];
@@ -32,6 +32,12 @@ export class HtmlCommentExtractor {
                 }
             },
         });
+        return result;
+    }
+
+    private isSingleLineComment(text:string):boolean
+    {
+        let result = text.trim().startsWith('\\\\');
         return result;
     }
 }

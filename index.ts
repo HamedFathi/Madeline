@@ -148,7 +148,7 @@ const project = new Project({
         target: ScriptTarget.ES5,
     },
 });
-const file = project.createSourceFile('test.ts', classSample);
+const file = project.createSourceFile('test.ts', docSample);
 file.forEachDescendant(x => {
     switch (x.getKind()) {
         case SyntaxKind.ClassDeclaration:
@@ -156,9 +156,10 @@ file.forEachDescendant(x => {
             const cls = clsVisitor.extract(x as ClassDeclaration);
             const src = new PrettierUtils().prettify(cls.text);
             const src2 = new PrettierUtils().prettify(htmlSample, 'html');
-            if(cls.leadingComments){
-                let src3 = new CommentToMarkdownConverter().convert(cls.leadingComments)
-                const a =2;
+            if (cls.leadingComments) {
+                const src3 = new CommentToMarkdownConverter().convert(cls.leadingComments, true);
+                console.log(src3);
+                const a = 2;
             }
             const md = new ClassToMarkdownConverter().convert(cls);
             console.log(md);

@@ -23,6 +23,20 @@ export class StringUtils {
         return text;
     }
 
+    public removeLineBreaks(text: string): string {
+        const result = text.replace(/(\r\n|\n|\r)/gm, '');
+        return result;
+    }
+
+    public joinLines(text: string[], separator?: string): string {
+        const lines: string[] = [];
+        text.forEach(line => {
+            const result = this.removeLineBreaks(line).trim();
+            lines.push(result);
+        });
+        return lines.join(separator);
+    }
+
     public getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
         const afterStart = text.split(startDelimiter)[1];
         if (afterStart !== undefined) {

@@ -2,6 +2,7 @@ import * as json2md from 'json2md';
 import { ClassInfo } from '../../extractors/class/ClassInfo';
 import { CommentInfo } from '../../extractors/comment/CommentInfo';
 import { CommentKind } from '../../extractors/comment/CommentKind';
+import { StringUtils } from '../../utilities/StringUtils';
 // import { ModuleInfo } from '../../extractors/module/ModuleInfo';
 
 export class ClassToMarkdownConverter {
@@ -17,7 +18,7 @@ export class ClassToMarkdownConverter {
 
 export class CommentToMarkdownConverter {
     public convert(commentsInfo: CommentInfo[], appendDescriptions = false): string[] {
-        let md :string[]= [];
+        const md: string[] = [];
 
         commentsInfo.forEach(commentInfo => {
             switch (commentInfo.kind) {
@@ -25,19 +26,30 @@ export class CommentToMarkdownConverter {
                     break;
                 case CommentKind.JsSingleLine:
                     if (commentInfo.description) {
-                        let info = json2md([
+                        const info = json2md([
                             {
-                                p: !appendDescriptions ? commentInfo.description : commentInfo.description.join(' '),
-                            },
+                                p: !appendDescriptions
+                                    ? commentInfo.description
+                                    : new StringUtils().joinLines(commentInfo.description, ' '),                            },
                         ]);
                         md.push(info);
                     }
                     break;
                 case CommentKind.JsMultiLine:
+                    if (commentInfo.description) {
+                        const info = json2md([
+                            {
+                                p: !appendDescriptions
+                                    ? commentInfo.description
+                                    : new StringUtils().joinLines(commentInfo.description, ' '),
+                            },
+                        ]);
+                        md.push(info);
+                    }
                     break;
             }
         });
-        
+
         return md;
     }
 }

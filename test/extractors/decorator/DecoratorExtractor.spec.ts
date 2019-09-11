@@ -148,8 +148,36 @@ describe('DecoratorExtractor', function () {
 
         // assert
         assert.equal(allDecorators.length, 2);
-        assert.equal(allDecorators[0].name , 'autoinject' );
-        assert.equal(allDecorators[1].name , 'another' );
+        assert.equal(allDecorators[0].name, 'autoinject');
+        assert.equal(allDecorators[1].name, 'another');
+    });
+
+    it('should return a factory decorator with one argument', () => {
+
+        const sut = `@inject(ISample)
+        class Test(){ }`;
+
+        const file = project.createSourceFile('sut.ts', sut);
+
+        file.forEachDescendant(node =>{
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+
+            if( decoratorInfos != null ){
+
+                assert.equal(decoratorInfos.length , 1);
+                assert.equal(decoratorInfos[0].isDecoratorFactory , true);
+                assert.equal(decoratorInfos[0].name , 'inject');
+                assert.equal(decoratorInfos[0].name , '@inject(ISample)');
+
+                assert.isTrue( decoratorInfos[0].parameters !== undefined );
+                assert.isTrue( decoratorInfos[0].parameters[0] !== undefined );
+
+                assert.equal(decoratorInfos[0].parameters.length , 1);
+                assert.equal(decoratorInfos[0].parameters[0].name, 'ISample');
+                assert.equal(decoratorInfos[0].parameters[0].text, 'ISample');
+            }
+        });
+
     });
 
     // it('should return correct DecoratorInfo', function () {

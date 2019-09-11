@@ -1,8 +1,9 @@
 import { ScriptTarget, Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import { ClassExtractor } from './extractors/class/ClassExtractor';
-import { ClassToMarkdownConverter, CommentToMarkdownConverter } from './markdown/class/ClassToMarkdownConverter';
 import { PrettierUtils } from './utilities/PrettifierUtils';
 import { ModuleToMdConverter } from './markdown/module/ModuleToMdConverter';
+import { ClassToMdConverter } from './markdown/class/ClassToMdConverter';
+import { CommentToMdConverter } from './markdown/comment/CommentToMdConverter';
 
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
@@ -182,11 +183,11 @@ file.forEachDescendant(x => {
             const src = new PrettierUtils().prettify(cls.text);
             const src2 = new PrettierUtils().prettify(htmlSample, 'html');
             if (cls.leadingComments) {
-                const src3 = new CommentToMarkdownConverter().convert(cls.leadingComments, true);
+                const src3 = new CommentToMdConverter().convert(cls.leadingComments, true);
                 console.log(src3);
                 const a = 2;
             }
-            const md = new ClassToMarkdownConverter().convert(cls);
+            const md = new ClassToMdConverter().convert(cls);
             console.log(md);
             break;
     }

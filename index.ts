@@ -1,3 +1,8 @@
+import { ScriptTarget, Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
+import { ClassExtractor } from './extractors/class/ClassExtractor';
+import { ClassToMarkdownConverter } from './markdown/class/ClassToMarkdownConverter';
+import { PrettierUtils } from './utilities/PrettifierUtils';
+
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -93,3 +98,27 @@ let result = files.getSourceFiles('...');
 if (result)
     files.save(result);
 */
+
+const classSample = `
+class Greeter {    greeting: string;    constructor(message: string) {
+        this.greeting = message;    }    greet() {        return "Hello, " + this.greeting;
+    }}let greeter = new Greeter("world");
+`;
+
+const project = new Project({
+    compilerOptions: {
+        target: ScriptTarget.ES5,
+    },
+});
+const file = project.createSourceFile('test.ts', classSample);
+file.forEachDescendant(x => {
+    switch (x.getKind()) {
+        case SyntaxKind.ClassDeclaration:
+            const clsVisitor = new ClassExtractor();
+            const cls = clsVisitor.extract(x as ClassDeclaration);
+            const src = new PrettierUtils().prettify(cls.text);
+            const md = new ClassToMarkdownConverter().convert(cls);
+            console.log(md);
+            break;
+    }
+});

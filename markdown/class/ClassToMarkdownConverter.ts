@@ -1,5 +1,7 @@
 import * as json2md from 'json2md';
 import { ClassInfo } from '../../extractors/class/ClassInfo';
+import { CommentInfo } from '../../extractors/comment/CommentInfo';
+import { CommentKind } from '../../extractors/comment/CommentKind';
 // import { ModuleInfo } from '../../extractors/module/ModuleInfo';
 
 export class ClassToMarkdownConverter {
@@ -9,6 +11,33 @@ export class ClassToMarkdownConverter {
                 h2: classInfo.name,
             },
         ]);
+        return md;
+    }
+}
+
+export class CommentToMarkdownConverter {
+    public convert(commentsInfo: CommentInfo[], appendDescriptions = false): string[] {
+        let md :string[]= [];
+
+        commentsInfo.forEach(commentInfo => {
+            switch (commentInfo.kind) {
+                case CommentKind.Html:
+                    break;
+                case CommentKind.JsSingleLine:
+                    if (commentInfo.description) {
+                        let info = json2md([
+                            {
+                                p: !appendDescriptions ? commentInfo.description : commentInfo.description.join(' '),
+                            },
+                        ]);
+                        md.push(info);
+                    }
+                    break;
+                case CommentKind.JsMultiLine:
+                    break;
+            }
+        });
+        
         return md;
     }
 }

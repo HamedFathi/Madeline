@@ -1,6 +1,6 @@
 import { ScriptTarget, Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import { ClassExtractor } from './extractors/class/ClassExtractor';
-import { ClassToMarkdownConverter } from './markdown/class/ClassToMarkdownConverter';
+import { ClassToMarkdownConverter, CommentToMarkdownConverter } from './markdown/class/ClassToMarkdownConverter';
 import { PrettierUtils } from './utilities/PrettifierUtils';
 
 export * from './extractors/class/ClassExtractor';
@@ -109,6 +109,40 @@ const htmlSample = `
 <!DOCTYPE html><html><head><title>Page Title</title></head><body><h1>This is a Heading</h1><p>This is a paragraph.</p></body></html>
 `;
 
+const docSample = `
+/**
+* This is a class.
+* Just for test!
+*
+* @class Statistics - A class with ctor and a method.
+*/
+export class Statistics {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    // Just says hello :)
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+    /**
+     * Returns the average of two numbers.
+     *
+     * @remarks
+     * This method is part of the {@link core-library#Statistics | Statistics subsystem}.
+     *
+     * @param x - The first input number
+     * @param y - The second input number
+     * @returns The arithmetic mean of \`x\` and \`y\`
+     *
+     * @beta
+     */
+    public static getAverage(x: number, y: number): number {
+        return (x + y) / 2.0;
+    }
+}
+`;
+
 const project = new Project({
     compilerOptions: {
         target: ScriptTarget.ES5,
@@ -121,7 +155,11 @@ file.forEachDescendant(x => {
             const clsVisitor = new ClassExtractor();
             const cls = clsVisitor.extract(x as ClassDeclaration);
             const src = new PrettierUtils().prettify(cls.text);
-            const src2 = new PrettierUtils().prettify(htmlSample,"html");
+            const src2 = new PrettierUtils().prettify(htmlSample, 'html');
+            if(cls.leadingComments){
+                let src3 = new CommentToMarkdownConverter().convert(cls.leadingComments)
+                const a =2;
+            }
             const md = new ClassToMarkdownConverter().convert(cls);
             console.log(md);
             break;

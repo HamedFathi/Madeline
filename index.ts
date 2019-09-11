@@ -105,6 +105,10 @@ class Greeter {    greeting: string;    constructor(message: string) {
     }}let greeter = new Greeter("world");
 `;
 
+const htmlSample = `
+<!DOCTYPE html><html><head><title>Page Title</title></head><body><h1>This is a Heading</h1><p>This is a paragraph.</p></body></html>
+`;
+
 const project = new Project({
     compilerOptions: {
         target: ScriptTarget.ES5,
@@ -117,6 +121,7 @@ file.forEachDescendant(x => {
             const clsVisitor = new ClassExtractor();
             const cls = clsVisitor.extract(x as ClassDeclaration);
             const src = new PrettierUtils().prettify(cls.text);
+            const src2 = new PrettierUtils().prettify(htmlSample,"html");
             const md = new ClassToMarkdownConverter().convert(cls);
             console.log(md);
             break;

@@ -47,7 +47,7 @@ export class JsDocExtractor {
                         this.OPEN_CURLY_BRACKET,
                         this.CLOSE_CURLY_BRACKET,
                     );
-                    let initializer = this.stringUtils.getBetweenChars(line, this.OPEN_BRACKET, this.CLOSE_BRACKET);
+                    let defaultValue = this.stringUtils.getBetweenChars(line, this.OPEN_BRACKET, this.CLOSE_BRACKET);
                     let description =
                         line.lastIndexOf(this.HYPHEN) === -1 ? null : line.substring(line.lastIndexOf(this.HYPHEN) + 1);
                     if (tag && tag.length > 0) {
@@ -61,10 +61,10 @@ export class JsDocExtractor {
                         );
                         type = type.trim();
                     }
-                    if (initializer && initializer.length > 0) {
-                        line = line.replace(`${this.OPEN_BRACKET}${initializer}${this.CLOSE_BRACKET}`, this.NOTHING);
-                        const dv = initializer.trim().split('=');
-                        if (dv && dv.length == 2 && dv[0] === 'initializer') initializer = dv[1];
+                    if (defaultValue && defaultValue.length > 0) {
+                        line = line.replace(`${this.OPEN_BRACKET}${defaultValue}${this.CLOSE_BRACKET}`, this.NOTHING);
+                        const dv = defaultValue.trim().split('=');
+                        if (dv && dv.length == 2 && dv[0] === 'defaultValue') defaultValue = dv[1];
                     }
                     if (description && description.length > 0) {
                         line = line.replace(`${this.HYPHEN}${description}`, this.NOTHING);
@@ -84,7 +84,7 @@ export class JsDocExtractor {
                         tag: tag,
                         type: type === null ? undefined : type,
                         name: names === undefined ? undefined : names.split('.').filter(x => x.length !== 0),
-                        initializer: initializer === null ? undefined : initializer,
+                        defaultValue: defaultValue === null ? undefined : defaultValue,
                         description: description === null ? undefined : [description],
                     });
                 }

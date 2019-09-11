@@ -135,7 +135,7 @@ export class LiteralExtractor {
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType()),
+                    type: new TypeExtractor().extract(declaration.getType().getText()),
                 });
             }
             if (arrayLiteral) {
@@ -151,7 +151,7 @@ export class LiteralExtractor {
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType()),
+                    type: new TypeExtractor().extract(declaration.getType().getText()),
                 });
             }
         });
@@ -180,7 +180,7 @@ export class LiteralExtractor {
                         propertyAssignment.getInitializer() === undefined
                             ? undefined
                             : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow());
-                    const type = new TypeExtractor().extract(propertyAssignment.getType());
+                    const type = new TypeExtractor().extract(propertyAssignment.getType().getText());
                     const name = propertyAssignment.getName();
                     assignments.push({
                         isShorthand: false,
@@ -192,7 +192,7 @@ export class LiteralExtractor {
                 }
                 if (isShorthandPropertyAssignment) {
                     const shorthandPropertyAssignment = x as ShorthandPropertyAssignment;
-                    const type = new TypeExtractor().extract(shorthandPropertyAssignment.getType());
+                    const type = new TypeExtractor().extract(shorthandPropertyAssignment.getType().getText());
                     const name = shorthandPropertyAssignment.getName();
                     assignments.push({
                         isShorthand: true,
@@ -204,7 +204,7 @@ export class LiteralExtractor {
                 }
                 if (isSpreadAssignment) {
                     const spreadAssignment = x as SpreadAssignment;
-                    const type = new TypeExtractor().extract(spreadAssignment.getType());
+                    const type = new TypeExtractor().extract(spreadAssignment.getType().getText());
                     const name = spreadAssignment.getExpression().getText();
                     assignments.push({
                         isShorthand: false,
@@ -246,28 +246,28 @@ export class LiteralExtractor {
             const arrowFunction = node as ArrowFunction;
             const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
-                returnType: new TypeExtractor().extract(callSignature.getReturnType()),
+                returnType: new TypeExtractor().extract(callSignature.getReturnType().getText()),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? undefined
                         : callSignature.getParameters().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType()),
-                                  modifiers:
-                                      y.getModifiers().length === 0
-                                          ? undefined
-                                          : y.getModifiers().map(x => x.getText()),
-                                  isOptional: y.isOptional(),
-                                  isRest: y.isRestParameter(),
-                                  isParameterProperty: y.isParameterProperty(),
-                                  initializer:
-                                      y.getInitializer() === undefined
-                                          ? undefined
-                                          : y.getInitializerOrThrow().getText(),
-                              };
-                          }),
+                            return {
+                                name: y.getName(),
+                                type: new TypeExtractor().extract(y.getType().getText()),
+                                modifiers:
+                                    y.getModifiers().length === 0
+                                        ? undefined
+                                        : y.getModifiers().map(x => x.getText()),
+                                isOptional: y.isOptional(),
+                                isRest: y.isRestParameter(),
+                                isParameterProperty: y.isParameterProperty(),
+                                initializer:
+                                    y.getInitializer() === undefined
+                                        ? undefined
+                                        : y.getInitializerOrThrow().getText(),
+                            };
+                        }),
             };
         } else
             return {

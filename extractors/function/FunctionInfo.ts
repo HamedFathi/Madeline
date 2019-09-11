@@ -1,4 +1,4 @@
-import { FunctionParamInfo } from './FunctionParamInfo';
+import { FunctionParamInfo } from './FunctionParameterInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';

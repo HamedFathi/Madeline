@@ -1,4 +1,4 @@
-import { ConstructorParamInfo } from './ConstructorParamInfo';
+import { ConstructorParamInfo } from './ConstructorParameterInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 export interface ConstructorInfo {

@@ -42,7 +42,7 @@ export class VariableExtractor {
                 }
                 commons.push({
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType()),
+                    type: new TypeExtractor().extract(declaration.getType().getText()),
                     modifiers: modifiers.length === 0 ? undefined : modifiers,
                     initializer:
                         declaration.getInitializer() === undefined
@@ -74,28 +74,28 @@ export class VariableExtractor {
             const arrowFunction = node as ArrowFunction;
             const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
-                returnType: new TypeExtractor().extract(callSignature.getReturnType()),
+                returnType: new TypeExtractor().extract(callSignature.getReturnType().getText()),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? undefined
                         : callSignature.getParameters().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType()),
-                                  modifiers:
-                                      y.getModifiers().length === 0
-                                          ? undefined
-                                          : y.getModifiers().map(x => x.getText()),
-                                  isOptional: y.isOptional(),
-                                  isRest: y.isRestParameter(),
-                                  isParameterProperty: y.isParameterProperty(),
-                                  initializer:
-                                      y.getInitializer() === undefined
-                                          ? undefined
-                                          : y.getInitializerOrThrow().getText(),
-                              };
-                          }),
+                            return {
+                                name: y.getName(),
+                                type: new TypeExtractor().extract(y.getType().getText()),
+                                modifiers:
+                                    y.getModifiers().length === 0
+                                        ? undefined
+                                        : y.getModifiers().map(x => x.getText()),
+                                isOptional: y.isOptional(),
+                                isRest: y.isRestParameter(),
+                                isParameterProperty: y.isParameterProperty(),
+                                initializer:
+                                    y.getInitializer() === undefined
+                                        ? undefined
+                                        : y.getInitializerOrThrow().getText(),
+                            };
+                        }),
             };
         } else return node.getText();
     }

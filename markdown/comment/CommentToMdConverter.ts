@@ -2,9 +2,16 @@ import { CommentInfo } from '../../extractors/comment/CommentInfo';
 import { CommentKind } from '../../extractors/comment/CommentKind';
 import { StringUtils } from '../../utilities/StringUtils';
 import * as json2md from 'json2md';
+import * as _ from 'lodash';
 
 export class CommentToMdConverter {
-    public convert(commentsInfo: CommentInfo[], appendDescriptions = false): string[] {
+    public convert(commentsInfo: CommentInfo[], appendDescriptions = false, isMergeable = true): string | string[] {
+
+        commentsInfo.forEach(element => {
+            this.groupByTags(element);
+        });
+
+
         const md: string[] = [];
         commentsInfo.forEach(commentInfo => {
             switch (commentInfo.kind) {
@@ -38,4 +45,20 @@ export class CommentToMdConverter {
         });
         return md;
     }
+
+    private groupByTags(commentsInfo: CommentInfo) {
+        if (commentsInfo.tags) {
+            let tagsGroup = _(commentsInfo.tags).groupBy(x => x.tag).values().value();
+            tagsGroup.forEach(tagGroup => {
+                let tags = tagGroup.map(u => u);
+                tags.forEach(tag => {
+
+                });
+
+            });
+            const yy = 1;
+        }
+    }
 }
+
+

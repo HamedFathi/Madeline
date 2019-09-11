@@ -38,7 +38,7 @@ export class DecoratorExtractor {
         }
 
         let decorators = node.getDecorators().map(x => {
-            const di = {
+            return {
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),
@@ -52,8 +52,6 @@ export class DecoratorExtractor {
                               };
                           }),
             };
-
-            return di;
         });
 
         if (filterStrategy) {

@@ -35,7 +35,21 @@ describe('DecoratorExtractor', function () {
         });
 
         decoratorExtractor = new DecoratorExtractor();
-    })
+    });
+
+    it('should return undefined for decorators on identifiers', () => {
+        // arrange
+        const sut = `@invalidDecoratorUsage
+        var id: number`;
+        const file = project.createSourceFile('sut.ts', sut);
+
+        // act
+        file.forEachDescendant(node => {
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+
+            assert.isUndefined(decoratorInfos);
+        });
+    });
 
     it('should extract non-decorator factory from a class', () => {
         // arrange
@@ -46,15 +60,15 @@ describe('DecoratorExtractor', function () {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                let decoratorDescriptor = decoratorExtractor.extract(<DecoratableType>node);
+                let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
-                if (decoratorDescriptor !== undefined) {
+                if (decoratorInfos !== undefined) {
                     // assert
-                    assert.equal(decoratorDescriptor.length, 1);
-                    assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
-                    assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                    assert.equal(decoratorDescriptor[0].text, '@autoinject');
-                    assert.equal(decoratorDescriptor[0].parameters, undefined);
+                    assert.equal(decoratorInfos.length, 1);
+                    assert.equal(decoratorInfos[0].isDecoratorFactory, false);
+                    assert.equal(decoratorInfos[0].name, 'autoinject');
+                    assert.equal(decoratorInfos[0].text, '@autoinject');
+                    assert.equal(decoratorInfos[0].parameters, undefined);
                 }
             }
         });
@@ -69,15 +83,15 @@ describe('DecoratorExtractor', function () {
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
 
-                let decoratorDescriptor = decoratorExtractor.extract(<DecoratableType>node);
+                let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
-                if (decoratorDescriptor !== undefined) {
+                if (decoratorInfos !== undefined) {
                     // assert
-                    assert.equal(decoratorDescriptor.length, 1);
-                    assert.equal(decoratorDescriptor[0].isDecoratorFactory, true);
-                    assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                    assert.equal(decoratorDescriptor[0].text, '@autoinject()');
-                    assert.equal(decoratorDescriptor[0].parameters, undefined);
+                    assert.equal(decoratorInfos.length, 1);
+                    assert.equal(decoratorInfos[0].isDecoratorFactory, true);
+                    assert.equal(decoratorInfos[0].name, 'autoinject');
+                    assert.equal(decoratorInfos[0].text, '@autoinject()');
+                    assert.equal(decoratorInfos[0].parameters, undefined);
                 }
             }
         });
@@ -91,24 +105,51 @@ describe('DecoratorExtractor', function () {
         const file = project.createSourceFile('sut.ts', sut);
 
 
-        const filterStrategy = (d:DecoratorInfo) => {
+        const filterStrategy = (d: DecoratorInfo) => {
             return d.name === 'filterDecorator';
         };
 
         // act
         file.forEachDescendant(node => {
-            let decoratorDescriptor = decoratorExtractor.extract(<DecoratableType>node,
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node,
                 filterStrategy);
 
-            if (decoratorDescriptor !== undefined) {
+            if (decoratorInfos !== undefined) {
                 // assert
-                assert.equal(decoratorDescriptor.length, 1);
-                assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
-                assert.equal(decoratorDescriptor[0].name, 'filterDecorator');
-                assert.equal(decoratorDescriptor[0].text, '@filterDecorator');
-                assert.equal(decoratorDescriptor[0].parameters, undefined);
+                assert.equal(decoratorInfos.length, 1);
+                assert.equal(decoratorInfos[0].isDecoratorFactory, false);
+                assert.equal(decoratorInfos[0].name, 'filterDecorator');
+                assert.equal(decoratorInfos[0].text, '@filterDecorator');
+                assert.equal(decoratorInfos[0].parameters, undefined);
             }
         });
+    });
+
+    it(`should return two decorators, one for class, and another for property`, () => {
+
+        // arrange
+        const sut = `@autoinject
+        class Test{
+            @another
+            private id:number = 11;
+        }`;
+        const file = project.createSourceFile('sut.ts', sut);
+        let allDecorators: DecoratorInfo[] = [];
+
+        // act
+        file.forEachDescendant(node => {
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+            if (decoratorInfos !== undefined) {
+                decoratorInfos.forEach(di => {
+                    allDecorators.push(di);
+                });
+            }
+        });
+
+        // assert
+        assert.equal(allDecorators.length, 2);
+        assert.equal(allDecorators[0].name , 'autoinject' );
+        assert.equal(allDecorators[1].name , 'another' );
     });
 
     // it('should return correct DecoratorInfo', function () {

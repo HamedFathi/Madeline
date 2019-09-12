@@ -1,5 +1,5 @@
 import { TypeInfo } from './TypeInfo';
-export interface CallSignatureParamInfo {
+export interface CallSignatureParameterInfo {
     name: string | undefined;
     type: TypeInfo;
     isOptional: boolean;

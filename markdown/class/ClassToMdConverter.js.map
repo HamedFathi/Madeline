@@ -1,0 +1,1 @@
+{"version":3,"file":"ClassToMdConverter.js","sourceRoot":"","sources":["ClassToMdConverter.ts"],"names":[],"mappings":";;AAAA,iCAAmC;AAGnC;IAAA;IASA,CAAC;IARU,oCAAO,GAAd,UAAe,SAAoB;QAC/B,IAAM,EAAE,GAAG,OAAO,CAAC;YACf;gBACI,EAAE,EAAE,SAAS,CAAC,IAAI;aACrB;SACJ,CAAC,CAAC;QACH,OAAO,EAAE,CAAC;IACd,CAAC;IACL,yBAAC;AAAD,CAAC,AATD,IASC;AATY,gDAAkB"}

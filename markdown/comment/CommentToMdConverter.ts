@@ -6,11 +6,9 @@ import * as _ from 'lodash';
 
 export class CommentToMdConverter {
     public convert(commentsInfo: CommentInfo[], appendDescriptions = false, isMergeable = true): string | string[] {
-
         commentsInfo.forEach(element => {
             this.groupByTags(element);
         });
-
 
         const md: string[] = [];
         commentsInfo.forEach(commentInfo => {
@@ -48,17 +46,15 @@ export class CommentToMdConverter {
 
     private groupByTags(commentsInfo: CommentInfo) {
         if (commentsInfo.tags) {
-            let tagsGroup = _(commentsInfo.tags).groupBy(x => x.tag).values().value();
+            const tagsGroup = _(commentsInfo.tags)
+                .groupBy(x => x.tag)
+                .values()
+                .value();
             tagsGroup.forEach(tagGroup => {
-                let tags = tagGroup.map(u => u);
-                tags.forEach(tag => {
-
-                });
-
+                const tags = tagGroup.map(u => u);
+                tags.forEach(tag => {});
             });
             const yy = 1;
         }
     }
 }
-
-

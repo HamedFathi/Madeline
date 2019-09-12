@@ -80,22 +80,22 @@ export class VariableExtractor {
                     callSignature.getParameters().length === 0
                         ? undefined
                         : callSignature.getParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                type: new TypeExtractor().extract(y.getType().getText()),
-                                modifiers:
-                                    y.getModifiers().length === 0
-                                        ? undefined
-                                        : y.getModifiers().map(x => x.getText()),
-                                isOptional: y.isOptional(),
-                                isRest: y.isRestParameter(),
-                                isParameterProperty: y.isParameterProperty(),
-                                initializer:
-                                    y.getInitializer() === undefined
-                                        ? undefined
-                                        : y.getInitializerOrThrow().getText(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  type: new TypeExtractor().extract(y.getType().getText()),
+                                  modifiers:
+                                      y.getModifiers().length === 0
+                                          ? undefined
+                                          : y.getModifiers().map(x => x.getText()),
+                                  isOptional: y.isOptional(),
+                                  isRest: y.isRestParameter(),
+                                  isParameterProperty: y.isParameterProperty(),
+                                  initializer:
+                                      y.getInitializer() === undefined
+                                          ? undefined
+                                          : y.getInitializerOrThrow().getText(),
+                              };
+                          }),
             };
         } else return node.getText();
     }

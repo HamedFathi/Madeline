@@ -44,11 +44,11 @@ export class DecoratorExtractor {
                     x.getArguments().length === 0
                         ? undefined
                         : x.getArguments().map(x => {
-                            return {
-                                value: x.getText(),
-                                type: new TypeExtractor().extract(x.getType().getText())
-                            }
-                        })
+                              return {
+                                  value: x.getText(),
+                                  type: new TypeExtractor().extract(x.getType().getText()),
+                              };
+                          }),
             };
 
             return di;

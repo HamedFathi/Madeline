@@ -1,4 +1,3 @@
-import { TypeInfo } from '../common/TypeInfo';
 import { DecoratorParameterInfo } from './DecoratorParameterInfo';
 
 export interface DecoratorInfo {

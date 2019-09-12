@@ -1,4 +1,1 @@
-export class Const {
-}
-
-
+export class Const {}

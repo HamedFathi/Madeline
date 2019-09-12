@@ -10,7 +10,7 @@ export class GetAccessorExtractor {
         return {
             name: node.getName(),
             text: node.getText(),
-            returnType: new TypeExtractor().extract(node.getReturnType()),
+            returnType: new TypeExtractor().extract(node.getReturnType().getText()),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
             trailingComments:

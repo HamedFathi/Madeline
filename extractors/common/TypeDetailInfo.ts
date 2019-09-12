@@ -1,7 +1,6 @@
-export interface ImportInType {
+export interface TypeDetailInfo {
     importedFrom: string | undefined;
     name: string;
     preType: string | undefined;
-    fromNodeModules: string | undefined;
     text: string;
 }

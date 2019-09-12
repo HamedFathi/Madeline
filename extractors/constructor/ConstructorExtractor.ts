@@ -1,5 +1,5 @@
 import { ClassDeclaration, ConstructorDeclaration } from 'ts-morph';
-import { ConstructorParamInfo } from './ConstructorParamInfo';
+import { ConstructorParamInfo } from './ConstructorParameterInfo';
 import { ConstructorInfo } from './ConstructorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
@@ -17,7 +17,7 @@ export class ConstructorExtractor {
         const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
-                type: new TypeExtractor().extract(x.getType()),
+                type: new TypeExtractor().extract(x.getType().getText()),
                 modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),

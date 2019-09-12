@@ -16,7 +16,7 @@ const allowedKinds: SyntaxKind[] = [
     SyntaxKind.PropertyDeclaration,
     SyntaxKind.GetAccessor,
     SyntaxKind.SetAccessor,
-    SyntaxKind.Parameter
+    SyntaxKind.Parameter,
 ];
 
 export class DecoratorExtractor {
@@ -27,23 +27,28 @@ export class DecoratorExtractor {
             | PropertyDeclaration
             | GetAccessorDeclaration
             | SetAccessorDeclaration
-            | ParameterDeclaration
-        , filterStrategy?: (info: DecoratorInfo) => boolean): DecoratorInfo[] | undefined {
-
+            | ParameterDeclaration,
+        filterStrategy?: (info: DecoratorInfo) => boolean,
+    ): DecoratorInfo[] | undefined {
         if (!allowedKinds.includes(node.getKind())) {
             // the specified node does not allowed to have decorators
             return undefined;
         }
 
         let decorators = node.getDecorators().map(x => {
-            let di = {
+            const di = {
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),
                 parameters:
                     x.getArguments().length === 0
                         ? undefined
-                        : x.getArguments().map(x => new TypeExtractor().extract(x.getType())),
+                        : x.getArguments().map(x => {
+                            return {
+                                value: x.getText(),
+                                type: new TypeExtractor().extract(x.getType().getText())
+                            }
+                        })
             };
 
             return di;

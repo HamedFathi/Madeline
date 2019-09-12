@@ -9,7 +9,7 @@ export class PropertyExtractor {
         return {
             name: node.getName(),
             text: node.getText(),
-            type: new TypeExtractor().extract(node.getType()),
+            type: new TypeExtractor().extract(node.getType().getText()),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             isOptional: node.hasQuestionToken(),
             initializer: node.getInitializer() === undefined ? undefined : node.getInitializerOrThrow().getText(),

@@ -299,6 +299,9 @@ utilities/**/*.map
 markdown/**/*.d.ts
 markdown/**/*.js
 markdown/**/*.map
+markdown/*.d.ts
+markdown/*.js
+markdown/*.map
 test/**/*.js
 test/**/*.map
 test/**/*.d.ts

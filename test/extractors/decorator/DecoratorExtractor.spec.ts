@@ -173,8 +173,10 @@ describe('DecoratorExtractor', function () {
                 assert.isTrue( decoratorInfos[0].parameters[0] !== undefined );
 
                 assert.equal(decoratorInfos[0].parameters.length , 1);
-                assert.equal(decoratorInfos[0].parameters[0].name, 'ISample');
-                assert.equal(decoratorInfos[0].parameters[0].text, 'ISample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text, '' );
+                assert.equal(decoratorInfos[0].parameters[0].type.fullText, '' );
+                assert.equal(decoratorInfos[0].parameters[0].type.details, [] );
+                assert.equal(decoratorInfos[0].parameters[0].value, 'ISample');
             }
         });
 

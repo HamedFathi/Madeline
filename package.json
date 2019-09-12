@@ -24,6 +24,7 @@
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
     "build": "./node_modules/.bin/gulp build",
+    "clean": "node del.js",
     "test-watch": "mocha -r  ts-node/register --watch-extensions ts --watch -R min --timeout 999999 test/**/*.ts",
     "test": "mocha -r  ts-node/register --timeout 999999 test/**/*.ts",
     "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha -r ts-node/register  --timeout 999999 test/**/*.ts && nyc report",
@@ -68,6 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^2.1.0",
     "@typescript-eslint/parser": "^2.1.0",
     "chai": "^4.2.0",
+    "del": "^5.1.0",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",

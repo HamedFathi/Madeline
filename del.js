@@ -7,5 +7,7 @@ del.sync([
     'utilities/**/*.js',
     'utilities/**/*.map',
     'test/**/*.js',
-    'test/**/*.map'
+    'test/**/*.map',
+    'index.js',
+    'index.js.map'
 ]);

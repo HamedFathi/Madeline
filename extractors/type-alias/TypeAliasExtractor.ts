@@ -3,6 +3,7 @@ import { TypeAliasInfo } from './TypeAliasInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
+import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class TypeAliasExtractor {
     public extract(node: TypeAliasDeclaration): TypeAliasInfo {
@@ -12,10 +13,12 @@ export class TypeAliasExtractor {
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
-            members: new TypeExtractor().extract(node.getType().getText()),
+            initializer: node.getTypeNode() === undefined ? '' : node.getTypeNodeOrThrow().getText(),
+            type: new TypeExtractor().extract(node.getType(), node.getTypeNode()),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),
+            typeParameters: new TypeParameterExtractor().extract(node),
         };
     }
 }

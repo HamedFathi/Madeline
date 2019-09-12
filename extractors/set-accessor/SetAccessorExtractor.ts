@@ -15,7 +15,7 @@ export class SetAccessorExtractor {
                     name: y.getName(),
                     text: y.getText(),
                     modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(z => z.getText()),
-                    type: new TypeExtractor().extract(y.getType().getText()),
+                    type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                 };
             })[0],
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),

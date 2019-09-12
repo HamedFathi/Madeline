@@ -42,7 +42,7 @@ export class VariableExtractor {
                 }
                 commons.push({
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType().getText()),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode()),
                     modifiers: modifiers.length === 0 ? undefined : modifiers,
                     initializer:
                         declaration.getInitializer() === undefined
@@ -74,7 +74,10 @@ export class VariableExtractor {
             const arrowFunction = node as ArrowFunction;
             const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
-                returnType: new TypeExtractor().extract(callSignature.getReturnType().getText()),
+                returnType: new TypeExtractor().extract(
+                    callSignature.getReturnType(),
+                    callSignature.getReturnTypeNode(),
+                ),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
@@ -82,7 +85,7 @@ export class VariableExtractor {
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType().getText()),
+                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                                   modifiers:
                                       y.getModifiers().length === 0
                                           ? undefined

@@ -3,4 +3,5 @@ export interface TypeInfo {
     text: string;
     fullText: string;
     details: TypeDetailInfo[] | undefined;
+    typeNodeText: string | undefined;
 }

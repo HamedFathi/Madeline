@@ -7,6 +7,7 @@ import {
     ConstructSignatureDeclaration,
     MethodSignature,
     FunctionExpression,
+    TypeAliasDeclaration,
 } from 'ts-morph';
 import { TypeParameterInfo } from './TypeParameterInfo';
 
@@ -20,7 +21,8 @@ export class TypeParameterExtractor {
             | CallSignatureDeclaration
             | InterfaceDeclaration
             | ClassDeclaration
-            | FunctionDeclaration,
+            | FunctionDeclaration
+            | TypeAliasDeclaration,
     ): TypeParameterInfo[] | undefined {
         const result = node.getTypeParameters().map(y => {
             return {

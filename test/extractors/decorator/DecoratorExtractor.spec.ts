@@ -154,8 +154,10 @@ describe('DecoratorExtractor', function () {
 
     it('should return a factory decorator with one argument', () => {
 
-        const sut = `@inject(ISample)
-        class Test(){ }`;
+        const sut = `
+        @inject(ISample)
+        class Test(){ }
+        `;
 
         const file = project.createSourceFile('sut.ts', sut);
 
@@ -167,16 +169,16 @@ describe('DecoratorExtractor', function () {
                 assert.equal(decoratorInfos.length , 1);
                 assert.equal(decoratorInfos[0].isDecoratorFactory , true);
                 assert.equal(decoratorInfos[0].name , 'inject');
-                assert.equal(decoratorInfos[0].name , '@inject(ISample)');
+                assert.equal(decoratorInfos[0].text , '@inject(ISample)');
 
                 assert.isTrue( decoratorInfos[0].parameters !== undefined );
                 assert.isTrue( decoratorInfos[0].parameters[0] !== undefined );
 
                 assert.equal(decoratorInfos[0].parameters.length , 1);
-                assert.equal(decoratorInfos[0].parameters[0].type.text, '' );
-                assert.equal(decoratorInfos[0].parameters[0].type.fullText, '' );
-                assert.equal(decoratorInfos[0].parameters[0].type.details, [] );
                 assert.equal(decoratorInfos[0].parameters[0].value, 'ISample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text, 'any' );
+                assert.equal(decoratorInfos[0].parameters[0].type.fullText, 'any' );
+                assert.isUndefined(decoratorInfos[0].parameters[0].type.details );
             }
         });
 

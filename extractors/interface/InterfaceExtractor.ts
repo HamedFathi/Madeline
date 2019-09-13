@@ -29,7 +29,7 @@ export class InterfaceExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType().getText()),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
                               isOptional: x.hasQuestionToken(),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
@@ -49,7 +49,7 @@ export class InterfaceExtractor {
                               name: x.getName(),
                               text: x.getText(),
                               typeParameters: this.typeParameterExtractor.extract(x),
-                              returnType: new TypeExtractor().extract(x.getReturnType().getText()),
+                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                                       ? undefined
@@ -65,7 +65,7 @@ export class InterfaceExtractor {
                                             return {
                                                 name: y.getName(),
                                                 text: y.getText(),
-                                                type: new TypeExtractor().extract(y.getType().getText()),
+                                                type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
@@ -87,7 +87,7 @@ export class InterfaceExtractor {
                     : node.getExtends().map(x => {
                           return {
                               name: x.getText(),
-                              type: new TypeExtractor().extract(x.getType().getText()),
+                              type: new TypeExtractor().extract(x.getType()),
                           };
                       }),
             callSignatures:
@@ -95,7 +95,7 @@ export class InterfaceExtractor {
                     ? undefined
                     : node.getCallSignatures().map(x => {
                           return {
-                              returnType: new TypeExtractor().extract(x.getReturnType().getText()),
+                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
                               text: x.getText(),
                               typeParameters: this.typeParameterExtractor.extract(x),
                               trailingComments:
@@ -113,7 +113,7 @@ export class InterfaceExtractor {
                                             return {
                                                 name: y.getName(),
                                                 text: y.getText(),
-                                                type: new TypeExtractor().extract(y.getType().getText()),
+                                                type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                                                 modifiers:
                                                     y.getModifiers().length === 0
                                                         ? undefined
@@ -134,10 +134,10 @@ export class InterfaceExtractor {
                     ? undefined
                     : node.getIndexSignatures().map(x => {
                           return {
-                              returnType: new TypeExtractor().extract(x.getReturnType().getText()),
+                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
                               text: x.getText(),
                               key: x.getKeyName(),
-                              value: x.getKeyType().getText(),
+                              value: new TypeExtractor().extract(x.getKeyType(), x.getKeyTypeNode()),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                                       ? undefined
@@ -153,7 +153,7 @@ export class InterfaceExtractor {
                     ? undefined
                     : node.getConstructSignatures().map(x => {
                           return {
-                              returnType: new TypeExtractor().extract(x.getReturnType().getText()),
+                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
                               text: x.getText(),
                               typeParameters: this.typeParameterExtractor.extract(x),
                               trailingComments:
@@ -171,7 +171,7 @@ export class InterfaceExtractor {
                                             return {
                                                 name: y.getName(),
                                                 text: y.getText(),
-                                                type: new TypeExtractor().extract(y.getType().getText()),
+                                                type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                                                 modifiers:
                                                     y.getModifiers().length === 0
                                                         ? undefined

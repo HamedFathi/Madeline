@@ -13,7 +13,7 @@ export class FunctionExtractor {
         const returnType =
             node.getReturnType() === undefined
                 ? undefined
-                : new TypeExtractor().extract(node.getReturnType().getText());
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode());
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const result: FunctionInfo = {
             name: node.getName(),
@@ -32,7 +32,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType().getText()),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
                               modifiers:
                                   x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),
@@ -52,7 +52,7 @@ export class FunctionExtractor {
         const returnType =
             node.getReturnType() === undefined
                 ? undefined
-                : new TypeExtractor().extract(node.getReturnType().getText());
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode());
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const result: FunctionInfo = {
             name: node.getName(),
@@ -74,7 +74,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType().getText()),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
                               modifiers:
                                   x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),

@@ -1,11 +1,14 @@
 import { TypeDetailInfo } from './TypeDetailInfo';
 import { StringUtils } from '../../utilities/StringUtils';
 import { TypeInfo } from './TypeInfo';
+import { Type, TypeNode } from 'ts-morph';
 
 export class TypeExtractor {
     private readonly stringUtils = new StringUtils();
-    public extract(text: string): TypeInfo {
+    public extract(type: Type, typeNode?: TypeNode): TypeInfo {
         let finalText = '';
+        const text = type.getText();
+        const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
         const details: TypeDetailInfo[] = [];
         const regex = /import\((.+)\).(.+\.)?(.*)/;
         const match = text
@@ -39,12 +42,14 @@ export class TypeExtractor {
                 text: this.stringUtils.isEmptyOrWhitespace(finalText) ? text : finalText,
                 fullText: text,
                 details: details.length === 0 ? undefined : details,
+                typeNodeText: typeNodeText,
             };
         } else {
             return {
                 text: text,
                 fullText: text,
                 details: undefined,
+                typeNodeText: typeNodeText,
             };
         }
     }

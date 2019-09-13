@@ -2,6 +2,7 @@ import { assert } from "chai";
 import { Project, ScriptTarget, SyntaxKind, GetAccessorDeclaration, ClassDeclaration, PropertyDeclaration, MethodDeclaration, ParameterDeclaration } from 'ts-morph';
 import { DecoratorExtractor, DecoratableType } from '../../../extractors/decorator/DecoratorExtractor';
 import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
+import { AssertionError } from "assert";
 
 const decoratorSample = `
 @test1(1,'A',{w:2})
@@ -152,36 +153,44 @@ describe('DecoratorExtractor', function () {
         assert.equal(allDecorators[1].name, 'another');
     });
 
-    it('should return a factory decorator with one argument', () => {
+    it('should return a factory decorator with one argument named Sample', () => {
 
+        const sampleText = `export class Sample { }`;
         const sut = `
-        class ISample{}
-        @inject(ISample)
+        import {Sample} from './sample';
+        import {inject} from './decorator';
+        @inject(Sample)
         class Test(){ }
         `;
 
-        const file = project.createSourceFile('sut.ts', sut);
+        project.createSourceFile('sample.ts', sampleText, { overwrite: true });
+        const programFile = project.createSourceFile('sut.ts', sut, { overwrite: true });
 
-        var x = project.resolveSourceFileDependencies();
-
-        file.forEachDescendant(node =>{
+        programFile.forEachDescendant(node => {
             let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
-            if( decoratorInfos != null ){
+            if (decoratorInfos != null) {
+                assert.equal(decoratorInfos.length, 1);
+                assert.equal(decoratorInfos[0].isDecoratorFactory, true);
+                assert.equal(decoratorInfos[0].name, 'inject');
+                assert.equal(decoratorInfos[0].text, '@inject(Sample)');
 
-                assert.equal(decoratorInfos.length , 1);
-                assert.equal(decoratorInfos[0].isDecoratorFactory , true);
-                assert.equal(decoratorInfos[0].name , 'inject');
-                assert.equal(decoratorInfos[0].text , '@inject(ISample)');
+                assert.isTrue(decoratorInfos[0].parameters !== undefined);
+                assert.equal(decoratorInfos[0].parameters.length, 1);
+                assert.isTrue(decoratorInfos[0].parameters[0] !== undefined);
 
-                assert.isTrue( decoratorInfos[0].parameters !== undefined );
-                assert.equal(decoratorInfos[0].parameters.length , 1);
-                assert.isTrue( decoratorInfos[0].parameters[0] !== undefined );
+                assert.equal(decoratorInfos[0].parameters[0].value, 'Sample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text, 'Sample');
 
-                // assert.equal(decoratorInfos[0].parameters[0].value, 'ISample');
-                // assert.equal(decoratorInfos[0].parameters[0].type.text, 'ISample' );
-                // assert.equal(decoratorInfos[0].parameters[0].type.fullText, 'ISample' );
-                // assert.isUndefined(decoratorInfos[0].parameters[0].type.details );
+                let lastIndexOf = decoratorInfos[0].parameters[0].type.fullText.lastIndexOf('.') + 1;
+                assert.equal(decoratorInfos[0].parameters[0].type.fullText.substr(lastIndexOf), 'Sample');
+
+                assert.isTrue(decoratorInfos[0].parameters[0].type.details !== undefined);
+                assert.equal(decoratorInfos[0].parameters[0].type.details.length, 1);
+
+                lastIndexOf = decoratorInfos[0].parameters[0].type.details[0].text.lastIndexOf('.') + 1;
+
+                assert.equal(decoratorInfos[0].parameters[0].type.details[0].text.substr(lastIndexOf), 'Sample');
             }
         });
 

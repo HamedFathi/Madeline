@@ -10,23 +10,26 @@ export class TypeExtractor {
         const text = type.getText();
         const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
         const details: TypeDetailInfo[] = [];
-        const regex = /import\((.+)\).(.+\.)?(.*)/;
+        const regex = /import\((.+)\).(.*)/;
         const match = text
             .split('import')
             .filter(x => !this.stringUtils.isEmptyOrWhitespace(x))
-            .map(y => 'import' + y);
+            .map(y => y.replace('(', 'import('));
         if (match) {
             match.forEach(m => {
                 const info = regex.exec(m);
                 if (info) {
                     const importedFrom: string = new StringUtils().removeFirstAndLastQuote((info[1] as string).trim());
-                    finalText += info[3] as string;
-                    const name: string = (info[3] as string)
+                    const text = (info[2] as string).split('.');
+                    finalText += text[text.length - 1];
+                    const name: string = text[text.length - 1]
                         .replace('<', '')
                         .replace('>', '')
                         .trim();
                     const preType: string | undefined =
-                        info[2] === undefined ? undefined : (info[2] as string).replace('.', '');
+                        text.length <= 1
+                            ? undefined
+                            : (info[2] as string).substring(0, (info[2] as string).lastIndexOf('.'));
                     details.push({
                         importedFrom: importedFrom,
                         name: name,
@@ -36,6 +39,8 @@ export class TypeExtractor {
                             .replace('>', '')
                             .trim(),
                     });
+                } else {
+                    finalText += m;
                 }
             });
             return {

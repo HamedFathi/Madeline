@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import { Project, ScriptTarget, SyntaxKind, GetAccessorDeclaration, ClassDeclaration, PropertyDeclaration, MethodDeclaration, ParameterDeclaration } from 'ts-morph';
-import { DecoratorExtractor } from '../../../extractors/decorator/DecoratorExtractor';
-import { StringUtils } from '../../../utilities/StringUtils';
+import { DecoratorExtractor, DecoratableType } from '../../../extractors/decorator/DecoratorExtractor';
 import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
+import { AssertionError } from "assert";
 
 const decoratorSample = `
 @test1(1,'A',{w:2})
@@ -36,7 +36,21 @@ describe('DecoratorExtractor', function () {
         });
 
         decoratorExtractor = new DecoratorExtractor();
-    })
+    });
+
+    it('should return undefined for decorators on identifiers', () => {
+        // arrange
+        const sut = `@invalidDecoratorUsage
+        var id: number`;
+        const file = project.createSourceFile('sut.ts', sut);
+
+        // act
+        file.forEachDescendant(node => {
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+
+            assert.isUndefined(decoratorInfos);
+        });
+    });
 
     it('should extract non-decorator factory from a class', () => {
         // arrange
@@ -47,16 +61,15 @@ describe('DecoratorExtractor', function () {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+                let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
-                if (decoratorDescriptor !== undefined) {
+                if (decoratorInfos !== undefined) {
                     // assert
-                    assert.equal(decoratorDescriptor.length, 1);
-                    assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
-                    assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                    // @ts-ignore
-                    assert.equal(decoratorDescriptor[0].text, '@autoinject');
-                    assert.equal(decoratorDescriptor[0].parameters, undefined);
+                    assert.equal(decoratorInfos.length, 1);
+                    assert.equal(decoratorInfos[0].isDecoratorFactory, false);
+                    assert.equal(decoratorInfos[0].name, 'autoinject');
+                    assert.equal(decoratorInfos[0].text, '@autoinject');
+                    assert.equal(decoratorInfos[0].parameters, undefined);
                 }
             }
         });
@@ -71,16 +84,15 @@ describe('DecoratorExtractor', function () {
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
 
-                let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node);
+                let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
-                if (decoratorDescriptor !== undefined) {
+                if (decoratorInfos !== undefined) {
                     // assert
-                    assert.equal(decoratorDescriptor.length, 1);
-                    assert.equal(decoratorDescriptor[0].isDecoratorFactory, true);
-                    assert.equal(decoratorDescriptor[0].name, 'autoinject');
-                    // @ts-ignore
-                    assert.equal(decoratorDescriptor[0].text, '@autoinject()');
-                    assert.equal(decoratorDescriptor[0].parameters, undefined);
+                    assert.equal(decoratorInfos.length, 1);
+                    assert.equal(decoratorInfos[0].isDecoratorFactory, true);
+                    assert.equal(decoratorInfos[0].name, 'autoinject');
+                    assert.equal(decoratorInfos[0].text, '@autoinject()');
+                    assert.equal(decoratorInfos[0].parameters, undefined);
                 }
             }
         });
@@ -93,25 +105,95 @@ describe('DecoratorExtractor', function () {
         export class Test{}`;
         const file = project.createSourceFile('sut.ts', sut);
 
-        const filterStrategy = (d:DecoratorInfo) => {
+
+        const filterStrategy = (d: DecoratorInfo) => {
             return d.name === 'filterDecorator';
         };
 
         // act
         file.forEachDescendant(node => {
-            let decoratorDescriptor = decoratorExtractor.extract(<ClassDeclaration>node,
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node,
                 filterStrategy);
 
-            if (decoratorDescriptor !== undefined) {
+            if (decoratorInfos !== undefined) {
                 // assert
-                assert.equal(decoratorDescriptor.length, 1);
-                assert.equal(decoratorDescriptor[0].isDecoratorFactory, false);
-                assert.equal(decoratorDescriptor[0].name, 'filterDecorator');
-                // @ts-ignore
-                assert.equal(decoratorDescriptor[0].text, '@filterDecorator');
-                assert.equal(decoratorDescriptor[0].parameters, undefined);
+                assert.equal(decoratorInfos.length, 1);
+                assert.equal(decoratorInfos[0].isDecoratorFactory, false);
+                assert.equal(decoratorInfos[0].name, 'filterDecorator');
+                assert.equal(decoratorInfos[0].text, '@filterDecorator');
+                assert.equal(decoratorInfos[0].parameters, undefined);
             }
         });
+    });
+
+    it(`should return two decorators, one for class, and another for property`, () => {
+
+        // arrange
+        const sut = `@autoinject
+        class Test{
+            @another
+            private id:number = 11;
+        }`;
+        const file = project.createSourceFile('sut.ts', sut);
+        let allDecorators: DecoratorInfo[] = [];
+
+        // act
+        file.forEachDescendant(node => {
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+            if (decoratorInfos !== undefined) {
+                decoratorInfos.forEach(di => {
+                    allDecorators.push(di);
+                });
+            }
+        });
+
+        // assert
+        assert.equal(allDecorators.length, 2);
+        assert.equal(allDecorators[0].name, 'autoinject');
+        assert.equal(allDecorators[1].name, 'another');
+    });
+
+    it('should return a factory decorator with one argument named Sample', () => {
+
+        const sampleText = `export class Sample { }`;
+        const sut = `
+        import {Sample} from './sample';
+        import {inject} from './decorator';
+        @inject(Sample)
+        class Test(){ }
+        `;
+
+        project.createSourceFile('sample.ts', sampleText, { overwrite: true });
+        const programFile = project.createSourceFile('sut.ts', sut, { overwrite: true });
+
+        programFile.forEachDescendant(node => {
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+
+            if (decoratorInfos != null) {
+                assert.equal(decoratorInfos.length, 1);
+                assert.equal(decoratorInfos[0].isDecoratorFactory, true);
+                assert.equal(decoratorInfos[0].name, 'inject');
+                assert.equal(decoratorInfos[0].text, '@inject(Sample)');
+
+                assert.isTrue(decoratorInfos[0].parameters !== undefined);
+                assert.equal(decoratorInfos[0].parameters.length, 1);
+                assert.isTrue(decoratorInfos[0].parameters[0] !== undefined);
+
+                assert.equal(decoratorInfos[0].parameters[0].value, 'Sample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text, 'Sample');
+
+                let lastIndexOf = decoratorInfos[0].parameters[0].type.fullText.lastIndexOf('.') + 1;
+                assert.equal(decoratorInfos[0].parameters[0].type.fullText.substr(lastIndexOf), 'Sample');
+
+                assert.isTrue(decoratorInfos[0].parameters[0].type.details !== undefined);
+                assert.equal(decoratorInfos[0].parameters[0].type.details.length, 1);
+
+                lastIndexOf = decoratorInfos[0].parameters[0].type.details[0].text.lastIndexOf('.') + 1;
+
+                assert.equal(decoratorInfos[0].parameters[0].type.details[0].text.substr(lastIndexOf), 'Sample');
+            }
+        });
+
     });
 
     // it('should return correct DecoratorInfo', function () {

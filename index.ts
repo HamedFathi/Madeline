@@ -1,3 +1,6 @@
+import { Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
+import { ClassExtractor } from './extractors/class/ClassExtractor';
+
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -99,3 +102,30 @@ let result = files.getSourceFiles('...');
 if (result)
     files.save(result);
 */
+
+const sampleText = `export class Sample { }`;
+const decoratorText = `
+export function inject(value: any) {
+    return function (target: any) {
+    }
+}`;
+const programText = `
+import {Sample} from './sample';
+import {inject} from './decorator';
+@inject( Sample )
+export class Program { }
+`;
+
+
+const project = new Project();
+const sampleFile = project.createSourceFile('sample.ts', sampleText);
+const decoratorFile = project.createSourceFile('decorator.ts', decoratorText);
+const programFile = project.createSourceFile('program.ts', programText);
+
+programFile.forEachDescendant(x => {
+    switch (x.getKind()) {
+        case SyntaxKind.ClassDeclaration:
+            let info = new ClassExtractor().extract((x as ClassDeclaration));
+            break;
+    }
+});

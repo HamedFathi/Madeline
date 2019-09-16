@@ -3,8 +3,10 @@ import * as htmlparser2Adapter from 'parse5-htmlparser2-tree-adapter';
 import { CommentInfo } from './CommentInfo';
 import { JsDocExtractor } from './JsDocExtractor';
 import { CommentKind } from './CommentKind';
+/* eslint-disable */
 // @ts-ignore
 import traverse = require('parse5-traverse');
+/* eslint-disable */
 
 export class HtmlCommentExtractor {
     public traverse(htmlText: string): CommentInfo[] {
@@ -32,12 +34,6 @@ export class HtmlCommentExtractor {
                 }
             },
         });
-        return result;
-    }
-
-    private isSingleLineComment(text:string):boolean
-    {
-        let result = text.trim().startsWith('\\\\');
         return result;
     }
 }

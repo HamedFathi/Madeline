@@ -1,4 +1,6 @@
+/* eslint-disable */
 const safeStringify = require('fast-safe-stringify');
+/* eslint-disable */
 
 export class StringUtils {
     public isEmptyOrWhitespace(text: string): boolean {
@@ -28,13 +30,18 @@ export class StringUtils {
         return result;
     }
 
-    public joinLines(text: string[], separator?: string): string {
+    public joinLines(text: string | string[], separator?: string): string {
         const lines: string[] = [];
-        text.forEach(line => {
-            const result = this.removeLineBreaks(line).trim();
-            lines.push(result);
-        });
-        return lines.join(separator);
+        if (typeof text === 'string') {
+            return text;
+        } else {
+            text.forEach(line => {
+                const result = this.removeLineBreaks(line).trim();
+                lines.push(result);
+            });
+        }
+        const result = lines.join(separator);
+        return result;
     }
 
     public nbspGenerator(repetition?: number) {

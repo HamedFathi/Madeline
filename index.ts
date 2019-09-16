@@ -1,6 +1,3 @@
-import { Project, SyntaxKind, ClassDeclaration } from 'ts-morph';
-import { ClassExtractor } from './extractors/class/ClassExtractor';
-
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -81,51 +78,25 @@ export * from './extractors/type-parameter/TypeParameterInfo';
 export * from './extractors/variable/CommonVariableInfo';
 export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
-export * from './markdown/Const';
-export * from './markdown/class/ClassToMdConverter';
-export * from './markdown/comment/CommentTagNameReplacer';
-export * from './markdown/comment/CommentToMdConverter';
-export * from './markdown/comment/CommentToMdOption';
-export * from './markdown/module/ModuleToMdConverter';
-export * from './utilities/JsonUtils';
-export * from './utilities/StringUtils';
-export * from './utilities/FsUtils';
+export * from './templates/TemplateOption';
+export * from './templates/class/ClassToMdConverter';
+export * from './templates/comment/AlternativeTagOption';
+export * from './templates/comment/CommentGroup';
+export * from './templates/comment/CommentGroupInfo';
+export * from './templates/comment/CommentTemplate';
+export * from './templates/comment/CommentTemplateInfo';
+export * from './templates/comment/CommentToMdConverter';
+export * from './templates/comment/CommentToMdOption';
+export * from './templates/comment/TagInfoHeader';
+export * from './templates/module/ModuleTemplate';
+export * from './templates/module/ModuleTemplateInfo';
+export * from './templates/module/ModuleToMdConverter';
 export * from './utilities/AureliaSourceFile';
 export * from './utilities/AureliaSourceFileUtils';
+export * from './utilities/FsUtils';
+export * from './utilities/JsonUtils';
+export * from './utilities/MarkdownUtils';
+export * from './utilities/NunjucksUtils';
+export * from './utilities/ObjectUtils';
 export * from './utilities/PrettifierUtils';
-
-/*
-import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-
-let files = new AureliaSourceFileUtils();
-let result = files.getSourceFiles('...');
-if (result)
-    files.save(result);
-*/
-
-const sampleText = `export class Sample { }`;
-const decoratorText = `
-export function inject(value: any) {
-    return function (target: any) {
-    }
-}`;
-const programText = `
-import {Sample} from './sample';
-import {inject} from './decorator';
-@inject( Sample )
-export class Program { }
-`;
-
-
-const project = new Project();
-const sampleFile = project.createSourceFile('sample.ts', sampleText);
-const decoratorFile = project.createSourceFile('decorator.ts', decoratorText);
-const programFile = project.createSourceFile('program.ts', programText);
-
-programFile.forEachDescendant(x => {
-    switch (x.getKind()) {
-        case SyntaxKind.ClassDeclaration:
-            let info = new ClassExtractor().extract((x as ClassDeclaration));
-            break;
-    }
-});
+export * from './utilities/StringUtils';

@@ -27,21 +27,25 @@ export class CoverageExtractor {
         sourceFile.forEachDescendant(node => {
             if (valid.includes(node.getKind()) && !invalid.includes(node.getKind())) {
                 let name = '';
+                /* eslint-disable */
                 //@ts-ignore
                 if (typeof node.getName !== 'undefined') {
                     //@ts-ignore
                     name = node.getName();
                 }
+                /* eslint-disable */
                 const kind = node.getKind();
                 const kindName = node.getKindName();
                 const hasLeadingComment = node.getLeadingCommentRanges().length > 0;
                 const hasTrailingComment = node.getTrailingCommentRanges().length > 0;
                 let hasJsDoc = false;
+                /* eslint-disable */
                 //@ts-ignore
                 if (typeof node.getJsDocs !== 'undefined') {
                     //@ts-ignore
                     hasJsDoc = (node.getJsDocs() as JSDoc[]).length > 0;
                 }
+                /* eslint-disable */
                 result.push({
                     name: name,
                     kind: kind,

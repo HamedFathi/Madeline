@@ -13,8 +13,5 @@ module.exports = {
         "warnOnUnsupportedTypeScriptVersion": false
     },
     rules: {
-        "@typescript-eslint/ban-ts-ignore": "off",
-        "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/no-explicit-any": "off"
     }
 }

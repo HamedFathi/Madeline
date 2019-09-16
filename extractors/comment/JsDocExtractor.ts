@@ -16,6 +16,7 @@ export class JsDocExtractor {
     private readonly NOTHING = '';
     private readonly START_JS_DOC = '/**';
     private readonly START_JS_DOC_UNUSUAL = '/*';
+    private readonly END_JS_DOC_UNUSUAL = '**/';
     private readonly END_JS_DOC = '*/';
     private stringUtils = new StringUtils();
 
@@ -93,8 +94,10 @@ export class JsDocExtractor {
                     if (!tags[tagIndex]['description']) {
                         tags[tagIndex]['description'] = [];
                     }
+                    /* eslint-disable */
                     //@ts-ignore
                     tags[tagIndex]['description'].push(line);
+                    /* eslint-disable */
                 }
             }
         });
@@ -112,6 +115,7 @@ export class JsDocExtractor {
         const result = text
             .replace(this.START_JS_DOC, this.NOTHING)
             .replace(this.START_JS_DOC_UNUSUAL, this.NOTHING)
+            .replace(this.END_JS_DOC_UNUSUAL, this.NOTHING)
             .replace(this.END_JS_DOC, this.NOTHING)
             .split(/\r?\n/)
             .map(x => x.replace(/\*+/, this.NOTHING).trim())

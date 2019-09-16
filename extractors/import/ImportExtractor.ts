@@ -35,7 +35,7 @@ export class ImportExtractor {
                     }
                     if (defaultImport) {
                         const name = defaultImport.getText();
-                        const alias: any = undefined;
+                        const alias = undefined;
                         const kind = ImportKind.DefaultImport;
                         result.push({
                             name: name,
@@ -48,7 +48,7 @@ export class ImportExtractor {
                     }
                     if (namespaceImport) {
                         const name = namespaceImport.getText();
-                        const alias: any = undefined;
+                        const alias = undefined;
                         const kind = ImportKind.NamespaceImport;
                         result.push({
                             name: name,

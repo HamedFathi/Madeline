@@ -94,7 +94,7 @@ export class SourceFileExtractor {
                 case SyntaxKind.VariableStatement:
                     const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
-                        variables.push(new VariableExtractor().extract(node as VariableStatement) as any);
+                        variables.push(new VariableExtractor().extract(node as VariableStatement));
                     }
                     break;
                 case SyntaxKind.ClassDeclaration:

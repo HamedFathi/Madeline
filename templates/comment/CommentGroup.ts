@@ -34,6 +34,7 @@ export class CommentGroup {
                     tag: tagInfo.tag,
                 });
             });
+            result.push(item);
         });
         return result;
     }

@@ -61,8 +61,8 @@ export class CommentToMdConverter {
     public toMdTable(tags: TagInfo[], headers: string[], append = true): string[][] {
         if (!headers || !tags) return [];
         if (headers.length === 0 || tags.length === 0) return [];
-
         const result: string[][] = [];
+        result.push(headers);
         tags.forEach(tag => {
             const item: string[] = [];
             if (headers.includes('name')) {

@@ -8,27 +8,12 @@ export const COMMENT_TEMPLATE = `
 
     {% endif %}
 {% endif %}
-{% if title|is_available %}
-### {{title}}
+{% for detail in details %}
+    {% if detail.title|is_available %}
+        ### {{detail.title}}
 
-{% endif %}
-{% if headers|is_available %}
-    {% if headers|is_description_only %}
-        {% if append %}
-            {{tags|description}}
-
-        {% else %}
-            {{tags|description}}
-
-        {% endif %}
-    {% else %}
-        {% if append %}
-
-        {% else %}
-
-        {% endif %}
     {% endif %}
-{% else %}
-
-{% endif %}
+    {{detail.tags|write(append, detail.headers)}}
+    
+{% endfor %}
 `;

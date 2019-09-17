@@ -13,4 +13,5 @@ export interface TypeAliasInfo {
     modules: ModuleInfo[] | undefined;
     type: TypeInfo;
     typeParameters: TypeParameterInfo[] | undefined;
+    hasComment: boolean;
 }

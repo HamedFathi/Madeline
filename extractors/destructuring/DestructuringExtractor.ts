@@ -26,6 +26,7 @@ export class DestructuringExtractor {
         const kindName = node.getDeclarationKind().toString();
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
         const nodeText = node.getText();
         node.getDeclarations().forEach(declaration => {
@@ -68,6 +69,7 @@ export class DestructuringExtractor {
                     modules: modules,
                     typeReference: typeReference,
                     text: nodeText,
+                    hasComment: hasComment,
                 });
             }
         });

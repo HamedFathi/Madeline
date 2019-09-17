@@ -16,4 +16,5 @@ export interface CommonVariableInfo {
     kind: VariableDeclarationKind;
     kindName: string;
     typeReference: string | undefined;
+    hasComment: boolean;
 }

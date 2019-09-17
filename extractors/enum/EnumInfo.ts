@@ -11,4 +11,5 @@ export interface EnumInfo {
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
     text: string;
+    hasComment: boolean;
 }

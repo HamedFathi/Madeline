@@ -18,4 +18,5 @@ export interface FunctionInfo {
     typeParameters: TypeParameterInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     text: string;
+    hasComment: boolean;
 }

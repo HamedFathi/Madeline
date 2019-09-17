@@ -14,4 +14,5 @@ export interface MethodInfo {
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
+    hasComment: boolean;
 }

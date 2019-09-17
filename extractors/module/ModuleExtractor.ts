@@ -46,7 +46,7 @@ export class ModuleExtractor {
                     declaration.getTrailingCommentRanges(),
                 );
                 const leadingComments = new TypescriptCommentExtractor().extract(declaration.getLeadingCommentRanges());
-
+                const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
                 const isNamespace = declaration.hasNamespaceKeyword();
                 const modifiers =
                     declaration.getModifiers().length === 0
@@ -58,8 +58,9 @@ export class ModuleExtractor {
                     isNamespace: isNamespace,
                     modifiers: modifiers,
                     level: level,
-                    leadingComments: leadingComments,
-                    trailingComments: trailingComments,
+                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    hasComment: hasComment,
                 });
                 this.getInfo(declaration, info, ++level);
             }

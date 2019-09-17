@@ -8,4 +8,5 @@ export interface ModuleInfo {
     level: number;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
+    hasComment: boolean;
 }

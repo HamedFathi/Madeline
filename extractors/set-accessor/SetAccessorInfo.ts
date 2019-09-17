@@ -11,4 +11,5 @@ export interface SetAccessorInfo {
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
     variables: VariableInfo[] | undefined;
+    hasComment: boolean;
 }

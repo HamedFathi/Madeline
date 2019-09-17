@@ -9,6 +9,7 @@ export class TypeAliasExtractor {
     public extract(node: TypeAliasDeclaration): TypeAliasInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
@@ -19,6 +20,7 @@ export class TypeAliasExtractor {
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),
             typeParameters: new TypeParameterExtractor().extract(node),
+            hasComment: hasComment,
         };
     }
 }

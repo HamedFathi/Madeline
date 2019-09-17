@@ -7,20 +7,18 @@ import { VariableExtractor } from '../variable/VariableExtractor';
 
 export class GetAccessorExtractor {
     public extract(node: GetAccessorDeclaration): GetAccessorInfo {
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
             returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode()),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
-            trailingComments:
-                new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
-                    ? undefined
-                    : new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()),
-            leadingComments:
-                new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
-                    ? undefined
-                    : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
+            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+            leadingComments: trailingComments.length === 0 ? undefined : trailingComments,
+            hasComment: hasComment,
             variables:
                 node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
                     ? undefined

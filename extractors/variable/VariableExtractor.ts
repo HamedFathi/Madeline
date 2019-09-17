@@ -30,6 +30,7 @@ export class VariableExtractor {
             const kindName = node.getDeclarationKind().toString();
             const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
             const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+            const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
             const modules = new ModuleExtractor().extract(node);
             const text = node.getText();
             node.getDeclarations().forEach(declaration => {
@@ -52,6 +53,7 @@ export class VariableExtractor {
                     kindName: kindName,
                     trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
                     leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    hasComment: hasComment,
                     modules: modules,
                     text: text,
                     typeReference: typeReference,

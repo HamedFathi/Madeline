@@ -7,21 +7,20 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 
 export class InterfaceExtractor {
     private readonly typeParameterExtractor = new TypeParameterExtractor();
+
     public extract(node: InterfaceDeclaration): InterfaceInfo {
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const result: InterfaceInfo = {
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
-            trailingComments:
-                new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
-                    ? undefined
-                    : new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()),
-            leadingComments:
-                new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
-                    ? undefined
-                    : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
+            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),
             typeParameters: this.typeParameterExtractor.extract(node),
+            hasComment: hasComment,
             properties:
                 node.getProperties().length === 0
                     ? undefined

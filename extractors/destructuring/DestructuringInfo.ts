@@ -14,4 +14,5 @@ export interface DestructuringInfo {
     kindName: string;
     typeReference: string | undefined;
     text: string;
+    hasComment: boolean;
 }

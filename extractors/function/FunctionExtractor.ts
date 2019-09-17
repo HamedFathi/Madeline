@@ -10,6 +10,7 @@ export class FunctionExtractor {
     public extractFromExpression(node: FunctionExpression): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const returnType =
             node.getReturnType() === undefined
                 ? undefined
@@ -18,6 +19,7 @@ export class FunctionExtractor {
         const result: FunctionInfo = {
             name: node.getName(),
             text: node.getText(),
+            hasComment: hasComment,
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             isGenerator: node.isGenerator(),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
@@ -49,6 +51,7 @@ export class FunctionExtractor {
     public extract(node: FunctionDeclaration): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const returnType =
             node.getReturnType() === undefined
                 ? undefined
@@ -57,6 +60,7 @@ export class FunctionExtractor {
         const result: FunctionInfo = {
             name: node.getName(),
             text: node.getText(),
+            hasComment: hasComment,
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             isGenerator: node.isGenerator(),
             isOverload: node.isOverload(),

@@ -22,4 +22,5 @@ export interface InterfaceInfo {
     leadingComments: CommentInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
+    hasComment: boolean;
 }

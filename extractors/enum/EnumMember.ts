@@ -6,4 +6,5 @@ export interface EnumMember {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     text: string;
+    hasComment: boolean;
 }

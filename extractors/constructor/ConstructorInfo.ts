@@ -11,4 +11,5 @@ export interface ConstructorInfo {
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     text: string;
+    hasComment: boolean;
 }

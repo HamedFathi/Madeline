@@ -27,27 +27,26 @@ export class CommentToMdConverter {
         // with tags
         if (commentInfo.tags) {
             const groupedTags = new CommentGroup().groupByTagName(commentInfo.tags, commentOption);
-            groupedTags.forEach(obj => {
-                const commentTemplateInfo: CommentTemplateInfo = {
-                    title: obj.title,
-                    headers: obj.headers,
-                    tags: obj.tags,
-                    description: commentInfo.description,
-                    append: append,
-                };
-                const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);
-                const md = new MarkdownUtils().purify(text);
-                result.push(md);
+            const commentTemplateInfo: CommentTemplateInfo = {
+                details: [],
+                description: commentInfo.description,
+                append: append,
+            };
+            groupedTags.forEach(groupedTag => {
+                if (commentTemplateInfo.details) {
+                    commentTemplateInfo.details.push(groupedTag);
+                }
             });
+            const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);
+            const md = new MarkdownUtils().purify(text);
+            result.push(md);
         }
         // only global description
         else {
             if (commentInfo.description) {
                 const commentTemplateInfo: CommentTemplateInfo = {
+                    details: undefined,
                     append: append,
-                    title: undefined,
-                    headers: undefined,
-                    tags: undefined,
                     description: commentInfo.description,
                 };
                 const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);

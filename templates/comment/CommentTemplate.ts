@@ -1,8 +1,4 @@
 export const COMMENT_TEMPLATE = `
-{% if title|is_available %}
-### {{title}}
-
-{% endif %}
 {% if description|is_available %}
     {% if append %}
         {{description|print('','','',' ')}}
@@ -12,11 +8,17 @@ export const COMMENT_TEMPLATE = `
 
     {% endif %}
 {% endif %}
+{% if title|is_available %}
+### {{title}}
+
+{% endif %}
 {% if headers|is_available %}
     {% if headers|is_description_only %}
         {% if append %}
+            {{tags|description}}
 
         {% else %}
+            {{tags|description}}
 
         {% endif %}
     {% else %}

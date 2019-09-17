@@ -8,7 +8,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
-        project: "./tsconfig.test.json",
+        project: "./tsconfig.eslint.json",
         tsconfigRootDir: './',
         "warnOnUnsupportedTypeScriptVersion": false
     },

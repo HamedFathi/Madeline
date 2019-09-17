@@ -12,8 +12,8 @@ export const COMMENT_TEMPLATE = `
     {% if detail.title|is_available %}
         ### {{detail.title}}
 
-    {% endif %}
-    {{detail.tags|write(append, detail.headers)}}
-    
+        {{detail.tags|write(append, detail.headers)}}
+        
+    {% endif %}    
 {% endfor %}
 `;

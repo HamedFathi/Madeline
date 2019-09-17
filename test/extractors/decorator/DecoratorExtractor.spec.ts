@@ -180,7 +180,7 @@ describe('DecoratorExtractor', function () {
                 assert.isTrue(decoratorInfos[0].parameters[0] !== undefined);
 
                 assert.equal(decoratorInfos[0].parameters[0].value, 'Sample');
-                assert.equal(decoratorInfos[0].parameters[0].type.text, 'Sample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text, 'typeof Sample');
 
                 let lastIndexOf = decoratorInfos[0].parameters[0].type.fullText.lastIndexOf('.') + 1;
                 assert.equal(decoratorInfos[0].parameters[0].type.fullText.substr(lastIndexOf), 'Sample');

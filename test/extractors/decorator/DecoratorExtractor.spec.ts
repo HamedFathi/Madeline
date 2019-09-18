@@ -1,17 +1,8 @@
-import { assert } from 'chai';
-import {
-    Project,
-    ScriptTarget,
-    SyntaxKind,
-    GetAccessorDeclaration,
-    ClassDeclaration,
-    PropertyDeclaration,
-    MethodDeclaration,
-    ParameterDeclaration,
-} from 'ts-morph';
+import { assert } from "chai";
+import { Project, ScriptTarget, SyntaxKind, GetAccessorDeclaration, ClassDeclaration, PropertyDeclaration, MethodDeclaration, ParameterDeclaration } from 'ts-morph';
 import { DecoratorExtractor, DecoratableType } from '../../../extractors/decorator/DecoratorExtractor';
-import { DecoratorInfo } from '../../../extractors/decorator/DecoratorInfo';
-import { AssertionError } from 'assert';
+import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
+import { AssertionError } from "assert";
 
 const decoratorSample = `
 @test1(1,'A',{w:2})
@@ -32,15 +23,16 @@ export class A {
 }
 `;
 
-describe('DecoratorExtractor', function() {
+describe('DecoratorExtractor', function () {
+
     let project: Project;
     let decoratorExtractor: DecoratorExtractor;
 
     beforeEach(() => {
         project = new Project({
             compilerOptions: {
-                target: ScriptTarget.ES5,
-            },
+                target: ScriptTarget.ES5
+            }
         });
 
         decoratorExtractor = new DecoratorExtractor();
@@ -54,7 +46,7 @@ describe('DecoratorExtractor', function() {
 
         // act
         file.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
             assert.isUndefined(decoratorInfos);
         });
@@ -69,7 +61,7 @@ describe('DecoratorExtractor', function() {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                const decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+                let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
                 if (decoratorInfos !== undefined) {
                     // assert
@@ -91,7 +83,8 @@ describe('DecoratorExtractor', function() {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                const decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+
+                let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
                 if (decoratorInfos !== undefined) {
                     // assert
@@ -112,13 +105,15 @@ describe('DecoratorExtractor', function() {
         export class Test{}`;
         const file = project.createSourceFile('sut.ts', sut);
 
+
         const filterStrategy = (d: DecoratorInfo) => {
             return d.name === 'filterDecorator';
         };
 
         // act
         file.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(<DecoratableType>node, filterStrategy);
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node,
+                filterStrategy);
 
             if (decoratorInfos !== undefined) {
                 // assert
@@ -132,6 +127,7 @@ describe('DecoratorExtractor', function() {
     });
 
     it(`should return two decorators, one for class, and another for property`, () => {
+
         // arrange
         const sut = `@autoinject
         class Test{
@@ -139,11 +135,11 @@ describe('DecoratorExtractor', function() {
             private id:number = 11;
         }`;
         const file = project.createSourceFile('sut.ts', sut);
-        const allDecorators: DecoratorInfo[] = [];
+        let allDecorators: DecoratorInfo[] = [];
 
         // act
         file.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
             if (decoratorInfos !== undefined) {
                 decoratorInfos.forEach(di => {
                     allDecorators.push(di);
@@ -158,6 +154,7 @@ describe('DecoratorExtractor', function() {
     });
 
     it('should return a factory decorator with one argument named Sample', () => {
+
         const sampleText = `export class Sample { }`;
         const sut = `
         import {Sample} from './sample';
@@ -170,7 +167,7 @@ describe('DecoratorExtractor', function() {
         const programFile = project.createSourceFile('sut.ts', sut, { overwrite: true });
 
         programFile.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
+            let decoratorInfos = decoratorExtractor.extract(<DecoratableType>node);
 
             if (decoratorInfos != null) {
                 assert.equal(decoratorInfos.length, 1);
@@ -183,7 +180,7 @@ describe('DecoratorExtractor', function() {
                 assert.isTrue(decoratorInfos[0].parameters[0] !== undefined);
 
                 assert.equal(decoratorInfos[0].parameters[0].value, 'Sample');
-                assert.equal(decoratorInfos[0].parameters[0].type.text, 'Sample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text, 'typeof Sample');
 
                 let lastIndexOf = decoratorInfos[0].parameters[0].type.fullText.lastIndexOf('.') + 1;
                 assert.equal(decoratorInfos[0].parameters[0].type.fullText.substr(lastIndexOf), 'Sample');
@@ -196,6 +193,7 @@ describe('DecoratorExtractor', function() {
                 assert.equal(decoratorInfos[0].parameters[0].type.details[0].text.substr(lastIndexOf), 'Sample');
             }
         });
+
     });
 
     // it('should return correct DecoratorInfo', function () {
@@ -300,3 +298,4 @@ describe('DecoratorExtractor', function() {
     //     assert.deepEqual(actualResult, expectedResult);
     // });
 });
+

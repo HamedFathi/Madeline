@@ -30,8 +30,8 @@ export type DecoratableType =
 export class DecoratorExtractor {
     public extract(
         node: DecoratableType,
-        filterStrategy?: (info: DecoratorInfo) => boolean): DecoratorInfo[] | undefined {
-
+        filterStrategy?: (info: DecoratorInfo) => boolean,
+    ): DecoratorInfo[] | undefined {
         if (!allowedKinds.includes(node.getKind())) {
             // the specified node does not allowed to have decorators
             return undefined;
@@ -46,11 +46,11 @@ export class DecoratorExtractor {
                     x.getArguments().length === 0
                         ? undefined
                         : x.getArguments().map(x => {
-                            return {
-                                value: x.getText(),
-                                type: new TypeExtractor().extract(x.getType()),
-                            };
-                        }),
+                              return {
+                                  value: x.getText(),
+                                  type: new TypeExtractor().extract(x.getType()),
+                              };
+                          }),
             };
         });
 

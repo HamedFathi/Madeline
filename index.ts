@@ -98,5 +98,5 @@ export * from './utilities/JsonUtils';
 export * from './utilities/MarkdownUtils';
 export * from './utilities/NunjucksUtils';
 export * from './utilities/ObjectUtils';
-export * from './utilities/PrettifierUtils';
+export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';

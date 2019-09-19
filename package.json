@@ -26,9 +26,9 @@
     "build": "./node_modules/.bin/gulp build",
     "clean": "node del.js",
     "make-index": "node make-index.js",
-    "test-watch": "mocha -r  ts-node/register --watch-extensions ts --watch -R min --timeout 10000 test/**/*.ts",
-    "test": "mocha -r  ts-node/register --timeout 10000 test/**/*.ts",
-    "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha -r ts-node/register  --timeout 10000 test/**/*.ts && nyc report",
+    "test-watch": "mocha  -r  test/tshook.js --watch-extensions ts --watch -R min --timeout 10000 test/**/*.ts",
+    "test": "mocha -r  test/tshook.js --timeout 10000 test/**/*.ts",
+    "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha  -r  test/tshook.js --timeout 10000 test/**/*.ts && nyc report",
     "eslint": "./node_modules/.bin/eslint --fix ./**/*.ts"
   },
   "nyc": {

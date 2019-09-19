@@ -1,5 +1,5 @@
 import { ModuleInfo } from '../../extractors/module/ModuleInfo';
-import { PrettierUtils } from '../../utilities/PrettifierUtils';
+import { PrettierUtils } from '../../utilities/PrettierUtils';
 import { MODULE_TEMPLATE } from './moduleTemplate';
 import { ModuleTemplateInfo } from './ModuleTemplateInfo';
 import { Nunjucks } from '../../utilities/NunjucksUtils';

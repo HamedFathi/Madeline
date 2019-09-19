@@ -303,6 +303,7 @@ templates/*.d.ts
 templates/*.js
 templates/*.map
 test/**/*.js
+!test/tshook.js
 test/**/*.map
 test/**/*.d.ts
 extractors/**/*.js

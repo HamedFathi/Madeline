@@ -10,8 +10,8 @@ module.exports = {
             // If true it appends all descriptions, otherwise it shows all descriptions line by line.
             append: true,
             // Extend nunjucks template engine by adding custom filters and ...
-            engine: function(env) {
-                return env
+            engine: function(/*env*/) {
+                return /*env*/;
             },
         },
         // Define all jsdoc tags and its equivalents.
@@ -22,8 +22,8 @@ module.exports = {
             }]
         },
         // Make a new Module template.
-        module: function(moduleTemplateInfo) {
-            return "";
+        module: function(/*moduleTemplateInfo*/) {
+            return /*""*/;
         } 
     },
 };

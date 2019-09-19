@@ -1,6 +1,6 @@
 {
   "name": "madeline",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "An experimental library to extract information from Javascript/Typescript source files.",
   "keywords": [
     "typescript",
@@ -55,7 +55,8 @@
     "parse5-htmlparser2-tree-adapter": "^5.1.0",
     "parse5-traverse": "^1.0.3",
     "traverse": "^0.6.6",
-    "ts-morph": "^4.0.1"
+    "ts-morph": "^4.0.1",
+    "prettier":"^1.18.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.3",
@@ -82,7 +83,6 @@
     "gulp-typescript": "^5.0.1",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
-    "prettier": "^1.18.2",
     "source-map-support": "^0.5.13",
     "ts-node": "^8.4.1",
     "tslib": "^1.10.0",

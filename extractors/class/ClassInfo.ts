@@ -14,4 +14,5 @@ export interface ClassInfo {
     decorators: DecoratorInfo[] | undefined;
     modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
+    hasComment: boolean;
 }

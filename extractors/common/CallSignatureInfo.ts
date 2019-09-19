@@ -1,9 +1,9 @@
 import { TypeInfo } from './TypeInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
-import { CallSignatureParamInfo } from './CallSignatureParamInfo';
+import { CallSignatureParameterInfo } from './CallSignatureParameterInfo';
 
 export interface CallSignatureInfo {
-    parameters: CallSignatureParamInfo[] | undefined;
+    parameters: CallSignatureParameterInfo[] | undefined;
     returnType: TypeInfo;
     typeParameters: TypeParameterInfo[] | undefined;
 }

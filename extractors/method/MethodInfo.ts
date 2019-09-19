@@ -1,4 +1,4 @@
-import { MethodParamInfo } from './MethodParamInfo';
+import { MethodParamInfo } from './MethodParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';
@@ -14,4 +14,5 @@ export interface MethodInfo {
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
+    hasComment: boolean;
 }

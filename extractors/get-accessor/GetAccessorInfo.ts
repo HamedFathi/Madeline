@@ -11,4 +11,5 @@ export interface GetAccessorInfo {
     decorators: DecoratorInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     text: string;
+    hasComment: boolean;
 }

@@ -7,6 +7,7 @@ export class EnumExtractor {
     public extract(node: EnumDeclaration): EnumInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
@@ -15,11 +16,15 @@ export class EnumExtractor {
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),
             text: node.getText(),
+            hasComment: hasComment,
             members: node.getMembers().map(x => {
                 return {
                     name: x.getName(),
                     value: x.getValue(),
                     text: x.getText(),
+                    hasComment:
+                        new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length !== 0 ||
+                        new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length !== 0,
                     trailingComments:
                         new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                             ? undefined

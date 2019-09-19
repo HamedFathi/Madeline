@@ -7,4 +7,5 @@ export interface ExportAssignmentInfo {
     modules: ModuleInfo[] | undefined;
     text: string;
     isExportDefault: boolean;
+    hasComment: boolean;
 }

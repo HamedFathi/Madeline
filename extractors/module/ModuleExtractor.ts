@@ -11,6 +11,7 @@ import {
     ExportAssignment,
 } from 'ts-morph';
 import { ModuleInfo } from './ModuleInfo';
+import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 
 export class ModuleExtractor {
     public extract(
@@ -41,12 +42,26 @@ export class ModuleExtractor {
             if (declaration) {
                 const name = declaration.getName();
                 const text = declaration.getText();
+                const trailingComments = new TypescriptCommentExtractor().extract(
+                    declaration.getTrailingCommentRanges(),
+                );
+                const leadingComments = new TypescriptCommentExtractor().extract(declaration.getLeadingCommentRanges());
+                const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
                 const isNamespace = declaration.hasNamespaceKeyword();
                 const modifiers =
                     declaration.getModifiers().length === 0
                         ? undefined
                         : declaration.getModifiers().map(x => x.getText());
-                info.push({ name: name, text: text, isNamespace: isNamespace, modifiers: modifiers, level: level });
+                info.push({
+                    name: name,
+                    text: text,
+                    isNamespace: isNamespace,
+                    modifiers: modifiers,
+                    level: level,
+                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    hasComment: hasComment,
+                });
                 this.getInfo(declaration, info, ++level);
             }
         }

@@ -10,6 +10,7 @@ export class ClassExtractor {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const decorators = new DecoratorExtractor().extract(node);
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
@@ -21,6 +22,7 @@ export class ClassExtractor {
             decorators: decorators,
             modules: new ModuleExtractor().extract(node),
             typeParameters: new TypeParameterExtractor().extract(node),
+            hasComment: hasComment,
         };
     }
 }

@@ -1,7 +1,7 @@
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { VariableInfo } from '../variable/VariableInfo';
-import { SetAccessorParamInfo } from './SetAccessorParamInfo';
+import { SetAccessorParamInfo } from './SetAccessorParameterInfo';
 export interface SetAccessorInfo {
     name: string;
     text: string;
@@ -11,4 +11,5 @@ export interface SetAccessorInfo {
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
     variables: VariableInfo[] | undefined;
+    hasComment: boolean;
 }

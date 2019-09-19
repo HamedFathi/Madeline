@@ -29,6 +29,7 @@ import { LiteralAssignmentInfo } from './LiteralAssignmentInfo';
 import { LiteralInfo } from './LiteralInfo';
 import { LiteralExpressionInfo } from './LiteralExpressionInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
+import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 
 /*
 const obj = {
@@ -111,6 +112,9 @@ export const BasicConfiguration = {
 export class LiteralExtractor {
     public extract(node: VariableStatement): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = undefined;
@@ -133,9 +137,12 @@ export class LiteralExtractor {
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
+                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    hasComment: hasComment,
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType()),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode()),
                 });
             }
             if (arrayLiteral) {
@@ -147,11 +154,14 @@ export class LiteralExtractor {
                 });
                 result.push({
                     elements: members,
+                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    hasComment: hasComment,
                     isArrayLiteral: true,
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType()),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode()),
                 });
             }
         });
@@ -246,7 +256,10 @@ export class LiteralExtractor {
             const arrowFunction = node as ArrowFunction;
             const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
-                returnType: new TypeExtractor().extract(callSignature.getReturnType()),
+                returnType: new TypeExtractor().extract(
+                    callSignature.getReturnType(),
+                    callSignature.getReturnTypeNode(),
+                ),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
@@ -254,7 +267,7 @@ export class LiteralExtractor {
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType()),
+                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                                   modifiers:
                                       y.getModifiers().length === 0
                                           ? undefined

@@ -7,6 +7,9 @@ import { SetAccessorInfo } from './SetAccessorInfo';
 
 export class SetAccessorExtractor {
     public extract(node: SetAccessorDeclaration): SetAccessorInfo {
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
@@ -15,19 +18,14 @@ export class SetAccessorExtractor {
                     name: y.getName(),
                     text: y.getText(),
                     modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(z => z.getText()),
-                    type: new TypeExtractor().extract(y.getType()),
+                    type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                 };
             })[0],
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
-            trailingComments:
-                new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()).length === 0
-                    ? undefined
-                    : new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges()),
-            leadingComments:
-                new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()).length === 0
-                    ? undefined
-                    : new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges()),
+            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
+            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            hasComment: hasComment,
             variables:
                 node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
                     ? undefined

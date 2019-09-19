@@ -1,5 +1,5 @@
 import { ClassDeclaration, ConstructorDeclaration } from 'ts-morph';
-import { ConstructorParamInfo } from './ConstructorParamInfo';
+import { ConstructorParamInfo } from './ConstructorParameterInfo';
 import { ConstructorInfo } from './ConstructorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
@@ -12,12 +12,13 @@ export class ConstructorExtractor {
         const isOverload = node.isOverload();
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modifiers = node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText());
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
-                type: new TypeExtractor().extract(x.getType()),
+                type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
                 modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),
@@ -37,6 +38,7 @@ export class ConstructorExtractor {
             parameters: params.length === 0 ? undefined : params,
             variables: variables.length === 0 ? undefined : variables,
             text: node.getText(),
+            hasComment: hasComment,
         };
     }
 

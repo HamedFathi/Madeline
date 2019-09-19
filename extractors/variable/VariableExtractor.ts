@@ -30,6 +30,7 @@ export class VariableExtractor {
             const kindName = node.getDeclarationKind().toString();
             const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
             const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+            const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
             const modules = new ModuleExtractor().extract(node);
             const text = node.getText();
             node.getDeclarations().forEach(declaration => {
@@ -42,7 +43,7 @@ export class VariableExtractor {
                 }
                 commons.push({
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType()),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode()),
                     modifiers: modifiers.length === 0 ? undefined : modifiers,
                     initializer:
                         declaration.getInitializer() === undefined
@@ -52,6 +53,7 @@ export class VariableExtractor {
                     kindName: kindName,
                     trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
                     leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    hasComment: hasComment,
                     modules: modules,
                     text: text,
                     typeReference: typeReference,
@@ -74,7 +76,10 @@ export class VariableExtractor {
             const arrowFunction = node as ArrowFunction;
             const callSignature = (arrowFunction as unknown) as CallSignatureDeclaration;
             return {
-                returnType: new TypeExtractor().extract(callSignature.getReturnType()),
+                returnType: new TypeExtractor().extract(
+                    callSignature.getReturnType(),
+                    callSignature.getReturnTypeNode(),
+                ),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
@@ -82,7 +87,7 @@ export class VariableExtractor {
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType()),
+                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
                                   modifiers:
                                       y.getModifiers().length === 0
                                           ? undefined

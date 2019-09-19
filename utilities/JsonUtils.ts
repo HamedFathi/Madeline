@@ -2,12 +2,12 @@ import * as fs from 'fs';
 import * as traverse from 'traverse';
 
 export class JsonUtils {
-    public parseText(text: string, func?: (key: string, value: any) => any): object {
+    public parseText(text: string, func?: (key: string, value: unknown) => unknown): object {
         const obj = JSON.parse(text, func);
         return obj;
     }
 
-    public parseFile(filePath: string, func?: (key: string, value: any) => any): object {
+    public parseFile(filePath: string, func?: (key: string, value: unknown) => unknown): object {
         const text = fs.readFileSync(filePath, 'utf8');
         const obj = JSON.parse(text, func);
         return obj;
@@ -30,7 +30,7 @@ export class JsonUtils {
         return this.convertJsObjectToJson(text) !== undefined;
     }
 
-    public convertJsObjectToJson(jsObject: string): any {
+    public convertJsObjectToJson(jsObject: string): unknown {
         try {
             const obj = JSON.stringify(eval('(' + jsObject + ')'));
             const isJson = this.isJson(obj);
@@ -40,7 +40,7 @@ export class JsonUtils {
         }
     }
 
-    public traverse(object: unknown, func: (node: any) => void): void {
+    public traverse(object: unknown, func: (node: unknown) => void): void {
         traverse(object).forEach(func);
     }
 }

@@ -12,8 +12,10 @@ export class ExportAssignmentExtractor {
                     const isExportDefault = !x.isExportEquals();
                     const trailingComments = new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges());
                     const leadingComments = new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges());
+                    const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
                     const expression: ExportAssignmentInfo = {
                         text: x.getText(),
+                        hasComment: hasComment,
                         trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
                         leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
                         modules: new ModuleExtractor().extract(x),

@@ -1,219 +1,61 @@
-import { Type /*, PropertyDeclaration, ParameterDeclaration*/ } from 'ts-morph';
-import { TypeInfo } from './TypeInfo';
-/*import { TypeKind } from './TypeKind';
-import { JsonLikeTypeInfo } from './JsonLikeTypeInfo';
-import { CallSignatureTypeInfo } from './CallSignatureTypeInfo';
-import { JsonUtils } from '../../utilities/JsonUtils';*/
-import { ImportInType } from './ImportInType';
+import { TypeDetailInfo } from './TypeDetailInfo';
 import { StringUtils } from '../../utilities/StringUtils';
+import { TypeInfo } from './TypeInfo';
+import { Type, TypeNode } from 'ts-morph';
 
 export class TypeExtractor {
-    /*public extract(node: Type): TypeInfo {
-        const typeInfo: TypeInfo = {
-            kind: TypeKind.NotSpecified,
-            kindName: TypeKind[TypeKind.NotSpecified],
-            type: node.getText(),
-        };
-        try {
-            const callSignatures = node.getCallSignatures();
-            if (callSignatures.length > 0) {
-                typeInfo.kind = TypeKind.CallSignature;
-                const result: CallSignatureTypeInfo[] = [];
-                callSignatures.forEach(signature => {
-                    const returnType = new TypeExtractor().extract(signature.getReturnType());
-                    const name = signature
-                        .getDeclaration()
-                        .getType()
-                        .getText();
-                    const params = signature.getParameters().map(x => {
-                        return {
-                            name: x.getName(),
-                            type:
-                                x.getValueDeclaration() === undefined
-                                    ? undefined
-                                    : new TypeExtractor().extract(x.getValueDeclarationOrThrow().getType()),
-                            isOptional:
-                                x.getValueDeclaration() === undefined
-                                    ? false
-                                    : (x.getValueDeclarationOrThrow() as ParameterDeclaration).isOptional(),
-                        };
-                    });
-                    result.push({ name: name, returnType: returnType, parameters: params });
-                });
-                typeInfo.kind = TypeKind.CallSignature;
-                typeInfo.kindName = TypeKind[TypeKind.CallSignature];
-                typeInfo.type = result;
-                return typeInfo;
-            }
-            if (node.getText() === 'void') {
-                typeInfo.kind = TypeKind.Void;
-                typeInfo.kindName = TypeKind[TypeKind.Void];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'never') {
-                typeInfo.kind = TypeKind.Never;
-                typeInfo.kindName = TypeKind[TypeKind.Never];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'unknown') {
-                typeInfo.kind = TypeKind.Unknown;
-                typeInfo.kindName = TypeKind[TypeKind.Unknown];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'undefined') {
-                typeInfo.kind = TypeKind.Undefined;
-                typeInfo.kindName = TypeKind[TypeKind.Undefined];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'null') {
-                typeInfo.kind = TypeKind.Null;
-                typeInfo.kindName = TypeKind[TypeKind.Null];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'object') {
-                typeInfo.kind = TypeKind.Object;
-                typeInfo.kindName = TypeKind[TypeKind.Object];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'bigint') {
-                typeInfo.kind = TypeKind.BigInt;
-                typeInfo.kindName = TypeKind[TypeKind.BigInt];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText() === 'symbol' || node.getText() === 'Symbol') {
-                typeInfo.kind = TypeKind.Symbol;
-                typeInfo.kindName = TypeKind[TypeKind.Symbol];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.getText().indexOf('Promise') != -1) {
-                typeInfo.kind = TypeKind.Promise;
-                typeInfo.kindName = TypeKind[TypeKind.Promise];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isNumber() || node.compilerType.isNumberLiteral()) {
-                typeInfo.kind = TypeKind.Number;
-                typeInfo.kindName = TypeKind[TypeKind.Number];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isString() || node.compilerType.isStringLiteral()) {
-                typeInfo.kind = TypeKind.String;
-                typeInfo.kindName = TypeKind[TypeKind.String];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isBoolean() || node.getText() === 'true' || node.getText() === 'false') {
-                typeInfo.kind = TypeKind.Boolean;
-                typeInfo.kindName = TypeKind[TypeKind.Boolean];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isAny()) {
-                typeInfo.kind = TypeKind.Any;
-                typeInfo.kindName = TypeKind[TypeKind.Any];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isArray()) {
-                typeInfo.kind = TypeKind.Array;
-                typeInfo.kindName = TypeKind[TypeKind.Array];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isClass()) {
-                typeInfo.kind = TypeKind.Class;
-                typeInfo.kindName = TypeKind[TypeKind.Class];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isInterface()) {
-                typeInfo.kind = TypeKind.Interface;
-                typeInfo.kindName = TypeKind[TypeKind.Interface];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isEnum()) {
-                typeInfo.kind = TypeKind.Enum;
-                typeInfo.kindName = TypeKind[TypeKind.Enum];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-            if (node.isTuple()) {
-                typeInfo.kind = TypeKind.Tuple;
-                typeInfo.kindName = TypeKind[TypeKind.Tuple];
-                typeInfo.type = node.getTupleElements().map(x => x.getText());
-                return typeInfo;
-            }
-            if (node.isUnion()) {
-                typeInfo.kind = TypeKind.Union;
-                typeInfo.kindName = TypeKind[TypeKind.Union];
-                typeInfo.type = node.getUnionTypes().map(x => x.getText());
-                return typeInfo;
-            }
-            if (node.isIntersection()) {
-                typeInfo.kind = TypeKind.Intersection;
-                typeInfo.kindName = TypeKind[TypeKind.Intersection];
-                typeInfo.type = node.getIntersectionTypes().map(x => x.getText());
-                return typeInfo;
-            }
-            if (node.getProperties().length > 0) {
-                typeInfo.kind = TypeKind.JsonLike;
-                typeInfo.kindName = TypeKind[TypeKind.JsonLike];
-                const jsonLike: JsonLikeTypeInfo[] = node.getProperties().map(x => {
-                    return {
-                        name: x.getName(),
-                        value:
-                            x.getValueDeclaration() === undefined
-                                ? undefined
-                                : (x.getValueDeclarationOrThrow() as PropertyDeclaration).getInitializer() === undefined
-                                    ? (x.getValueDeclarationOrThrow() as PropertyDeclaration).getType().getText()
-                                    : (x.getValueDeclarationOrThrow() as PropertyDeclaration)
-                                        .getInitializerOrThrow()
-                                        .getText(),
-                    };
-                });
-                typeInfo.type = jsonLike;
-                return typeInfo;
-            }
-            if (node.isAnonymous()) {
-                typeInfo.kind = TypeKind.Anonymous;
-                typeInfo.kindName = TypeKind[TypeKind.Anonymous];
-                typeInfo.type = node.getText();
-                return typeInfo;
-            }
-        } catch (e) { }
-        return typeInfo;
-    }*/
-    public extract(node: Type): TypeInfo {
-        return this.detectImportInType(node.getText()) as TypeInfo;
-    }
-    public detectImportInType(text: string): ImportInType | undefined {
-        const regex = /import\((.+)\).(.+\.)?(.*)/;
-        const match = regex.exec(text);
+    private readonly stringUtils = new StringUtils();
+    public extract(type: Type, typeNode?: TypeNode): TypeInfo {
+        let finalText = '';
+        const text = type.getText();
+        const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
+        const details: TypeDetailInfo[] = [];
+        const regex = /import\((.+)\).(.*)/;
+        const match = text
+            .split('import')
+            .filter(x => !this.stringUtils.isEmptyOrWhitespace(x))
+            .map(y => y.replace('(', 'import('));
         if (match) {
-            const importedFrom: string = new StringUtils().removeFirstAndLastQuote((match[1] as string).trim());
-            const name: string = (match[3] as string).trim();
-            const preType: string | undefined =
-                match[2] === undefined ? undefined : (match[2] as string).replace('.', '');
-            const fromNodeModules: string | undefined = importedFrom.split('node_modules')[1];
+            match.forEach(m => {
+                const info = regex.exec(m);
+                if (info) {
+                    const importedFrom: string = new StringUtils().removeFirstAndLastQuote((info[1] as string).trim());
+                    const text = (info[2] as string).split('.');
+                    finalText += text[text.length - 1];
+                    const name: string = text[text.length - 1]
+                        .replace('<', '')
+                        .replace('>', '')
+                        .trim();
+                    const preType: string | undefined =
+                        text.length <= 1
+                            ? undefined
+                            : (info[2] as string).substring(0, (info[2] as string).lastIndexOf('.'));
+                    details.push({
+                        importedFrom: importedFrom,
+                        name: name,
+                        preType: preType,
+                        text: m
+                            .replace('<', '')
+                            .replace('>', '')
+                            .trim(),
+                    });
+                } else {
+                    finalText += m;
+                }
+            });
             return {
-                importedFrom: importedFrom,
-                name: name,
-                preType: preType,
-                fromNodeModules: fromNodeModules,
-                text: text,
+                text: this.stringUtils.isEmptyOrWhitespace(finalText) ? text : finalText,
+                fullText: text,
+                details: details.length === 0 ? undefined : details,
+                typeNodeText: typeNodeText,
             };
         } else {
-            return undefined;
+            return {
+                text: text,
+                fullText: text,
+                details: undefined,
+                typeNodeText: typeNodeText,
+            };
         }
     }
 }

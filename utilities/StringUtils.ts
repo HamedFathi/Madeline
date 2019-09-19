@@ -1,4 +1,6 @@
+/* eslint-disable */
 const safeStringify = require('fast-safe-stringify');
+/* eslint-disable */
 
 export class StringUtils {
     public isEmptyOrWhitespace(text: string): boolean {
@@ -21,6 +23,31 @@ export class StringUtils {
             return text;
         }
         return text;
+    }
+
+    public removeLineBreaks(text: string): string {
+        const result = text.replace(/(\r\n|\n|\r)/gm, '');
+        return result;
+    }
+
+    public joinLines(text: string | string[], separator?: string): string {
+        const lines: string[] = [];
+        if (typeof text === 'string') {
+            return text;
+        } else {
+            text.forEach(line => {
+                const result = this.removeLineBreaks(line).trim();
+                lines.push(result);
+            });
+        }
+        const result = lines.join(separator);
+        return result;
+    }
+
+    public nbspGenerator(repetition?: number) {
+        if (!repetition || repetition === 0) return '';
+        const r = repetition && repetition > 0 ? repetition : 1;
+        return '&nbsp;'.repeat(r);
     }
 
     public getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {

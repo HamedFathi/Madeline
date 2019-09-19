@@ -12,4 +12,5 @@ export interface PropertyInfo {
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
     text: string;
+    hasComment: boolean;
 }

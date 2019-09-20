@@ -6,33 +6,37 @@ import { Nunjucks } from '../../../utilities/NunjucksUtils';
 import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { TemplateOptions } from '../../TemplateOptions';
+import { CommentToMdOption } from '../comment/CommentToMdOption';
 
 export class ModuleToMdConverter {
-    constructor(private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter()) {}
-    public convert(moduleInfo: ModuleInfo[], option?: TemplateOptions): string[] {
+    constructor(
+        private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter(),
+        private prettierUtils = new PrettierUtils(),
+        private markdownUtils = new MarkdownUtils(),
+    ) {}
+    public convert(moduleInfo: ModuleInfo[], commentOption?: CommentToMdOption, option?: TemplateOptions): string[] {
         const md: string[] = [];
-        const append = option && option.append ? true : false;
         const converter = this.commentToMdConverter;
         moduleInfo.forEach(m => {
             const description: string[] = [];
             if (m.leadingComments) {
-                const leading = converter.convertAll(m.leadingComments);
+                const leading = converter.convertAll(m.leadingComments, commentOption, option);
                 description.concat(leading);
             }
             if (m.trailingComments) {
-                const trailing = converter.convertAll(m.trailingComments);
+                const trailing = converter.convertAll(m.trailingComments, commentOption, option);
                 description.concat(trailing);
             }
             const obj: ModuleTemplateInfo = {
                 name: m.name,
                 type: m.isNamespace ? 'namespace' : 'module',
                 modifiers: m.modifiers,
-                text: new PrettierUtils().prettify(m.text),
+                text: this.prettierUtils.prettify(m.text),
                 description: description.length === 0 ? undefined : description,
-                append: append,
+                option: option,
             };
             const text = Nunjucks.renderString(MODULE_TEMPLATE, obj);
-            const result = new MarkdownUtils().purify(text);
+            const result = this.markdownUtils.purify(text);
             md.push(result);
         });
 

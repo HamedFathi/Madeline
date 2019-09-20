@@ -23,14 +23,13 @@ export class CommentToMdConverter {
     }
     public convert(commentInfo: CommentInfo, commentOption?: CommentToMdOption, option?: TemplateOptions): string {
         const result: string[] = [];
-        const append = option && option.append ? true : false;
         // with tags
         if (commentInfo.tags) {
             const groupedTags = new CommentGroup().groupByTagName(commentInfo.tags, commentOption);
             const commentTemplateInfo: CommentTemplateInfo = {
                 details: [],
                 description: commentInfo.description,
-                append: append,
+                option: option,
             };
             groupedTags.forEach(groupedTag => {
                 if (commentTemplateInfo.details) {
@@ -46,7 +45,7 @@ export class CommentToMdConverter {
             if (commentInfo.description) {
                 const commentTemplateInfo: CommentTemplateInfo = {
                     details: undefined,
-                    append: append,
+                    option: option,
                     description: commentInfo.description,
                 };
                 const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);

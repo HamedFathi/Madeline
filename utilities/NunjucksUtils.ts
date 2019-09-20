@@ -1,5 +1,5 @@
 import * as nj from 'nunjucks';
-import { CommentToMdConverter } from '../templates/comment/CommentToMdConverter';
+import { CommentToMdConverter } from '../templates/api/comment/CommentToMdConverter';
 import { ObjectUtils } from './ObjectUtils';
 import { TagInfo } from '../extractors/comment/TagInfo';
 /* eslint-disable */

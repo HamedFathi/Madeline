@@ -1,4 +1,4 @@
-import { TagInfo } from '../../extractors/comment/TagInfo';
+import { TagInfo } from '../../../extractors/comment/TagInfo';
 import { CommentToMdOption } from './CommentToMdOption';
 import * as _ from 'lodash';
 import { TagInfoHeader } from './TagInfoHeader';

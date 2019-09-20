@@ -1,17 +1,18 @@
-import { ModuleInfo } from '../../extractors/module/ModuleInfo';
-import { PrettierUtils } from '../../utilities/PrettierUtils';
+import { ModuleInfo } from '../../../extractors/module/ModuleInfo';
+import { PrettierUtils } from '../../../utilities/PrettierUtils';
 import { MODULE_TEMPLATE } from './moduleTemplate';
 import { ModuleTemplateInfo } from './ModuleTemplateInfo';
-import { Nunjucks } from '../../utilities/NunjucksUtils';
-import { MarkdownUtils } from '../../utilities/MarkdownUtils';
+import { Nunjucks } from '../../../utilities/NunjucksUtils';
+import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
-import { TemplateOption } from '../TemplateOption';
+import { TemplateOptions } from '../../TemplateOptions';
 
 export class ModuleToMdConverter {
-    public convert(moduleInfo: ModuleInfo[], option?: TemplateOption): string[] {
+    constructor(private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter()) {}
+    public convert(moduleInfo: ModuleInfo[], option?: TemplateOptions): string[] {
         const md: string[] = [];
         const append = option && option.append ? true : false;
-        const converter = new CommentToMdConverter();
+        const converter = this.commentToMdConverter;
         moduleInfo.forEach(m => {
             const description: string[] = [];
             if (m.leadingComments) {

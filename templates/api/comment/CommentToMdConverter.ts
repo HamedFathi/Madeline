@@ -1,18 +1,18 @@
-import { CommentInfo } from '../../extractors/comment/CommentInfo';
+import { CommentInfo } from '../../../extractors/comment/CommentInfo';
 import { CommentToMdOption } from './CommentToMdOption';
 import { CommentGroup } from './CommentGroup';
-import { Nunjucks } from '../../utilities/NunjucksUtils';
+import { Nunjucks } from '../../../utilities/NunjucksUtils';
 import { COMMENT_TEMPLATE } from './CommentTemplate';
-import { MarkdownUtils } from '../../utilities/MarkdownUtils';
-import { TagInfo } from '../../extractors/comment/TagInfo';
+import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
+import { TagInfo } from '../../../extractors/comment/TagInfo';
 import { CommentTemplateInfo } from './CommentTemplateInfo';
-import { TemplateOption } from '../TemplateOption';
+import { TemplateOptions } from '../../TemplateOptions';
 
 export class CommentToMdConverter {
     public convertAll(
         commentInfo: CommentInfo[],
         commentOption?: CommentToMdOption,
-        option?: TemplateOption,
+        option?: TemplateOptions,
     ): string[] {
         const md: string[] = [];
         commentInfo.forEach(comment => {
@@ -21,7 +21,7 @@ export class CommentToMdConverter {
         });
         return md;
     }
-    public convert(commentInfo: CommentInfo, commentOption?: CommentToMdOption, option?: TemplateOption): string {
+    public convert(commentInfo: CommentInfo, commentOption?: CommentToMdOption, option?: TemplateOptions): string {
         const result: string[] = [];
         const append = option && option.append ? true : false;
         // with tags

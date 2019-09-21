@@ -38,7 +38,7 @@ import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { ExportExtractor } from '../export/ExportExtractor';
 
 export class SourceFileExtractor {
-    public extractFromTextFile(sourceFile: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extractFromTextFile(sourceFile: string, options?: CoverageExtractorOption): SourceFileInfo | undefined {
         const sourceText = fs.readFileSync(sourceFile, 'utf8');
         const project = new Project({
             compilerOptions: {
@@ -49,7 +49,7 @@ export class SourceFileExtractor {
         return this.extract(source, option);
     }
 
-    public extractFromText(sourceText: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extractFromText(sourceText: string, options?: CoverageExtractorOption): SourceFileInfo | undefined {
         const project = new Project({
             compilerOptions: {
                 target: ScriptTarget.ES5,
@@ -59,7 +59,7 @@ export class SourceFileExtractor {
         return this.extract(source, option);
     }
 
-    public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extract(sourceFile: SourceFile, options?: CoverageExtractorOption): SourceFileInfo | undefined {
         const imports = new ImportExtractor().extract(sourceFile);
         const exports = new ExportExtractor().extract(sourceFile);
         const exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);

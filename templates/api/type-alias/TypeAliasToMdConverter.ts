@@ -18,7 +18,11 @@ export class TypeAliasToMdConverter {
         private prettierUtils = new PrettierUtils(),
         private markdownUtils = new MarkdownUtils(),
     ) {}
-    public convert(typeAliasInfo: TypeAliasInfo, commentOption?: CommentToMdOption, option?: TemplateOptions): string {
+    public convert(
+        typeAliasInfo: TypeAliasInfo,
+        commentoptions?: CommentToMdOption,
+        options?: TemplateOptions,
+    ): string {
         const description: string[] = [];
         if (typeAliasInfo.leadingComments) {
             const leading = this.commentToMdConverter.convertAll(typeAliasInfo.leadingComments, commentOption, option);

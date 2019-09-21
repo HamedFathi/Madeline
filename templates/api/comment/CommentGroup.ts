@@ -5,7 +5,7 @@ import { TagInfoHeader } from './TagInfoHeader';
 import { CommentGroupInfo } from './CommentGroupInfo';
 
 export class CommentGroup {
-    public groupByTagName(tagsInfo: TagInfo[], option?: CommentToMdOption): CommentGroupInfo[] {
+    public groupByTagName(tagsInfo: TagInfo[], options?: CommentToMdOption): CommentGroupInfo[] {
         const result: CommentGroupInfo[] = [];
         const tagsGroup = _(tagsInfo)
             .groupBy(x => x.tag)
@@ -39,7 +39,7 @@ export class CommentGroup {
         return result;
     }
 
-    private getAlternativeTagName(tagInfo: TagInfo, option?: CommentToMdOption): string {
+    private getAlternativeTagName(tagInfo: TagInfo, options?: CommentToMdOption): string {
         let alternativeName = tagInfo.tag;
         if (option) {
             if (option.alternatives) {

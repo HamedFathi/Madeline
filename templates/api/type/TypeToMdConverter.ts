@@ -8,7 +8,7 @@ export class TypeToMdConverter {
         typeInfo: TypeInfo,
         importsInfo: ImportInfo[],
         typeRoutes?: TypeRoutes[],
-        option?: TemplateOptions,
+        options?: TemplateOptions,
     ): string {
         /*if (typeInfo.details) {
             typeInfo.details.forEach(detail => {

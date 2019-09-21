@@ -11,8 +11,8 @@ import { TemplateOptions } from '../../TemplateOptions';
 export class CommentToMdConverter {
     public convertAll(
         commentInfo: CommentInfo[],
-        commentOption?: CommentToMdOption,
-        option?: TemplateOptions,
+        commentoptions?: CommentToMdOption,
+        options?: TemplateOptions,
     ): string[] {
         const md: string[] = [];
         commentInfo.forEach(comment => {
@@ -21,7 +21,7 @@ export class CommentToMdConverter {
         });
         return md;
     }
-    public convert(commentInfo: CommentInfo, commentOption?: CommentToMdOption, option?: TemplateOptions): string {
+    public convert(commentInfo: CommentInfo, commentoptions?: CommentToMdOption, options?: TemplateOptions): string {
         const result: string[] = [];
         // with tags
         if (commentInfo.tags) {

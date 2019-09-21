@@ -11,5 +11,5 @@ export interface TypeAliasTemplateInfo {
     type: TypeInfo;
     typeParameters: string[] | undefined;
     hasComment: boolean;
-    option?: TemplateOptions;
+    options?: TemplateOptions;
 }

@@ -14,7 +14,7 @@ export class ModuleToMdConverter {
         private prettierUtils = new PrettierUtils(),
         private markdownUtils = new MarkdownUtils(),
     ) {}
-    public convert(moduleInfo: ModuleInfo[], commentOption?: CommentToMdOption, option?: TemplateOptions): string[] {
+    public convert(moduleInfo: ModuleInfo[], commentoptions?: CommentToMdOption, options?: TemplateOptions): string[] {
         const md: string[] = [];
         const converter = this.commentToMdConverter;
         moduleInfo.forEach(m => {

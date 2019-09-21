@@ -8,5 +8,3 @@ export interface TypeInfo {
     typeReference: string | undefined;
     imports: TypeImportInfo[] | undefined;
 }
-
-

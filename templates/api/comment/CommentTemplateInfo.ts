@@ -3,5 +3,5 @@ import { TemplateOptions } from '../../TemplateOptions';
 export interface CommentTemplateInfo {
     description: string[] | undefined;
     details: CommentGroupInfo[] | undefined;
-    option?: TemplateOptions;
+    options?: TemplateOptions;
 }

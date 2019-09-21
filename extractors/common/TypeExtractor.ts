@@ -17,7 +17,7 @@ export class TypeExtractor {
         const allImports = text.match(regex);
         if (allImports) {
             allImports.forEach(imp => {
-                importedFrom.push(imp.replace('import(','').replace(').',''));
+                importedFrom.push(imp.replace('import(', '').replace(').', ''));
             });
         }
         return {
@@ -26,10 +26,10 @@ export class TypeExtractor {
             typeNodeText: typeNodeText,
             importedFrom: importedFrom.length === 0 ? undefined : importedFrom,
             typeReference: typeReference,
-            imports: undefined
+            imports: undefined,
         };
     }
-    
+
     private isThirdPartyLibrary(text: string): boolean {
         return text.startsWith('.');
     }

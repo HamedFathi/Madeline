@@ -4,7 +4,7 @@ import { CoverageExtractorInfo } from './CoverageExtractorInfo';
 
 // TODO: support exportable node only. export class ,...
 export class CoverageExtractor {
-    public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): CoverageExtractorInfo[] {
+    public extract(sourceFile: SourceFile, options?: CoverageExtractorOption): CoverageExtractorInfo[] {
         let valid = [
             SyntaxKind.ClassDeclaration,
             SyntaxKind.MethodDeclaration,

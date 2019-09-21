@@ -16,7 +16,7 @@ Nunjucks.addFilter('is_available', function (value: string | unknown[]) {
     return objUtils.isAvailable(value);
 });
 
-Nunjucks.addFilter('write', function (value: TagInfo[], option?: TemplateOptions, headers?: string[]) {
+Nunjucks.addFilter('write', function (value: TagInfo[], options?: TemplateOptions, headers?: string[]) {
     let isDescriptionOnly = headers && headers.length === 1 && headers.includes('description') ? true : false;
     if (headers) {
         if (isDescriptionOnly) {

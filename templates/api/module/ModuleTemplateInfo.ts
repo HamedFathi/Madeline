@@ -6,5 +6,5 @@ export interface ModuleTemplateInfo {
     modifiers: string[] | undefined;
     description: string[] | undefined;
     text: string;
-    option?: TemplateOptions;
+    options?: TemplateOptions;
 }

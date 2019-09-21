@@ -1,9 +1,21 @@
-import { TypeDetailInfo } from './TypeDetailInfo';
-import { StringUtils } from '../../utilities/StringUtils';
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class TypeExtractor {
+    public extract(type: Type, typeNode?: TypeNode, typeReference?: string, imports?: ImportInfo[]): TypeInfo {
+        const text = type.getText();
+        const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
+        let importedFrom = [''];
+        return {
+            text: text,
+            typeNodeText: typeNodeText,
+            importedFrom: importedFrom,
+            typeReference: typeReference,
+        };
+    }
+
+    /*
     private readonly stringUtils = new StringUtils();
     public extract(type: Type, typeNode?: TypeNode): TypeInfo {
         let finalText = '';
@@ -58,4 +70,5 @@ export class TypeExtractor {
             };
         }
     }
+    */
 }

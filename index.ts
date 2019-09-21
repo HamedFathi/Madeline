@@ -1,3 +1,6 @@
+import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -106,3 +109,11 @@ export * from './utilities/NunjucksUtils';
 export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
+
+const x = new AureliaSourceFileUtils();
+const s = x.getSourceFiles('E:/@All/Projects/@Git/aurelia');
+if (s) {
+    x.save(s);
+}
+
+const y = 1;

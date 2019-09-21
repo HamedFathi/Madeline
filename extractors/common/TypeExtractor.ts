@@ -16,7 +16,7 @@ export class TypeExtractor {
         const allImports = text.match(regex);
         if (allImports) {
             allImports.forEach(imp => {
-                importedFrom.push(imp);
+                importedFrom.push(imp.replace('import(','').replace(').',''));
             });
         }
         return {

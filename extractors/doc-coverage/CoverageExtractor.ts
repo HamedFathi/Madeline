@@ -1,10 +1,10 @@
 import { JSDoc, SourceFile, SyntaxKind } from 'ts-morph';
-import { CoverageExtractorOption } from './CoverageExtractorOption';
+import { CoverageExtractorOptions } from './CoverageExtractorOptions';
 import { CoverageExtractorInfo } from './CoverageExtractorInfo';
 
 // TODO: support exportable node only. export class ,...
 export class CoverageExtractor {
-    public extract(sourceFile: SourceFile, options?: CoverageExtractorOption): CoverageExtractorInfo[] {
+    public extract(sourceFile: SourceFile, options?: CoverageExtractorOptions): CoverageExtractorInfo[] {
         let valid = [
             SyntaxKind.ClassDeclaration,
             SyntaxKind.MethodDeclaration,
@@ -20,9 +20,9 @@ export class CoverageExtractor {
         ];
         let invalid: SyntaxKind[] = [];
         const result: CoverageExtractorInfo[] = [];
-        if (option) {
-            valid = option.include;
-            invalid = option.exclude;
+        if (options) {
+            valid = options.include;
+            invalid = options.exclude;
         }
         sourceFile.forEachDescendant(node => {
             if (valid.includes(node.getKind()) && !invalid.includes(node.getKind())) {

@@ -20,27 +20,31 @@ export class TypeAliasToMdConverter {
     ) {}
     public convert(
         typeAliasInfo: TypeAliasInfo,
-        commentoptions?: CommentToMdOption,
+        commentOptions?: CommentToMdOption,
         options?: TemplateOptions,
     ): string {
         const description: string[] = [];
         if (typeAliasInfo.leadingComments) {
-            const leading = this.commentToMdConverter.convertAll(typeAliasInfo.leadingComments, commentOption, option);
+            const leading = this.commentToMdConverter.convertAll(
+                typeAliasInfo.leadingComments,
+                commentOptions,
+                options,
+            );
             description.concat(leading);
         }
         if (typeAliasInfo.trailingComments) {
             const trailing = this.commentToMdConverter.convertAll(
                 typeAliasInfo.trailingComments,
-                commentOption,
-                option,
+                commentOptions,
+                options,
             );
             description.concat(trailing);
         }
         const modules = typeAliasInfo.modules
-            ? this.moduleToMdConverter.convert(typeAliasInfo.modules, commentOption, option)
+            ? this.moduleToMdConverter.convert(typeAliasInfo.modules, commentOptions, options)
             : undefined;
         const typeParameters = typeAliasInfo.typeParameters
-            ? typeAliasInfo.typeParameters.map(x => this.typeParameterToMdConverter.convert(x, option))
+            ? typeAliasInfo.typeParameters.map(x => this.typeParameterToMdConverter.convert(x, options))
             : undefined;
 
         const obj: TypeAliasTemplateInfo = {
@@ -53,7 +57,7 @@ export class TypeAliasToMdConverter {
             typeParameters: typeParameters,
             hasComment: typeAliasInfo.hasComment,
             description: description.length === 0 ? undefined : description,
-            option: option,
+            options: options,
         };
         const text = Nunjucks.renderString(TYPE_ALIAS_TEMPLATE, obj);
         const md = this.markdownUtils.purify(text);

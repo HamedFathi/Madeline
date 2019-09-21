@@ -1,6 +1,6 @@
 import { SyntaxKind } from 'ts-morph';
 
-export interface CoverageExtractorOption {
+export interface CoverageExtractorOptions {
     include: SyntaxKind[];
     exclude: SyntaxKind[];
 }

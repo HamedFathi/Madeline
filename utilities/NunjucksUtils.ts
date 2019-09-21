@@ -30,7 +30,7 @@ Nunjucks.addFilter('write', function (value: TagInfo[], options?: TemplateOption
                 }
             });
             if (descriptions.length === 0) return "";
-            let description = (option && option.append) ? descriptions.join(' ') : descriptions.join('\n');
+            let description = (options && options.append) ? descriptions.join(' ') : descriptions.join('\n');
             return description;
         }
         const tb = new CommentToMdConverter().toMdTable(value, headers);

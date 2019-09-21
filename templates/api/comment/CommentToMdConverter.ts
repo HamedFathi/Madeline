@@ -11,25 +11,25 @@ import { TemplateOptions } from '../../TemplateOptions';
 export class CommentToMdConverter {
     public convertAll(
         commentInfo: CommentInfo[],
-        commentoptions?: CommentToMdOption,
+        commentOptions?: CommentToMdOption,
         options?: TemplateOptions,
     ): string[] {
         const md: string[] = [];
         commentInfo.forEach(comment => {
-            const text = this.convert(comment, commentOption, option);
+            const text = this.convert(comment, commentOptions, options);
             md.push(text);
         });
         return md;
     }
-    public convert(commentInfo: CommentInfo, commentoptions?: CommentToMdOption, options?: TemplateOptions): string {
+    public convert(commentInfo: CommentInfo, commentOptions?: CommentToMdOption, options?: TemplateOptions): string {
         const result: string[] = [];
         // with tags
         if (commentInfo.tags) {
-            const groupedTags = new CommentGroup().groupByTagName(commentInfo.tags, commentOption);
+            const groupedTags = new CommentGroup().groupByTagName(commentInfo.tags, commentOptions);
             const commentTemplateInfo: CommentTemplateInfo = {
                 details: [],
                 description: commentInfo.description,
-                option: option,
+                options: options,
             };
             groupedTags.forEach(groupedTag => {
                 if (commentTemplateInfo.details) {
@@ -45,7 +45,7 @@ export class CommentToMdConverter {
             if (commentInfo.description) {
                 const commentTemplateInfo: CommentTemplateInfo = {
                     details: undefined,
-                    option: option,
+                    options: options,
                     description: commentInfo.description,
                 };
                 const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);

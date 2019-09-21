@@ -23,7 +23,7 @@ export class CommentGroup {
                 item.headers = info.headers;
             }
             if (tagsInfo.length > 0) {
-                item.title = this.getAlternativeTagName(tagsInfo[0], option);
+                item.title = this.getAlternativeTagName(tagsInfo[0], options);
             }
             tagsInfo.forEach(tagInfo => {
                 item.tags.push({
@@ -41,9 +41,9 @@ export class CommentGroup {
 
     private getAlternativeTagName(tagInfo: TagInfo, options?: CommentToMdOption): string {
         let alternativeName = tagInfo.tag;
-        if (option) {
-            if (option.alternatives) {
-                option.alternatives.forEach(obj => {
+        if (options) {
+            if (options.alternatives) {
+                options.alternatives.forEach(obj => {
                     if (obj.name === tagInfo.tag) {
                         alternativeName = obj.alternative;
                     }

@@ -14,17 +14,17 @@ export class ModuleToMdConverter {
         private prettierUtils = new PrettierUtils(),
         private markdownUtils = new MarkdownUtils(),
     ) {}
-    public convert(moduleInfo: ModuleInfo[], commentoptions?: CommentToMdOption, options?: TemplateOptions): string[] {
+    public convert(moduleInfo: ModuleInfo[], commentOptions?: CommentToMdOption, options?: TemplateOptions): string[] {
         const md: string[] = [];
         const converter = this.commentToMdConverter;
         moduleInfo.forEach(m => {
             const description: string[] = [];
             if (m.leadingComments) {
-                const leading = converter.convertAll(m.leadingComments, commentOption, option);
+                const leading = converter.convertAll(m.leadingComments, commentOptions, options);
                 description.concat(leading);
             }
             if (m.trailingComments) {
-                const trailing = converter.convertAll(m.trailingComments, commentOption, option);
+                const trailing = converter.convertAll(m.trailingComments, commentOptions, options);
                 description.concat(trailing);
             }
             const obj: ModuleTemplateInfo = {
@@ -33,7 +33,7 @@ export class ModuleToMdConverter {
                 modifiers: m.modifiers,
                 text: this.prettierUtils.prettify(m.text),
                 description: description.length === 0 ? undefined : description,
-                option: option,
+                options: options,
             };
             const text = Nunjucks.renderString(MODULE_TEMPLATE, obj);
             const result = this.markdownUtils.purify(text);

@@ -21,8 +21,4 @@ export class TypeToMdConverter {
         }*/
         return '';
     }
-
-    private isThirdPartyLibrary(text: string): boolean {
-        return text.startsWith('.');
-    }
 }

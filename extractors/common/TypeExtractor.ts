@@ -25,6 +25,7 @@ export class TypeExtractor {
             typeNodeText: typeNodeText,
             importedFrom: importedFrom.length === 0 ? undefined : importedFrom,
             typeReference: typeReference,
+            imports: imports
         };
     }
 

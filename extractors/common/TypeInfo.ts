@@ -15,4 +15,5 @@ export interface TypeInfo {
     typeNodeText: string | undefined;
     importedFrom: string[] | undefined;
     typeReference: string | undefined;
+    imports: ImportInfo[] | undefined;
 }

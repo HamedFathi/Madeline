@@ -4,24 +4,24 @@ import { DecoratorExtractor } from '../../../extractors/decorator/DecoratorExtra
 import { DecoratorInfo } from '../../../extractors/decorator/DecoratorInfo';
 import { DecoratableType } from '../../../extractors/decorator/DecoratableType';
 
-/*
-@test1(1,'A',{w:2})
-export class A {
-    @test2({x:3},4)
-    d: number;
-    e: string = 'e';
-    f?: number = 5;
-    @test3({y:6},{z:7})
-    dec(@test4 g:number): number
-    {
-        return g;
-    }
-    @test5()
-    public get name(): string {
-        return 'decorator';
-    }
-}
-*/
+// const decoratorSample = `
+// @test1(1,'A',{w:2})
+// export class A {
+//     @test2({x:3},4)
+//     d: number;
+//     e: string = 'e';
+//     f?: number = 5;
+//     @test3({y:6},{z:7})
+//     dec(@test4 g:number): number
+//     {
+//         return g;
+//     }
+//     @test5()
+//     public get name(): string {
+//         return 'decorator';
+//     }
+// }
+// `;
 
 describe('DecoratorExtractor', function() {
     let project: Project;
@@ -103,7 +103,7 @@ describe('DecoratorExtractor', function() {
         export class Test{}`;
         const file = project.createSourceFile('sut.ts', sut);
 
-        const filterStrategy = (d: DecoratorInfo): boolean => {
+        const filterStrategy = (d: DecoratorInfo) => {
             return d.name === 'filterDecorator';
         };
 

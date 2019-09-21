@@ -10,7 +10,7 @@ export interface TypeInfo {
 */
 
 export interface TypeInfo {
-    type: string;
+    value: string;
     text: string;
     typeNodeText: string | undefined;
     importedFrom: string[] | undefined;

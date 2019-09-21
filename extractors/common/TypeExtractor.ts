@@ -20,7 +20,7 @@ export class TypeExtractor {
             });
         }
         return {
-            type: text,
+            value: text,
             text: text,
             typeNodeText: typeNodeText,
             importedFrom: importedFrom.length === 0 ? undefined : importedFrom,

@@ -34,17 +34,18 @@ export class StringUtils {
         const lines: string[] = [];
         if (typeof text === 'string') {
             return text;
-        } else {
-            text.forEach(line => {
-                const result = this.removeLineBreaks(line).trim();
-                lines.push(result);
-            });
         }
+
+        text.forEach(line => {
+            const result = this.removeLineBreaks(line).trim();
+            lines.push(result);
+        });
+
         const result = lines.join(separator);
         return result;
     }
 
-    public nbspGenerator(repetition?: number) {
+    public nbsp(repetition?: number) {
         if (!repetition || repetition === 0) return '';
         const r = repetition && repetition > 0 ? repetition : 1;
         return '&nbsp;'.repeat(r);

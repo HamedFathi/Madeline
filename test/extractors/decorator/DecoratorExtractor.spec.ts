@@ -23,7 +23,7 @@ import { DecoratableType } from '../../../extractors/decorator/DecoratableType';
 // }
 // `;
 
-describe('DecoratorExtractor', function() {
+describe('Decorator Extractor', function() {
     let project: Project;
     let decoratorExtractor: DecoratorExtractor;
 

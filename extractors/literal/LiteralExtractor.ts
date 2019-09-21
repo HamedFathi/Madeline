@@ -271,10 +271,10 @@ export class LiteralExtractor {
                 }
             });
             return {
-                assignments: assignments,
-                getAccessors: getAccessors,
-                setAccessors: setAccessors,
-                methods: methods,
+                assignments: assignments.length === 0 ? undefined : assignments,
+                getAccessors: getAccessors.length === 0 ? undefined : getAccessors,
+                setAccessors: setAccessors.length === 0 ? undefined : setAccessors,
+                methods: methods.length === 0 ? undefined : methods,
                 text: text,
                 isObjectLiteral: true,
             };

@@ -113,6 +113,6 @@ export * from './utilities/StringUtils';
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 
 const files = new AureliaSourceFileUtils();
-const result = files.getSourceFiles('E:/@All/Projects/@Git/aurelia');
+const result = files.getSourceFiles('C:/Users/MyLaptop/Desktop/aurelia-master');
 if (result) files.save(result);
 const a = 1;

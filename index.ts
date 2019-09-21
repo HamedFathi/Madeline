@@ -1,6 +1,3 @@
-import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
-
 export * from './extractors/class/ClassExtractor';
 export * from './extractors/class/ClassInfo';
 export * from './extractors/comment/CommentInfo';
@@ -19,6 +16,7 @@ export * from './extractors/common/TypeInfo';
 export * from './extractors/constructor/ConstructorExtractor';
 export * from './extractors/constructor/ConstructorInfo';
 export * from './extractors/constructor/ConstructorParameterInfo';
+export * from './extractors/decorator/DecoratableType';
 export * from './extractors/decorator/DecoratorExtractor';
 export * from './extractors/decorator/DecoratorInfo';
 export * from './extractors/decorator/DecoratorParameterInfo';
@@ -99,6 +97,8 @@ export * from './templates/api/type-alias/TypeAliasToMdConverter';
 export * from './templates/api/type-parameter/TypeParameterTemplate';
 export * from './templates/api/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/api/type-parameter/TypeParameterToMdConverter';
+export * from './templates/api/type/TypeRoutes';
+export * from './templates/api/type/TypeToMdConverter';
 export * from './templates/TemplateOptions';
 export * from './utilities/AureliaSourceFile';
 export * from './utilities/AureliaSourceFileUtils';
@@ -109,11 +109,3 @@ export * from './utilities/NunjucksUtils';
 export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
-
-const x = new AureliaSourceFileUtils();
-const s = x.getSourceFiles('E:/@All/Projects/@Git/aurelia');
-if (s) {
-    x.save(s);
-}
-
-const y = 1;

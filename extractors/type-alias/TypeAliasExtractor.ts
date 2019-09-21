@@ -4,9 +4,10 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class TypeAliasExtractor {
-    public extract(node: TypeAliasDeclaration): TypeAliasInfo {
+    public extract(node: TypeAliasDeclaration, imports?: ImportInfo[]): TypeAliasInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
@@ -15,7 +16,7 @@ export class TypeAliasExtractor {
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             initializer: node.getTypeNode() === undefined ? '' : node.getTypeNodeOrThrow().getText(),
-            type: new TypeExtractor().extract(node.getType(), node.getTypeNode()),
+            type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), undefined, imports),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),

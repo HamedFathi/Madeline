@@ -83,27 +83,27 @@ export class SourceFileExtractor {
                     enums.push(new EnumExtractor().extract(node as EnumDeclaration));
                     break;
                 case SyntaxKind.FunctionDeclaration:
-                    functions.push(new FunctionExtractor().extract(node as FunctionDeclaration));
+                    functions.push(new FunctionExtractor().extract(node as FunctionDeclaration, imports));
                     break;
                 case SyntaxKind.TypeAliasDeclaration:
-                    typeAliases.push(new TypeAliasExtractor().extract(node as TypeAliasDeclaration));
+                    typeAliases.push(new TypeAliasExtractor().extract(node as TypeAliasDeclaration, imports));
                     break;
                 case SyntaxKind.InterfaceDeclaration:
-                    interfaces.push(new InterfaceExtractor().extract(node as InterfaceDeclaration));
+                    interfaces.push(new InterfaceExtractor().extract(node as InterfaceDeclaration, imports));
                     break;
                 case SyntaxKind.VariableStatement:
                     const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
-                        variables.push(new VariableExtractor().extract(node as VariableStatement));
+                        variables.push(new VariableExtractor().extract(node as VariableStatement, imports));
                     }
                     break;
                 case SyntaxKind.ClassDeclaration:
                     const info = new ClassExtractor().extract(node as ClassDeclaration);
-                    const constructors = new ConstructorExtractor().extractFromClass(node as ClassDeclaration);
-                    const properties = new PropertyExtractor().extractFromClass(node as ClassDeclaration);
-                    const methods = new MethodExtractor().extractFromClass(node as ClassDeclaration);
-                    const getAccessors = new GetAccessorExtractor().extractFromClass(node as ClassDeclaration);
-                    const setAccessors = new SetAccessorExtractor().extractFromClass(node as ClassDeclaration);
+                    const constructors = new ConstructorExtractor().extractFromClass(node as ClassDeclaration, imports);
+                    const properties = new PropertyExtractor().extractFromClass(node as ClassDeclaration, imports);
+                    const methods = new MethodExtractor().extractFromClass(node as ClassDeclaration, imports);
+                    const getAccessors = new GetAccessorExtractor().extractFromClass(node as ClassDeclaration, imports);
+                    const setAccessors = new SetAccessorExtractor().extractFromClass(node as ClassDeclaration, imports);
                     classes.push({
                         name: info.name,
                         text: info.text,

@@ -3,14 +3,27 @@ import { Type, TypeNode } from 'ts-morph';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class TypeExtractor {
-    public extract(type: Type, typeNode: TypeNode|undefined, typeReference: string|undefined, imports: ImportInfo[]|undefined): TypeInfo {
+    public extract(
+        type: Type,
+        typeNode: TypeNode | undefined,
+        typeReference: string | undefined,
+        imports: ImportInfo[] | undefined,
+    ): TypeInfo {
+        const regex = /import\((.+?)\)\./gm;
         const text = type.getText();
         const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
-        const importedFrom = [''];
+        const importedFrom: string[] = [];
+        const allImports = text.match(regex);
+        if (allImports) {
+            allImports.forEach(imp => {
+                importedFrom.push(imp);
+            });
+        }
         return {
+            type: text,
             text: text,
             typeNodeText: typeNodeText,
-            importedFrom: importedFrom,
+            importedFrom: importedFrom.length === 0 ? undefined : importedFrom,
             typeReference: typeReference,
         };
     }

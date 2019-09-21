@@ -4,16 +4,17 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class GetAccessorExtractor {
-    public extract(node: GetAccessorDeclaration): GetAccessorInfo {
+    public extract(node: GetAccessorDeclaration,imports?: ImportInfo[]): GetAccessorInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
-            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode()),
+            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(),undefined,imports),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,

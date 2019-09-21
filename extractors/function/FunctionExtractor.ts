@@ -5,16 +5,17 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class FunctionExtractor {
-    public extractFromExpression(node: FunctionExpression): FunctionInfo {
+    public extractFromExpression(node: FunctionExpression,imports?: ImportInfo[]): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const returnType =
             node.getReturnType() === undefined
                 ? undefined
-                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode());
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(),undefined,imports);
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const result: FunctionInfo = {
             name: node.getName(),
@@ -34,7 +35,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(),undefined,imports),
                               modifiers:
                                   x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),
@@ -48,14 +49,14 @@ export class FunctionExtractor {
         return result;
     }
 
-    public extract(node: FunctionDeclaration): FunctionInfo {
+    public extract(node: FunctionDeclaration,imports?: ImportInfo[]): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const returnType =
             node.getReturnType() === undefined
                 ? undefined
-                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode());
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(),undefined,imports);
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const result: FunctionInfo = {
             name: node.getName(),
@@ -78,7 +79,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(),undefined,imports),
                               modifiers:
                                   x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),

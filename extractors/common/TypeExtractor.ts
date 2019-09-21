@@ -3,10 +3,10 @@ import { Type, TypeNode } from 'ts-morph';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class TypeExtractor {
-    public extract(type: Type, typeNode?: TypeNode, typeReference?: string, imports?: ImportInfo[]): TypeInfo {
+    public extract(type: Type, typeNode: TypeNode|undefined, typeReference: string|undefined, imports: ImportInfo[]|undefined): TypeInfo {
         const text = type.getText();
         const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
-        let importedFrom = [''];
+        const importedFrom = [''];
         return {
             text: text,
             typeNodeText: typeNodeText,

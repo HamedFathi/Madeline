@@ -30,10 +30,10 @@ export class StringUtils {
         return result;
     }
 
-    public joinLines(text: string | string[], separator?: string): string {
+    public joinLines(text: string | string[], separator : string = ' '): string {
         const lines: string[] = [];
         if (typeof text === 'string') {
-            return text;
+            return this.joinLines(text.split(/\r?\n/));
         }
 
         text.forEach(line => {

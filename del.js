@@ -6,8 +6,8 @@ del.sync([
     'templates/**/*.map',
     'utilities/**/*.js',
     'utilities/**/*.map',
-    'test/**/*.js',
-    'test/**/*.map',
+    'test/extractors/**/*.js',
+    'test/extractors/**/*.map',
     'index.js',
     'index.js.map'
 ]);

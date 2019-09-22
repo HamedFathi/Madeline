@@ -1,4 +1,4 @@
-import { StringUtils } from '../../utilities/StringUtils';
+import { isEmptyOrWhitespace, getBetweenChars } from '../../utilities/StringUtils';
 import { TagInfo } from './TagInfo';
 import { CommentInfo } from './CommentInfo';
 import { CommentKind } from './CommentKind';
@@ -18,7 +18,6 @@ export class JsDocExtractor {
     private readonly START_JS_DOC_UNUSUAL = '/*';
     private readonly END_JS_DOC_UNUSUAL = '**/';
     private readonly END_JS_DOC = '*/';
-    private stringUtils = new StringUtils();
 
     public extract(comment: string, kind: CommentKind): CommentInfo {
         const text = comment;
@@ -43,12 +42,12 @@ export class JsDocExtractor {
                 if (hasTag) {
                     const firstSpaceAfterTagIndex = line.indexOf(this.WHITESPACE);
                     let tag = firstSpaceAfterTagIndex === -1 ? line : line.substring(0, firstSpaceAfterTagIndex);
-                    let type = this.stringUtils.getBetweenChars(
+                    let type = getBetweenChars(
                         line,
                         this.OPEN_CURLY_BRACKET,
                         this.CLOSE_CURLY_BRACKET,
                     );
-                    let defaultValue = this.stringUtils.getBetweenChars(line, this.OPEN_BRACKET, this.CLOSE_BRACKET);
+                    let defaultValue = getBetweenChars(line, this.OPEN_BRACKET, this.CLOSE_BRACKET);
                     let description =
                         line.lastIndexOf(this.HYPHEN) === -1 ? null : line.substring(line.lastIndexOf(this.HYPHEN) + 1);
                     if (tag && tag.length > 0) {
@@ -72,7 +71,7 @@ export class JsDocExtractor {
                         description = description.trim();
                     }
 
-                    let names = this.stringUtils.isEmptyOrWhitespace(line.trim()) ? undefined : line.trim();
+                    let names = isEmptyOrWhitespace(line.trim()) ? undefined : line.trim();
                     if (names && names[0] === this.DOUBLE_QUOTE && names[names.length - 1] === this.DOUBLE_QUOTE) {
                         names = names.substring(1);
                         names = names.substring(0, names.length - 1);
@@ -102,7 +101,7 @@ export class JsDocExtractor {
             }
         });
         return {
-            text: new StringUtils().isEmptyOrWhitespace(text) ? undefined : text,
+            text: isEmptyOrWhitespace(text) ? undefined : text,
             kind: kind,
             kindName:
                 kind === CommentKind.Html ? 'HTML' : kind === CommentKind.JsSingleLine ? 'JsSingleLine' : 'JsMultiLine',
@@ -120,7 +119,7 @@ export class JsDocExtractor {
             .split(/\r?\n/)
             .map(x => x.replace(/\*+/, this.NOTHING).trim())
             .map(x => x.replace(/\/+/, this.NOTHING).trim())
-            .filter(x => !this.stringUtils.isEmptyOrWhitespace(x));
+            .filter(x => !isEmptyOrWhitespace(x));
         return result;
     }
 }

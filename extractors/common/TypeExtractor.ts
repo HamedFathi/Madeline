@@ -2,6 +2,8 @@ import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
 import { ImportInfo } from '../import/ImportInfo';
 import { TypeImportInfo } from './TypeImportInfo';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class TypeExtractor {
     public extract(
@@ -17,7 +19,33 @@ export class TypeExtractor {
         const importedFrom: string[] = [];
         let typeImports: TypeImportInfo[] = [];
         const allImports = text.match(regex);
-        let x: string[] = [];
+        let from: string[] = [];
+        try {
+            if (type.getSymbol()) {
+                let allPath = type.getSymbolOrThrow().getDeclarations().map(d => d.getSourceFile().getFilePath());
+                allPath.forEach(x => {
+
+                    let isDeclarationFile = x.endsWith('.d.ts');
+                    let newPath = '';
+                    if (isDeclarationFile) {
+                        let mapFile = fs.readFileSync(x + '.map', 'utf8');
+                        let obj = JSON.parse(mapFile);
+                        let src = obj["sources"][0];
+                        newPath = path.join(x, src);
+                    }
+                    else {
+                        newPath = x;
+                    }
+                    if (!from.includes(newPath)) {
+                        from.push(newPath);
+                    }
+                });
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+
         // Priorities
         // 1. typeReference
         // 2. typeNodeText
@@ -47,7 +75,8 @@ export class TypeExtractor {
             typeNodeText: typeNodeText,
             importedFrom: importedFrom.length === 0 ? undefined : importedFrom,
             typeReference: typeReference,
-            imports: typeImports.length === 0 ? undefined : typeImports
+            imports: typeImports.length === 0 ? undefined : typeImports,
+            from: from.length === 0 ? undefined : from
         };
     }
 

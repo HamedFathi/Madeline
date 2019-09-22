@@ -7,4 +7,5 @@ export interface TypeInfo {
     importedFrom: string[] | undefined;
     typeReference: string | undefined;
     imports: TypeImportInfo[] | undefined;
+    from: string[] | undefined;
 }

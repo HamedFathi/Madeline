@@ -1,11 +1,11 @@
 import { TypeImportInfo } from './TypeImportInfo';
+import { FromTypeInfo } from './FromTypeInfo';
 
 export interface TypeInfo {
     value: string;
     text: string;
     typeNodeText: string | undefined;
-    importedFrom: string[] | undefined;
     typeReference: string | undefined;
-    imports: TypeImportInfo[] | undefined;
-    from: string[] | undefined;
+    importedFrom: FromTypeInfo[] | undefined;
 }
+

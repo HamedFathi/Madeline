@@ -35,7 +35,7 @@ export class DecoratorExtractor {
                         : x.getArguments().map(x => {
                               return {
                                   value: x.getText(),
-                                  type: new TypeExtractor().extract(x.getType(), undefined, undefined, imports),
+                                  type: new TypeExtractor().extract(x.getType(), undefined, undefined),
                               };
                           }),
             };

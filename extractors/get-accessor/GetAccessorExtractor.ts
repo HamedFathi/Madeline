@@ -7,14 +7,14 @@ import { VariableExtractor } from '../variable/VariableExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class GetAccessorExtractor {
-    public extract(node: GetAccessorDeclaration, imports?: ImportInfo[]): GetAccessorInfo {
+    public extract(node: GetAccessorDeclaration): GetAccessorInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
-            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined, imports),
+            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
@@ -27,8 +27,8 @@ export class GetAccessorExtractor {
         };
     }
 
-    public extractFromClass(node: ClassDeclaration, imports?: ImportInfo[]): GetAccessorInfo[] | undefined {
-        const getAccessors = node.getGetAccessors().map(x => this.extract(x, imports));
+    public extractFromClass(node: ClassDeclaration): GetAccessorInfo[] | undefined {
+        const getAccessors = node.getGetAccessors().map(x => this.extract(x));
         if (getAccessors.length === 0) return undefined;
         return getAccessors;
     }

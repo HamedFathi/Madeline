@@ -6,14 +6,14 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class PropertyExtractor {
-    public extract(node: PropertyDeclaration, imports?: ImportInfo[]): PropertyInfo {
+    public extract(node: PropertyDeclaration): PropertyInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
             text: node.getText(),
-            type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), undefined, imports),
+            type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), undefined),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
             isOptional: node.hasQuestionToken(),
             initializer: node.getInitializer() === undefined ? undefined : node.getInitializerOrThrow().getText(),
@@ -24,8 +24,8 @@ export class PropertyExtractor {
         };
     }
 
-    public extractFromClass(node: ClassDeclaration, imports?: ImportInfo[]): PropertyInfo[] | undefined {
-        const props = node.getProperties().map(x => this.extract(x, imports));
+    public extractFromClass(node: ClassDeclaration): PropertyInfo[] | undefined {
+        const props = node.getProperties().map(x => this.extract(x));
         if (props.length === 0) return undefined;
         return props;
     }

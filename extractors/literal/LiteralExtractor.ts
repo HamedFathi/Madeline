@@ -111,7 +111,7 @@ export const BasicConfiguration = {
 };
 */
 export class LiteralExtractor {
-    public extract(node: VariableStatement, imports?: ImportInfo[]): LiteralInfo[] | undefined {
+    public extract(node: VariableStatement): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
@@ -133,7 +133,7 @@ export class LiteralExtractor {
             }
 
             if (objectLiteral) {
-                const elements = this.getExpressionInfo(objectLiteral, typeReference, imports);
+                const elements = this.getExpressionInfo(objectLiteral, typeReference);
                 result.push({
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
@@ -143,19 +143,14 @@ export class LiteralExtractor {
                     hasComment: hasComment,
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(
-                        declaration.getType(),
-                        declaration.getTypeNode(),
-                        typeReference,
-                        imports,
-                    ),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), typeReference),
                 });
             }
             if (arrayLiteral) {
                 const elements = arrayLiteral.getElements();
                 const members: LiteralExpressionInfo[] = [];
                 elements.forEach(element => {
-                    const info = this.getExpressionInfo(element, typeReference, imports);
+                    const info = this.getExpressionInfo(element, typeReference);
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
@@ -167,12 +162,7 @@ export class LiteralExtractor {
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(
-                        declaration.getType(),
-                        declaration.getTypeNode(),
-                        undefined,
-                        imports,
-                    ),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), undefined),
                 });
             }
         });
@@ -205,12 +195,7 @@ export class LiteralExtractor {
                         propertyAssignment.getInitializer() === undefined
                             ? undefined
                             : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow());
-                    const type = new TypeExtractor().extract(
-                        propertyAssignment.getType(),
-                        undefined,
-                        typeReference,
-                        imports,
-                    );
+                    const type = new TypeExtractor().extract(propertyAssignment.getType(), undefined, typeReference);
                     const name = propertyAssignment.getName();
                     assignments.push({
                         isShorthand: false,
@@ -226,7 +211,6 @@ export class LiteralExtractor {
                         shorthandPropertyAssignment.getType(),
                         undefined,
                         typeReference,
-                        imports,
                     );
                     const name = shorthandPropertyAssignment.getName();
                     assignments.push({
@@ -239,12 +223,7 @@ export class LiteralExtractor {
                 }
                 if (isSpreadAssignment) {
                     const spreadAssignment = x as SpreadAssignment;
-                    const type = new TypeExtractor().extract(
-                        spreadAssignment.getType(),
-                        undefined,
-                        typeReference,
-                        imports,
-                    );
+                    const type = new TypeExtractor().extract(spreadAssignment.getType(), undefined, typeReference);
                     const name = spreadAssignment.getExpression().getText();
                     assignments.push({
                         isShorthand: false,
@@ -290,7 +269,6 @@ export class LiteralExtractor {
                     callSignature.getReturnType(),
                     callSignature.getReturnTypeNode(),
                     typeReference,
-                    imports,
                 ),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
@@ -299,12 +277,7 @@ export class LiteralExtractor {
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(
-                                      y.getType(),
-                                      y.getTypeNode(),
-                                      typeReference,
-                                      imports,
-                                  ),
+                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), typeReference),
                                   modifiers:
                                       y.getModifiers().length === 0
                                           ? undefined

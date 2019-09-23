@@ -21,7 +21,7 @@ import { CommonVariableInfo } from './CommonVariableInfo';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class VariableExtractor {
-    public extract(node: VariableStatement, imports?: ImportInfo[]): VariableInfo {
+    public extract(node: VariableStatement): VariableInfo {
         const literals = new LiteralExtractor().extract(node);
         const destructions = new DestructuringExtractor().extract(node);
         const commons: CommonVariableInfo[] = [];
@@ -44,17 +44,12 @@ export class VariableExtractor {
                 }
                 commons.push({
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(
-                        declaration.getType(),
-                        declaration.getTypeNode(),
-                        typeReference,
-                        imports,
-                    ),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), typeReference),
                     modifiers: modifiers.length === 0 ? undefined : modifiers,
                     initializer:
                         declaration.getInitializer() === undefined
                             ? undefined
-                            : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference, imports),
+                            : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference),
                     kind: kind,
                     kindName: kindName,
                     trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
@@ -90,7 +85,6 @@ export class VariableExtractor {
                     callSignature.getReturnType(),
                     callSignature.getReturnTypeNode(),
                     typeReference,
-                    imports,
                 ),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
@@ -99,12 +93,7 @@ export class VariableExtractor {
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(
-                                      y.getType(),
-                                      y.getTypeNode(),
-                                      typeReference,
-                                      imports,
-                                  ),
+                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), typeReference),
                                   modifiers:
                                       y.getModifiers().length === 0
                                           ? undefined

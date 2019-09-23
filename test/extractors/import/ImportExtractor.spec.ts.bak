@@ -22,7 +22,7 @@ describe('Import Extractor', function () {
                 target: ScriptTarget.ES5
             }
         });
-        const file = project.createSourceFile("test.ts", importSample);
+        const file = project.createSourceFile("test.ts"ample);
         let actualResult: any;
         let expectedResult: any = [{
             "name": "defaultExport",

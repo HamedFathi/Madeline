@@ -1,18 +1,14 @@
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
-import { ImportInfo } from '../import/ImportInfo';
-import { TypeImportInfo } from './TypeImportInfo';
 import { FromTypeInfo } from './FromTypeInfo';
+import * as path from 'path';
+import { StringUtils } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
-    public extract(
-        type: Type,
-        typeNode: TypeNode | undefined,
-        typeReference: string | undefined
-    ): TypeInfo {
+    public extract(type: Type, typeNode: TypeNode | undefined, typeReference: string | undefined): TypeInfo {
+        const stringUtils = new StringUtils();
         let value = '';
-        const regex = /import\((.+?)\)\./gm;
-        const r = /import\((.+?)\)\.([^;>,\[\]\)\(<]+)/gm;
+        const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!]+)/gm;
         const text = type.getText();
         const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
         const importedFrom: FromTypeInfo[] = [];
@@ -23,18 +19,29 @@ export class TypeExtractor {
         // 3. text
         if (typeReference) {
             value = typeReference;
-        }
-        else if (typeNodeText) {
+        } else if (typeNodeText) {
             value = typeNodeText;
-        }
-        else {
+        } else {
             value = text.replace(regex, '');
         }
         if (allImports) {
             allImports.forEach(imp => {
-                /*if (!importedFrom.includes(imp)) {
-                    importedFrom.push(imp.replace('import(', '').replace(').', ''));
-                }*/
+                const rgx = /import\((.+?)\)\.(.+)/g;
+                const groups = rgx.exec(imp);
+                if (groups) {
+                    const gr0: string = stringUtils.removeFirstAndLastQuote(groups[0] as string);
+                    const gr1: string = stringUtils.removeFirstAndLastQuote(groups[1] as string);
+                    const gr2: string = stringUtils.removeFirstAndLastQuote(groups[2] as string);
+                    const dir: string = path.dirname(gr1);
+                    const file: string = gr1.replace(dir, '').substring(1);
+                    importedFrom.push({
+                        import: gr0,
+                        path: gr1,
+                        type: gr2,
+                        directory: dir,
+                        file: file,
+                    });
+                }
             });
         }
         return {
@@ -42,61 +49,7 @@ export class TypeExtractor {
             text: text,
             typeNodeText: typeNodeText,
             typeReference: typeReference,
-            importedFrom
+            importedFrom: importedFrom.length === 0 ? undefined : importedFrom,
         };
-    }
-
-    private isThirdPartyLibrary(text: string): boolean {
-        return !text.startsWith('.');
-    }
-
-    private getRelatedImports(value: string, imports: ImportInfo[]): TypeImportInfo[] {
-        let typeImports: TypeImportInfo[] = [];
-        let values = this.splitValue(value).length === 0 ? [value] : this.splitValue(value);
-        values.forEach(item => {
-            let result = imports.filter(x => x.alias == item);
-            if (result.length === 0) {
-                result = imports.filter(x => x.name == item);
-            }
-            if (result.length > 0) {
-                result.forEach(item => {
-                    typeImports.push({
-                        isThirdParty: this.isThirdPartyLibrary(item.module),
-                        alias: item.alias,
-                        kind: item.kind,
-                        kindName: item.kindName,
-                        module: item.module,
-                        name: item.name,
-                        text: item.text
-                    });
-                });
-            }
-        });
-        return typeImports;
-    }
-
-    private splitValue(value: string): string[] {
-        let result = value
-            .replace(/\(/g, ' ')
-            .replace(/\)/g, ' ')
-            .replace(/\./g, ' ')
-            .replace(/\[/g, ' ')
-            .replace(/\]/g, ' ')
-            .replace(/\</g, ' ')
-            .replace(/\>/g, ' ')
-            .replace(/\,/g, ' ')
-            .replace(/\{/g, ' ')
-            .replace(/\}/g, ' ')
-            .replace(/\:/g, ' ')
-            .replace(/\'/g, ' ')
-            .replace(/\|/g, ' ')
-            .replace(/\"/g, ' ')
-            .replace(/\;/g, ' ')
-            .replace(/\s\s+/g, ' ')
-            .split(' ')
-            .map(x => x.trim())
-            .filter(x => x.length !== 0)
-            ;
-        return result;
     }
 }

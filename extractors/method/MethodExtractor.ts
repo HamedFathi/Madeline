@@ -7,7 +7,7 @@ import { VariableExtractor } from '../variable/VariableExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class MethodExtractor {
-    public extract(node: MethodDeclaration, imports?: ImportInfo[]): MethodInfo {
+    public extract(node: MethodDeclaration): MethodInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
@@ -15,7 +15,7 @@ export class MethodExtractor {
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
-            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined, imports),
+            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined),
             isGenerator: node.isGenerator(),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
@@ -32,7 +32,7 @@ export class MethodExtractor {
                           return {
                               name: y.getName(),
                               text: y.getText(),
-                              type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), undefined, imports),
+                              type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), undefined),
                               isOptional: y.isOptional(),
                               isRest: y.isRestParameter(),
                               isParameterProperty: y.isParameterProperty(),
@@ -46,8 +46,8 @@ export class MethodExtractor {
         };
     }
 
-    public extractFromClass(node: ClassDeclaration, imports?: ImportInfo[]): MethodInfo[] | undefined {
-        const methods = node.getMethods().map(x => this.extract(x, imports));
+    public extractFromClass(node: ClassDeclaration): MethodInfo[] | undefined {
+        const methods = node.getMethods().map(x => this.extract(x));
         if (methods.length === 0) return undefined;
         return methods;
     }

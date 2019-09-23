@@ -8,7 +8,7 @@ import { VariableExtractor } from '../variable/VariableExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class ConstructorExtractor {
-    public extract(node: ConstructorDeclaration, imports?: ImportInfo[]): ConstructorInfo {
+    public extract(node: ConstructorDeclaration): ConstructorInfo {
         const isImplementation = node.isImplementation();
         const isOverload = node.isOverload();
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -19,7 +19,7 @@ export class ConstructorExtractor {
         const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
-                type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined, imports),
+                type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined),
                 modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),
@@ -43,12 +43,12 @@ export class ConstructorExtractor {
         };
     }
 
-    public extractFromClass(node: ClassDeclaration, imports?: ImportInfo[]): ConstructorInfo[] | undefined {
+    public extractFromClass(node: ClassDeclaration): ConstructorInfo[] | undefined {
         const result: ConstructorInfo[] = [];
         const ctors = node.getConstructors();
         if (ctors.length === 0) return undefined;
         ctors.forEach(ctor => {
-            result.push(this.extract(ctor, imports));
+            result.push(this.extract(ctor));
         });
         return result;
     }

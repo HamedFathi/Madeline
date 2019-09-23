@@ -10,8 +10,8 @@ export * from './extractors/common/CallSignatureInfo';
 export * from './extractors/common/CallSignatureParameterInfo';
 export * from './extractors/common/CallSignatureParameterTypeInfo';
 export * from './extractors/common/CallSignatureTypeInfo';
+export * from './extractors/common/FromTypeInfo';
 export * from './extractors/common/TypeExtractor';
-export * from './extractors/common/TypeImportInfo';
 export * from './extractors/common/TypeInfo';
 export * from './extractors/constructor/ConstructorExtractor';
 export * from './extractors/constructor/ConstructorInfo';
@@ -110,9 +110,10 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+/*
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-
 const files = new AureliaSourceFileUtils();
 const result = files.getSourceFiles('C:/Users/MyLaptop/Desktop/aurelia-master');
 if (result) files.save(result);
 const a = 1;
+*/

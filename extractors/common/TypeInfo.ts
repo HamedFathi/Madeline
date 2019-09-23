@@ -1,4 +1,3 @@
-import { TypeImportInfo } from './TypeImportInfo';
 import { FromTypeInfo } from './FromTypeInfo';
 
 export interface TypeInfo {
@@ -8,4 +7,3 @@ export interface TypeInfo {
     typeReference: string | undefined;
     importedFrom: FromTypeInfo[] | undefined;
 }
-

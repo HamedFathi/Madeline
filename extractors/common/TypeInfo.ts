@@ -5,5 +5,5 @@ export interface TypeInfo {
     text: string;
     typeNodeText: string | undefined;
     typeReference: string | undefined;
-    importedFrom: FromTypeInfo[] | undefined;
+    from: FromTypeInfo[] | undefined;
 }

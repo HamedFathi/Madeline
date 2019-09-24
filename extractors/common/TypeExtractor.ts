@@ -1,7 +1,6 @@
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
 import { FromTypeInfo } from './FromTypeInfo';
-import * as path from 'path';
 import { StringUtils } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
@@ -11,7 +10,7 @@ export class TypeExtractor {
         const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!]+)/gm;
         const text = type.getText();
         const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
-        const importedFrom: FromTypeInfo[] = [];
+        const fromAll: FromTypeInfo[] = [];
         const allImports = text.match(regex);
         // Priorities
         // 1. typeReference
@@ -32,15 +31,19 @@ export class TypeExtractor {
                     const gr0: string = stringUtils.removeFirstAndLastQuote(groups[0] as string);
                     const gr1: string = stringUtils.removeFirstAndLastQuote(groups[1] as string);
                     const gr2: string = stringUtils.removeFirstAndLastQuote(groups[2] as string);
-                    const dir: string = path.dirname(gr1);
+                    const dir: string = gr1.substring(0, gr1.lastIndexOf('/'));
                     const file: string = gr1.replace(dir, '').substring(1);
-                    importedFrom.push({
+                    const from: FromTypeInfo = {
                         import: gr0,
                         path: gr1,
                         type: gr2,
                         directory: dir,
                         file: file,
-                    });
+                    };
+                    if (!fromAll.includes(from)) {
+                        fromAll.push(from);
+                    }
+                    fromAll.push();
                 }
             });
         }
@@ -49,7 +52,7 @@ export class TypeExtractor {
             text: text,
             typeNodeText: typeNodeText,
             typeReference: typeReference,
-            importedFrom: importedFrom.length === 0 ? undefined : importedFrom,
+            from: fromAll.length === 0 ? undefined : fromAll,
         };
     }
 }

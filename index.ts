@@ -97,7 +97,6 @@ export * from './templates/api/type-alias/TypeAliasToMdConverter';
 export * from './templates/api/type-parameter/TypeParameterTemplate';
 export * from './templates/api/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/api/type-parameter/TypeParameterToMdConverter';
-export * from './templates/api/type/TypeRoutes';
 export * from './templates/api/type/TypeToMdConverter';
 export * from './templates/TemplateOptions';
 export * from './utilities/AureliaSourceFile';

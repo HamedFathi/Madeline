@@ -70,8 +70,7 @@ export class VariableExtractor {
 
     private getExpressionInfo(
         node: Expression,
-        typeReference?: string,
-        imports?: ImportInfo[],
+        typeReference?: string
     ): FunctionInfo | CallSignatureInfo | string {
         if (TypeGuards.isFunctionExpression(node)) {
             const functionExpression = node as FunctionExpression;

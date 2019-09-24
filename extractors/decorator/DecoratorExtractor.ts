@@ -16,8 +16,7 @@ const allowedKinds: SyntaxKind[] = [
 export class DecoratorExtractor {
     public extract(
         node: DecoratableType,
-        filterStrategy?: (info: DecoratorInfo) => boolean,
-        imports?: ImportInfo[],
+        filterStrategy?: (info: DecoratorInfo) => boolean
     ): DecoratorInfo[] | undefined {
         if (!allowedKinds.includes(node.getKind())) {
             // the specified node does not allowed to have decorators

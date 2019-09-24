@@ -173,7 +173,6 @@ export class LiteralExtractor {
     private getExpressionInfo(
         node: Expression,
         typeReference?: string,
-        imports?: ImportInfo[],
     ): LiteralExpressionInfo | FunctionInfo | CallSignatureInfo | string {
         if (TypeGuards.isObjectLiteralExpression(node)) {
             const objectLiteral = node as ObjectLiteralExpression;

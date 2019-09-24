@@ -3,7 +3,6 @@ import { PropertyInfo } from './PropertyInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
-import { ImportInfo } from '../import/ImportInfo';
 
 export class PropertyExtractor {
     public extract(node: PropertyDeclaration): PropertyInfo {

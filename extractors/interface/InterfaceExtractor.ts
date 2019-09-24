@@ -4,7 +4,6 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
-import { ImportInfo } from '../import/ImportInfo';
 
 export class InterfaceExtractor {
     private readonly typeParameterExtractor = new TypeParameterExtractor();

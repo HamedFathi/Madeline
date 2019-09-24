@@ -5,7 +5,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
-import { ImportInfo } from '../import/ImportInfo';
 
 export class FunctionExtractor {
     public extractFromExpression(node: FunctionExpression): FunctionInfo {

@@ -1,4 +1,3 @@
-import { ImportInfo } from '../import/ImportInfo';
 import { EnumInfo } from '../enum/EnumInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { InterfaceInfo } from '../interface/InterfaceInfo';
@@ -8,6 +7,7 @@ import { SourceFileClassInfo } from './SourceFileClassInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { ExportInfo } from '../export/ExportInfo';
+import { ImportInfo } from '../import/ImportInfo';
 export interface SourceFileInfo {
     isDeclarationFile: boolean;
     isFromExternalLibrary: boolean;

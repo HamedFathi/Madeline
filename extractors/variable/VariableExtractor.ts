@@ -18,7 +18,6 @@ import { CallSignatureInfo } from '../common/CallSignatureInfo';
 import { FunctionExtractor } from '../function/FunctionExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { CommonVariableInfo } from './CommonVariableInfo';
-import { ImportInfo } from '../import/ImportInfo';
 
 export class VariableExtractor {
     public extract(node: VariableStatement): VariableInfo {
@@ -68,10 +67,7 @@ export class VariableExtractor {
         };
     }
 
-    private getExpressionInfo(
-        node: Expression,
-        typeReference?: string
-    ): FunctionInfo | CallSignatureInfo | string {
+    private getExpressionInfo(node: Expression, typeReference?: string): FunctionInfo | CallSignatureInfo | string {
         if (TypeGuards.isFunctionExpression(node)) {
             const functionExpression = node as FunctionExpression;
             const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression);

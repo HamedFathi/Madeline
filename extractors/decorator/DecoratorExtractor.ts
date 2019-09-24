@@ -2,7 +2,6 @@ import { SyntaxKind } from 'ts-morph';
 import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { DecoratableType } from './DecoratableType';
-import { ImportInfo } from '../import/ImportInfo';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -16,7 +15,7 @@ const allowedKinds: SyntaxKind[] = [
 export class DecoratorExtractor {
     public extract(
         node: DecoratableType,
-        filterStrategy?: (info: DecoratorInfo) => boolean
+        filterStrategy?: (info: DecoratorInfo) => boolean,
     ): DecoratorInfo[] | undefined {
         if (!allowedKinds.includes(node.getKind())) {
             // the specified node does not allowed to have decorators

@@ -4,7 +4,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { SetAccessorInfo } from './SetAccessorInfo';
-import { ImportInfo } from '../import/ImportInfo';
 
 export class SetAccessorExtractor {
     public extract(node: SetAccessorDeclaration): SetAccessorInfo {

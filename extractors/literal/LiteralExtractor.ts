@@ -30,7 +30,6 @@ import { LiteralInfo } from './LiteralInfo';
 import { LiteralExpressionInfo } from './LiteralExpressionInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
-import { ImportInfo } from '../import/ImportInfo';
 
 /*
 const obj = {

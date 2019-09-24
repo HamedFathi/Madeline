@@ -5,7 +5,6 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
-import { ImportInfo } from '../import/ImportInfo';
 
 export class ConstructorExtractor {
     public extract(node: ConstructorDeclaration): ConstructorInfo {

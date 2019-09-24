@@ -110,10 +110,8 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-/*
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 const files = new AureliaSourceFileUtils();
 const result = files.getSourceFiles('E:/@All/Projects/@Git/aurelia');
 if (result) files.save(result);
 const a = 1;
-*/

@@ -10,6 +10,7 @@ import {
     TypeAliasDeclaration,
 } from 'ts-morph';
 import { TypeParameterInfo } from './TypeParameterInfo';
+import { TypeExtractor } from '../common/TypeExtractor';
 
 export class TypeParameterExtractor {
     public extract(
@@ -31,10 +32,7 @@ export class TypeParameterExtractor {
                 constraint:
                     y.getConstraint() === undefined
                         ? undefined
-                        : y
-                              .getConstraintOrThrow()
-                              .getType()
-                              .getText(),
+                        : new TypeExtractor().extract(y.getConstraintOrThrow().getType(), undefined, undefined),
             };
         });
         return result.length === 0 ? undefined : result;

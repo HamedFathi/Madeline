@@ -40,10 +40,10 @@ export class TypeExtractor {
                         directory: dir,
                         file: file,
                     };
-                    if (!fromAll.includes(from)) {
+                    const isIncluded = fromAll.filter(x => x.import === gr0).length > 0;
+                    if (!isIncluded) {
                         fromAll.push(from);
                     }
-                    fromAll.push();
                 }
             });
         }

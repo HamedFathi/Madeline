@@ -8,9 +8,9 @@ import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
 export class TypeParameterToMdConverter {
     constructor(private markdownUtils = new MarkdownUtils()) {}
     public convert(typeParameterInfo: TypeParameterInfo, options?: TemplateOptions): string {
-        const obj: TypeParameterTemplateInfo = typeParameterInfo;
+        /*const obj: TypeParameterTemplateInfo = typeParameterInfo;
         const text = Nunjucks.renderString(TYPE_PARAMETER_TEMPLATE, obj);
-        const md = this.markdownUtils.purify(text);
-        return md;
+        const md = this.markdownUtils.purify(text);*/
+        return '';
     }
 }

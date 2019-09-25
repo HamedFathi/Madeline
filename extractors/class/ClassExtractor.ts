@@ -1,4 +1,4 @@
-import { ClassDeclaration } from 'ts-morph';
+import { ClassDeclaration, SyntaxKind } from 'ts-morph';
 import { ClassInfo } from './ClassInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
@@ -15,7 +15,13 @@ export class ClassExtractor {
     ) {
     }
 
-    public extract(node: ClassDeclaration): ClassInfo {
+    public extract(node: ClassDeclaration): ClassInfo | undefined {
+
+        var nodeKind = node.getKind();
+
+        if (!(nodeKind == SyntaxKind.ClassDeclaration))
+            return void 0;
+
         const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
         const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
         const decorators = this.decoratorExtractor.extract(node);

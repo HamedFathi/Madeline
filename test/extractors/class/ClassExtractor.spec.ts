@@ -1,6 +1,9 @@
 import { assert } from "chai";
 import { Project, ScriptTarget, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import { ClassExtractor } from '../../../extractors/class/ClassExtractor';
+import { DecoratableType } from "../../../extractors/decorator/DecoratorExtractor";
+import { ModuleExtractor } from "../../../extractors/module/ModuleExtractor";
+import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
 
 describe('Class Extractor', () => {
 
@@ -14,7 +17,7 @@ describe('Class Extractor', () => {
         });
     });
 
-    it('should return undefined if node is not a class declaration' , () =>{
+    it('should return undefined if node is not a class declaration', () => {
         const sut = `export class Sample{
             constructor(){}
             get prop() : number{
@@ -47,9 +50,9 @@ describe('Class Extractor', () => {
             if (node.getKind() == SyntaxKind.ClassDeclaration) {
                 var classDefinition = classExtractor.extract(node as ClassDeclaration);
                 assert.isTrue(classDefinition !== void 0);
-                assert.equal( classDefinition.name , 'Sample');
-                assert.deepEqual(classDefinition.modifiers , ['export']);
-                assert.equal( classDefinition.text , 'export class Sample{}' );
+                assert.equal(classDefinition.name, 'Sample');
+                assert.deepEqual(classDefinition.modifiers, ['export']);
+                assert.equal(classDefinition.text, 'export class Sample{}');
             }
         });
 
@@ -68,13 +71,51 @@ describe('Class Extractor', () => {
             if (node.getKind() == SyntaxKind.ClassDeclaration) {
                 var classDefinition = classExtractor.extract(node as ClassDeclaration);
                 assert.isTrue(classDefinition !== void 0);
-                assert.equal( classDefinition.name , 'Sample');
-                assert.deepEqual(classDefinition.modifiers , ['export']);
-                assert.equal( classDefinition.text , 'export class Sample{}' );
+                assert.equal(classDefinition.name, 'Sample');
+                assert.deepEqual(classDefinition.modifiers, ['export']);
+                assert.equal(classDefinition.text, 'export class Sample{}');
+            }
+        });
+    });
+
+    it('should return decorator one decorator for the specified class', () => {
+
+        const sut = `@inject()
+        export class Sample() {}`;
+
+        const fakeDecorators: DecoratorInfo[] = [{
+            name: 'inject',
+            parameters: undefined,
+            isDecoratorFactory: true,
+            text: '@inject()',
+        }];
+
+        const fakeDecoratorExtractor = {
+            extract: function (
+                node: DecoratableType,
+                filterStrategy?: (info: DecoratorInfo) => boolean,
+            ): DecoratorInfo[] | undefined {
+                return fakeDecorators;
+            }
+        };
+
+        const classExtractor = new ClassExtractor(new ModuleExtractor(), fakeDecoratorExtractor)
+
+        const file = project.createSourceFile('sample.ts' , sut);
+
+        file.forEachDescendant(node =>{
+            if( node.getKind() === SyntaxKind.ClassDeclaration ){
+
+                const classDefinition = classExtractor.extract(node as ClassDeclaration);
+
+                assert.isTrue(classDefinition.decorators !== void 0);
+                assert.equal(classDefinition.decorators.length , 1);
+                assert.deepEqual(classDefinition.decorators, fakeDecorators );
+
             }
         });
 
-    });
+    })
 
 });
 

@@ -6,10 +6,19 @@ import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class ClassExtractor {
+
+    constructor(
+        private moduleExtractor: ModuleExtractor = new ModuleExtractor(),
+        private decoratorExtractor: DecoratorExtractor = new DecoratorExtractor(),
+        private typeParameterExtractor: TypeParameterExtractor = new TypeParameterExtractor(),
+        private typescriptCommentExtractor: TypescriptCommentExtractor = new TypescriptCommentExtractor()
+    ) {
+    }
+
     public extract(node: ClassDeclaration): ClassInfo {
-        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
-        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
-        const decorators = new DecoratorExtractor().extract(node);
+        const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
+        const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
+        const decorators = this.decoratorExtractor.extract(node);
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
@@ -20,8 +29,8 @@ export class ClassExtractor {
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             decorators: decorators,
-            modules: new ModuleExtractor().extract(node),
-            typeParameters: new TypeParameterExtractor().extract(node),
+            modules: this.moduleExtractor.extract(node),
+            typeParameters: this.typeParameterExtractor.extract(node),
             hasComment: hasComment,
         };
     }

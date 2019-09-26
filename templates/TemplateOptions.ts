@@ -1,4 +1,4 @@
 export interface TemplateOptions {
     append: boolean;
-    route: (path: string) => string;
+    route: (path: string) => string | undefined;
 }

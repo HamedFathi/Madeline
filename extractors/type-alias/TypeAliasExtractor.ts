@@ -15,7 +15,7 @@ export class TypeAliasExtractor {
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
             initializer: node.getTypeNode() === undefined ? '' : node.getTypeNodeOrThrow().getText(),
-            type: new TypeExtractor().extract(node.getType(), node.getTypeNode()),
+            type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), undefined),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
             modules: new ModuleExtractor().extract(node),

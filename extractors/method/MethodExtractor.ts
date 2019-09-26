@@ -14,7 +14,7 @@ export class MethodExtractor {
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
-            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode()),
+            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined),
             isGenerator: node.isGenerator(),
             trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
             leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
@@ -31,7 +31,7 @@ export class MethodExtractor {
                           return {
                               name: y.getName(),
                               text: y.getText(),
-                              type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
+                              type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), undefined),
                               isOptional: y.isOptional(),
                               isRest: y.isRestParameter(),
                               isParameterProperty: y.isParameterProperty(),

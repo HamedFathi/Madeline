@@ -1,14 +1,7 @@
-import {
-    ClassDeclaration,
-    MethodDeclaration,
-    PropertyDeclaration,
-    GetAccessorDeclaration,
-    ParameterDeclaration,
-    SetAccessorDeclaration,
-    SyntaxKind,
-} from 'ts-morph';
+import { SyntaxKind } from 'ts-morph';
 import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
+import { DecoratableType } from './DecoratableType';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -18,14 +11,6 @@ const allowedKinds: SyntaxKind[] = [
     SyntaxKind.SetAccessor,
     SyntaxKind.Parameter,
 ];
-
-export type DecoratableType =
-    | ClassDeclaration
-    | MethodDeclaration
-    | PropertyDeclaration
-    | GetAccessorDeclaration
-    | SetAccessorDeclaration
-    | ParameterDeclaration;
 
 export class DecoratorExtractor {
     public extract(
@@ -48,7 +33,7 @@ export class DecoratorExtractor {
                         : x.getArguments().map(x => {
                               return {
                                   value: x.getText(),
-                                  type: new TypeExtractor().extract(x.getType()),
+                                  type: new TypeExtractor().extract(x.getType(), undefined, undefined),
                               };
                           }),
             };

@@ -1,36 +1,35 @@
-import { CommentInfo } from '../../extractors/comment/CommentInfo';
+import { CommentInfo } from '../../../extractors/comment/CommentInfo';
 import { CommentToMdOption } from './CommentToMdOption';
 import { CommentGroup } from './CommentGroup';
-import { Nunjucks } from '../../utilities/NunjucksUtils';
+import { Nunjucks } from '../../../utilities/NunjucksUtils';
 import { COMMENT_TEMPLATE } from './CommentTemplate';
-import { MarkdownUtils } from '../../utilities/MarkdownUtils';
-import { TagInfo } from '../../extractors/comment/TagInfo';
+import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
+import { TagInfo } from '../../../extractors/comment/TagInfo';
 import { CommentTemplateInfo } from './CommentTemplateInfo';
-import { TemplateOption } from '../TemplateOption';
+import { TemplateOptions } from '../../TemplateOptions';
 
 export class CommentToMdConverter {
     public convertAll(
         commentInfo: CommentInfo[],
-        commentOption?: CommentToMdOption,
-        option?: TemplateOption,
+        commentOptions?: CommentToMdOption,
+        options?: TemplateOptions,
     ): string[] {
         const md: string[] = [];
         commentInfo.forEach(comment => {
-            const text = this.convert(comment, commentOption, option);
+            const text = this.convert(comment, commentOptions, options);
             md.push(text);
         });
         return md;
     }
-    public convert(commentInfo: CommentInfo, commentOption?: CommentToMdOption, option?: TemplateOption): string {
+    public convert(commentInfo: CommentInfo, commentOptions?: CommentToMdOption, options?: TemplateOptions): string {
         const result: string[] = [];
-        const append = option && option.append ? true : false;
         // with tags
         if (commentInfo.tags) {
-            const groupedTags = new CommentGroup().groupByTagName(commentInfo.tags, commentOption);
+            const groupedTags = new CommentGroup().groupByTagName(commentInfo.tags, commentOptions);
             const commentTemplateInfo: CommentTemplateInfo = {
                 details: [],
                 description: commentInfo.description,
-                append: append,
+                options: options,
             };
             groupedTags.forEach(groupedTag => {
                 if (commentTemplateInfo.details) {
@@ -46,7 +45,7 @@ export class CommentToMdConverter {
             if (commentInfo.description) {
                 const commentTemplateInfo: CommentTemplateInfo = {
                     details: undefined,
-                    append: append,
+                    options: options,
                     description: commentInfo.description,
                 };
                 const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);

@@ -1,11 +1,11 @@
-import { TagInfo } from '../../extractors/comment/TagInfo';
+import { TagInfo } from '../../../extractors/comment/TagInfo';
 import { CommentToMdOption } from './CommentToMdOption';
 import * as _ from 'lodash';
 import { TagInfoHeader } from './TagInfoHeader';
 import { CommentGroupInfo } from './CommentGroupInfo';
 
 export class CommentGroup {
-    public groupByTagName(tagsInfo: TagInfo[], option?: CommentToMdOption): CommentGroupInfo[] {
+    public groupByTagName(tagsInfo: TagInfo[], options?: CommentToMdOption): CommentGroupInfo[] {
         const result: CommentGroupInfo[] = [];
         const tagsGroup = _(tagsInfo)
             .groupBy(x => x.tag)
@@ -23,7 +23,7 @@ export class CommentGroup {
                 item.headers = info.headers;
             }
             if (tagsInfo.length > 0) {
-                item.title = this.getAlternativeTagName(tagsInfo[0], option);
+                item.title = this.getAlternativeTagName(tagsInfo[0], options);
             }
             tagsInfo.forEach(tagInfo => {
                 item.tags.push({
@@ -39,11 +39,11 @@ export class CommentGroup {
         return result;
     }
 
-    private getAlternativeTagName(tagInfo: TagInfo, option?: CommentToMdOption): string {
+    private getAlternativeTagName(tagInfo: TagInfo, options?: CommentToMdOption): string {
         let alternativeName = tagInfo.tag;
-        if (option) {
-            if (option.alternatives) {
-                option.alternatives.forEach(obj => {
+        if (options) {
+            if (options.alternatives) {
+                options.alternatives.forEach(obj => {
                     if (obj.name === tagInfo.tag) {
                         alternativeName = obj.alternative;
                     }

@@ -43,12 +43,12 @@ export class VariableExtractor {
                 }
                 commons.push({
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode()),
+                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), typeReference),
                     modifiers: modifiers.length === 0 ? undefined : modifiers,
                     initializer:
                         declaration.getInitializer() === undefined
                             ? undefined
-                            : this.getExpressionInfo(declaration.getInitializerOrThrow()),
+                            : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference),
                     kind: kind,
                     kindName: kindName,
                     trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
@@ -67,7 +67,7 @@ export class VariableExtractor {
         };
     }
 
-    private getExpressionInfo(node: Expression): FunctionInfo | CallSignatureInfo | string {
+    private getExpressionInfo(node: Expression, typeReference?: string): FunctionInfo | CallSignatureInfo | string {
         if (TypeGuards.isFunctionExpression(node)) {
             const functionExpression = node as FunctionExpression;
             const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression);
@@ -79,6 +79,7 @@ export class VariableExtractor {
                 returnType: new TypeExtractor().extract(
                     callSignature.getReturnType(),
                     callSignature.getReturnTypeNode(),
+                    typeReference,
                 ),
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
@@ -87,7 +88,7 @@ export class VariableExtractor {
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
+                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), typeReference),
                                   modifiers:
                                       y.getModifiers().length === 0
                                           ? undefined

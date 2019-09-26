@@ -18,7 +18,7 @@ export class ConstructorExtractor {
         const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
-                type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
+                type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined),
                 modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),

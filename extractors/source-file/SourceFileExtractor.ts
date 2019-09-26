@@ -14,7 +14,7 @@ import { EnumInfo } from '../enum/EnumInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { InterfaceInfo } from '../interface/InterfaceInfo';
 import { TypeAliasInfo } from '../type-alias/TypeAliasInfo';
-import { CoverageExtractorOption } from '../doc-coverage/CoverageExtractorOption';
+import { CoverageExtractorOptions } from '../doc-coverage/CoverageExtractorOptions';
 import { ImportExtractor } from '../import/ImportExtractor';
 import { EnumExtractor } from '../enum/EnumExtractor';
 import { FunctionExtractor } from '../function/FunctionExtractor';
@@ -38,7 +38,7 @@ import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { ExportExtractor } from '../export/ExportExtractor';
 
 export class SourceFileExtractor {
-    public extractFromTextFile(sourceFile: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extractFromTextFile(sourceFile: string, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
         const sourceText = fs.readFileSync(sourceFile, 'utf8');
         const project = new Project({
             compilerOptions: {
@@ -46,24 +46,24 @@ export class SourceFileExtractor {
             },
         });
         const source = project.createSourceFile('source.ts', sourceText);
-        return this.extract(source, option);
+        return this.extract(source, options);
     }
 
-    public extractFromText(sourceText: string, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extractFromText(sourceText: string, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
         const project = new Project({
             compilerOptions: {
                 target: ScriptTarget.ES5,
             },
         });
         const source = project.createSourceFile('source.ts', sourceText);
-        return this.extract(source, option);
+        return this.extract(source, options);
     }
 
-    public extract(sourceFile: SourceFile, option?: CoverageExtractorOption): SourceFileInfo | undefined {
+    public extract(sourceFile: SourceFile, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
         const imports = new ImportExtractor().extract(sourceFile);
         const exports = new ExportExtractor().extract(sourceFile);
         const exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
-        const coverageDetail = new CoverageExtractor().extract(sourceFile, option);
+        const coverageDetail = new CoverageExtractor().extract(sourceFile, options);
         const coverageInfo = new CoverageCalculator(coverageDetail).calculate();
         const coverage: SourceFileCoverageInfo = {
             details: coverageDetail,

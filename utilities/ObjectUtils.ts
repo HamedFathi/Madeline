@@ -46,7 +46,7 @@ export class ObjectUtils {
     }
 
     public isUndefined(value: unknown): boolean {
-        return value === undefined;
+        return value === void 0;
     }
 
     public isNullOrUndefined(value: unknown): boolean {

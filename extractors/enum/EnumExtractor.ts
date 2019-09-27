@@ -10,10 +10,10 @@ export class EnumExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isConst: node.isConstEnum(),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
             text: node.getText(),
             hasComment: hasComment,
@@ -27,11 +27,11 @@ export class EnumExtractor {
                         new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length !== 0,
                     trailingComments:
                         new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                            ? undefined
+                            ? void 0
                             : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                     leadingComments:
                         new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                            ? undefined
+                            ? void 0
                             : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                 };
             }),

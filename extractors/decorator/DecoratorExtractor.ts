@@ -19,7 +19,7 @@ export class DecoratorExtractor {
     ): DecoratorInfo[] | undefined {
         if (!allowedKinds.includes(node.getKind())) {
             // the specified node does not allowed to have decorators
-            return undefined;
+            return void 0;
         }
 
         let decorators = node.getDecorators().map(x => {
@@ -29,13 +29,13 @@ export class DecoratorExtractor {
                 text: x.getText(),
                 parameters:
                     x.getArguments().length === 0
-                        ? undefined
+                        ? void 0
                         : x.getArguments().map(x => {
-                              return {
-                                  value: x.getText(),
-                                  type: new TypeExtractor().extract(x.getType(), undefined, undefined),
-                              };
-                          }),
+                            return {
+                                value: x.getText(),
+                                type: new TypeExtractor().extract(x.getType(), void 0, void 0),
+                            };
+                        }),
             };
         });
 
@@ -43,7 +43,7 @@ export class DecoratorExtractor {
             decorators = decorators.filter(filterStrategy);
         }
 
-        if (decorators.length === 0) return undefined;
+        if (decorators.length === 0) return void 0;
 
         return decorators;
     }

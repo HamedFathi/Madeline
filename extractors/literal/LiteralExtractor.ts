@@ -117,13 +117,13 @@ export class LiteralExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
-            let typeReference: string | undefined = undefined;
-            let objectLiteral: ObjectLiteralExpression | undefined = undefined;
-            let arrayLiteral: ArrayLiteralExpression | undefined = undefined;
+            let typeReference: string | undefined = void 0;
+            let objectLiteral: ObjectLiteralExpression | undefined = void 0;
+            let arrayLiteral: ArrayLiteralExpression | undefined = void 0;
             if (hasTypeReference) {
                 const asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
                 const typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
-                typeReference = typeRef === undefined ? undefined : typeRef.getText();
+                typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
                 objectLiteral = asExpression.getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression)[0];
                 arrayLiteral = asExpression.getDescendantsOfKind(SyntaxKind.ArrayLiteralExpression)[0];
             } else {
@@ -137,8 +137,8 @@ export class LiteralExtractor {
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
-                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
                     typeReference: typeReference,
                     name: declaration.getName(),
@@ -154,8 +154,8 @@ export class LiteralExtractor {
                 });
                 result.push({
                     elements: members,
-                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
                     isArrayLiteral: true,
                     text: node.getText(),
@@ -166,7 +166,7 @@ export class LiteralExtractor {
             }
         });
 
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 
     private getExpressionInfo(
@@ -190,8 +190,8 @@ export class LiteralExtractor {
                 if (isPropertyAssignment) {
                     const propertyAssignment = x as PropertyAssignment;
                     const value =
-                        propertyAssignment.getInitializer() === undefined
-                            ? undefined
+                        propertyAssignment.getInitializer() === void 0
+                            ? void 0
                             : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow());
                     const type = new TypeExtractor().extract(propertyAssignment.getType(), undefined, typeReference);
                     const name = propertyAssignment.getName();
@@ -216,7 +216,7 @@ export class LiteralExtractor {
                         isSpread: false,
                         name: name,
                         type: type,
-                        value: undefined,
+                        value: void 0,
                     });
                 }
                 if (isSpreadAssignment) {
@@ -228,7 +228,7 @@ export class LiteralExtractor {
                         isSpread: true,
                         name: name,
                         type: type,
-                        value: undefined,
+                        value: void 0,
                     });
                 }
                 if (isGetAccessorDeclaration) {
@@ -271,31 +271,31 @@ export class LiteralExtractor {
                 typeParameters: new TypeParameterExtractor().extract(callSignature),
                 parameters:
                     callSignature.getParameters().length === 0
-                        ? undefined
+                        ? void 0
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
                                   type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), typeReference),
                                   modifiers:
                                       y.getModifiers().length === 0
-                                          ? undefined
+                                          ? void 0
                                           : y.getModifiers().map(x => x.getText()),
                                   isOptional: y.isOptional(),
                                   isRest: y.isRestParameter(),
                                   isParameterProperty: y.isParameterProperty(),
                                   initializer:
-                                      y.getInitializer() === undefined
-                                          ? undefined
+                                      y.getInitializer() === void 0
+                                          ? void 0
                                           : y.getInitializerOrThrow().getText(),
                               };
                           }),
             };
         } else
             return {
-                assignments: undefined,
-                getAccessors: undefined,
-                setAccessors: undefined,
-                methods: undefined,
+                assignments: void 0,
+                getAccessors: void 0,
+                setAccessors: void 0,
+                methods: void 0,
                 text: node.getText(),
                 isObjectLiteral: false,
             };

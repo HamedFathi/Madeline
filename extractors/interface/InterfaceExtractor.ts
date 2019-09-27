@@ -15,15 +15,15 @@ export class InterfaceExtractor {
         const result: InterfaceInfo = {
             name: node.getName(),
             text: node.getText(),
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
             typeParameters: this.typeParameterExtractor.extract(node),
             hasComment: hasComment,
             properties:
                 node.getProperties().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getProperties().map(x => {
                           return {
                               name: x.getName(),
@@ -32,17 +32,17 @@ export class InterfaceExtractor {
                               isOptional: x.hasQuestionToken(),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                               leadingComments:
                                   new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                           };
                       }),
             methods:
                 node.getMethods().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getMethods().map(x => {
                           return {
                               name: x.getName(),
@@ -55,15 +55,15 @@ export class InterfaceExtractor {
                               ),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                               leadingComments:
                                   new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                               parameters:
                                   x.getParameters().length === 0
-                                      ? undefined
+                                      ? void 0
                                       : x.getParameters().map(y => {
                                             return {
                                                 name: y.getName(),
@@ -77,12 +77,12 @@ export class InterfaceExtractor {
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
                                                 initializer:
-                                                    y.getInitializer() === undefined
-                                                        ? undefined
+                                                    y.getInitializer() === void 0
+                                                        ? void 0
                                                         : y.getInitializerOrThrow().getText(),
                                                 modifiers:
                                                     y.getModifiers().length === 0
-                                                        ? undefined
+                                                        ? void 0
                                                         : y.getModifiers().map(x => x.getText()),
                                             };
                                         }),
@@ -90,7 +90,7 @@ export class InterfaceExtractor {
                       }),
             extends:
                 node.getExtends().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getExtends().map(x => {
                           return {
                               name: x.getText(),
@@ -99,7 +99,7 @@ export class InterfaceExtractor {
                       }),
             callSignatures:
                 node.getCallSignatures().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getCallSignatures().map(x => {
                           return {
                               returnType: new TypeExtractor().extract(
@@ -111,15 +111,15 @@ export class InterfaceExtractor {
                               typeParameters: this.typeParameterExtractor.extract(x),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                               leadingComments:
                                   new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                               parameters:
                                   x.getParameters().length === 0
-                                      ? undefined
+                                      ? void 0
                                       : x.getParameters().map(y => {
                                             return {
                                                 name: y.getName(),
@@ -131,14 +131,14 @@ export class InterfaceExtractor {
                                                 ),
                                                 modifiers:
                                                     y.getModifiers().length === 0
-                                                        ? undefined
+                                                        ? void 0
                                                         : y.getModifiers().map(x => x.getText()),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
                                                 initializer:
-                                                    y.getInitializer() === undefined
-                                                        ? undefined
+                                                    y.getInitializer() === void 0
+                                                        ? void 0
                                                         : y.getInitializerOrThrow().getText(),
                                             };
                                         }),
@@ -146,7 +146,7 @@ export class InterfaceExtractor {
                       }),
             indexers:
                 node.getIndexSignatures().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getIndexSignatures().map(x => {
                           return {
                               returnType: new TypeExtractor().extract(
@@ -159,17 +159,17 @@ export class InterfaceExtractor {
                               value: new TypeExtractor().extract(x.getKeyType(), x.getKeyTypeNode(), undefined),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                               leadingComments:
                                   new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                           };
                       }),
             constructors:
                 node.getConstructSignatures().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getConstructSignatures().map(x => {
                           return {
                               returnType: new TypeExtractor().extract(
@@ -181,15 +181,15 @@ export class InterfaceExtractor {
                               typeParameters: this.typeParameterExtractor.extract(x),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                               leadingComments:
                                   new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
+                                      ? void 0
                                       : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                               parameters:
                                   x.getParameters().length === 0
-                                      ? undefined
+                                      ? void 0
                                       : x.getParameters().map(y => {
                                             return {
                                                 name: y.getName(),
@@ -201,14 +201,14 @@ export class InterfaceExtractor {
                                                 ),
                                                 modifiers:
                                                     y.getModifiers().length === 0
-                                                        ? undefined
+                                                        ? void 0
                                                         : y.getModifiers().map(x => x.getText()),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
                                                 initializer:
-                                                    y.getInitializer() === undefined
-                                                        ? undefined
+                                                    y.getInitializer() === void 0
+                                                        ? void 0
                                                         : y.getInitializerOrThrow().getText(),
                                             };
                                         }),

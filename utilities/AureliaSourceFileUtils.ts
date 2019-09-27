@@ -13,7 +13,7 @@ export class AureliaSourceFileUtils {
     public getSourceFiles(dirPath: string): AureliaSourceFile[] | undefined {
         const sources: AureliaSourceFile[] = [];
         const packageDir = path.join(dirPath, this.PACKAGES);
-        if (!this.isDirectoryExists(packageDir)) return undefined;
+        if (!this.isDirectoryExists(packageDir)) return void 0;
         const packagesList = this.getDirectoriesList(packageDir, x => !this.EXCLUDES.includes(x));
 
         packagesList.forEach(pkg => {
@@ -34,7 +34,7 @@ export class AureliaSourceFileUtils {
                 });
             }
         });
-        return sources.length === 0 ? undefined : sources;
+        return sources.length === 0 ? void 0 : sources;
     }
 
     public save(aureliaSourceFile: AureliaSourceFile[]): void {

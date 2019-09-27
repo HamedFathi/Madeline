@@ -17,24 +17,24 @@ export class SetAccessorExtractor {
                 return {
                     name: y.getName(),
                     text: y.getText(),
-                    modifiers: y.getModifiers().length === 0 ? undefined : y.getModifiers().map(z => z.getText()),
-                    type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), undefined),
+                    modifiers: y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(z => z.getText()),
+                    type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), void 0),
                 };
             })[0],
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(y => y.getText()),
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             hasComment: hasComment,
             variables:
                 node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
-                    ? undefined
+                    ? void 0
                     : node.getVariableStatements().map(y => new VariableExtractor().extract(y)),
         };
     }
     public extractFromClass(node: ClassDeclaration): SetAccessorInfo[] | undefined {
         const setAccessors = node.getSetAccessors().map(x => this.extract(x));
-        if (setAccessors.length === 0) return undefined;
+        if (setAccessors.length === 0) return void 0;
         return setAccessors;
     }
 }

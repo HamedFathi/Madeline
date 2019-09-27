@@ -1,15 +1,14 @@
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
 import { FromTypeInfo } from './FromTypeInfo';
-import { StringUtils } from '../../utilities/StringUtils';
+import { removeFirstAndLastQuote } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
     public extract(type: Type, typeNode: TypeNode | undefined, typeReference: string | undefined): TypeInfo {
-        const stringUtils = new StringUtils();
         let value = '';
         const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!]+)/gm;
         const text = type.getText();
-        const typeNodeText = typeNode === undefined ? undefined : typeNode.getText();
+        const typeNodeText = typeNode === void 0 ? void 0 : typeNode.getText();
         const fromAll: FromTypeInfo[] = [];
         const allImports = text.match(regex);
         // Priorities
@@ -28,9 +27,9 @@ export class TypeExtractor {
                 const rgx = /import\((.+?)\)\.(.+)/g;
                 const groups = rgx.exec(imp);
                 if (groups) {
-                    const gr0: string = stringUtils.removeFirstAndLastQuote(groups[0] as string);
-                    const gr1: string = stringUtils.removeFirstAndLastQuote(groups[1] as string);
-                    const gr2: string = stringUtils.removeFirstAndLastQuote(groups[2] as string);
+                    const gr0: string = removeFirstAndLastQuote(groups[0] as string);
+                    const gr1: string = removeFirstAndLastQuote(groups[1] as string);
+                    const gr2: string = removeFirstAndLastQuote(groups[2] as string);
                     const dir: string = gr1.substring(0, gr1.lastIndexOf('/'));
                     const file: string = gr1.replace(dir, '').substring(1);
                     const from: FromTypeInfo = {
@@ -52,7 +51,7 @@ export class TypeExtractor {
             text: text,
             typeNodeText: typeNodeText,
             typeReference: typeReference,
-            from: fromAll.length === 0 ? undefined : fromAll,
+            from: fromAll.length === 0 ? void 0 : fromAll,
         };
     }
 }

@@ -30,11 +30,11 @@ export class TypeParameterExtractor {
                 name: y.getName(),
                 text: y.getText(),
                 constraint:
-                    y.getConstraint() === undefined
-                        ? undefined
-                        : new TypeExtractor().extract(y.getConstraintOrThrow().getType(), undefined, undefined),
+                    y.getConstraint() === void 0
+                        ? void 0
+                        : new TypeExtractor().extract(y.getConstraintOrThrow().getType(), void 0, void 0),
             };
         });
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 }

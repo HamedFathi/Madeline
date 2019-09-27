@@ -44,7 +44,7 @@ export class CommentToMdConverter {
         else {
             if (commentInfo.description) {
                 const commentTemplateInfo: CommentTemplateInfo = {
-                    details: undefined,
+                    details: void 0,
                     options: options,
                     description: commentInfo.description,
                 };

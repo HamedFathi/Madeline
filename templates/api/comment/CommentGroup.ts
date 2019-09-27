@@ -14,7 +14,7 @@ export class CommentGroup {
 
         tagsGroup.forEach(tagsInfo => {
             const item: CommentGroupInfo = {
-                headers: undefined,
+                headers: void 0,
                 tags: [],
                 title: '',
             };
@@ -83,7 +83,7 @@ export class CommentGroup {
         if (hasDescription) finalHeader.push('description');
         isDescriptionOnly = hasDescription && !hasName && !hasType && !hasDefaultValue;
         return finalHeader.length === 0
-            ? undefined
+            ? void 0
             : {
                   isDescriptionOnly: isDescriptionOnly,
                   headers: finalHeader,
@@ -112,6 +112,6 @@ export class CommentGroup {
                 headers.push('description');
             }
         }
-        return headers.length === 0 ? undefined : headers;
+        return headers.length === 0 ? void 0 : headers;
     }
 }

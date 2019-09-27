@@ -25,8 +25,7 @@ export class ModuleExtractor {
             | ExpressionStatement
             | ExportAssignment,
     ): ModuleInfo[] | undefined {
-        const result = this.getInfo(node);
-        return result;
+        return this.getInfo(node);
     }
 
     private getInfo(node: Node, info?: ModuleInfo[], level?: number): ModuleInfo[] | undefined {
@@ -50,7 +49,7 @@ export class ModuleExtractor {
                 const isNamespace = declaration.hasNamespaceKeyword();
                 const modifiers =
                     declaration.getModifiers().length === 0
-                        ? undefined
+                        ? void 0
                         : declaration.getModifiers().map(x => x.getText());
                 info.push({
                     name: name,
@@ -58,13 +57,13 @@ export class ModuleExtractor {
                     isNamespace: isNamespace,
                     modifiers: modifiers,
                     level: level,
-                    trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-                    leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                    trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+                    leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
                 });
                 this.getInfo(declaration, info, ++level);
             }
         }
-        return info.length === 0 ? undefined : info;
+        return info.length === 0 ? void 0 : info;
     }
 }

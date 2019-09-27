@@ -71,7 +71,7 @@ export class JsDocExtractor {
                         description = description.trim();
                     }
 
-                    let names = isEmptyOrWhitespace(line.trim()) ? undefined : line.trim();
+                    let names = isEmptyOrWhitespace(line.trim()) ? void 0 : line.trim();
                     if (names && names[0] === this.DOUBLE_QUOTE && names[names.length - 1] === this.DOUBLE_QUOTE) {
                         names = names.substring(1);
                         names = names.substring(0, names.length - 1);
@@ -82,10 +82,10 @@ export class JsDocExtractor {
                     }
                     tags.push({
                         tag: tag,
-                        type: type === null ? undefined : type,
-                        name: names === undefined ? undefined : names.split('.').filter(x => x.length !== 0),
-                        defaultValue: defaultValue === null ? undefined : defaultValue,
-                        description: description === null ? undefined : [description],
+                        type: type === null ? void 0 : type,
+                        name: names === void 0 ? void 0 : names.split('.').filter(x => x.length !== 0),
+                        defaultValue: defaultValue === null ? void 0 : defaultValue,
+                        description: description === null ? void 0 : [description],
                     });
                 }
                 // A description after a tag

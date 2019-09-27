@@ -12,38 +12,38 @@ export class FunctionExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const returnType =
-            node.getReturnType() === undefined
-                ? undefined
-                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined);
+            node.getReturnType() === void 0
+                ? void 0
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0);
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const result: FunctionInfo = {
             name: node.getName(),
             text: node.getText(),
             hasComment: hasComment,
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isGenerator: node.isGenerator(),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             typeParameters: new TypeParameterExtractor().extract(node),
             returnType: returnType,
-            variables: variables.length === 0 ? undefined : variables,
+            variables: variables.length === 0 ? void 0 : variables,
             parameters:
                 node.getParameters().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getParameters().map(x => {
-                          return {
-                              name: x.getName(),
-                              text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined),
-                              modifiers:
-                                  x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                              isOptional: x.isOptional(),
-                              isRest: x.isRestParameter(),
-                              isParameterProperty: x.isParameterProperty(),
-                              initializer:
-                                  x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
-                          };
-                      }),
+                        return {
+                            name: x.getName(),
+                            text: x.getText(),
+                            type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0),
+                            modifiers:
+                                x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
+                            isOptional: x.isOptional(),
+                            isRest: x.isRestParameter(),
+                            isParameterProperty: x.isParameterProperty(),
+                            initializer:
+                                x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
+                        };
+                    }),
         };
         return result;
     }
@@ -53,41 +53,41 @@ export class FunctionExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const returnType =
-            node.getReturnType() === undefined
-                ? undefined
-                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), undefined);
+            node.getReturnType() === void 0
+                ? void 0
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0);
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const result: FunctionInfo = {
             name: node.getName(),
             text: node.getText(),
             hasComment: hasComment,
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isGenerator: node.isGenerator(),
             isOverload: node.isOverload(),
             isImplementation: node.isImplementation(),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
             typeParameters: new TypeParameterExtractor().extract(node),
             returnType: returnType,
-            variables: variables.length === 0 ? undefined : variables,
+            variables: variables.length === 0 ? void 0 : variables,
             parameters:
                 node.getParameters().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getParameters().map(x => {
-                          return {
-                              name: x.getName(),
-                              text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined),
-                              modifiers:
-                                  x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
-                              isOptional: x.isOptional(),
-                              isRest: x.isRestParameter(),
-                              isParameterProperty: x.isParameterProperty(),
-                              initializer:
-                                  x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
-                          };
-                      }),
+                        return {
+                            name: x.getName(),
+                            text: x.getText(),
+                            type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0),
+                            modifiers:
+                                x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
+                            isOptional: x.isOptional(),
+                            isRest: x.isRestParameter(),
+                            isParameterProperty: x.isParameterProperty(),
+                            initializer:
+                                x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
+                        };
+                    }),
         };
         return result;
     }

@@ -13,30 +13,30 @@ export class ConstructorExtractor {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const modifiers = node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText());
+        const modifiers = node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText());
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x));
         const params: ConstructorParamInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
-                type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined),
-                modifiers: x.getModifiers().length === 0 ? undefined : x.getModifiers().map(y => y.getText()),
+                type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0),
+                modifiers: x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),
                 isParameterProperty: x.isParameterProperty(),
-                initializer: x.getInitializer() === undefined ? undefined : x.getInitializerOrThrow().getText(),
+                initializer: x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
                 decorators: new DecoratorExtractor().extract(x),
                 text: x.getText(),
             };
         });
         return {
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modifiers: modifiers,
             isParameterLess: params.length === 0,
             isImplementation: isImplementation,
             isOverload: isOverload,
-            parameters: params.length === 0 ? undefined : params,
-            variables: variables.length === 0 ? undefined : variables,
+            parameters: params.length === 0 ? void 0 : params,
+            variables: variables.length === 0 ? void 0 : variables,
             text: node.getText(),
             hasComment: hasComment,
         };
@@ -45,7 +45,7 @@ export class ConstructorExtractor {
     public extractFromClass(node: ClassDeclaration): ConstructorInfo[] | undefined {
         const result: ConstructorInfo[] = [];
         const ctors = node.getConstructors();
-        if (ctors.length === 0) return undefined;
+        if (ctors.length === 0) return void 0;
         ctors.forEach(ctor => {
             result.push(this.extract(ctor));
         });

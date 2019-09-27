@@ -53,9 +53,9 @@ function nbsp(repetition?: number) {
 
 function getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
     const afterStart = text.split(startDelimiter)[1];
-    if (afterStart !== undefined) {
+    if (afterStart !== void 0) {
         const result = afterStart.split(endDelimiter)[0];
-        if (result !== undefined) {
+        if (result !== void 0) {
             return result;
         }
     }
@@ -63,7 +63,7 @@ function getBetweenChars(text: string, startDelimiter: string, endDelimiter: str
 }
 
 function stringify(obj: unknown): string {
-    return JSON.stringify(obj, (k, v) => (v === undefined ? null : v));
+    return JSON.stringify(obj, (k, v) => (v === void 0 ? null : v));
 }
 
 export {

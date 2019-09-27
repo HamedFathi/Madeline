@@ -32,7 +32,7 @@ export class ModuleToMdConverter {
                 type: m.isNamespace ? 'namespace' : 'module',
                 modifiers: m.modifiers,
                 text: this.prettierUtils.prettify(m.text),
-                description: description.length === 0 ? undefined : description,
+                description: description.length === 0 ? void 0 : description,
                 options: options,
             };
             const text = Nunjucks.renderString(MODULE_TEMPLATE, obj);

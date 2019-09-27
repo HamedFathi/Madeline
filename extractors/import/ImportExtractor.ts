@@ -18,7 +18,7 @@ export class ImportExtractor {
                         namedImports.forEach(imp => {
                             const name = imp.getName();
                             const aliasNode = imp.getAliasNode();
-                            let alias = undefined;
+                            let alias: string | undefined = void 0;
                             if (aliasNode) {
                                 alias = aliasNode.getText();
                             }
@@ -35,7 +35,7 @@ export class ImportExtractor {
                     }
                     if (defaultImport) {
                         const name = defaultImport.getText();
-                        const alias = undefined;
+                        const alias = void 0;
                         const kind = ImportKind.DefaultImport;
                         result.push({
                             name: name,
@@ -48,7 +48,7 @@ export class ImportExtractor {
                     }
                     if (namespaceImport) {
                         const name = namespaceImport.getText();
-                        const alias = undefined;
+                        const alias = void 0;
                         const kind = ImportKind.NamespaceImport;
                         result.push({
                             name: name,
@@ -68,7 +68,7 @@ export class ImportExtractor {
                     const kind = ImportKind.ImportEquals;
                     result.push({
                         name: name,
-                        alias: undefined,
+                        alias: void 0,
                         module: moduleRefValue,
                         kind: kind,
                         kindName: ImportKind[kind],
@@ -77,7 +77,7 @@ export class ImportExtractor {
                     break;
             }
         });
-        if (result.length === 0) return undefined;
+        if (result.length === 0) return void 0;
         return result;
     }
 }

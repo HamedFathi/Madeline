@@ -16,8 +16,8 @@ export class ExportAssignmentExtractor {
                     const expression: ExportAssignmentInfo = {
                         text: x.getText(),
                         hasComment: hasComment,
-                        trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-                        leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+                        trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+                        leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                         modules: new ModuleExtractor().extract(x),
                         isExportDefault: isExportDefault,
                     };
@@ -25,6 +25,6 @@ export class ExportAssignmentExtractor {
                     break;
             }
         });
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 }

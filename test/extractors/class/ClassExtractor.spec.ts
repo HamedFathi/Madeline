@@ -1,9 +1,9 @@
 import { assert } from "chai";
 import { Project, ScriptTarget, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import { ClassExtractor } from '../../../extractors/class/ClassExtractor';
-import { DecoratableType } from "../../../extractors/decorator/DecoratorExtractor";
 import { ModuleExtractor } from "../../../extractors/module/ModuleExtractor";
 import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
+import { DecoratableType } from "../../../extractors/decorator/DecoratableType";
 
 describe('Class Extractor', () => {
 

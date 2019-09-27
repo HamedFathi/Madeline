@@ -17,9 +17,7 @@ export class ClassExtractor {
 
     public extract(node: ClassDeclaration): ClassInfo | undefined {
 
-        var nodeKind = node.getKind();
-
-        if (!(nodeKind == SyntaxKind.ClassDeclaration))
+        if (node.getKind() !== SyntaxKind.ClassDeclaration)
             return void 0;
 
         const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
@@ -29,11 +27,11 @@ export class ClassExtractor {
         return {
             name: node.getName(),
             text: node.getText(),
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
-            extends: node.getExtends() === undefined ? undefined : node.getExtendsOrThrow().getText(),
-            implements: node.getImplements().length === 0 ? undefined : node.getImplements().map(x => x.getText()),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
+            extends: node.getExtends() === void 0 ? void 0 : node.getExtendsOrThrow().getText(),
+            implements: node.getImplements().length === 0 ? void 0 : node.getImplements().map(x => x.getText()),
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             decorators: decorators,
             modules: this.moduleExtractor.extract(node),
             typeParameters: this.typeParameterExtractor.extract(node),

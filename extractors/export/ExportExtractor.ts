@@ -12,24 +12,24 @@ export class ExportExtractor {
                     new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length !== 0,
                 trailingComments:
                     new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                        ? undefined
+                        ? void 0
                         : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
                 leadingComments:
                     new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                        ? undefined
+                        ? void 0
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                 moduleSpecifier: x.getModuleSpecifierValue(),
                 namedExports:
                     x.getNamedExports().length === 0
-                        ? undefined
+                        ? void 0
                         : x.getNamedExports().map(y => {
                               return {
                                   name: y.getName(),
-                                  alias: y.getSymbol() === undefined ? undefined : y.getSymbolOrThrow().getName(),
+                                  alias: y.getSymbol() === void 0 ? void 0 : y.getSymbolOrThrow().getName(),
                               };
                           }),
             };
         });
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 }

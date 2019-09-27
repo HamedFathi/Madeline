@@ -33,23 +33,23 @@ export class DestructuringExtractor {
             const elements: DestructuringElementInfo[] = [];
             const bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
             if (bindingElements.length > 0) {
-                let typeReference: string | undefined = undefined;
+                let typeReference: string | undefined = void 0;
                 const initValue = declaration.getInitializer();
                 const text = declaration.getText();
-                const initializer = initValue === undefined ? undefined : declaration.getInitializerOrThrow().getText();
+                const initializer = initValue === void 0 ? void 0 : declaration.getInitializerOrThrow().getText();
                 if (initValue) {
                     const typeRef = declaration.getDescendantsOfKind(SyntaxKind.TypeReference);
-                    typeReference = typeRef.length === 0 ? undefined : typeRef[0].getText();
+                    typeReference = typeRef.length === 0 ? void 0 : typeRef[0].getText();
                 }
                 const isArrayDestructuring =
                     declaration.getDescendantsOfKind(SyntaxKind.ArrayBindingPattern).length > 0;
                 bindingElements.forEach(element => {
                     const name = element.getName();
                     const propertyName =
-                        element.getPropertyNameNode() === undefined
-                            ? undefined
+                        element.getPropertyNameNode() === void 0
+                            ? void 0
                             : element.getPropertyNameNodeOrThrow().getText();
-                    const isRest = element.getDotDotDotToken() !== undefined;
+                    const isRest = element.getDotDotDotToken() !== void 0;
                     elements.push({
                         name: name,
                         propertyName: propertyName,
@@ -73,6 +73,6 @@ export class DestructuringExtractor {
                 });
             }
         });
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 }

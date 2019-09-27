@@ -1,3 +1,4 @@
+import { TypeParameterInfo } from './../../dist/commonjs/extractors/type-parameter/TypeParameterInfo.d';
 import { MethodParamInfo } from './MethodParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
@@ -14,5 +15,6 @@ export interface MethodInfo {
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;
+    typeParameters: TypeParameterInfo[] | undefined;
     hasComment: boolean;
 }

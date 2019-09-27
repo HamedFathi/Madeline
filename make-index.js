@@ -1,7 +1,9 @@
+/* eslint-disable */
 const glob = require('glob');
 const fs = require('fs');
+/* eslint-disable */
 
-glob("./*(extractors|templates|utilities)/**/*.ts", function (er, files) {
+glob('./*(extractors|templates|utilities)/**/*.ts', function(er, files) {
     if (er) {
         return console.log(err);
     }
@@ -10,7 +12,7 @@ glob("./*(extractors|templates|utilities)/**/*.ts", function (er, files) {
         let newFile = file.replace('.ts', '');
         path.push("export * from '" + newFile + "';");
     });
-    fs.writeFile("./index.ts", path.join('\n'), function (err) {
+    fs.writeFile('./index.ts', path.join('\n'), function(err) {
         if (err) {
             return console.log(err);
         }

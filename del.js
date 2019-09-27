@@ -1,4 +1,6 @@
+/* eslint-disable */
 const del = require('del');
+/* eslint-disable */
 del.sync([
     'extractors/**/*.js',
     'extractors/**/*.map',
@@ -9,5 +11,5 @@ del.sync([
     'test/extractors/**/*.js',
     'test/extractors/**/*.map',
     'index.js',
-    'index.js.map'
+    'index.js.map',
 ]);

@@ -2,8 +2,8 @@ module.exports = {
     // Extractors with custom options
     extractors: {
         decorator: {
-            export: true
-        }
+            export: true,
+        },
     },
     templates: {
         options: {
@@ -16,15 +16,17 @@ module.exports = {
         },
         // Define all jsdoc tags and its equivalents.
         jsdocs: {
-            tags: [{
-                name: "@param",
-                alternative: "Parameter"
-            }]
+            tags: [
+                {
+                    name: '@param',
+                    alternative: 'Parameter',
+                },
+            ],
         },
         // Make a new Module template.
         module: function(moduleTemplateInfo) {
             // Your new text template.
-            return "";
-        } 
+            return '';
+        },
     },
 };

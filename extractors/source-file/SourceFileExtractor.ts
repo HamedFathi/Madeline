@@ -99,27 +99,29 @@ export class SourceFileExtractor {
                     break;
                 case SyntaxKind.ClassDeclaration:
                     const info = new ClassExtractor().extract(node as ClassDeclaration);
-                    const constructors = new ConstructorExtractor().extractFromClass(node as ClassDeclaration);
-                    const properties = new PropertyExtractor().extractFromClass(node as ClassDeclaration);
-                    const methods = new MethodExtractor().extractFromClass(node as ClassDeclaration);
-                    const getAccessors = new GetAccessorExtractor().extractFromClass(node as ClassDeclaration);
-                    const setAccessors = new SetAccessorExtractor().extractFromClass(node as ClassDeclaration);
-                    classes.push({
-                        name: info.name,
-                        text: info.text,
-                        modifiers: info.modifiers,
-                        extends: info.extends,
-                        implements: info.implements,
-                        trailingComments: info.trailingComments,
-                        leadingComments: info.leadingComments,
-                        decorators: info.decorators,
-                        modules: info.modules,
-                        constructors: constructors,
-                        properties: properties,
-                        getAccessors: getAccessors,
-                        setAccessors: setAccessors,
-                        methods: methods,
-                    });
+                    if (info !== void 0) {
+                        const constructors = new ConstructorExtractor().extractFromClass(node as ClassDeclaration);
+                        const properties = new PropertyExtractor().extractFromClass(node as ClassDeclaration);
+                        const methods = new MethodExtractor().extractFromClass(node as ClassDeclaration);
+                        const getAccessors = new GetAccessorExtractor().extractFromClass(node as ClassDeclaration);
+                        const setAccessors = new SetAccessorExtractor().extractFromClass(node as ClassDeclaration);
+                        classes.push({
+                            name: info.name,
+                            text: info.text,
+                            modifiers: info.modifiers,
+                            extends: info.extends,
+                            implements: info.implements,
+                            trailingComments: info.trailingComments,
+                            leadingComments: info.leadingComments,
+                            decorators: info.decorators,
+                            modules: info.modules,
+                            constructors: constructors,
+                            properties: properties,
+                            getAccessors: getAccessors,
+                            setAccessors: setAccessors,
+                            methods: methods,
+                        });
+                    }
                     break;
             }
         });

@@ -1,9 +1,9 @@
-import { TypeParameterInfo } from './../../dist/commonjs/extractors/type-parameter/TypeParameterInfo.d';
 import { MethodParamInfo } from './MethodParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface MethodInfo {
     name: string;
     text: string;

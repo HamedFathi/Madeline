@@ -38,11 +38,11 @@ export class TypeExtractor {
                     const gr2: string = removeFirstAndLastQuote(groups[2] as string);
                     const dir: string = gr1.substring(0, gr1.lastIndexOf('/'));
                     const file: string = gr1.replace(dir, '').substring(1);
-                    let alias = undefined;
+                    let importAlias = undefined;
                     if (imports) {
-                        const i = imports.filter(x => x.name === gr2 && x.alias);
-                        if (i.length > 0) {
-                            alias = i[0].alias;
+                        const alias = imports.filter(x => x.name === gr2 && x.alias);
+                        if (alias.length > 0) {
+                            importAlias = alias[0].alias;
                         }
                     }
                     const from: FromTypeInfo = {
@@ -51,7 +51,7 @@ export class TypeExtractor {
                         type: gr2,
                         directory: dir,
                         file: file,
-                        alias: alias,
+                        importAlias: importAlias,
                     };
                     const isIncluded = fromAll.filter(x => x.import === gr0).length > 0;
                     if (!isIncluded) {

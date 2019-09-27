@@ -4,5 +4,5 @@ export interface FromTypeInfo {
     directory: string;
     type: string;
     import: string;
-    alias: string | undefined;
+    importAlias: string | undefined;
 }

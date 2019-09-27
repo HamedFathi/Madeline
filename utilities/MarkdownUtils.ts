@@ -7,7 +7,7 @@ export class MarkdownUtils {
     public purify(text: string, trim = true): string {
         const content = text
             .split(this.BREAK_LINE)
-            .map(x => isEmptyOrWhitespace(x) ? this.EMPTY : trim ? x.trim() : x)
+            .map(x => (isEmptyOrWhitespace(x) ? this.EMPTY : trim ? x.trim() : x))
             .join(this.BREAK_LINE)
             .replace(/\n{2,}/g, this.BREAK_LINES)
             .trim();

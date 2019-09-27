@@ -18,10 +18,11 @@ import { CallSignatureInfo } from '../common/CallSignatureInfo';
 import { FunctionExtractor } from '../function/FunctionExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { CommonVariableInfo } from './CommonVariableInfo';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class VariableExtractor {
-    public extract(node: VariableStatement): VariableInfo {
-        const literals = new LiteralExtractor().extract(node);
+    public extract(node: VariableStatement, imports: ImportInfo[] | undefined): VariableInfo {
+        const literals = new LiteralExtractor().extract(node, imports);
         const destructions = new DestructuringExtractor().extract(node);
         const commons: CommonVariableInfo[] = [];
         if (!literals && !destructions) {
@@ -43,12 +44,17 @@ export class VariableExtractor {
                 }
                 commons.push({
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), typeReference),
+                    type: new TypeExtractor().extract(
+                        declaration.getType(),
+                        declaration.getTypeNode(),
+                        typeReference,
+                        imports,
+                    ),
                     modifiers: modifiers.length === 0 ? void 0 : modifiers,
                     initializer:
                         declaration.getInitializer() === void 0
                             ? void 0
-                            : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference),
+                            : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference, imports),
                     kind: kind,
                     kindName: kindName,
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
@@ -67,10 +73,14 @@ export class VariableExtractor {
         };
     }
 
-    private getExpressionInfo(node: Expression, typeReference?: string): FunctionInfo | CallSignatureInfo | string {
+    private getExpressionInfo(
+        node: Expression,
+        typeReference: string | undefined,
+        imports: ImportInfo[] | undefined,
+    ): FunctionInfo | CallSignatureInfo | string {
         if (TypeGuards.isFunctionExpression(node)) {
             const functionExpression = node as FunctionExpression;
-            const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression);
+            const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression, imports);
             return functionDeclarationInfo;
         } else if (TypeGuards.isArrowFunction(node)) {
             const arrowFunction = node as ArrowFunction;
@@ -80,26 +90,28 @@ export class VariableExtractor {
                     callSignature.getReturnType(),
                     callSignature.getReturnTypeNode(),
                     typeReference,
+                    imports,
                 ),
-                typeParameters: new TypeParameterExtractor().extract(callSignature),
+                typeParameters: new TypeParameterExtractor().extract(callSignature, imports),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), typeReference),
+                                  type: new TypeExtractor().extract(
+                                      y.getType(),
+                                      y.getTypeNode(),
+                                      typeReference,
+                                      imports,
+                                  ),
                                   modifiers:
-                                      y.getModifiers().length === 0
-                                          ? void 0
-                                          : y.getModifiers().map(x => x.getText()),
+                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
                                   isOptional: y.isOptional(),
                                   isRest: y.isRestParameter(),
                                   isParameterProperty: y.isParameterProperty(),
                                   initializer:
-                                      y.getInitializer() === void 0
-                                          ? void 0
-                                          : y.getInitializerOrThrow().getText(),
+                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
                               };
                           }),
             };

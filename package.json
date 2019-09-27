@@ -56,7 +56,7 @@
     "parse5-traverse": "^1.0.3",
     "traverse": "^0.6.6",
     "ts-morph": "^4.0.1",
-    "prettier":"^1.18.2"
+    "prettier": "^1.18.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.3",

@@ -1,10 +1,16 @@
+import { ImportInfo } from './../import/ImportInfo';
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
 import { FromTypeInfo } from './FromTypeInfo';
 import { removeFirstAndLastQuote } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
-    public extract(type: Type, typeNode: TypeNode | undefined, typeReference: string | undefined): TypeInfo {
+    public extract(
+        type: Type,
+        typeNode: TypeNode | undefined,
+        typeReference: string | undefined,
+        imports: ImportInfo[] | undefined,
+    ): TypeInfo {
         let value = '';
         const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!]+)/gm;
         const text = type.getText();
@@ -38,6 +44,7 @@ export class TypeExtractor {
                         type: gr2,
                         directory: dir,
                         file: file,
+                        alias: void 0,
                     };
                     const isIncluded = fromAll.filter(x => x.import === gr0).length > 0;
                     if (!isIncluded) {

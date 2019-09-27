@@ -2,6 +2,7 @@ import { SyntaxKind } from 'ts-morph';
 import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { DecoratableType } from './DecoratableType';
+import { ImportInfo } from '../import/ImportInfo';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -15,6 +16,7 @@ const allowedKinds: SyntaxKind[] = [
 export class DecoratorExtractor {
     public extract(
         node: DecoratableType,
+        imports: ImportInfo[] | undefined,
         filterStrategy?: (info: DecoratorInfo) => boolean,
     ): DecoratorInfo[] | undefined {
         if (!allowedKinds.includes(node.getKind())) {
@@ -31,11 +33,11 @@ export class DecoratorExtractor {
                     x.getArguments().length === 0
                         ? void 0
                         : x.getArguments().map(x => {
-                            return {
-                                value: x.getText(),
-                                type: new TypeExtractor().extract(x.getType(), void 0, void 0),
-                            };
-                        }),
+                              return {
+                                  value: x.getText(),
+                                  type: new TypeExtractor().extract(x.getType(), void 0, void 0, imports),
+                              };
+                          }),
             };
         });
 

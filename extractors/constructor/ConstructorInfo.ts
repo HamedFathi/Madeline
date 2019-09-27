@@ -1,4 +1,4 @@
-import { ConstructorParamInfo } from './ConstructorParameterInfo';
+import { ConstructorParameterInfo } from './ConstructorParameterInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 export interface ConstructorInfo {
@@ -6,7 +6,7 @@ export interface ConstructorInfo {
     isImplementation: boolean;
     isOverload: boolean;
     modifiers: string[] | undefined;
-    parameters: ConstructorParamInfo[] | undefined;
+    parameters: ConstructorParameterInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     variables: VariableInfo[] | undefined;

@@ -45,7 +45,7 @@ describe('Decorator Extractor', function() {
 
         // act
         file.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType);
+            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, void 0);
 
             assert.isUndefined(decoratorInfos);
         });
@@ -60,7 +60,7 @@ describe('Decorator Extractor', function() {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                const decoratorInfos = decoratorExtractor.extract(node as DecoratableType);
+                const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, void 0);
 
                 if (decoratorInfos !== undefined) {
                     // assert
@@ -82,7 +82,7 @@ describe('Decorator Extractor', function() {
         // act
         file.forEachDescendant(node => {
             if (node.getKind() === SyntaxKind.ClassDeclaration) {
-                const decoratorInfos = decoratorExtractor.extract(node as DecoratableType);
+                const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, void 0);
 
                 if (decoratorInfos !== undefined) {
                     // assert
@@ -103,13 +103,13 @@ describe('Decorator Extractor', function() {
         export class Test{}`;
         const file = project.createSourceFile('sut.ts', sut);
 
-        const filterStrategy = (d: DecoratorInfo) => {
+        const filterStrategy = (d: DecoratorInfo): boolean => {
             return d.name === 'filterDecorator';
         };
 
         // act
         file.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, filterStrategy);
+            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, void 0, filterStrategy);
 
             if (decoratorInfos !== undefined) {
                 // assert
@@ -134,7 +134,7 @@ describe('Decorator Extractor', function() {
 
         // act
         file.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType);
+            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, void 0);
             if (decoratorInfos !== undefined) {
                 decoratorInfos.forEach(di => {
                     allDecorators.push(di);
@@ -161,7 +161,7 @@ describe('Decorator Extractor', function() {
         const programFile = project.createSourceFile('sut.ts', sut, { overwrite: true });
 
         programFile.forEachDescendant(node => {
-            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType);
+            const decoratorInfos = decoratorExtractor.extract(node as DecoratableType, void 0);
 
             if (decoratorInfos != null) {
                 assert.equal(decoratorInfos.length, 1);
@@ -174,7 +174,7 @@ describe('Decorator Extractor', function() {
                 assert.isTrue(decoratorInfos[0].parameters[0] !== undefined);
 
                 assert.equal(decoratorInfos[0].parameters[0].value, 'Sample');
-                assert.equal(decoratorInfos[0].parameters[0].type.text, 'typeof Sample');
+                assert.equal(decoratorInfos[0].parameters[0].type.text.replace(/import\(.+\)\./g, ''), 'typeof Sample');
 
                 /*
                 let lastIndexOf = decoratorInfos[0].parameters[0].type.fullText.lastIndexOf('.') + 1;

@@ -5,9 +5,10 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class MethodExtractor {
-    public extract(node: MethodDeclaration): MethodInfo {
+    public extract(node: MethodDeclaration, imports: ImportInfo[] | undefined): MethodInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
@@ -15,40 +16,39 @@ export class MethodExtractor {
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(y => y.getText()),
-            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0),
+            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports),
             isGenerator: node.isGenerator(),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             hasComment: hasComment,
-            decorators: new DecoratorExtractor().extract(node),
-            typeParameters: new TypeParameterExtractor().extract(node),
+            decorators: new DecoratorExtractor().extract(node, imports),
+            typeParameters: new TypeParameterExtractor().extract(node, imports),
             variables:
-                node.getVariableStatements().map(y => new VariableExtractor().extract(y)).length === 0
+                node.getVariableStatements().map(y => new VariableExtractor().extract(y, imports)).length === 0
                     ? void 0
-                    : node.getVariableStatements().map(y => new VariableExtractor().extract(y)),
+                    : node.getVariableStatements().map(y => new VariableExtractor().extract(y, imports)),
             parameters:
                 node.getParameters().length === 0
                     ? void 0
                     : node.getParameters().map(y => {
-                        return {
-                            name: y.getName(),
-                            text: y.getText(),
-                            type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), void 0),
-                            isOptional: y.isOptional(),
-                            isRest: y.isRestParameter(),
-                            isParameterProperty: y.isParameterProperty(),
-                            modifiers:
-                                y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
-                            initializer:
-                                y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
-                            decorators: new DecoratorExtractor().extract(y),
-                        };
-                    }),
+                          return {
+                              name: y.getName(),
+                              text: y.getText(),
+                              type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), void 0, imports),
+                              isOptional: y.isOptional(),
+                              isRest: y.isRestParameter(),
+                              isParameterProperty: y.isParameterProperty(),
+                              modifiers:
+                                  y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
+                              initializer: y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
+                              decorators: new DecoratorExtractor().extract(y, imports),
+                          };
+                      }),
         };
     }
 
-    public extractFromClass(node: ClassDeclaration): MethodInfo[] | undefined {
-        const methods = node.getMethods().map(x => this.extract(x));
+    public extractFromClass(node: ClassDeclaration, imports: ImportInfo[] | undefined): MethodInfo[] | undefined {
+        const methods = node.getMethods().map(x => this.extract(x, imports));
         if (methods.length === 0) return void 0;
         return methods;
     }

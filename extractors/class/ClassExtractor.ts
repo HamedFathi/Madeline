@@ -4,25 +4,22 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class ClassExtractor {
-
     constructor(
         private moduleExtractor: ModuleExtractor = new ModuleExtractor(),
         private decoratorExtractor: DecoratorExtractor = new DecoratorExtractor(),
         private typeParameterExtractor: TypeParameterExtractor = new TypeParameterExtractor(),
-        private typescriptCommentExtractor: TypescriptCommentExtractor = new TypescriptCommentExtractor()
-    ) {
-    }
+        private typescriptCommentExtractor: TypescriptCommentExtractor = new TypescriptCommentExtractor(),
+    ) {}
 
-    public extract(node: ClassDeclaration): ClassInfo | undefined {
-
-        if (node.getKind() !== SyntaxKind.ClassDeclaration)
-            return void 0;
+    public extract(node: ClassDeclaration, imports: ImportInfo[] | undefined): ClassInfo | undefined {
+        if (node.getKind() !== SyntaxKind.ClassDeclaration) return void 0;
 
         const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
         const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
-        const decorators = this.decoratorExtractor.extract(node);
+        const decorators = this.decoratorExtractor.extract(node, imports);
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         return {
             name: node.getName(),
@@ -34,7 +31,7 @@ export class ClassExtractor {
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             decorators: decorators,
             modules: this.moduleExtractor.extract(node),
-            typeParameters: this.typeParameterExtractor.extract(node),
+            typeParameters: this.typeParameterExtractor.extract(node, imports),
             hasComment: hasComment,
         };
     }

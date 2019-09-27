@@ -1,42 +1,36 @@
-import  * as stringUtils  from "../../utilities/StringUtils";
+import * as stringUtils from '../../utilities/StringUtils';
 
-import { assert } from "chai";
+import { assert } from 'chai';
 
-
-describe("String Utilities", () => {
-
+describe('String Utilities', () => {
     it('should return true when empty', () => {
-        const str: string = '';
+        const str = '';
 
-        let result = stringUtils.isEmptyOrWhitespace(str);
+        const result = stringUtils.isEmptyOrWhitespace(str);
 
         assert.isTrue(result);
-
     });
 
     it('should return true when whitespace', () => {
+        const str = '   ';
 
-        const str: string = '   ';
-
-        let result = stringUtils.isEmptyOrWhitespace(str);
+        const result = stringUtils.isEmptyOrWhitespace(str);
 
         assert.isTrue(result);
-
     });
 
     it('should convert multiple whitespace to one space', () => {
         const str = '               ';
 
-        let result = stringUtils.convertToOneWhitespace(str);
+        const result = stringUtils.convertToOneWhitespace(str);
 
         assert.equal(' ', result);
-
     });
 
     it('should remove single quotes from beginning and end', () => {
         const str = "'Sample string'";
 
-        let result = stringUtils.removeFirstAndLastQuote(str);
+        const result = stringUtils.removeFirstAndLastQuote(str);
 
         assert.equal('Sample string', result);
     });
@@ -44,7 +38,7 @@ describe("String Utilities", () => {
     it('should remove double quotes from beginning and end', () => {
         const str = '"Sample string"';
 
-        let result = stringUtils.removeFirstAndLastQuote(str);
+        const result = stringUtils.removeFirstAndLastQuote(str);
 
         assert.equal('Sample string', result);
     });
@@ -52,7 +46,7 @@ describe("String Utilities", () => {
     it('should remove backslash R', () => {
         const str = 'Sample \rstring';
 
-        let result = stringUtils.removeLineBreaks(str);
+        const result = stringUtils.removeLineBreaks(str);
 
         assert.equal(result, 'Sample string');
     });
@@ -60,7 +54,7 @@ describe("String Utilities", () => {
     it('should remove backslash N', () => {
         const str = 'Sample \r\nstring';
 
-        let result = stringUtils.removeLineBreaks(str);
+        const result = stringUtils.removeLineBreaks(str);
 
         assert.equal(result, 'Sample string');
     });
@@ -71,19 +65,17 @@ describe("String Utilities", () => {
         line
         text`;
 
-        let result = stringUtils.joinLines(text);
+        const result = stringUtils.joinLines(text);
 
         assert.equal(result, 'Hello this is a multi line text');
     });
 
     it('should join an array of strings together with space as separator', () => {
-
         const text: string[] = ['this ', 'is ', 'supposed ', 'to', 'be ', 'multiple ', 'lines '];
 
         const result = stringUtils.joinLines(text, ' ');
 
         assert.equal(result, 'this is supposed to be multiple lines');
-
     });
 
     it('should return 3 none breaking spaces &nbsp', () => {
@@ -92,24 +84,26 @@ describe("String Utilities", () => {
         assert.equal(result, '&nbsp;&nbsp;&nbsp;');
     });
 
-    it('should return WORLD from the middle of the text' , () =>{
+    it('should return WORLD from the middle of the text', () => {
         const text = 'Hello WORLD from other side';
 
-        const result = stringUtils.getBetweenChars(text,' ', ' ' );
+        const result = stringUtils.getBetweenChars(text, ' ', ' ');
 
-        assert.equal(result , 'WORLD');
+        assert.equal(result, 'WORLD');
     });
 
-    it( 'should return null for undefined objects in a string representation of a json object', () =>{
-        const obj = {
+    it('should return null for undefined objects in a string representation of a json object', () => {
+        /* eslint-disable */
+        const obj: unknown = {
             // @ts-ignore
-            id: 1 , allowed: true , name: 'Jane' , family: undefined
+            id: 1,
+            allowed: true,
+            name: 'Jane',
+            family: undefined,
         };
-
+        /* eslint-disable */
         const result = stringUtils.stringify(obj);
 
         assert.equal(result, '{"id":1,"allowed":true,"name":"Jane","family":null}');
-
     });
-
-})
+});

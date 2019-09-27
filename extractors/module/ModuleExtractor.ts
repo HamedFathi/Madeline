@@ -48,9 +48,7 @@ export class ModuleExtractor {
                 const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
                 const isNamespace = declaration.hasNamespaceKeyword();
                 const modifiers =
-                    declaration.getModifiers().length === 0
-                        ? void 0
-                        : declaration.getModifiers().map(x => x.getText());
+                    declaration.getModifiers().length === 0 ? void 0 : declaration.getModifiers().map(x => x.getText());
                 info.push({
                     name: name,
                     text: text,

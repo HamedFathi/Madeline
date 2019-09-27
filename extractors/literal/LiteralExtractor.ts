@@ -30,6 +30,7 @@ import { LiteralInfo } from './LiteralInfo';
 import { LiteralExpressionInfo } from './LiteralExpressionInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 /*
 const obj = {
@@ -110,7 +111,7 @@ export const BasicConfiguration = {
 };
 */
 export class LiteralExtractor {
-    public extract(node: VariableStatement): LiteralInfo[] | undefined {
+    public extract(node: VariableStatement, imports: ImportInfo[] | undefined): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
@@ -132,7 +133,7 @@ export class LiteralExtractor {
             }
 
             if (objectLiteral) {
-                const elements = this.getExpressionInfo(objectLiteral, typeReference);
+                const elements = this.getExpressionInfo(objectLiteral, typeReference, imports);
                 result.push({
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
@@ -142,14 +143,19 @@ export class LiteralExtractor {
                     hasComment: hasComment,
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), typeReference),
+                    type: new TypeExtractor().extract(
+                        declaration.getType(),
+                        declaration.getTypeNode(),
+                        typeReference,
+                        imports,
+                    ),
                 });
             }
             if (arrayLiteral) {
                 const elements = arrayLiteral.getElements();
                 const members: LiteralExpressionInfo[] = [];
                 elements.forEach(element => {
-                    const info = this.getExpressionInfo(element, typeReference);
+                    const info = this.getExpressionInfo(element, typeReference, imports);
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
@@ -161,7 +167,12 @@ export class LiteralExtractor {
                     text: node.getText(),
                     typeReference: typeReference,
                     name: declaration.getName(),
-                    type: new TypeExtractor().extract(declaration.getType(), declaration.getTypeNode(), undefined),
+                    type: new TypeExtractor().extract(
+                        declaration.getType(),
+                        declaration.getTypeNode(),
+                        void 0,
+                        imports,
+                    ),
                 });
             }
         });
@@ -171,7 +182,8 @@ export class LiteralExtractor {
 
     private getExpressionInfo(
         node: Expression,
-        typeReference?: string,
+        typeReference: string | undefined,
+        imports: ImportInfo[] | undefined,
     ): LiteralExpressionInfo | FunctionInfo | CallSignatureInfo | string {
         if (TypeGuards.isObjectLiteralExpression(node)) {
             const objectLiteral = node as ObjectLiteralExpression;
@@ -192,8 +204,13 @@ export class LiteralExtractor {
                     const value =
                         propertyAssignment.getInitializer() === void 0
                             ? void 0
-                            : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow());
-                    const type = new TypeExtractor().extract(propertyAssignment.getType(), undefined, typeReference);
+                            : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow(), void 0, imports);
+                    const type = new TypeExtractor().extract(
+                        propertyAssignment.getType(),
+                        void 0,
+                        typeReference,
+                        imports,
+                    );
                     const name = propertyAssignment.getName();
                     assignments.push({
                         isShorthand: false,
@@ -209,6 +226,7 @@ export class LiteralExtractor {
                         shorthandPropertyAssignment.getType(),
                         undefined,
                         typeReference,
+                        imports,
                     );
                     const name = shorthandPropertyAssignment.getName();
                     assignments.push({
@@ -221,7 +239,12 @@ export class LiteralExtractor {
                 }
                 if (isSpreadAssignment) {
                     const spreadAssignment = x as SpreadAssignment;
-                    const type = new TypeExtractor().extract(spreadAssignment.getType(), undefined, typeReference);
+                    const type = new TypeExtractor().extract(
+                        spreadAssignment.getType(),
+                        undefined,
+                        typeReference,
+                        imports,
+                    );
                     const name = spreadAssignment.getExpression().getText();
                     assignments.push({
                         isShorthand: false,
@@ -233,17 +256,23 @@ export class LiteralExtractor {
                 }
                 if (isGetAccessorDeclaration) {
                     const getAccessorDeclaration = x as GetAccessorDeclaration;
-                    const getAccessorDeclarationInfo = new GetAccessorExtractor().extract(getAccessorDeclaration);
+                    const getAccessorDeclarationInfo = new GetAccessorExtractor().extract(
+                        getAccessorDeclaration,
+                        imports,
+                    );
                     getAccessors.push(getAccessorDeclarationInfo);
                 }
                 if (isSetAccessorDeclaration) {
                     const setAccessorDeclaration = x as SetAccessorDeclaration;
-                    const setAccessorDeclarationInfo = new SetAccessorExtractor().extract(setAccessorDeclaration);
+                    const setAccessorDeclarationInfo = new SetAccessorExtractor().extract(
+                        setAccessorDeclaration,
+                        imports,
+                    );
                     setAccessors.push(setAccessorDeclarationInfo);
                 }
                 if (isMethodDeclaration) {
                     const methodDeclaration = x as MethodDeclaration;
-                    const methodDeclarationInfo = new MethodExtractor().extract(methodDeclaration);
+                    const methodDeclarationInfo = new MethodExtractor().extract(methodDeclaration, imports);
                     methods.push(methodDeclarationInfo);
                 }
             });
@@ -257,7 +286,7 @@ export class LiteralExtractor {
             };
         } else if (TypeGuards.isFunctionExpression(node)) {
             const functionExpression = node as FunctionExpression;
-            const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression);
+            const functionDeclarationInfo = new FunctionExtractor().extractFromExpression(functionExpression, imports);
             return functionDeclarationInfo;
         } else if (TypeGuards.isArrowFunction(node)) {
             const arrowFunction = node as ArrowFunction;
@@ -267,26 +296,28 @@ export class LiteralExtractor {
                     callSignature.getReturnType(),
                     callSignature.getReturnTypeNode(),
                     typeReference,
+                    imports,
                 ),
-                typeParameters: new TypeParameterExtractor().extract(callSignature),
+                typeParameters: new TypeParameterExtractor().extract(callSignature, imports),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
                               return {
                                   name: y.getName(),
-                                  type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), typeReference),
+                                  type: new TypeExtractor().extract(
+                                      y.getType(),
+                                      y.getTypeNode(),
+                                      typeReference,
+                                      imports,
+                                  ),
                                   modifiers:
-                                      y.getModifiers().length === 0
-                                          ? void 0
-                                          : y.getModifiers().map(x => x.getText()),
+                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
                                   isOptional: y.isOptional(),
                                   isRest: y.isRestParameter(),
                                   isParameterProperty: y.isParameterProperty(),
                                   initializer:
-                                      y.getInitializer() === void 0
-                                          ? void 0
-                                          : y.getInitializerOrThrow().getText(),
+                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
                               };
                           }),
             };

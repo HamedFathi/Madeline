@@ -1,12 +1,11 @@
-import { assert } from "chai";
+import { assert } from 'chai';
 import { Project, ScriptTarget, SyntaxKind, ClassDeclaration } from 'ts-morph';
 import { ClassExtractor } from '../../../extractors/class/ClassExtractor';
-import { ModuleExtractor } from "../../../extractors/module/ModuleExtractor";
-import { DecoratorInfo } from "../../../extractors/decorator/DecoratorInfo";
-import { DecoratableType } from "../../../extractors/decorator/DecoratableType";
+import { ModuleExtractor } from '../../../extractors/module/ModuleExtractor';
+import { DecoratorInfo } from '../../../extractors/decorator/DecoratorInfo';
+import { DecoratableType } from '../../../extractors/decorator/DecoratableType';
 
 describe('Class Extractor', () => {
-
     let project: Project;
 
     beforeEach(() => {
@@ -27,49 +26,44 @@ describe('Class Extractor', () => {
 
         const classExtractor = new ClassExtractor();
 
-        var file = project.createSourceFile('class.ts', sut);
+        const file = project.createSourceFile('class.ts', sut);
 
         file.forEachDescendant(node => {
             if (node.getKind() != SyntaxKind.ClassDeclaration) {
-                var classDefinition = classExtractor.extract(node as ClassDeclaration);
+                const classDefinition = classExtractor.extract(node as ClassDeclaration, void 0);
                 assert.isUndefined(classDefinition);
             }
         });
-    })
+    });
 
     it('should return class info from class declaration', () => {
-
         const sut = `export class Sample{}`;
 
         const classExtractor = new ClassExtractor();
 
-        var file = project.createSourceFile('class.ts', sut);
+        const file = project.createSourceFile('class.ts', sut);
 
         file.forEachDescendant(node => {
-
             if (node.getKind() == SyntaxKind.ClassDeclaration) {
-                var classDefinition = classExtractor.extract(node as ClassDeclaration);
+                const classDefinition = classExtractor.extract(node as ClassDeclaration, void 0);
                 assert.isTrue(classDefinition !== void 0);
                 assert.equal(classDefinition.name, 'Sample');
                 assert.deepEqual(classDefinition.modifiers, ['export']);
                 assert.equal(classDefinition.text, 'export class Sample{}');
             }
         });
-
     });
 
     it('should return decorator info from class declaration', () => {
-
         const sut = `export class Sample{}`;
 
         const classExtractor = new ClassExtractor();
 
-        var file = project.createSourceFile('class.ts', sut);
+        const file = project.createSourceFile('class.ts', sut);
 
         file.forEachDescendant(node => {
-
             if (node.getKind() == SyntaxKind.ClassDeclaration) {
-                var classDefinition = classExtractor.extract(node as ClassDeclaration);
+                const classDefinition = classExtractor.extract(node as ClassDeclaration, void 0);
                 assert.isTrue(classDefinition !== void 0);
                 assert.equal(classDefinition.name, 'Sample');
                 assert.deepEqual(classDefinition.modifiers, ['export']);
@@ -79,44 +73,44 @@ describe('Class Extractor', () => {
     });
 
     it('should return decorator one decorator for the specified class', () => {
-
         const sut = `@inject()
         export class Sample() {}`;
 
-        const fakeDecorators: DecoratorInfo[] = [{
-            name: 'inject',
-            parameters: undefined,
-            isDecoratorFactory: true,
-            text: '@inject()',
-        }];
+        const fakeDecorators: DecoratorInfo[] = [
+            {
+                name: 'inject',
+                parameters: undefined,
+                isDecoratorFactory: true,
+                text: '@inject()',
+            },
+        ];
 
         const fakeDecoratorExtractor = {
-            extract: function (
+            extract: function(
+                /* eslint-disable */
                 node: DecoratableType,
+                imports: undefined,
                 filterStrategy?: (info: DecoratorInfo) => boolean,
+                /* eslint-disable */
             ): DecoratorInfo[] | undefined {
                 return fakeDecorators;
-            }
+            },
         };
 
-        const classExtractor = new ClassExtractor(new ModuleExtractor(), fakeDecoratorExtractor)
+        const classExtractor = new ClassExtractor(new ModuleExtractor(), fakeDecoratorExtractor);
 
-        const file = project.createSourceFile('sample.ts' , sut);
+        const file = project.createSourceFile('sample.ts', sut);
 
-        file.forEachDescendant(node =>{
-            if( node.getKind() === SyntaxKind.ClassDeclaration ){
-
-                const classDefinition = classExtractor.extract(node as ClassDeclaration);
+        file.forEachDescendant(node => {
+            if (node.getKind() === SyntaxKind.ClassDeclaration) {
+                const classDefinition = classExtractor.extract(node as ClassDeclaration, void 0);
 
                 assert.isTrue(classDefinition.decorators !== void 0);
-                assert.equal(classDefinition.decorators.length , 1);
-                assert.deepEqual(classDefinition.decorators, fakeDecorators );
-
+                assert.equal(classDefinition.decorators.length, 1);
+                assert.deepEqual(classDefinition.decorators, fakeDecorators);
             }
         });
-
-    })
-
+    });
 });
 
 // const classSample = `
@@ -171,4 +165,3 @@ describe('Class Extractor', () => {
 //         assert.deepEqual(actualResult, expectedResult);
 //     });
 // });
-

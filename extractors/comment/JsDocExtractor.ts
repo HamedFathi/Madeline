@@ -42,11 +42,7 @@ export class JsDocExtractor {
                 if (hasTag) {
                     const firstSpaceAfterTagIndex = line.indexOf(this.WHITESPACE);
                     let tag = firstSpaceAfterTagIndex === -1 ? line : line.substring(0, firstSpaceAfterTagIndex);
-                    let type = getBetweenChars(
-                        line,
-                        this.OPEN_CURLY_BRACKET,
-                        this.CLOSE_CURLY_BRACKET,
-                    );
+                    let type = getBetweenChars(line, this.OPEN_CURLY_BRACKET, this.CLOSE_CURLY_BRACKET);
                     let defaultValue = getBetweenChars(line, this.OPEN_BRACKET, this.CLOSE_BRACKET);
                     let description =
                         line.lastIndexOf(this.HYPHEN) === -1 ? null : line.substring(line.lastIndexOf(this.HYPHEN) + 1);

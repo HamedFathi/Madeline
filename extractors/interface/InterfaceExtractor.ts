@@ -4,11 +4,12 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
+import { ImportInfo } from '../import/ImportInfo';
 
 export class InterfaceExtractor {
     private readonly typeParameterExtractor = new TypeParameterExtractor();
 
-    public extract(node: InterfaceDeclaration): InterfaceInfo {
+    public extract(node: InterfaceDeclaration, imports: ImportInfo[] | undefined): InterfaceInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
@@ -19,7 +20,7 @@ export class InterfaceExtractor {
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
-            typeParameters: this.typeParameterExtractor.extract(node),
+            typeParameters: this.typeParameterExtractor.extract(node, imports),
             hasComment: hasComment,
             properties:
                 node.getProperties().length === 0
@@ -28,7 +29,7 @@ export class InterfaceExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), undefined, imports),
                               isOptional: x.hasQuestionToken(),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
@@ -47,11 +48,12 @@ export class InterfaceExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x),
+                              typeParameters: this.typeParameterExtractor.extract(x, imports),
                               returnType: new TypeExtractor().extract(
                                   x.getReturnType(),
                                   x.getReturnTypeNode(),
                                   undefined,
+                                  imports,
                               ),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
@@ -72,6 +74,7 @@ export class InterfaceExtractor {
                                                     y.getType(),
                                                     y.getTypeNode(),
                                                     undefined,
+                                                    imports,
                                                 ),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
@@ -94,7 +97,7 @@ export class InterfaceExtractor {
                     : node.getExtends().map(x => {
                           return {
                               name: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), undefined, undefined),
+                              type: new TypeExtractor().extract(x.getType(), undefined, undefined, imports),
                           };
                       }),
             callSignatures:
@@ -106,9 +109,10 @@ export class InterfaceExtractor {
                                   x.getReturnType(),
                                   x.getReturnTypeNode(),
                                   undefined,
+                                  imports,
                               ),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x),
+                              typeParameters: this.typeParameterExtractor.extract(x, imports),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                                       ? void 0
@@ -128,6 +132,7 @@ export class InterfaceExtractor {
                                                     y.getType(),
                                                     y.getTypeNode(),
                                                     undefined,
+                                                    imports,
                                                 ),
                                                 modifiers:
                                                     y.getModifiers().length === 0
@@ -153,10 +158,16 @@ export class InterfaceExtractor {
                                   x.getReturnType(),
                                   x.getReturnTypeNode(),
                                   undefined,
+                                  imports,
                               ),
                               text: x.getText(),
                               key: x.getKeyName(),
-                              value: new TypeExtractor().extract(x.getKeyType(), x.getKeyTypeNode(), undefined),
+                              value: new TypeExtractor().extract(
+                                  x.getKeyType(),
+                                  x.getKeyTypeNode(),
+                                  undefined,
+                                  imports,
+                              ),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                                       ? void 0
@@ -176,9 +187,10 @@ export class InterfaceExtractor {
                                   x.getReturnType(),
                                   x.getReturnTypeNode(),
                                   undefined,
+                                  imports,
                               ),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x),
+                              typeParameters: this.typeParameterExtractor.extract(x, imports),
                               trailingComments:
                                   new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
                                       ? void 0
@@ -198,6 +210,7 @@ export class InterfaceExtractor {
                                                     y.getType(),
                                                     y.getTypeNode(),
                                                     undefined,
+                                                    imports,
                                                 ),
                                                 modifiers:
                                                     y.getModifiers().length === 0

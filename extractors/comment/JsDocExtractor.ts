@@ -116,7 +116,7 @@ export class JsDocExtractor {
             .map(x => x.replace(/\*+/, this.NOTHING).trim())
             .map(x => x.replace(/\/+/, this.NOTHING).trim())
             .filter(x => !isEmptyOrWhitespace(x))
-            .map(x => (x[0] && x[0] === '-') ? x.substr(1).trim() : x);
+            .map(x => (x[0] && x[0] === this.HYPHEN) ? x.substr(1).trim() : x);
         return result;
     }
 }

@@ -1,4 +1,8 @@
+import { FromTypeInfo } from '../extractors/common/FromTypeInfo';
+
 export interface TemplateOptions {
     append: boolean;
-    route: (path: string) => string | undefined;
+    removeAtSignTag: boolean;
+    route: (from: FromTypeInfo) => string | undefined;
+    url: string;
 }

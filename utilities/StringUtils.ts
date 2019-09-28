@@ -51,6 +51,12 @@ function nbsp(repetition?: number) {
     return '&nbsp;'.repeat(r);
 }
 
+function tab(repetition?: number) {
+    if (!repetition || repetition === 0) return '';
+    const r = repetition && repetition > 0 ? repetition : 1;
+    return '\t'.repeat(r);
+}
+
 function getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
     const afterStart = text.split(startDelimiter)[1];
     if (afterStart !== void 0) {
@@ -68,6 +74,7 @@ function stringify(obj: unknown): string {
 
 export {
     nbsp,
+    tab,
     joinLines,
     stringify,
     getBetweenChars,

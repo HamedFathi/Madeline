@@ -1,0 +1,30 @@
+﻿* class
+    * constructor
+    * get-accessor
+    * set-accessor
+    * method
+    * property
+* variable
+    * common
+    * literal
+        * object
+        * array
+    * destructuring
+* enum
+* export
+* export-assignment
+* function
+* interface
+    * property
+    * method
+    * call signature
+    * indexer    
+    * constructor
+* type-alias
+-----------------------------------
+- comment
+- coverage
+- decorator
+- type
+- type-parameter
+- module

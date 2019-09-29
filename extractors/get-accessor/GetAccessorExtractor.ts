@@ -5,12 +5,14 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class GetAccessorExtractor {
     public extract(node: GetAccessorDeclaration, imports: ImportInfo[] | undefined): GetAccessorInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const typeParameters = new TypeParameterExtractor().extract(node, imports);
         return {
             name: node.getName(),
             text: node.getText(),
@@ -20,6 +22,7 @@ export class GetAccessorExtractor {
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             hasComment: hasComment,
+            typeParameters: typeParameters,
             variables:
                 node.getVariableStatements().map(y => new VariableExtractor().extract(y, imports)).length === 0
                     ? void 0

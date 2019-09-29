@@ -109,10 +109,23 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-/*
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
+import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+import { SourceFileInfo } from './extractors/source-file/SourceFileInfo';
 const files = new AureliaSourceFileUtils();
-const result = files.getSourceFiles('D:/@Git/aurelia');
-if (result) files.save(result);
+const result = files.getSourceFiles('E:/@All/Projects/@Git/aurelia');
+
+if (result) {
+    result.forEach(r => {
+        const all = r.sourceFiles.map(x => new SourceFileExtractor().extract(x)) as SourceFileInfo[];
+        const summary = new SummaryMaker().make(all, {
+            url: 'aaaa',
+            append: true,
+            removeAtSignTag: false,
+            route: x => x.path,
+        });
+    });
+    files.save(result);
+}
 const a = 1;
-*/

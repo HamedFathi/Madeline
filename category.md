@@ -21,7 +21,7 @@
     * indexer    
     * constructor
 * type-alias
------------------------------------
+---------------------
 - comment
 - coverage
 - decorator

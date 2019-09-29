@@ -60,6 +60,7 @@ export class SourceFileExtractor {
     }
 
     public extract(sourceFile: SourceFile, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
+        const path = sourceFile.getFilePath();
         const imports = new ImportExtractor().extract(sourceFile);
         const exports = new ExportExtractor().extract(sourceFile);
         const exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
@@ -135,6 +136,9 @@ export class SourceFileExtractor {
             }
         });
         const result = {
+            path: path,
+            directory: path.substr(0, path.lastIndexOf('/')),
+            file: path.substr(path.lastIndexOf('/') + 1),
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
             isInNodeModules: sourceFile.isInNodeModules(),

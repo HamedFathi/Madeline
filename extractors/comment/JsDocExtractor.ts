@@ -18,7 +18,7 @@ const START_JS_DOC_UNUSUAL = '/*';
 const END_JS_DOC_UNUSUAL = '**/';
 const END_JS_DOC = '*/';
 
-const readJsDocLines = function (text: string): string[] {
+const readJsDocLines = function(text: string): string[] {
     const result = text
         .replace(START_JS_DOC, NOTHING)
         .replace(START_JS_DOC_UNUSUAL, NOTHING)
@@ -28,12 +28,11 @@ const readJsDocLines = function (text: string): string[] {
         .map(x => x.replace(/\*+/, NOTHING).trim())
         .map(x => x.replace(/\/+/, NOTHING).trim())
         .filter(x => !isEmptyOrWhitespace(x))
-        .map(x => (x[0] && x[0] === HYPHEN) ? x.substr(1).trim() : x);
+        .map(x => (x[0] && x[0] === HYPHEN ? x.substr(1).trim() : x));
     return result;
-}
+};
 
 export class JsDocExtractor {
-
     public extract(comment: string, kind: CommentKind): CommentInfo {
         const text = comment;
         const tags: TagInfo[] = [];
@@ -66,8 +65,7 @@ export class JsDocExtractor {
                         tag = tag.trim();
                     }
                     if (type && type.length > 0) {
-                        line = line.replace(
-                            `${OPEN_CURLY_BRACKET}${type}${CLOSE_CURLY_BRACKET}`, NOTHING);
+                        line = line.replace(`${OPEN_CURLY_BRACKET}${type}${CLOSE_CURLY_BRACKET}`, NOTHING);
                         type = type.trim();
                     }
                     if (defaultValue && defaultValue.length > 0) {

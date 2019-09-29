@@ -22,4 +22,7 @@ export interface SourceFileInfo {
     coverage: SourceFileCoverageInfo | undefined;
     variables: VariableInfo[] | undefined;
     exportAssignments: ExportAssignmentInfo[] | undefined;
+    path: string;
+    file: string;
+    directory: string;
 }

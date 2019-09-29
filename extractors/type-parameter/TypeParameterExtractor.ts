@@ -8,6 +8,8 @@ import {
     MethodSignature,
     FunctionExpression,
     TypeAliasDeclaration,
+    GetAccessorDeclaration,
+    SetAccessorDeclaration,
 } from 'ts-morph';
 import { TypeParameterInfo } from './TypeParameterInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
@@ -24,7 +26,9 @@ export class TypeParameterExtractor {
             | InterfaceDeclaration
             | ClassDeclaration
             | FunctionDeclaration
-            | TypeAliasDeclaration,
+            | TypeAliasDeclaration
+            | GetAccessorDeclaration
+            | SetAccessorDeclaration,
         imports: ImportInfo[] | undefined,
     ): TypeParameterInfo[] | undefined {
         const result = node.getTypeParameters().map(y => {

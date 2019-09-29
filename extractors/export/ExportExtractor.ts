@@ -19,6 +19,7 @@ export class ExportExtractor {
                         ? void 0
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                 moduleSpecifier: x.getModuleSpecifierValue(),
+                hasAsterisk: x.getNamedExports().length === 0,
                 namedExports:
                     x.getNamedExports().length === 0
                         ? void 0

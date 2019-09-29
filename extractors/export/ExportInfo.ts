@@ -7,4 +7,5 @@ export interface ExportInfo {
     leadingComments: CommentInfo[] | undefined;
     hasComment: boolean;
     text: string;
+    hasAsterisk: boolean;
 }

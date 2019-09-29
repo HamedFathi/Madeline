@@ -65,10 +65,17 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
-    public make(packageFiles: SourceFileInfo[], options: TemplateOptions): string {
+    public make(packageSourceFiles: SourceFileInfo[], options: TemplateOptions): string {
         const lines: string[] = [];
-        const allExports = _.flattenDeep(packageFiles.filter(x => x.exports != undefined).map(x => x.exports));
-        packageFiles.forEach(source => {});
+        const allExports = _.flattenDeep(packageSourceFiles.filter(x => x.exports != undefined).map(x => x.exports));
+        if (allExports && allExports.length > 0) {
+            allExports.forEach(exported => {
+                if (exported) {
+                    const y = 1;
+                }
+            });
+            packageSourceFiles.forEach(sourceFile => {});
+        }
         return '';
     }
 }

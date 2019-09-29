@@ -1,6 +1,7 @@
 import { SourceFileInfo } from '../../../extractors/source-file/SourceFileInfo';
 import { TemplateOptions } from '../../TemplateOptions';
 import * as _ from 'lodash';
+import { NamedExportInfo } from '../../../extractors/export/NamedExportInfo';
 
 /*
 # Table of contents
@@ -71,7 +72,25 @@ export class SummaryMaker {
         if (allExports && allExports.length > 0) {
             allExports.forEach(exported => {
                 if (exported) {
-                    const y = 1;
+                    // Check whole the source code.
+                    if (exported.hasAsterisk) {
+                    }
+                    // Check just the specific names.
+                    else {
+                        const names = exported.namedExports;
+                        const module = exported.moduleSpecifier;
+                        let sources: SourceFileInfo[] = [];
+                        if (module) {
+                            const fileName = module.substr(module.lastIndexOf('/') + 1);
+                            sources = packageSourceFiles.filter(x => x.file.substr(0, x.file.indexOf('.')) === fileName);                        
+                        }
+                        if (names && sources.length > 0) {
+                            names.forEach(n => {
+                                const item = n.name;
+
+                            });
+                        }
+                    }
                 }
             });
             packageSourceFiles.forEach(sourceFile => {});

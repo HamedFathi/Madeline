@@ -27,7 +27,8 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "test/**/*.ts"
+                "test/**/*.ts",
+                "test/**/**/*.ts"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"

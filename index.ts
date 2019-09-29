@@ -117,6 +117,39 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+import { Project, SyntaxKind, VariableStatement, ExportDeclaration } from 'ts-morph';
+import { VariableExtractor } from './extractors/variable/VariableExtractor';
+import { ExportExtractor } from './extractors/export/ExportExtractor';
+
+const project = new Project({
+    tsConfigFilePath: "D:/@Git/aurelia/packages/tsconfig-build.json",
+});
+let sources = project.getSourceFiles()
+    .filter(x => x.getFilePath().includes('src'))
+    .filter(x => !x.getFilePath().includes('__tests__'))
+    .filter(x => !x.getFilePath().includes('node_modules'))
+    .filter(x => !x.getFilePath().includes('dist'))
+    .filter(x => !x.getFilePath().includes('examples'))
+    ;
+
+let list: string[] = [];
+sources.forEach(file => {
+    list.push("****************************************************")
+    list.push(file.getFilePath());
+    for (const [name, declarations] of file.getExportedDeclarations()) {
+        declarations.map(x => list.push(" > " + name + "   |   " + x.getKindName()));
+        declarations.forEach(d => {
+            const ty = d as unknown as VariableStatement;
+            const tt = new VariableExtractor().extract(ty, undefined);
+            const yyyyy = 9;
+        });
+    }
+});
+
+let yyyy = list.join('\n');
+const a = 1;
+
+/*
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
@@ -135,5 +168,4 @@ if (result) {
         });
     });
     // files.save(result);
-}
-const a = 1;
+}*/

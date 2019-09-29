@@ -26,7 +26,12 @@ export class ExportExtractor {
                         : x.getNamedExports().map(y => {
                               return {
                                   name: y.getName(),
-                                  alias: y.getSymbol() === void 0 ? void 0 : y.getSymbolOrThrow().getName(),
+                                  alias:
+                                      y.getSymbol() === void 0
+                                          ? void 0
+                                          : y.getName() === y.getSymbolOrThrow().getName()
+                                          ? void 0
+                                          : y.getSymbolOrThrow().getName(),
                               };
                           }),
             };

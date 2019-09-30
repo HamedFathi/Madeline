@@ -82,12 +82,13 @@ export class SummaryMaker {
                         let sources: SourceFileInfo[] = [];
                         if (module) {
                             const fileName = module.substr(module.lastIndexOf('/') + 1);
-                            sources = packageSourceFiles.filter(x => x.file.substr(0, x.file.indexOf('.')) === fileName);                        
+                            sources = packageSourceFiles.filter(
+                                x => x.file.substr(0, x.file.indexOf('.')) === fileName,
+                            );
                         }
                         if (names && sources.length > 0) {
                             names.forEach(n => {
                                 const item = n.name;
-
                             });
                         }
                     }

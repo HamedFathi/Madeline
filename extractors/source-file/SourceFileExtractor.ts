@@ -149,7 +149,6 @@ export class SourceFileExtractor {
 
     // Should filter `@internal` tag by input parameter.
     public extractExported(sourceFile: SourceFile, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
-        const path = sourceFile.getFilePath();
         const imports = new ImportExtractor().extract(sourceFile);
         const exports = new ExportExtractor().extract(sourceFile);
         const exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
@@ -212,9 +211,9 @@ export class SourceFileExtractor {
                                     getAccessors: getAccessors,
                                     setAccessors: setAccessors,
                                     methods: methods,
-                                    path: pathInfo.path,
-                                    directory: pathInfo.directory,
-                                    file: pathInfo.file,
+                                    path: c.path,
+                                    directory: c.directory,
+                                    file: c.file,
                                 });
                             }
                         }
@@ -251,7 +250,7 @@ export class SourceFileExtractor {
                 }
             });
         }
-        let pathInfo = this.pathUtils.getPathInfo(path);
+        let pathInfo = this.pathUtils.getPathInfo(sourceFile.getFilePath());
         const result = {
             path: pathInfo.path,
             directory: pathInfo.directory,
@@ -274,7 +273,6 @@ export class SourceFileExtractor {
     }
 
     public extract(sourceFile: SourceFile, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
-        const path = sourceFile.getFilePath();
         const imports = new ImportExtractor().extract(sourceFile);
         const exports = new ExportExtractor().extract(sourceFile);
         const exportAssignments = new ExportAssignmentExtractor().extract(sourceFile);
@@ -344,15 +342,15 @@ export class SourceFileExtractor {
                             getAccessors: getAccessors,
                             setAccessors: setAccessors,
                             methods: methods,
-                            path: pathInfo.path,
-                            directory: pathInfo.directory,
-                            file: pathInfo.file,
+                            path: info.path,
+                            directory: info.directory,
+                            file: info.file,
                         });
                     }
                     break;
             }
         });
-        let pathInfo = this.pathUtils.getPathInfo(path);
+        let pathInfo = this.pathUtils.getPathInfo(sourceFile.getFilePath());
         const result = {
             path: pathInfo.path,
             directory: pathInfo.directory,

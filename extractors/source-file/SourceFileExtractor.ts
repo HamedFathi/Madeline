@@ -45,6 +45,38 @@ import { DestructuringInfo } from '../destructuring/DestructuringInfo';
 import { CommonVariableInfo } from '../variable/CommonVariableInfo';
 
 export class SourceFileExtractor {
+    private filterVariableInfo(node: VariableInfo, tags: string[] = ['@internal']): VariableInfo {
+        const commons: CommonVariableInfo[] = [];
+        const literals: LiteralInfo[] = [];
+        const destructions: DestructuringInfo[] = [];
+        if (node.commons) {
+            for (const c of node.commons) {
+                if (!this.includeTags(c, tags)) {
+                    commons.push(c);
+                }
+            }
+        }
+        if (node.literals) {
+            for (const l of node.literals) {
+                if (!this.includeTags(l, tags)) {
+                    literals.push(l);
+                }
+            }
+        }
+        if (node.destructions) {
+            for (const d of node.destructions) {
+                if (!this.includeTags(d, tags)) {
+                    destructions.push(d);
+                }
+            }
+        }
+        return {
+            commons: commons.length === 0 ? void 0 : commons,
+            literals: literals.length === 0 ? void 0 : literals,
+            destructions: destructions.length === 0 ? void 0 : destructions,
+        };
+    }
+
     private includeTags(
         node:
             | ClassInfo
@@ -190,8 +222,7 @@ export class SourceFileExtractor {
                             const isVariableInSourceFile = statement.getParentIfKind(SyntaxKind.SourceFile);
                             if (isVariableInSourceFile) {
                                 const v = extractor.extract(statement, imports);
-                                // TODO: !this.includeTags(v)
-                                if (v) variables.push(v);
+                                if (v) variables.push(this.filterVariableInfo(v));
                             }
                         }
                         break;

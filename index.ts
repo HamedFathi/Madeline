@@ -118,7 +118,6 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-
 import { Project, SyntaxKind, VariableStatement, ExportDeclaration, VariableDeclaration } from 'ts-morph';
 import { VariableExtractor } from './extractors/variable/VariableExtractor';
 import { ExportExtractor } from './extractors/export/ExportExtractor';
@@ -147,9 +146,8 @@ sources.forEach(file => {
             }
         });
     }*/
-    let o = new ExportedExtractor().extract(file);
+    const o = new ExportedExtractor().extract(file);
     const a = 1;
-
 });
 
 const yyyy = list.join('\n');

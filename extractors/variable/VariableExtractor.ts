@@ -22,7 +22,7 @@ import { ImportInfo } from '../import/ImportInfo';
 import { VariableDeclaration } from 'ts-morph';
 
 export class VariableExtractor {
-    private getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
+    public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
         if (declarationList) {
             const statement = declarationList.getParent();
@@ -33,14 +33,7 @@ export class VariableExtractor {
         }
         return undefined;
     }
-    public extract(node: VariableStatement | VariableDeclaration, imports: ImportInfo[] | undefined): VariableInfo {
-        if (node.getKind() === SyntaxKind.VariableDeclaration) {
-            const newNode = this.getVariableStatementByDeclaration(node as VariableDeclaration);
-            if (newNode) {
-                node = newNode;
-            }
-        }
-        node = node as VariableStatement;
+    public extract(node: VariableStatement, imports: ImportInfo[] | undefined): VariableInfo {
         const literals = new LiteralExtractor().extract(node, imports);
         const destructions = new DestructuringExtractor().extract(node);
         const commons: CommonVariableInfo[] = [];

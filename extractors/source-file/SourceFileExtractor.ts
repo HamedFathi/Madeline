@@ -202,7 +202,7 @@ export class SourceFileExtractor {
             variables: variables.length === 0 ? void 0 : variables,
             literals: literals.length === 0 ? void 0 : literals,
             destructuring: destructuring.length === 0 ? void 0 : destructuring,
-            exportAssignments: exportAssignments,
+            exportAssignments: exportAssignments.length === 0 ? void 0 : exportAssignments,
         };
     }
 
@@ -302,23 +302,25 @@ export class SourceFileExtractor {
                         if (statement) {
                             const isVariableInSourceFile = statement.getParentIfKind(SyntaxKind.SourceFile);
                             if (isVariableInSourceFile) {
-                                let v = new VariableExtractor().extract(statement as VariableStatement, imports);
                                 let l = new LiteralExtractor().extract(statement as VariableStatement, imports);
                                 let d = new DestructuringExtractor().extract(statement as VariableStatement);
-                                if (v) {
-                                    v.forEach(element => {
-                                        if (element && !this.includeTags(element)) variables.push(element);
-                                    });
-                                }
+                                let v = new VariableExtractor().extract(statement as VariableStatement, imports);
                                 if (l) {
                                     l.forEach(element => {
                                         if (element && !this.includeTags(element)) literals.push(element);
                                     });
                                 }
-                                if (d) {
+                                else if (d) {
                                     d.forEach(element => {
                                         if (element && !this.includeTags(element)) destructuring.push(element);
                                     });
+                                }
+                                else {
+                                    if (v) {
+                                        v.forEach(element => {
+                                            if (element && !this.includeTags(element)) variables.push(element);
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -407,20 +409,22 @@ export class SourceFileExtractor {
                         let v = new VariableExtractor().extract(node as VariableStatement, imports);
                         let l = new LiteralExtractor().extract(node as VariableStatement, imports);
                         let d = new DestructuringExtractor().extract(node as VariableStatement);
-                        if (v) {
-                            v.forEach(element => {
-                                variables.push(element);
-                            });
-                        }
                         if (l) {
                             l.forEach(element => {
                                 literals.push(element);
                             });
                         }
-                        if (d) {
+                        else if (d) {
                             d.forEach(element => {
                                 destructuring.push(element);
                             });
+                        }
+                        else {
+                            if (v) {
+                                v.forEach(element => {
+                                    variables.push(element);
+                                });
+                            }
                         }
                     }
                     break;

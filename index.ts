@@ -109,6 +109,7 @@ export * from './templates/git-book/summary/VariableMaker';
 export * from './templates/TemplateOptions';
 export * from './utilities/AureliaSourceFileUtils';
 export * from './utilities/FsUtils';
+export * from './utilities/HashUtils';
 export * from './utilities/JsonUtils';
 export * from './utilities/MarkdownUtils';
 export * from './utilities/NunjucksUtils';

@@ -4,6 +4,7 @@ import { DestructuringElementInfo } from './DestructuringElementInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 /*
 const { cooked, expressions } = expr;
@@ -20,7 +21,7 @@ const { "some property": someProperty } = obj;
 const { "some property": someProperty } = obj as unknown as any as x;
 */
 export class DestructuringExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(node: VariableStatement): DestructuringInfo[] | undefined {
         const result: DestructuringInfo[] = [];
@@ -62,6 +63,7 @@ export class DestructuringExtractor {
                     });
                 });
                 result.push({
+                    id: this.hashUtils.getSha256(node.getText()),
                     isArrayDestructuring: isArrayDestructuring,
                     elements: elements,
                     initializer: initializer,

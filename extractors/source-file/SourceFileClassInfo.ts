@@ -24,4 +24,5 @@ export interface SourceFileClassInfo {
     path: string;
     file: string;
     directory: string;
+    id: string;
 }

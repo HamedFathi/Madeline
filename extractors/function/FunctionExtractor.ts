@@ -7,9 +7,10 @@ import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 export class FunctionExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extractFromExpression(node: FunctionExpression, imports: ImportInfo[] | undefined): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -22,6 +23,7 @@ export class FunctionExtractor {
                 : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const result: FunctionInfo = {
+            id: this.hashUtils.getSha256(node.getText()),
             name: node.getName(),
             text: node.getText(),
             path: pathInfo.path,
@@ -66,6 +68,7 @@ export class FunctionExtractor {
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         const result: FunctionInfo = {
+            id: this.hashUtils.getSha256(node.getText()),
             name: node.getName(),
             text: node.getText(),
             hasComment: hasComment,

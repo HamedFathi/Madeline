@@ -11,4 +11,5 @@ export interface ExportAssignmentInfo {
     path: string;
     file: string;
     directory: string;
+    id: string;
 }

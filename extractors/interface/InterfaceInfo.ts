@@ -26,4 +26,5 @@ export interface InterfaceInfo {
     path: string;
     file: string;
     directory: string;
+    id: string;
 }

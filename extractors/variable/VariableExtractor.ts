@@ -21,9 +21,10 @@ import { CommonVariableInfo } from './CommonVariableInfo';
 import { ImportInfo } from '../import/ImportInfo';
 import { VariableDeclaration } from 'ts-morph';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 export class VariableExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
@@ -59,6 +60,7 @@ export class VariableExtractor {
                     typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
                 }
                 commons.push({
+                    id: this.hashUtils.getSha256(node.getText()),
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
                         declaration.getType(),

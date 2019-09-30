@@ -6,10 +6,12 @@ import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 export class InterfaceExtractor {
     constructor(
         private pathUtils: PathUtils = new PathUtils(),
+        private hashUtils: HashUtils = new HashUtils(),
         private typeParameterExtractor = new TypeParameterExtractor(),
     ) {}
 
@@ -19,6 +21,7 @@ export class InterfaceExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const result: InterfaceInfo = {
+            id: this.hashUtils.getSha256(node.getText()),
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),

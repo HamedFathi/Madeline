@@ -20,4 +20,5 @@ export interface CommonVariableInfo {
     path: string;
     file: string;
     directory: string;
+    id: string;
 }

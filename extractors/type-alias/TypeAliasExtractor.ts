@@ -6,9 +6,10 @@ import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 export class TypeAliasExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(node: TypeAliasDeclaration, imports: ImportInfo[] | undefined): TypeAliasInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -16,6 +17,7 @@ export class TypeAliasExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         return {
+            id: this.hashUtils.getSha256(node.getText()),
             name: node.getName(),
             text: node.getText(),
             path: pathInfo.path,

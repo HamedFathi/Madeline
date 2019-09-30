@@ -44,9 +44,10 @@ import { LiteralInfo } from '../literal/LiteralInfo';
 import { DestructuringInfo } from '../destructuring/DestructuringInfo';
 import { CommonVariableInfo } from '../variable/CommonVariableInfo';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 export class SourceFileExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private hashUtils: HashUtils = new HashUtils(), private pathUtils: PathUtils = new PathUtils()) {}
 
     private filterVariableInfo(node: VariableInfo, tags: string[] = ['@internal']): VariableInfo {
         const commons: CommonVariableInfo[] = [];
@@ -214,6 +215,7 @@ export class SourceFileExtractor {
                                     path: c.path,
                                     directory: c.directory,
                                     file: c.file,
+                                    id:this.hashUtils.getSha256(c.text)
                                 });
                             }
                         }
@@ -268,6 +270,7 @@ export class SourceFileExtractor {
             variables: variables.length === 0 ? void 0 : variables,
             exportAssignments: exportAssignments,
             exports: exports,
+            id:this.hashUtils.getSha256(sourceFile.getFullText()),
         };
         return result;
     }
@@ -345,6 +348,7 @@ export class SourceFileExtractor {
                             path: info.path,
                             directory: info.directory,
                             file: info.file,
+                            id:this.hashUtils.getSha256(info.text)
                         });
                     }
                     break;
@@ -368,6 +372,7 @@ export class SourceFileExtractor {
             variables: variables.length === 0 ? void 0 : variables,
             exportAssignments: exportAssignments,
             exports: exports,
+            id:this.hashUtils.getSha256(sourceFile.getFullText()),
         };
         return result;
     }

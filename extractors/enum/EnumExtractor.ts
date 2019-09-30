@@ -3,9 +3,10 @@ import { EnumInfo } from './EnumInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 export class EnumExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(node: EnumDeclaration): EnumInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -13,6 +14,7 @@ export class EnumExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         return {
+            id: this.hashUtils.getSha256(node.getText()),
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isConst: node.isConstEnum(),

@@ -32,6 +32,7 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 /*
 const obj = {
@@ -112,7 +113,7 @@ export const BasicConfiguration = {
 };
 */
 export class LiteralExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(node: VariableStatement, imports: ImportInfo[] | undefined): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
@@ -139,6 +140,7 @@ export class LiteralExtractor {
             if (objectLiteral) {
                 const elements = this.getExpressionInfo(objectLiteral, typeReference, imports);
                 result.push({
+                    id: this.hashUtils.getSha256(node.getText()),
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
@@ -166,6 +168,7 @@ export class LiteralExtractor {
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
+                    id: this.hashUtils.getSha256(node.getText()),
                     elements: members,
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,

@@ -4,6 +4,7 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { DecoratableType } from './DecoratableType';
 import { ImportInfo } from '../import/ImportInfo';
 import { PathUtils } from '../../utilities/PathUtils';
+import { HashUtils } from '../../utilities/HashUtils';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -15,7 +16,7 @@ const allowedKinds: SyntaxKind[] = [
 ];
 
 export class DecoratorExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(
         node: DecoratableType,
@@ -29,6 +30,7 @@ export class DecoratorExtractor {
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         let decorators = node.getDecorators().map(x => {
             return {
+                id: this.hashUtils.getSha256(node.getText()),
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),

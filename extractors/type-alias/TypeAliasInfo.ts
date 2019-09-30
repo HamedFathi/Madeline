@@ -17,4 +17,5 @@ export interface TypeAliasInfo {
     path: string;
     file: string;
     directory: string;
+    id: string;
 }

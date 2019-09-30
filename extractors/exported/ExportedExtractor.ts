@@ -28,7 +28,7 @@ export class ExportedExtractor {
     ): (ClassInfo | VariableInfo | EnumInfo | FunctionInfo | TypeAliasInfo | InterfaceInfo)[] | undefined {
         const result: (ClassInfo | VariableInfo | EnumInfo | FunctionInfo | TypeAliasInfo | InterfaceInfo)[] = [];
         const imports = new ImportExtractor().extract(sourceFile);
-        const defaultExport = sourceFile.getDefaultExportSymbol();
+        // const defaultExport = sourceFile.getDefaultExportSymbol();
         const exportedDeclarations = sourceFile.getExportedDeclarations();
         for (const [name, declarations] of exportedDeclarations) {
             declarations.forEach(declaration => {

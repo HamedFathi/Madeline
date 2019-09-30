@@ -37,7 +37,7 @@ export class AureliaSourceFileUtils {
         return sources.length === 0 ? void 0 : sources;
     }
 
-    public save(aureliaSourceFile: AureliaSourceFile[]): void {
+    public save(aureliaSourceFile: AureliaSourceFile[], exported = true): void {
         const sourceFileExtractor = new SourceFileExtractor();
         const saveDir = path.join(__dirname, '..', this.PACKAGES);
         if (this.isDirectoryExists(saveDir)) {
@@ -46,7 +46,7 @@ export class AureliaSourceFileUtils {
         aureliaSourceFile.forEach(source => {
             const name = source.name;
             source.sourceFiles.forEach(src => {
-                const source = sourceFileExtractor.extract(src);
+                const source = exported ? sourceFileExtractor.extractExported(src) : sourceFileExtractor.extract(src);
                 if (source) {
                     const filePath = path.join(this.PACKAGES, name, src.getFilePath().split('src')[1]) + '.json';
                     fse.outputFileSync(filePath, JSON.stringify(source, null, 2));

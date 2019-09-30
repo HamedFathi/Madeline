@@ -37,7 +37,6 @@ export * from './extractors/export-assignment/ExportAssignmentInfo';
 export * from './extractors/export/ExportExtractor';
 export * from './extractors/export/ExportInfo';
 export * from './extractors/export/NamedExportInfo';
-export * from './extractors/exported/ExportedExtractor';
 export * from './extractors/function/FunctionExtractor';
 export * from './extractors/function/FunctionInfo';
 export * from './extractors/function/FunctionParameterInfo';
@@ -118,10 +117,9 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-import { Project, SyntaxKind, VariableStatement, ExportDeclaration, VariableDeclaration } from 'ts-morph';
-import { VariableExtractor } from './extractors/variable/VariableExtractor';
-import { ExportExtractor } from './extractors/export/ExportExtractor';
-import { ExportedExtractor } from './extractors/exported/ExportedExtractor';
+/*
+import { Project } from 'ts-morph';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 
 const project = new Project({
     tsConfigFilePath: 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json',
@@ -134,42 +132,8 @@ const sources = project
     .filter(x => !x.getFilePath().includes('dist'))
     .filter(x => !x.getFilePath().includes('examples'));
 
-const list: string[] = [];
 sources.forEach(file => {
-    /*list.push('****************************************************');
-    list.push(file.getFilePath());
-    for (const [name, declarations] of file.getExportedDeclarations()) {
-        declarations.map(x => list.push(' > ' + name + '   |   ' + x.getKindName()));
-        declarations.forEach(d => {
-            if (d.getKind() === SyntaxKind.VariableDeclaration) {
-                const yyy = new VariableExtractor().extract(d as VariableDeclaration, undefined);
-            }
-        });
-    }*/
-    const o = new ExportedExtractor().extract(file);
+    const exports = new SourceFileExtractor().extractExported(file);
     const a = 1;
 });
-
-const yyyy = list.join('\n');
-const a = 1;
-
-/*
-import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
-import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
-import { SourceFileInfo } from './extractors/source-file/SourceFileInfo';
-const files = new AureliaSourceFileUtils();
-const result = files.getSourceFiles('E:/@All/Projects/@Git/aurelia');
-
-if (result) {
-    result.forEach(r => {
-        const all = r.sourceFiles.map(x => new SourceFileExtractor().extract(x)) as SourceFileInfo[];
-        const summary = new SummaryMaker().make(all, {
-            url: 'aaaa',
-            append: true,
-            removeAtSignTag: false,
-            route: x => x.path,
-        });
-    });
-    // files.save(result);
-}*/
+*/

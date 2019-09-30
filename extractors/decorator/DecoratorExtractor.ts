@@ -3,8 +3,8 @@ import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { DecoratableType } from './DecoratableType';
 import { ImportInfo } from '../import/ImportInfo';
-import { PathUtils } from '../../utilities/PathUtils';
-import { HashUtils } from '../../utilities/HashUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -16,7 +16,6 @@ const allowedKinds: SyntaxKind[] = [
 ];
 
 export class DecoratorExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(
         node: DecoratableType,
@@ -27,10 +26,10 @@ export class DecoratorExtractor {
             // the specified node does not allowed to have decorators
             return void 0;
         }
-        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         let decorators = node.getDecorators().map(x => {
             return {
-                id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
+                id: getSha256(node.getFullText() + pathInfo.path),
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),
@@ -41,11 +40,11 @@ export class DecoratorExtractor {
                     x.getArguments().length === 0
                         ? void 0
                         : x.getArguments().map(x => {
-                              return {
-                                  value: x.getText(),
-                                  type: new TypeExtractor().extract(x.getType(), void 0, void 0, imports),
-                              };
-                          }),
+                            return {
+                                value: x.getText(),
+                                type: new TypeExtractor().extract(x.getType(), void 0, void 0, imports),
+                            };
+                        }),
             };
         });
 

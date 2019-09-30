@@ -4,6 +4,7 @@ import { ClassExtractor } from '../../../extractors/class/ClassExtractor';
 import { ModuleExtractor } from '../../../extractors/module/ModuleExtractor';
 import { DecoratorInfo } from '../../../extractors/decorator/DecoratorInfo';
 import { DecoratableType } from '../../../extractors/decorator/DecoratableType';
+import { stringify } from 'querystring';
 
 describe('Class Extractor', () => {
     let project: Project;
@@ -82,11 +83,15 @@ describe('Class Extractor', () => {
                 parameters: undefined,
                 isDecoratorFactory: true,
                 text: '@inject()',
+                path: '',
+                file: '',
+                directory: '',
+                id: '',
             },
         ];
 
         const fakeDecoratorExtractor = {
-            extract: function(
+            extract: function (
                 /* eslint-disable */
                 node: DecoratableType,
                 imports: undefined,

@@ -2,7 +2,9 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "lib": ["esnext"],
+        "lib": [
+            "esnext"
+        ],
         "declaration": false,
         "sourceMap": true,
         "removeComments": true,
@@ -19,5 +21,18 @@
         "emitDecoratorMetadata": true,
         "skipLibCheck": true
     },
-    "exclude": ["node_modules", "wwwroot", "typings", "test", "dist"]
+    "baseUrl": ".",
+    "paths": {
+        "@utils/*": [
+            "utilities/*"
+        ]
+    },
+
+    "exclude": [
+        "node_modules",
+        "wwwroot",
+        "typings",
+        "test",
+        "dist"
+    ]
 }

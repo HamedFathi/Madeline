@@ -17,11 +17,11 @@ import { FunctionExtractor } from '../function/FunctionExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { VariableDeclaration } from 'ts-morph';
-import { PathUtils } from '../../utilities/PathUtils';
-import { HashUtils } from '../../utilities/HashUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 export class VariableExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
+
     public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
         if (declarationList) {
@@ -31,14 +31,14 @@ export class VariableExtractor {
                 return newNode;
             }
         }
-        return undefined;
+        return void 0;
     }
     public extract(node: VariableStatement, imports: ImportInfo[] | undefined): VariableInfo[] | undefined {
         const variables: VariableInfo[] = [];
         const modifiers = node.getModifiers().map(x => x.getText());
         const kind = node.getDeclarationKind();
         const kindName = node.getDeclarationKind().toString();
-        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
@@ -53,7 +53,7 @@ export class VariableExtractor {
                 typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
             }
             variables.push({
-                id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
+                id: getSha256(node.getFullText() + pathInfo.path),
                 name: declaration.getName(),
                 type: new TypeExtractor().extract(
                     declaration.getType(),
@@ -106,23 +106,23 @@ export class VariableExtractor {
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  type: new TypeExtractor().extract(
-                                      y.getType(),
-                                      y.getTypeNode(),
-                                      typeReference,
-                                      imports,
-                                  ),
-                                  modifiers:
-                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
-                                  isOptional: y.isOptional(),
-                                  isRest: y.isRestParameter(),
-                                  isParameterProperty: y.isParameterProperty(),
-                                  initializer:
-                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
-                              };
-                          }),
+                            return {
+                                name: y.getName(),
+                                type: new TypeExtractor().extract(
+                                    y.getType(),
+                                    y.getTypeNode(),
+                                    typeReference,
+                                    imports,
+                                ),
+                                modifiers:
+                                    y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
+                                isOptional: y.isOptional(),
+                                isRest: y.isRestParameter(),
+                                isParameterProperty: y.isParameterProperty(),
+                                initializer:
+                                    y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
+                            };
+                        }),
             };
         } else return node.getText();
     }

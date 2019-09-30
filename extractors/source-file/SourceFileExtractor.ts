@@ -6,8 +6,6 @@ import {
     TypeAliasDeclaration,
     InterfaceDeclaration,
     ClassDeclaration,
-    ScriptTarget,
-    Project,
     VariableStatement,
     VariableDeclaration,
 } from 'ts-morph';
@@ -135,7 +133,9 @@ export class SourceFileExtractor {
         const classes: SourceFileClassInfo[] = [];
         const variables: VariableInfo[] = [];
         const exportedDeclarations = sourceFile.getExportedDeclarations();
+        /* eslint-disable */
         for (const [name, declarations] of exportedDeclarations) {
+            /* eslint-disable */
             declarations.forEach(declaration => {
                 switch (declaration.getKind()) {
                     case SyntaxKind.ClassDeclaration:

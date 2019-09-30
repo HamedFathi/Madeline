@@ -4,7 +4,6 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
-import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 
 export class PropertyExtractor {
     public extract(node: PropertyDeclaration, imports: ImportInfo[] | undefined): PropertyInfo {

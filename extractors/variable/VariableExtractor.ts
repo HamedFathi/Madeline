@@ -60,7 +60,7 @@ export class VariableExtractor {
                     typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
                 }
                 commons.push({
-                    id: this.hashUtils.getSha256(node.getText()),
+                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
                         declaration.getType(),

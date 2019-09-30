@@ -27,7 +27,7 @@ export class ClassExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         return {
-            id: this.hashUtils.getSha256(node.getText()),
+            id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),

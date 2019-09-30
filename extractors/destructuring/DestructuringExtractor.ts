@@ -63,7 +63,7 @@ export class DestructuringExtractor {
                     });
                 });
                 result.push({
-                    id: this.hashUtils.getSha256(node.getText()),
+                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
                     isArrayDestructuring: isArrayDestructuring,
                     elements: elements,
                     initializer: initializer,

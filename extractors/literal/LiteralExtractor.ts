@@ -140,7 +140,7 @@ export class LiteralExtractor {
             if (objectLiteral) {
                 const elements = this.getExpressionInfo(objectLiteral, typeReference, imports);
                 result.push({
-                    id: this.hashUtils.getSha256(node.getText()),
+                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
@@ -168,7 +168,7 @@ export class LiteralExtractor {
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
-                    id: this.hashUtils.getSha256(node.getText()),
+                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
                     elements: members,
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,

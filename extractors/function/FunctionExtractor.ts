@@ -23,7 +23,7 @@ export class FunctionExtractor {
                 : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const result: FunctionInfo = {
-            id: this.hashUtils.getSha256(node.getText()),
+            id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
             text: node.getText(),
             path: pathInfo.path,
@@ -68,7 +68,7 @@ export class FunctionExtractor {
         const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         const result: FunctionInfo = {
-            id: this.hashUtils.getSha256(node.getText()),
+            id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
             text: node.getText(),
             hasComment: hasComment,

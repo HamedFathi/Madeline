@@ -30,7 +30,7 @@ export class DecoratorExtractor {
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         let decorators = node.getDecorators().map(x => {
             return {
-                id: this.hashUtils.getSha256(node.getText()),
+                id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),

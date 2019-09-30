@@ -31,35 +31,90 @@ import { PropertyExtractor } from '../property/PropertyExtractor';
 import { MethodExtractor } from '../method/MethodExtractor';
 import { GetAccessorExtractor } from '../get-accessor/GetAccessorExtractor';
 import { ConstructorExtractor } from '../constructor/ConstructorExtractor';
-import * as fs from 'fs';
 import { VariableExtractor } from '../variable/VariableExtractor';
 import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentExtractor } from '../export-assignment/ExportAssignmentExtractor';
 import { SetAccessorExtractor } from '../set-accessor/SetAccessorExtractor';
 import { ExportExtractor } from '../export/ExportExtractor';
+import { ClassInfo } from '../class/ClassInfo';
+import { PropertyInfo } from '../property/PropertyInfo';
+import { ConstructorInfo } from '../constructor/ConstructorInfo';
+import { MethodInfo } from '../method/MethodInfo';
+import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
+import { GetAccessorInfo } from '../get-accessor/GetAccessorInfo';
+import { LiteralInfo } from '../literal/LiteralInfo';
+import { DestructuringInfo } from '../destructuring/DestructuringInfo';
+import { CommonVariableInfo } from '../variable/CommonVariableInfo';
 
 export class SourceFileExtractor {
-    public extractFromTextFile(sourceFile: string, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
-        const sourceText = fs.readFileSync(sourceFile, 'utf8');
-        const project = new Project({
-            compilerOptions: {
-                target: ScriptTarget.ES5,
-            },
-        });
-        const source = project.createSourceFile('source.ts', sourceText);
-        return this.extract(source, options);
+    private includeTags(
+        node:
+            | ClassInfo
+            | FunctionInfo
+            | PropertyInfo
+            | ConstructorInfo
+            | MethodInfo
+            | SetAccessorInfo
+            | GetAccessorInfo
+            | LiteralInfo
+            | DestructuringInfo
+            | CommonVariableInfo
+            | TypeAliasInfo
+            | EnumInfo
+            | InterfaceInfo,
+        tags: string[] = ['@internal'],
+    ): boolean {
+        if (node.leadingComments) {
+            const allTags = node.leadingComments.map(x => x.tags);
+            for (const all of allTags) {
+                if (all) {
+                    for (const t of all) {
+                        const result = tags.includes(t.tag);
+                        if (result) return true;
+                    }
+                }
+            }
+        }
+        if (node.trailingComments) {
+            const allTags = node.trailingComments.map(x => x.tags);
+            for (const all of allTags) {
+                if (all) {
+                    for (const t of all) {
+                        const result = tags.includes(t.tag);
+                        if (result) return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
-    public extractFromText(sourceText: string, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
-        const project = new Project({
-            compilerOptions: {
-                target: ScriptTarget.ES5,
-            },
+    public extractAll(sourceFiles: SourceFile[], options?: CoverageExtractorOptions): SourceFileInfo[] | undefined {
+        const result: SourceFileInfo[] = [];
+        sourceFiles.forEach(file => {
+            const exported = new SourceFileExtractor().extract(file, options);
+            if (exported) {
+                result.push(exported);
+            }
         });
-        const source = project.createSourceFile('source.ts', sourceText);
-        return this.extract(source, options);
+        return result.length === 0 ? void 0 : result;
     }
 
+    public extractAllExported(
+        sourceFiles: SourceFile[],
+        options?: CoverageExtractorOptions,
+    ): SourceFileInfo[] | undefined {
+        const result: SourceFileInfo[] = [];
+        sourceFiles.forEach(file => {
+            const exported = new SourceFileExtractor().extractExported(file, options);
+            if (exported) {
+                result.push(exported);
+            }
+        });
+        return result.length === 0 ? void 0 : result;
+    }
+
+    // Should filter `@internal` tag by input parameter.
     public extractExported(sourceFile: SourceFile, options?: CoverageExtractorOptions): SourceFileInfo | undefined {
         const path = sourceFile.getFilePath();
         const imports = new ImportExtractor().extract(sourceFile);
@@ -106,22 +161,24 @@ export class SourceFileExtractor {
                                 declaration as ClassDeclaration,
                                 imports,
                             );
-                            classes.push({
-                                name: c.name,
-                                text: c.text,
-                                modifiers: c.modifiers,
-                                extends: c.extends,
-                                implements: c.implements,
-                                trailingComments: c.trailingComments,
-                                leadingComments: c.leadingComments,
-                                decorators: c.decorators,
-                                modules: c.modules,
-                                constructors: constructors,
-                                properties: properties,
-                                getAccessors: getAccessors,
-                                setAccessors: setAccessors,
-                                methods: methods,
-                            });
+                            if (!this.includeTags(c)) {
+                                classes.push({
+                                    name: c.name,
+                                    text: c.text,
+                                    modifiers: c.modifiers,
+                                    extends: c.extends,
+                                    implements: c.implements,
+                                    trailingComments: c.trailingComments,
+                                    leadingComments: c.leadingComments,
+                                    decorators: c.decorators,
+                                    modules: c.modules,
+                                    constructors: constructors,
+                                    properties: properties,
+                                    getAccessors: getAccessors,
+                                    setAccessors: setAccessors,
+                                    methods: methods,
+                                });
+                            }
                         }
                         break;
                     case SyntaxKind.VariableDeclaration:
@@ -133,25 +190,26 @@ export class SourceFileExtractor {
                             const isVariableInSourceFile = statement.getParentIfKind(SyntaxKind.SourceFile);
                             if (isVariableInSourceFile) {
                                 const v = extractor.extract(statement, imports);
+                                // TODO: !this.includeTags(v)
                                 if (v) variables.push(v);
                             }
                         }
                         break;
                     case SyntaxKind.EnumDeclaration:
                         const e = new EnumExtractor().extract(declaration as EnumDeclaration);
-                        if (e) enums.push(e);
+                        if (e && !this.includeTags(e)) enums.push(e);
                         break;
                     case SyntaxKind.FunctionDeclaration:
                         const f = new FunctionExtractor().extract(declaration as FunctionDeclaration, imports);
-                        if (f) functions.push(f);
+                        if (f && !this.includeTags(f)) functions.push(f);
                         break;
                     case SyntaxKind.TypeAliasDeclaration:
                         const t = new TypeAliasExtractor().extract(declaration as TypeAliasDeclaration, imports);
-                        if (t) typeAliases.push(t);
+                        if (t && !this.includeTags(t)) typeAliases.push(t);
                         break;
                     case SyntaxKind.InterfaceDeclaration:
                         const i = new InterfaceExtractor().extract(declaration as InterfaceDeclaration, imports);
-                        if (i) interfaces.push(i);
+                        if (i && !this.includeTags(i)) interfaces.push(i);
                         break;
                 }
             });

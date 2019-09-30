@@ -120,20 +120,27 @@ export * from './utilities/StringUtils';
 /*
 import { Project } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+import * as fse from 'fs-extra';
 
 const project = new Project({
     tsConfigFilePath: 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json',
 });
+
 const sources = project
     .getSourceFiles()
     .filter(x => x.getFilePath().includes('src'))
     .filter(x => !x.getFilePath().includes('__tests__'))
     .filter(x => !x.getFilePath().includes('node_modules'))
     .filter(x => !x.getFilePath().includes('dist'))
-    .filter(x => !x.getFilePath().includes('examples'));
+    .filter(x => !x.getFilePath().includes('examples'))
+    .filter(x => !x.getFilePath().includes('e2e'));
+const exported = new SourceFileExtractor().extractAllExported(sources);
+if (exported) {
+    exported.forEach(source => {
+        const p = source.path.split('packages');
+        fse.outputFileSync('', JSON.stringify(source, null, 2));
+    });
+}
 
-sources.forEach(file => {
-    const exports = new SourceFileExtractor().extractExported(file);
-    const a = 1;
-});
+const a = 1;
 */

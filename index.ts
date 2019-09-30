@@ -37,6 +37,7 @@ export * from './extractors/export-assignment/ExportAssignmentInfo';
 export * from './extractors/export/ExportExtractor';
 export * from './extractors/export/ExportInfo';
 export * from './extractors/export/NamedExportInfo';
+export * from './extractors/exported/ExportedExtractor';
 export * from './extractors/function/FunctionExtractor';
 export * from './extractors/function/FunctionInfo';
 export * from './extractors/function/FunctionParameterInfo';
@@ -117,9 +118,11 @@ export * from './utilities/ObjectUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+
 import { Project, SyntaxKind, VariableStatement, ExportDeclaration, VariableDeclaration } from 'ts-morph';
 import { VariableExtractor } from './extractors/variable/VariableExtractor';
 import { ExportExtractor } from './extractors/export/ExportExtractor';
+import { ExportedExtractor } from './extractors/exported/ExportedExtractor';
 
 const project = new Project({
     tsConfigFilePath: 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json',
@@ -134,7 +137,7 @@ const sources = project
 
 const list: string[] = [];
 sources.forEach(file => {
-    list.push('****************************************************');
+    /*list.push('****************************************************');
     list.push(file.getFilePath());
     for (const [name, declarations] of file.getExportedDeclarations()) {
         declarations.map(x => list.push(' > ' + name + '   |   ' + x.getKindName()));
@@ -143,7 +146,10 @@ sources.forEach(file => {
                 const yyy = new VariableExtractor().extract(d as VariableDeclaration, undefined);
             }
         });
-    }
+    }*/
+    let o = new ExportedExtractor().extract(file);
+    const a = 1;
+
 });
 
 const yyyy = list.join('\n');

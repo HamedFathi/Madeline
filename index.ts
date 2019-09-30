@@ -76,7 +76,6 @@ export * from './extractors/type-alias/TypeAliasExtractor';
 export * from './extractors/type-alias/TypeAliasInfo';
 export * from './extractors/type-parameter/TypeParameterExtractor';
 export * from './extractors/type-parameter/TypeParameterInfo';
-export * from './extractors/variable/CommonVariableInfo';
 export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
 export * from './templates/api/class/ClassToMdConverter';
@@ -120,8 +119,13 @@ export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
 /*
+const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+const sw = new Stopwatch(true);
 new AureliaSourceFileUtils().save(tsconfig);
+sw.stop();
+const delta = ((sw.read() as number) / 1000).toString();
+console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
 */

@@ -8,8 +8,6 @@ import {
     TypeGuards,
 } from 'ts-morph';
 import { VariableInfo } from './VariableInfo';
-import { LiteralExtractor } from '../literal/LiteralExtractor';
-import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeExtractor } from '../common/TypeExtractor';
@@ -17,7 +15,6 @@ import { FunctionInfo } from '../function/FunctionInfo';
 import { CallSignatureInfo } from '../common/CallSignatureInfo';
 import { FunctionExtractor } from '../function/FunctionExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
-import { CommonVariableInfo } from './CommonVariableInfo';
 import { ImportInfo } from '../import/ImportInfo';
 import { VariableDeclaration } from 'ts-morph';
 import { PathUtils } from '../../utilities/PathUtils';
@@ -25,7 +22,6 @@ import { HashUtils } from '../../utilities/HashUtils';
 
 export class VariableExtractor {
     constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
-
     public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
         if (declarationList) {
@@ -37,61 +33,53 @@ export class VariableExtractor {
         }
         return undefined;
     }
-    public extract(node: VariableStatement, imports: ImportInfo[] | undefined): VariableInfo {
-        const literals = new LiteralExtractor().extract(node, imports);
-        const destructions = new DestructuringExtractor().extract(node);
-        const commons: CommonVariableInfo[] = [];
-        if (!literals && !destructions) {
-            const modifiers = node.getModifiers().map(x => x.getText());
-            const kind = node.getDeclarationKind();
-            const kindName = node.getDeclarationKind().toString();
-            const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
-            const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
-            const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
-            const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-            const modules = new ModuleExtractor().extract(node);
-            const text = node.getText();
-            node.getDeclarations().forEach(declaration => {
-                const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== void 0;
-                let typeReference: string | undefined = void 0;
-                if (hasTypeReference) {
-                    const asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
-                    const typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
-                    typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
-                }
-                commons.push({
-                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
-                    name: declaration.getName(),
-                    type: new TypeExtractor().extract(
-                        declaration.getType(),
-                        declaration.getTypeNode(),
-                        typeReference,
-                        imports,
-                    ),
-                    modifiers: modifiers.length === 0 ? void 0 : modifiers,
-                    path: pathInfo.path,
-                    directory: pathInfo.directory,
-                    file: pathInfo.file,
-                    initializer:
-                        declaration.getInitializer() === void 0
-                            ? void 0
-                            : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference, imports),
-                    kind: kind,
-                    kindName: kindName,
-                    trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
-                    leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
-                    hasComment: hasComment,
-                    modules: modules,
-                    text: text,
-                    typeReference: typeReference,
-                });
+    public extract(node: VariableStatement, imports: ImportInfo[] | undefined): VariableInfo[] | undefined {
+        const variables: VariableInfo[] = [];
+        const modifiers = node.getModifiers().map(x => x.getText());
+        const kind = node.getDeclarationKind();
+        const kindName = node.getDeclarationKind().toString();
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
+        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
+        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const modules = new ModuleExtractor().extract(node);
+        const text = node.getText();
+        node.getDeclarations().forEach(declaration => {
+            const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== void 0;
+            let typeReference: string | undefined = void 0;
+            if (hasTypeReference) {
+                const asExpression = declaration.getInitializerIfKindOrThrow(SyntaxKind.AsExpression);
+                const typeRef = asExpression.getLastChildIfKind(SyntaxKind.TypeReference);
+                typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
+            }
+            variables.push({
+                id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
+                name: declaration.getName(),
+                type: new TypeExtractor().extract(
+                    declaration.getType(),
+                    declaration.getTypeNode(),
+                    typeReference,
+                    imports,
+                ),
+                modifiers: modifiers.length === 0 ? void 0 : modifiers,
+                path: pathInfo.path,
+                directory: pathInfo.directory,
+                file: pathInfo.file,
+                initializer:
+                    declaration.getInitializer() === void 0
+                        ? void 0
+                        : this.getExpressionInfo(declaration.getInitializerOrThrow(), typeReference, imports),
+                kind: kind,
+                kindName: kindName,
+                trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+                leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
+                hasComment: hasComment,
+                modules: modules,
+                text: text,
+                typeReference: typeReference,
             });
-        }
-        return {
-            literals: literals,
-            destructions: destructions,
-            commons: commons.length === 0 ? void 0 : commons,
-        };
+        });
+        return variables.length === 0 ? void 0 : variables;
     }
 
     private getExpressionInfo(

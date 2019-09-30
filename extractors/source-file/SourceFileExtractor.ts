@@ -42,44 +42,13 @@ import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
 import { GetAccessorInfo } from '../get-accessor/GetAccessorInfo';
 import { LiteralInfo } from '../literal/LiteralInfo';
 import { DestructuringInfo } from '../destructuring/DestructuringInfo';
-import { CommonVariableInfo } from '../variable/CommonVariableInfo';
 import { PathUtils } from '../../utilities/PathUtils';
 import { HashUtils } from '../../utilities/HashUtils';
+import { LiteralExtractor } from '../literal/LiteralExtractor';
+import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
 
 export class SourceFileExtractor {
     constructor(private hashUtils: HashUtils = new HashUtils(), private pathUtils: PathUtils = new PathUtils()) {}
-
-    private filterVariableInfo(node: VariableInfo, tags: string[] = ['@internal']): VariableInfo {
-        const commons: CommonVariableInfo[] = [];
-        const literals: LiteralInfo[] = [];
-        const destructions: DestructuringInfo[] = [];
-        if (node.commons) {
-            for (const c of node.commons) {
-                if (!this.includeTags(c, tags)) {
-                    commons.push(c);
-                }
-            }
-        }
-        if (node.literals) {
-            for (const l of node.literals) {
-                if (!this.includeTags(l, tags)) {
-                    literals.push(l);
-                }
-            }
-        }
-        if (node.destructions) {
-            for (const d of node.destructions) {
-                if (!this.includeTags(d, tags)) {
-                    destructions.push(d);
-                }
-            }
-        }
-        return {
-            commons: commons.length === 0 ? void 0 : commons,
-            literals: literals.length === 0 ? void 0 : literals,
-            destructions: destructions.length === 0 ? void 0 : destructions,
-        };
-    }
 
     private includeTags(
         node:
@@ -92,7 +61,7 @@ export class SourceFileExtractor {
             | GetAccessorInfo
             | LiteralInfo
             | DestructuringInfo
-            | CommonVariableInfo
+            | VariableInfo
             | TypeAliasInfo
             | EnumInfo
             | InterfaceInfo,
@@ -134,6 +103,20 @@ export class SourceFileExtractor {
         return result.length === 0 ? void 0 : result;
     }
 
+    /*public mergeAllExported(
+        sourceFiles: SourceFile[],
+        options?: CoverageExtractorOptions,
+    ): SourceFileInfo | undefined {
+        const processed: string[] = [];
+        const sources = this.extractAllExported(sourceFiles, options);
+        if (sources) {
+            for (const src of sources) {
+                src.                       
+            }
+        }
+        return undefined;
+    }*/
+
     public extractAllExported(
         sourceFiles: SourceFile[],
         options?: CoverageExtractorOptions,
@@ -167,6 +150,8 @@ export class SourceFileExtractor {
         const interfaces: InterfaceInfo[] = [];
         const classes: SourceFileClassInfo[] = [];
         const variables: VariableInfo[] = [];
+        const literals: LiteralInfo[] = [];
+        const destructuring: DestructuringInfo[] = [];
         const exportedDeclarations = sourceFile.getExportedDeclarations();
         /* eslint-disable */
         for (const [name, declarations] of exportedDeclarations) {
@@ -215,7 +200,7 @@ export class SourceFileExtractor {
                                     path: c.path,
                                     directory: c.directory,
                                     file: c.file,
-                                    id:this.hashUtils.getSha256(c.text)
+                                    id: this.hashUtils.getSha256(c.text)
                                 });
                             }
                         }
@@ -228,8 +213,24 @@ export class SourceFileExtractor {
                         if (statement) {
                             const isVariableInSourceFile = statement.getParentIfKind(SyntaxKind.SourceFile);
                             if (isVariableInSourceFile) {
-                                const v = extractor.extract(statement, imports);
-                                if (v) variables.push(this.filterVariableInfo(v));
+                                let v = new VariableExtractor().extract(statement as VariableStatement, imports);
+                                let l = new LiteralExtractor().extract(statement as VariableStatement, imports);
+                                let d = new DestructuringExtractor().extract(statement as VariableStatement);
+                                if (v) {
+                                    v.forEach(element => {
+                                        if (element && !this.includeTags(element)) variables.push(element);
+                                    });
+                                }
+                                if (l) {
+                                    l.forEach(element => {
+                                        if (element && !this.includeTags(element)) literals.push(element);
+                                    });
+                                }
+                                if (d) {
+                                    d.forEach(element => {
+                                        if (element && !this.includeTags(element)) destructuring.push(element);
+                                    });
+                                }
                             }
                         }
                         break;
@@ -268,9 +269,11 @@ export class SourceFileExtractor {
             interfaces: interfaces.length === 0 ? void 0 : interfaces,
             classes: classes.length === 0 ? void 0 : classes,
             variables: variables.length === 0 ? void 0 : variables,
+            literals: literals.length === 0 ? void 0 : literals,
+            destructuring: destructuring.length === 0 ? void 0 : destructuring,
             exportAssignments: exportAssignments,
             exports: exports,
-            id:this.hashUtils.getSha256(sourceFile.getFullText()),
+            id: this.hashUtils.getSha256(sourceFile.getFullText()),
         };
         return result;
     }
@@ -293,6 +296,8 @@ export class SourceFileExtractor {
         const interfaces: InterfaceInfo[] = [];
         const classes: SourceFileClassInfo[] = [];
         const variables: VariableInfo[] = [];
+        const literals: LiteralInfo[] = [];
+        const destructuring: DestructuringInfo[] = [];
         sourceFile.forEachDescendant(node => {
             switch (node.getKind()) {
                 case SyntaxKind.EnumDeclaration:
@@ -310,7 +315,24 @@ export class SourceFileExtractor {
                 case SyntaxKind.VariableStatement:
                     const isVariableInSourceFile = node.getParentIfKind(SyntaxKind.SourceFile);
                     if (isVariableInSourceFile) {
-                        variables.push(new VariableExtractor().extract(node as VariableStatement, imports));
+                        let v = new VariableExtractor().extract(node as VariableStatement, imports);
+                        let l = new LiteralExtractor().extract(node as VariableStatement, imports);
+                        let d = new DestructuringExtractor().extract(node as VariableStatement);
+                        if (v) {
+                            v.forEach(element => {
+                                variables.push(element);
+                            });
+                        }
+                        if (l) {
+                            l.forEach(element => {
+                                literals.push(element);
+                            });
+                        }
+                        if (d) {
+                            d.forEach(element => {
+                                destructuring.push(element);
+                            });
+                        }
                     }
                     break;
                 case SyntaxKind.ClassDeclaration:
@@ -348,7 +370,7 @@ export class SourceFileExtractor {
                             path: info.path,
                             directory: info.directory,
                             file: info.file,
-                            id:this.hashUtils.getSha256(info.text)
+                            id: this.hashUtils.getSha256(info.text)
                         });
                     }
                     break;
@@ -370,9 +392,11 @@ export class SourceFileExtractor {
             interfaces: interfaces.length === 0 ? void 0 : interfaces,
             classes: classes.length === 0 ? void 0 : classes,
             variables: variables.length === 0 ? void 0 : variables,
+            literals: literals.length === 0 ? void 0 : literals,
+            destructuring: destructuring.length === 0 ? void 0 : destructuring,
             exportAssignments: exportAssignments,
             exports: exports,
-            id:this.hashUtils.getSha256(sourceFile.getFullText()),
+            id: this.hashUtils.getSha256(sourceFile.getFullText()),
         };
         return result;
     }

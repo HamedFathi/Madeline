@@ -1,8 +1,24 @@
-import { LiteralInfo } from '../literal/LiteralInfo';
-import { DestructuringInfo } from '../destructuring/DestructuringInfo';
-import { CommonVariableInfo } from './CommonVariableInfo';
+import { VariableDeclarationKind } from 'ts-morph';
+import { CommentInfo } from '../comment/CommentInfo';
+import { ModuleInfo } from '../module/ModuleInfo';
+import { TypeInfo } from '../common/TypeInfo';
+import { FunctionInfo } from '../function/FunctionInfo';
+import { CallSignatureInfo } from '../common/CallSignatureInfo';
 export interface VariableInfo {
-    literals: LiteralInfo[] | undefined;
-    destructions: DestructuringInfo[] | undefined;
-    commons: CommonVariableInfo[] | undefined;
+    name: string;
+    type: TypeInfo;
+    text: string;
+    modifiers: string[] | undefined;
+    trailingComments: CommentInfo[] | undefined;
+    leadingComments: CommentInfo[] | undefined;
+    modules: ModuleInfo[] | undefined;
+    initializer: FunctionInfo | CallSignatureInfo | string | undefined;
+    kind: VariableDeclarationKind;
+    kindName: string;
+    typeReference: string | undefined;
+    hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
 }

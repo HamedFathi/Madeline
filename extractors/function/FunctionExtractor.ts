@@ -3,7 +3,6 @@ import { FunctionInfo } from './FunctionInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
-import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { PathUtils } from '../../utilities/PathUtils';
@@ -21,7 +20,6 @@ export class FunctionExtractor {
             node.getReturnType() === void 0
                 ? void 0
                 : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
-        const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const result: FunctionInfo = {
             id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
@@ -36,7 +34,6 @@ export class FunctionExtractor {
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             typeParameters: new TypeParameterExtractor().extract(node, imports),
             returnType: returnType,
-            variables: variables.length === 0 ? void 0 : variables,
             parameters:
                 node.getParameters().length === 0
                     ? void 0
@@ -65,7 +62,6 @@ export class FunctionExtractor {
             node.getReturnType() === void 0
                 ? void 0
                 : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
-        const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         const result: FunctionInfo = {
             id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
@@ -84,7 +80,6 @@ export class FunctionExtractor {
             modules: new ModuleExtractor().extract(node),
             typeParameters: new TypeParameterExtractor().extract(node, imports),
             returnType: returnType,
-            variables: variables.length === 0 ? void 0 : variables,
             parameters:
                 node.getParameters().length === 0
                     ? void 0

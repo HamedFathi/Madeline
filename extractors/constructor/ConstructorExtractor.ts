@@ -4,7 +4,6 @@ import { ConstructorInfo } from './ConstructorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
-import { VariableExtractor } from '../variable/VariableExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class ConstructorExtractor {
@@ -15,7 +14,6 @@ export class ConstructorExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modifiers = node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText());
-        const variables = node.getVariableStatements().map(x => new VariableExtractor().extract(x, imports));
         const params: ConstructorParameterInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
@@ -37,7 +35,6 @@ export class ConstructorExtractor {
             isImplementation: isImplementation,
             isOverload: isOverload,
             parameters: params.length === 0 ? void 0 : params,
-            variables: variables.length === 0 ? void 0 : variables,
             text: node.getText(),
             hasComment: hasComment,
         };

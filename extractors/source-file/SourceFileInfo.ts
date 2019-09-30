@@ -8,6 +8,8 @@ import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { ExportInfo } from '../export/ExportInfo';
 import { ImportInfo } from '../import/ImportInfo';
+import { LiteralInfo } from '../literal/LiteralInfo';
+import { DestructuringInfo } from '../destructuring/DestructuringInfo';
 export interface SourceFileInfo {
     isDeclarationFile: boolean;
     isFromExternalLibrary: boolean;
@@ -21,6 +23,8 @@ export interface SourceFileInfo {
     typeAliases: TypeAliasInfo[] | undefined;
     coverage: SourceFileCoverageInfo | undefined;
     variables: VariableInfo[] | undefined;
+    literals: LiteralInfo[] | undefined;
+    destructuring: DestructuringInfo[] | undefined;
     exportAssignments: ExportAssignmentInfo[] | undefined;
     path: string;
     file: string;

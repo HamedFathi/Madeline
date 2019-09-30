@@ -3,7 +3,6 @@ import { MethodInfo } from './MethodInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
-import { VariableExtractor } from '../variable/VariableExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
@@ -23,10 +22,6 @@ export class MethodExtractor {
             hasComment: hasComment,
             decorators: new DecoratorExtractor().extract(node, imports),
             typeParameters: new TypeParameterExtractor().extract(node, imports),
-            variables:
-                node.getVariableStatements().map(y => new VariableExtractor().extract(y, imports)).length === 0
-                    ? void 0
-                    : node.getVariableStatements().map(y => new VariableExtractor().extract(y, imports)),
             parameters:
                 node.getParameters().length === 0
                     ? void 0

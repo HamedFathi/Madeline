@@ -3,7 +3,6 @@ import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
-import { VariableInfo } from '../variable/VariableInfo';
 export interface FunctionInfo {
     name: string | undefined;
     modifiers: string[] | undefined;
@@ -16,7 +15,6 @@ export interface FunctionInfo {
     modules?: ModuleInfo[] | undefined;
     parameters: FunctionParamInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
-    variables: VariableInfo[] | undefined;
     text: string;
     hasComment: boolean;
     path: string;

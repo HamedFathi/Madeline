@@ -46,6 +46,8 @@ import { PathUtils } from '../../utilities/PathUtils';
 import { HashUtils } from '../../utilities/HashUtils';
 import { LiteralExtractor } from '../literal/LiteralExtractor';
 import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
+import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
+import { MergedSourceFileInfo } from './MergedSourceFileInfo';
 
 export class SourceFileExtractor {
     constructor(private hashUtils: HashUtils = new HashUtils(), private pathUtils: PathUtils = new PathUtils()) {}
@@ -103,19 +105,106 @@ export class SourceFileExtractor {
         return result.length === 0 ? void 0 : result;
     }
 
-    /*public mergeAllExported(
-        sourceFiles: SourceFile[],
-        options?: CoverageExtractorOptions,
-    ): SourceFileInfo | undefined {
+    public fetchAllExported(sourceFiles: SourceFile[]): MergedSourceFileInfo {
         const processed: string[] = [];
-        const sources = this.extractAllExported(sourceFiles, options);
+        const classes: SourceFileClassInfo[] = [];
+        const enums: EnumInfo[] = [];
+        const functions: FunctionInfo[] = [];
+        const typeAliases: TypeAliasInfo[] = [];
+        const interfaces: InterfaceInfo[] = [];
+        const exportAssignments: ExportAssignmentInfo[] = [];
+        const variables: VariableInfo[] = [];
+        const literals: LiteralInfo[] = [];
+        const destructuring: DestructuringInfo[] = [];
+        const sources = this.extractAllExported(sourceFiles, undefined);
         if (sources) {
             for (const src of sources) {
-                src.                       
+                if (src.classes) {
+                    for (const c of src.classes) {
+                        if (!processed.includes(c.id)) {
+                            classes.push(c);
+                        }
+                        processed.push(c.id);
+                    }
+                }
+                if (src.enums) {
+                    for (const e of src.enums) {
+                        if (!processed.includes(e.id)) {
+                            enums.push(e);
+                        }
+                        processed.push(e.id);
+                    }
+                }
+                if (src.functions) {
+                    for (const f of src.functions) {
+                        if (!processed.includes(f.id)) {
+                            functions.push(f);
+                        }
+                        processed.push(f.id);
+                    }
+                }
+                if (src.typeAliases) {
+                    for (const ta of src.typeAliases) {
+                        if (!processed.includes(ta.id)) {
+                            typeAliases.push(ta);
+                        }
+                        processed.push(ta.id);
+                    }
+                }
+                if (src.interfaces) {
+                    for (const i of src.interfaces) {
+                        if (!processed.includes(i.id)) {
+                            interfaces.push(i);
+                        }
+                        processed.push(i.id);
+                    }
+                }
+                if (src.exportAssignments) {
+                    for (const ex of src.exportAssignments) {
+                        if (!processed.includes(ex.id)) {
+                            exportAssignments.push(ex);
+                        }
+                        processed.push(ex.id);
+                    }
+                }
+                if (src.variables) {
+                    for (const v of src.variables) {
+                        if (!processed.includes(v.id)) {
+                            variables.push(v);
+                        }
+                        processed.push(v.id);
+                    }
+                }
+                if (src.literals) {
+                    for (const l of src.literals) {
+                        if (!processed.includes(l.id)) {
+                            literals.push(l);
+                        }
+                        processed.push(l.id);
+                    }
+                }
+                if (src.destructuring) {
+                    for (const d of src.destructuring) {
+                        if (!processed.includes(d.id)) {
+                            destructuring.push(d);
+                        }
+                        processed.push(d.id);
+                    }
+                }
             }
         }
-        return undefined;
-    }*/
+        return {
+            enums: enums.length === 0 ? void 0 : enums,
+            functions: functions.length === 0 ? void 0 : functions,
+            typeAliases: typeAliases.length === 0 ? void 0 : typeAliases,
+            interfaces: interfaces.length === 0 ? void 0 : interfaces,
+            classes: classes.length === 0 ? void 0 : classes,
+            variables: variables.length === 0 ? void 0 : variables,
+            literals: literals.length === 0 ? void 0 : literals,
+            destructuring: destructuring.length === 0 ? void 0 : destructuring,
+            exportAssignments: exportAssignments,
+        };
+    }
 
     public extractAllExported(
         sourceFiles: SourceFile[],

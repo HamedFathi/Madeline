@@ -24,4 +24,21 @@ export class AureliaSourceFileUtils {
             });
         }
     }
+    public saveMerged(tsconfig: string): void {
+        const project = new Project({
+            tsConfigFilePath: tsconfig,
+        });
+        const sources = project
+            .getSourceFiles()
+            .filter(x => x.getFilePath().includes('src'))
+            .filter(x => !x.getFilePath().includes('__tests__'))
+            .filter(x => !x.getFilePath().includes('node_modules'))
+            .filter(x => !x.getFilePath().includes('dist'))
+            .filter(x => !x.getFilePath().includes('examples'))
+            .filter(x => !x.getFilePath().includes('e2e'));
+        const extractor = new SourceFileExtractor();
+        const source = extractor.fetchAllExported(sources);
+        fse.removeSync('packages');
+        fse.outputFileSync('packages/merged.json', JSON.stringify(source, null, 2));
+    }
 }

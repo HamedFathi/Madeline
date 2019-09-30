@@ -5,11 +5,16 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { PathUtils } from '../../utilities/PathUtils';
 
 export class InterfaceExtractor {
-    private readonly typeParameterExtractor = new TypeParameterExtractor();
+    constructor(
+        private pathUtils: PathUtils = new PathUtils(),
+        private typeParameterExtractor = new TypeParameterExtractor(),
+    ) {}
 
     public extract(node: InterfaceDeclaration, imports: ImportInfo[] | undefined): InterfaceInfo {
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
@@ -19,6 +24,9 @@ export class InterfaceExtractor {
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
             modules: new ModuleExtractor().extract(node),
             typeParameters: this.typeParameterExtractor.extract(node, imports),
             hasComment: hasComment,

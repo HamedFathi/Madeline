@@ -19,13 +19,19 @@ export class ExportExtractor {
                         ? void 0
                         : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
                 moduleSpecifier: x.getModuleSpecifierValue(),
+                hasAsterisk: x.getNamedExports().length === 0,
                 namedExports:
                     x.getNamedExports().length === 0
                         ? void 0
                         : x.getNamedExports().map(y => {
                               return {
                                   name: y.getName(),
-                                  alias: y.getSymbol() === void 0 ? void 0 : y.getSymbolOrThrow().getName(),
+                                  alias:
+                                      y.getSymbol() === void 0
+                                          ? void 0
+                                          : y.getName() === y.getSymbolOrThrow().getName()
+                                          ? void 0
+                                          : y.getSymbolOrThrow().getName(),
                               };
                           }),
             };

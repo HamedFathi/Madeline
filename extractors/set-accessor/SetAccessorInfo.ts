@@ -2,6 +2,7 @@ import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { VariableInfo } from '../variable/VariableInfo';
 import { SetAccessorParamInfo } from './SetAccessorParameterInfo';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface SetAccessorInfo {
     name: string;
     text: string;
@@ -12,4 +13,5 @@ export interface SetAccessorInfo {
     decorators: DecoratorInfo[] | undefined;
     variables: VariableInfo[] | undefined;
     hasComment: boolean;
+    typeParameters: TypeParameterInfo[] | undefined;
 }

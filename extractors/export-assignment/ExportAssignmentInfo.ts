@@ -8,4 +8,7 @@ export interface ExportAssignmentInfo {
     text: string;
     isExportDefault: boolean;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
 }

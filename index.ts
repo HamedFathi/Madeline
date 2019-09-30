@@ -98,21 +98,29 @@ export * from './templates/api/type-parameter/TypeParameterTemplate';
 export * from './templates/api/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/api/type-parameter/TypeParameterToMdConverter';
 export * from './templates/api/type/TypeToMdConverter';
+export * from './templates/git-book/summary/ClassMaker';
+export * from './templates/git-book/summary/EnumMaker';
+export * from './templates/git-book/summary/ExportAssignmentMaker';
+export * from './templates/git-book/summary/FunctionMaker';
+export * from './templates/git-book/summary/InterfaceMaker';
+export * from './templates/git-book/summary/SummaryMaker';
+export * from './templates/git-book/summary/TypeAliasMaker';
+export * from './templates/git-book/summary/VariableMaker';
 export * from './templates/TemplateOptions';
-export * from './utilities/AureliaSourceFile';
 export * from './utilities/AureliaSourceFileUtils';
 export * from './utilities/FsUtils';
 export * from './utilities/JsonUtils';
 export * from './utilities/MarkdownUtils';
 export * from './utilities/NunjucksUtils';
 export * from './utilities/ObjectUtils';
+export * from './utilities/PathInfo';
+export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
 /*
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-const files = new AureliaSourceFileUtils();
-const result = files.getSourceFiles('D:/@Git/aurelia');
-if (result) files.save(result);
+const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
+new AureliaSourceFileUtils().save(tsconfig);
 const a = 1;
 */

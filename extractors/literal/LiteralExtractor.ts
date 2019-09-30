@@ -31,6 +31,7 @@ import { LiteralExpressionInfo } from './LiteralExpressionInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { PathUtils } from '../../utilities/PathUtils';
 
 /*
 const obj = {
@@ -111,11 +112,14 @@ export const BasicConfiguration = {
 };
 */
 export class LiteralExtractor {
+    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+
     public extract(node: VariableStatement, imports: ImportInfo[] | undefined): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = void 0;
@@ -141,6 +145,9 @@ export class LiteralExtractor {
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
+                    path: pathInfo.path,
+                    directory: pathInfo.directory,
+                    file: pathInfo.file,
                     typeReference: typeReference,
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
@@ -163,6 +170,9 @@ export class LiteralExtractor {
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
+                    path: pathInfo.path,
+                    directory: pathInfo.directory,
+                    file: pathInfo.file,
                     isArrayLiteral: true,
                     text: node.getText(),
                     typeReference: typeReference,

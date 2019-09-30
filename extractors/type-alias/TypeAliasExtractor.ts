@@ -5,15 +5,22 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { PathUtils } from '../../utilities/PathUtils';
 
 export class TypeAliasExtractor {
+    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+
     public extract(node: TypeAliasDeclaration, imports: ImportInfo[] | undefined): TypeAliasInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         return {
             name: node.getName(),
             text: node.getText(),
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             initializer: node.getTypeNode() === void 0 ? '' : node.getTypeNodeOrThrow().getText(),
             type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), void 0, imports),

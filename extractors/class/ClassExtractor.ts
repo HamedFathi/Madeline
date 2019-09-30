@@ -5,10 +5,12 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { PathUtils } from '../../utilities/PathUtils';
 
 export class ClassExtractor {
     constructor(
         private moduleExtractor: ModuleExtractor = new ModuleExtractor(),
+        private pathUtils: PathUtils = new PathUtils(),
         private decoratorExtractor: DecoratorExtractor = new DecoratorExtractor(),
         private typeParameterExtractor: TypeParameterExtractor = new TypeParameterExtractor(),
         private typescriptCommentExtractor: TypescriptCommentExtractor = new TypescriptCommentExtractor(),
@@ -21,6 +23,7 @@ export class ClassExtractor {
         const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
         const decorators = this.decoratorExtractor.extract(node, imports);
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         return {
             name: node.getName(),
             text: node.getText(),
@@ -33,6 +36,9 @@ export class ClassExtractor {
             modules: this.moduleExtractor.extract(node),
             typeParameters: this.typeParameterExtractor.extract(node, imports),
             hasComment: hasComment,
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
         };
     }
 }

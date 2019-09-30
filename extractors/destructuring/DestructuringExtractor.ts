@@ -3,6 +3,7 @@ import { DestructuringInfo } from './DestructuringInfo';
 import { DestructuringElementInfo } from './DestructuringElementInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
+import { PathUtils } from '../../utilities/PathUtils';
 
 /*
 const { cooked, expressions } = expr;
@@ -19,6 +20,8 @@ const { "some property": someProperty } = obj;
 const { "some property": someProperty } = obj as unknown as any as x;
 */
 export class DestructuringExtractor {
+    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+
     public extract(node: VariableStatement): DestructuringInfo[] | undefined {
         const result: DestructuringInfo[] = [];
         const modifiers = node.getModifiers().map(x => x.getText());
@@ -29,6 +32,7 @@ export class DestructuringExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
         const nodeText = node.getText();
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         node.getDeclarations().forEach(declaration => {
             const elements: DestructuringElementInfo[] = [];
             const bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
@@ -70,6 +74,9 @@ export class DestructuringExtractor {
                     typeReference: typeReference,
                     text: nodeText,
                     hasComment: hasComment,
+                    path: pathInfo.path,
+                    directory: pathInfo.directory,
+                    file: pathInfo.file,
                 });
             }
         });

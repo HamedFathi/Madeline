@@ -113,10 +113,14 @@ export * from './utilities/JsonUtils';
 export * from './utilities/MarkdownUtils';
 export * from './utilities/NunjucksUtils';
 export * from './utilities/ObjectUtils';
+export * from './utilities/PathInfo';
+export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+/*
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 new AureliaSourceFileUtils().save(tsconfig);
 const a = 1;
+*/

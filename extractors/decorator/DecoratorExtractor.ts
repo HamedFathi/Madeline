@@ -3,6 +3,7 @@ import { DecoratorInfo } from './DecoratorInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { DecoratableType } from './DecoratableType';
 import { ImportInfo } from '../import/ImportInfo';
+import { PathUtils } from '../../utilities/PathUtils';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -14,6 +15,8 @@ const allowedKinds: SyntaxKind[] = [
 ];
 
 export class DecoratorExtractor {
+    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+
     public extract(
         node: DecoratableType,
         imports: ImportInfo[] | undefined,
@@ -23,12 +26,15 @@ export class DecoratorExtractor {
             // the specified node does not allowed to have decorators
             return void 0;
         }
-
+        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
         let decorators = node.getDecorators().map(x => {
             return {
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
                 text: x.getText(),
+                path: pathInfo.path,
+                directory: pathInfo.directory,
+                file: pathInfo.file,
                 parameters:
                     x.getArguments().length === 0
                         ? void 0

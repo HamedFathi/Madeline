@@ -19,4 +19,7 @@ export interface FunctionInfo {
     variables: VariableInfo[] | undefined;
     text: string;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
 }

@@ -17,4 +17,7 @@ export interface CommonVariableInfo {
     kindName: string;
     typeReference: string | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
 }

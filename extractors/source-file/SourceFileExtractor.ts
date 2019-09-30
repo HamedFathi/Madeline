@@ -43,8 +43,11 @@ import { GetAccessorInfo } from '../get-accessor/GetAccessorInfo';
 import { LiteralInfo } from '../literal/LiteralInfo';
 import { DestructuringInfo } from '../destructuring/DestructuringInfo';
 import { CommonVariableInfo } from '../variable/CommonVariableInfo';
+import { PathUtils } from '../../utilities/PathUtils';
 
 export class SourceFileExtractor {
+    constructor(private pathUtils: PathUtils = new PathUtils()) {}
+
     private filterVariableInfo(node: VariableInfo, tags: string[] = ['@internal']): VariableInfo {
         const commons: CommonVariableInfo[] = [];
         const literals: LiteralInfo[] = [];
@@ -209,6 +212,9 @@ export class SourceFileExtractor {
                                     getAccessors: getAccessors,
                                     setAccessors: setAccessors,
                                     methods: methods,
+                                    path: pathInfo.path,
+                                    directory: pathInfo.directory,
+                                    file: pathInfo.file,
                                 });
                             }
                         }
@@ -245,10 +251,11 @@ export class SourceFileExtractor {
                 }
             });
         }
+        let pathInfo = this.pathUtils.getPathInfo(path);
         const result = {
-            path: path,
-            directory: path.substr(0, path.lastIndexOf('/')),
-            file: path.substr(path.lastIndexOf('/') + 1),
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
             isInNodeModules: sourceFile.isInNodeModules(),
@@ -337,15 +344,19 @@ export class SourceFileExtractor {
                             getAccessors: getAccessors,
                             setAccessors: setAccessors,
                             methods: methods,
+                            path: pathInfo.path,
+                            directory: pathInfo.directory,
+                            file: pathInfo.file,
                         });
                     }
                     break;
             }
         });
+        let pathInfo = this.pathUtils.getPathInfo(path);
         const result = {
-            path: path,
-            directory: path.substr(0, path.lastIndexOf('/')),
-            file: path.substr(path.lastIndexOf('/') + 1),
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
             isInNodeModules: sourceFile.isInNodeModules(),

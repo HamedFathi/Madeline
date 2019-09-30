@@ -5,4 +5,7 @@ export interface DecoratorInfo {
     parameters: DecoratorParameterInfo[] | undefined;
     isDecoratorFactory: boolean;
     text: string;
+    path: string;
+    file: string;
+    directory: string;
 }

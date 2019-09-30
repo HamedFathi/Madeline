@@ -15,4 +15,7 @@ export interface ClassInfo {
     modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
 }

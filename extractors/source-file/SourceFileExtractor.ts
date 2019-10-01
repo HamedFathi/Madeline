@@ -42,16 +42,14 @@ import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
 import { GetAccessorInfo } from '../get-accessor/GetAccessorInfo';
 import { LiteralInfo } from '../literal/LiteralInfo';
 import { DestructuringInfo } from '../destructuring/DestructuringInfo';
-import { PathUtils } from '../../utilities/PathUtils';
-import { HashUtils } from '../../utilities/HashUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 import { LiteralExtractor } from '../literal/LiteralExtractor';
 import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { MergedSourceFileInfo } from './MergedSourceFileInfo';
 
 export class SourceFileExtractor {
-    constructor(private hashUtils: HashUtils = new HashUtils(), private pathUtils: PathUtils = new PathUtils()) {}
-
     private includeTags(
         node:
             | ClassInfo
@@ -289,7 +287,7 @@ export class SourceFileExtractor {
                                     path: c.path,
                                     directory: c.directory,
                                     file: c.file,
-                                    id: this.hashUtils.getSha256(c.text)
+                                    id: getSha256(c.text)
                                 });
                             }
                         }
@@ -344,7 +342,7 @@ export class SourceFileExtractor {
                 }
             });
         }
-        let pathInfo = this.pathUtils.getPathInfo(sourceFile.getFilePath());
+        let pathInfo = getPathInfo(sourceFile.getFilePath());
         const result = {
             path: pathInfo.path,
             directory: pathInfo.directory,
@@ -364,7 +362,7 @@ export class SourceFileExtractor {
             destructuring: destructuring.length === 0 ? void 0 : destructuring,
             exportAssignments: exportAssignments,
             exports: exports,
-            id: this.hashUtils.getSha256(sourceFile.getFullText()),
+            id: getSha256(sourceFile.getFullText()),
         };
         return result;
     }
@@ -463,13 +461,13 @@ export class SourceFileExtractor {
                             path: info.path,
                             directory: info.directory,
                             file: info.file,
-                            id: this.hashUtils.getSha256(info.text)
+                            id: getSha256(info.text)
                         });
                     }
                     break;
             }
         });
-        let pathInfo = this.pathUtils.getPathInfo(sourceFile.getFilePath());
+        let pathInfo = getPathInfo(sourceFile.getFilePath());
         const result = {
             path: pathInfo.path,
             directory: pathInfo.directory,
@@ -489,7 +487,7 @@ export class SourceFileExtractor {
             destructuring: destructuring.length === 0 ? void 0 : destructuring,
             exportAssignments: exportAssignments,
             exports: exports,
-            id: this.hashUtils.getSha256(sourceFile.getFullText()),
+            id: getSha256(sourceFile.getFullText()),
         };
         return result;
     }

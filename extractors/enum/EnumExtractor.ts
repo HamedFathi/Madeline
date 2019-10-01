@@ -2,19 +2,18 @@ import { EnumDeclaration } from 'ts-morph';
 import { EnumInfo } from './EnumInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
-import { PathUtils } from '../../utilities/PathUtils';
-import { HashUtils } from '../../utilities/HashUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 export class EnumExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(node: EnumDeclaration): EnumInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         return {
-            id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
+            id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isConst: node.isConstEnum(),

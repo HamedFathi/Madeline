@@ -31,8 +31,8 @@ import { LiteralExpressionInfo } from './LiteralExpressionInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ImportInfo } from '../import/ImportInfo';
-import { PathUtils } from '../../utilities/PathUtils';
-import { HashUtils } from '../../utilities/HashUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 /*
 const obj = {
@@ -113,14 +113,13 @@ export const BasicConfiguration = {
 };
 */
 export class LiteralExtractor {
-    constructor(private pathUtils: PathUtils = new PathUtils(), private hashUtils: HashUtils = new HashUtils()) {}
 
     public extract(node: VariableStatement, imports: ImportInfo[] | undefined): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const pathInfo = this.pathUtils.getPathInfo(node.getSourceFile().getFilePath());
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = void 0;
@@ -140,7 +139,7 @@ export class LiteralExtractor {
             if (objectLiteral) {
                 const elements = this.getExpressionInfo(objectLiteral, typeReference, imports);
                 result.push({
-                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
+                    id: getSha256(node.getFullText() + pathInfo.path),
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
                     text: node.getText(),
@@ -168,7 +167,7 @@ export class LiteralExtractor {
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
-                    id: this.hashUtils.getSha256(node.getFullText() + pathInfo.path),
+                    id: getSha256(node.getFullText() + pathInfo.path),
                     elements: members,
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
@@ -237,7 +236,7 @@ export class LiteralExtractor {
                     const shorthandPropertyAssignment = x as ShorthandPropertyAssignment;
                     const type = new TypeExtractor().extract(
                         shorthandPropertyAssignment.getType(),
-                        undefined,
+                        void 0,
                         typeReference,
                         imports,
                     );
@@ -254,7 +253,7 @@ export class LiteralExtractor {
                     const spreadAssignment = x as SpreadAssignment;
                     const type = new TypeExtractor().extract(
                         spreadAssignment.getType(),
-                        undefined,
+                        void 0,
                         typeReference,
                         imports,
                     );
@@ -290,10 +289,10 @@ export class LiteralExtractor {
                 }
             });
             return {
-                assignments: assignments.length === 0 ? undefined : assignments,
-                getAccessors: getAccessors.length === 0 ? undefined : getAccessors,
-                setAccessors: setAccessors.length === 0 ? undefined : setAccessors,
-                methods: methods.length === 0 ? undefined : methods,
+                assignments: assignments.length === 0 ? void 0 : assignments,
+                getAccessors: getAccessors.length === 0 ? void 0 : getAccessors,
+                setAccessors: setAccessors.length === 0 ? void 0 : setAccessors,
+                methods: methods.length === 0 ? void 0 : methods,
                 text: text,
                 isObjectLiteral: true,
             };
@@ -316,23 +315,23 @@ export class LiteralExtractor {
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  type: new TypeExtractor().extract(
-                                      y.getType(),
-                                      y.getTypeNode(),
-                                      typeReference,
-                                      imports,
-                                  ),
-                                  modifiers:
-                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
-                                  isOptional: y.isOptional(),
-                                  isRest: y.isRestParameter(),
-                                  isParameterProperty: y.isParameterProperty(),
-                                  initializer:
-                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
-                              };
-                          }),
+                            return {
+                                name: y.getName(),
+                                type: new TypeExtractor().extract(
+                                    y.getType(),
+                                    y.getTypeNode(),
+                                    typeReference,
+                                    imports,
+                                ),
+                                modifiers:
+                                    y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
+                                isOptional: y.isOptional(),
+                                isRest: y.isRestParameter(),
+                                isParameterProperty: y.isParameterProperty(),
+                                initializer:
+                                    y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
+                            };
+                        }),
             };
         } else
             return {

@@ -10,7 +10,7 @@ import { VariableSummaryMaker } from './VariableSummaryMaker';
 import { LiteralSummaryMaker } from './LiteralSummaryMaker';
 import { ExportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
 import { DestructuringSummaryMaker } from './DestructuringSummaryMaker';
-import { tab } from '../../../utilities/StringUtils';
+import { SummaryInfo } from './SummaryInfo';
 
 /*
 # Table of contents
@@ -146,24 +146,23 @@ export class SummaryMaker {
         return summaryDetailInfo;
     }
 
-    public make(sourceFile: ExportedSourceFileInfo, baseUrl?: string): string {
+    public make(sourceFile: ExportedSourceFileInfo, fileExtension = '.md', baseUrl?: string): SummaryInfo[] {
+        const result: SummaryInfo[] = [];
         const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
         const summaryGroup = _(summaryDetailInfo)
             .sortBy(x => x.folders)
             .groupBy(x => x.folders)
             .values()
             .value();
-        const lines: string[] = [];
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
-            lines.push(
-                tab(parents.length - 1) +
-                    '* [' +
-                    parents[parents.length - 1] +
-                    '](' +
-                    parents.join('/') +
-                    '/README.md)',
-            );
+            result.push({
+                baseUrl: baseUrl,
+                level: parents.length - 1,
+                extension: fileExtension,
+                title: parents[parents.length - 1],
+                url: parents.join('/') + '/README' + fileExtension,
+            });
             const sortedSummaryInfo = _(summaryInfo)
                 .sortBy(x => x.category, x => x.mdFileName)
                 .groupBy(x => x.category)
@@ -171,22 +170,24 @@ export class SummaryMaker {
                 .value();
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
-                lines.push(
-                    tab(parents.length) + '* [' + category + '](' + parents.join('/') + '/' + category + '/README.md)',
-                );
+                result.push({
+                    baseUrl: baseUrl,
+                    level: parents.length,
+                    extension: fileExtension,
+                    title: category,
+                    url: parents.join('/') + '/' + category + '/README' + fileExtension,
+                });
                 for (const iterator of summary) {
-                    lines.push(
-                        tab(parents.length + 1) +
-                            '* [' +
-                            iterator.mdFileName.replace('.md', '') +
-                            '](' +
-                            iterator.path +
-                            ')',
-                    );
+                    result.push({
+                        baseUrl: baseUrl,
+                        level: parents.length + 1,
+                        extension: fileExtension,
+                        title: iterator.mdFileName + fileExtension,
+                        url: iterator.path,
+                    });
                 }
             }
         }
-        const result = lines.join('\n');
         return result;
     }
 }

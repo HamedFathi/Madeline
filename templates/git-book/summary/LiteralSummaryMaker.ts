@@ -13,7 +13,7 @@ export class LiteralSummaryMaker {
                 directory: l.directory,
                 extension: l.extension,
             };
-            const mdFileName = l.name + '.md';
+            const mdFileName = l.name;
             const literalSummary = summaryRouter(pInfo, SummaryCategory.Literals, mdFileName, baseUrl);
             literalsInfo.push(literalSummary);
         }

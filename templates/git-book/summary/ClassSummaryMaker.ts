@@ -13,7 +13,7 @@ export class ClassSummaryMaker {
                 directory: c.directory,
                 extension: c.extension,
             };
-            const mdFileName = c.name + '.md';
+            const mdFileName = c.name || c.id;
             const classSummary = summaryRouter(pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
             classSummaryInfo.push(classSummary);
         }

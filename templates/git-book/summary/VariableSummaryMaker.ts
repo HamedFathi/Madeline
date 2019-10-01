@@ -13,7 +13,7 @@ export class VariableSummaryMaker {
                 directory: v.directory,
                 extension: v.extension,
             };
-            const mdFileName = v.name + '.md';
+            const mdFileName = v.name;
             const variableSummary = summaryRouter(pInfo, SummaryCategory.Variables, mdFileName, baseUrl);
             variablesInfo.push(variableSummary);
         }

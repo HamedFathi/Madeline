@@ -107,6 +107,7 @@ export * from './templates/git-book/summary/InterfaceSummaryMaker';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
 export * from './templates/git-book/summary/SummaryCategory';
 export * from './templates/git-book/summary/SummaryDetailInfo';
+export * from './templates/git-book/summary/SummaryInfo';
 export * from './templates/git-book/summary/SummaryMaker';
 export * from './templates/git-book/summary/SummaryRouter';
 export * from './templates/git-book/summary/TypeAliasSummaryMaker';
@@ -124,6 +125,7 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+/*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { Project } from 'ts-morph';
@@ -152,3 +154,4 @@ sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
+*/

@@ -14,7 +14,7 @@ export class EnumSummaryMaker {
                 directory: e.directory,
                 extension: e.extension,
             };
-            const mdFileName = e.name + '.md';
+            const mdFileName = e.name;
             const enumSummary = summaryRouter(pInfo, SummaryCategory.Enums, mdFileName, baseUrl);
             enumsInfo.push(enumSummary);
         }

@@ -14,7 +14,7 @@ export class InterfaceSummaryMaker {
                 directory: f.directory,
                 extension: f.extension,
             };
-            const mdFileName = f.name + '.md';
+            const mdFileName = f.name;
             const interfaceSummary = summaryRouter(pInfo, SummaryCategory.Interfaces, mdFileName, baseUrl);
             interfacesInfo.push(interfaceSummary);
         }

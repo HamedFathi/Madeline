@@ -1,11 +1,23 @@
-import { SourceFileInfo } from '../../../extractors/source-file/SourceFileInfo';
-import { TemplateOptions } from '../../TemplateOptions';
-import { TypeAliasTemplateInfo } from '../../api/type-alias/TypeAliasTemplateInfo';
+import { SummaryDetailInfo } from './SummaryDetailInfo';
+import { SummaryCategory } from './SummaryCategory';
+import { PathInfo } from '../../../utilities/PathInfo';
+import { summaryRouter } from './SummaryRouter';
+import { TypeAliasInfo } from '../../../extractors/type-alias/TypeAliasInfo';
 
 export class TypeAliasSummaryMaker {
-    public make(typeAliases: TypeAliasTemplateInfo[], options: TemplateOptions): string {
-        const lines: string[] = [];
-        typeAliases.forEach(ta => {});
-        return '';
+    public make(typeAliases: TypeAliasInfo[], baseUrl?: string): SummaryDetailInfo[] {
+        const aliasInfo: SummaryDetailInfo[] = [];
+        for (const ta of typeAliases) {
+            const pInfo: PathInfo = {
+                path: ta.path,
+                file: ta.file,
+                directory: ta.directory,
+                extension: ta.extension,
+            };
+            const mdFileName = ta.name;
+            const aliasSummary = summaryRouter(pInfo, SummaryCategory.TypeAliases, mdFileName, baseUrl);
+            aliasInfo.push(aliasSummary);
+        }
+        return aliasInfo;
     }
 }

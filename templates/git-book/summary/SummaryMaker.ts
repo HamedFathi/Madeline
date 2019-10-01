@@ -1,10 +1,17 @@
-import { SourceFileInfo } from '../../../extractors/source-file/SourceFileInfo';
-import { TemplateOptions } from '../../TemplateOptions';
 import * as _ from 'lodash';
-import { NamedExportInfo } from '../../../extractors/export/NamedExportInfo';
-import { MergedSourceFileInfo } from '../../../extractors/source-file/MergedSourceFileInfo';
+import { ExportedSourceFileInfo } from '../../../extractors/source-file/ExportedSourceFileInfo';
 import { ClassSummaryMaker } from './ClassSummaryMaker';
-import { PathInfo } from '../../../utilities/PathInfo';
+import { SummaryDetailInfo } from './SummaryDetailInfo';
+import { InterfaceSummaryMaker } from './InterfaceSummaryMaker';
+import { EnumSummaryMaker } from './EnumSummaryMaker';
+import { TypeAliasSummaryMaker } from './TypeAliasSummaryMaker';
+import { FunctionSummaryMaker } from './FunctionSummaryMaker';
+import { VariableSummaryMaker } from './VariableSummaryMaker';
+import { LiteralSummaryMaker } from './LiteralSummaryMaker';
+import { ExportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
+import { DestructuringSummaryMaker } from './DestructuringSummaryMaker';
+import { SummaryInfo } from './SummaryInfo';
+import { tab } from '../../../utilities/StringUtils';
 
 /*
 # Table of contents
@@ -69,16 +76,142 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
-    constructor(private classMaker = new ClassSummaryMaker()) {}
+    constructor(
+        private classMaker = new ClassSummaryMaker(),
+        private interfaceMaker = new InterfaceSummaryMaker(),
+        private enumMaker = new EnumSummaryMaker(),
+        private typeAliasMaker = new TypeAliasSummaryMaker(),
+        private functionMaker = new FunctionSummaryMaker(),
+        private variableMaker = new VariableSummaryMaker(),
+        private literalMaker = new LiteralSummaryMaker(),
+        private destructuringMaker = new DestructuringSummaryMaker(),
+        private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
+    ) {}
 
-    public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
-        const lines: string[] = [];
+    private getSummaryDetailInfo(sourceFile: ExportedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
+        const summaryDetailInfo: SummaryDetailInfo[] = [];
         if (sourceFile.classes) {
             const classes = this.classMaker.make(sourceFile.classes, baseUrl);
-            for (const c of classes) {
-                lines.push(c);
+            for (const iterator of classes) {
+                summaryDetailInfo.push(iterator);
             }
         }
-        return lines.join('\n');
+        if (sourceFile.interfaces) {
+            const interfaces = this.interfaceMaker.make(sourceFile.interfaces, baseUrl);
+            for (const iterator of interfaces) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.enums) {
+            const enums = this.enumMaker.make(sourceFile.enums, baseUrl);
+            for (const iterator of enums) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.typeAliases) {
+            const typeAliases = this.typeAliasMaker.make(sourceFile.typeAliases, baseUrl);
+            for (const iterator of typeAliases) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.functions) {
+            const functions = this.functionMaker.make(sourceFile.functions, baseUrl);
+            for (const iterator of functions) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.variables) {
+            const variables = this.variableMaker.make(sourceFile.variables, baseUrl);
+            for (const iterator of variables) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.literals) {
+            const literals = this.literalMaker.make(sourceFile.literals, baseUrl);
+            for (const iterator of literals) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.destructuring) {
+            const destructuring = this.destructuringMaker.make(sourceFile.destructuring, baseUrl);
+            for (const iterator of destructuring) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        if (sourceFile.exportAssignments) {
+            const assigns = this.exportAssignmentMaker.make(sourceFile.exportAssignments, baseUrl);
+            for (const iterator of assigns) {
+                summaryDetailInfo.push(iterator);
+            }
+        }
+        return summaryDetailInfo;
+    }
+
+    private beatifyName(name: string): string {
+        if (name.length <= 3) {
+            return name.toUpperCase();
+        } else {
+            return _.startCase(name.replace(/-/g, ' ')).replace(/\s+/g, '');
+        }
+    }
+
+    public make(sourceFile: ExportedSourceFileInfo, fileExtension = '.md', baseUrl?: string): SummaryInfo[] {
+        const result: SummaryInfo[] = [];
+        const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
+        const summaryGroup = _(summaryDetailInfo)
+            .sortBy(x => x.folders)
+            .groupBy(x => x.folders)
+            .values()
+            .value();
+        for (const summaryInfo of summaryGroup) {
+            const parents = summaryInfo[0].folders;
+            result.push({
+                baseUrl: baseUrl,
+                level: parents.length - 1,
+                extension: fileExtension,
+                title: this.beatifyName(parents[parents.length - 1]),
+                url: parents.join('/') + '/README' + fileExtension,
+            });
+            const sortedSummaryInfo = _(summaryInfo)
+                .sortBy(x => x.category, x => x.mdFileName)
+                .groupBy(x => x.category)
+                .values()
+                .value();
+            for (const summary of sortedSummaryInfo) {
+                const category = summary[0].category;
+                result.push({
+                    baseUrl: baseUrl,
+                    level: parents.length,
+                    extension: fileExtension,
+                    title: category,
+                    url: parents.join('/') + '/' + category + '/README' + fileExtension,
+                });
+                for (const iterator of summary) {
+                    result.push({
+                        baseUrl: baseUrl,
+                        level: parents.length + 1,
+                        extension: fileExtension,
+                        title: iterator.mdFileName,
+                        url: iterator.path + fileExtension,
+                    });
+                }
+            }
+        }
+        return result;
+    }
+
+    public write(summaryInfo: SummaryInfo[], fileExtension = '.md', titles?: string[], baseUrl?: string): string {
+        const result: string[] = [];
+        if (titles) {
+            for (const title of titles) {
+                result.push(title);
+            }
+        }
+        for (const summary of summaryInfo) {
+            const url = baseUrl ? `${baseUrl}/${summary.url}${fileExtension}` : `${summary.url}${fileExtension}`;
+            result.push(`${tab(summary.level)}* [${summary.title}](${url})`);
+        }
+        const output = result.join('\n');
+        return output;
     }
 }

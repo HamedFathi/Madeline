@@ -1,8 +1,7 @@
 export interface SummaryInfo {
-    baseUrl: string | undefined;
-    folders: string[];
-    sourceFileName: string;
-    category: string;
-    mdFileName: string;
-    path: string;
+    level: number;
+    title: string;
+    baseUrl?: string;
+    url: string;
+    extension?: string;
 }

@@ -68,7 +68,7 @@ export * from './extractors/property/PropertyInfo';
 export * from './extractors/set-accessor/SetAccessorExtractor';
 export * from './extractors/set-accessor/SetAccessorInfo';
 export * from './extractors/set-accessor/SetAccessorParameterInfo';
-export * from './extractors/source-file/MergedSourceFileInfo';
+export * from './extractors/source-file/ExportedSourceFileInfo';
 export * from './extractors/source-file/SourceFileClassInfo';
 export * from './extractors/source-file/SourceFileCoverageInfo';
 export * from './extractors/source-file/SourceFileExtractor';
@@ -106,6 +106,7 @@ export * from './templates/git-book/summary/FunctionSummaryMaker';
 export * from './templates/git-book/summary/InterfaceSummaryMaker';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
 export * from './templates/git-book/summary/SummaryCategory';
+export * from './templates/git-book/summary/SummaryDetailInfo';
 export * from './templates/git-book/summary/SummaryInfo';
 export * from './templates/git-book/summary/SummaryMaker';
 export * from './templates/git-book/summary/SummaryRouter';
@@ -131,7 +132,7 @@ import { Project } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
-const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 // new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
@@ -147,7 +148,8 @@ const sources = project
     .filter(x => !x.getFilePath().includes('e2e'));
 const src = new SourceFileExtractor().fetchAllExported(sources);
 if (src) {
-    const sum = new SummaryMaker().make(src, '');
+    const sum = new SummaryMaker().make(src);
+    const y = new SummaryMaker().write(sum);
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();

@@ -20,6 +20,7 @@ const comment = `
 * Description6.1
 * Description6.2
 * @tagname7 {type7} [initializer=name7] - description7
+* @tagname8 {type8} "a8 a8"."b8 b8"."c8 c8" - description8
 */
 `;
 

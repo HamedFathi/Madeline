@@ -1,11 +1,6 @@
-import { SourceFileInfo } from '../../../extractors/source-file/SourceFileInfo';
-import { TemplateOptions } from '../../TemplateOptions';
 import * as _ from 'lodash';
-import { NamedExportInfo } from '../../../extractors/export/NamedExportInfo';
 import { MergedSourceFileInfo } from '../../../extractors/source-file/MergedSourceFileInfo';
 import { ClassSummaryMaker } from './ClassSummaryMaker';
-import { PathInfo } from '../../../utilities/PathInfo';
-
 /*
 # Table of contents
 * [Why Aurelia](README.md)
@@ -76,7 +71,6 @@ export class SummaryMaker {
         if (sourceFile.classes) {
             const classes = this.classMaker.make(sourceFile.classes, baseUrl);
             for (const c of classes) {
-                lines.push(c);
             }
         }
         return lines.join('\n');

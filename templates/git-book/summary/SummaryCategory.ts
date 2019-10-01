@@ -7,4 +7,5 @@ export enum SummaryCategory {
     Variables = 'Variables',
     Literals = 'Literals',
     Destructuring = 'Destructuring',
+    ExportAssignments = 'ExportAssignments',
 }

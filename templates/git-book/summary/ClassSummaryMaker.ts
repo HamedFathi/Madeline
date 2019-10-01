@@ -2,11 +2,10 @@ import { SourceFileClassInfo } from '../../../extractors/source-file/SourceFileC
 import { PathInfo } from '../../../utilities/PathInfo';
 import { summaryRouter } from './SummaryRouter';
 import { SummaryCategory } from './SummaryCategory';
+import { SummaryDetailInfo } from './SummaryDetailInfo';
 export class ClassSummaryMaker {
-    public make(classes: SourceFileClassInfo[], baseUrl?: string): string[] {
-        const lines: string[] = [];
-        // [type, name, path]
-        const info: [string, string, string][] = [];
+    public make(classes: SourceFileClassInfo[], baseUrl?: string): SummaryDetailInfo[] {
+        const classSummaryInfo: SummaryDetailInfo[] = [];
         for (const c of classes) {
             const pInfo: PathInfo = {
                 path: c.path,
@@ -15,9 +14,9 @@ export class ClassSummaryMaker {
                 extension: c.extension,
             };
             const mdFileName = c.name + '.md';
-            const p = summaryRouter(pInfo, SummaryCategory.Classes.toString(), mdFileName, baseUrl);
-            const a = 1;
+            const classSummary = summaryRouter(pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
+            classSummaryInfo.push(classSummary);
         }
-        return [];
+        return classSummaryInfo;
     }
 }

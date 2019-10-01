@@ -106,7 +106,7 @@ export * from './templates/git-book/summary/FunctionSummaryMaker';
 export * from './templates/git-book/summary/InterfaceSummaryMaker';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
 export * from './templates/git-book/summary/SummaryCategory';
-export * from './templates/git-book/summary/SummaryInfo';
+export * from './templates/git-book/summary/SummaryDetailInfo';
 export * from './templates/git-book/summary/SummaryMaker';
 export * from './templates/git-book/summary/SummaryRouter';
 export * from './templates/git-book/summary/TypeAliasSummaryMaker';

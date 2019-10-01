@@ -19,4 +19,5 @@ export interface DestructuringInfo {
     file: string;
     directory: string;
     id: string;
+    extension: string;
 }

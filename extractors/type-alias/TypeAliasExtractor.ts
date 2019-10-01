@@ -21,6 +21,7 @@ export class TypeAliasExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension: pathInfo.extension,
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             initializer: node.getTypeNode() === void 0 ? '' : node.getTypeNodeOrThrow().getText(),
             type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), void 0, imports),

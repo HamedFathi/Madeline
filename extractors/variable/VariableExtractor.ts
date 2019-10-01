@@ -64,6 +64,7 @@ export class VariableExtractor {
                 path: pathInfo.path,
                 directory: pathInfo.directory,
                 file: pathInfo.file,
+                extension: pathInfo.extension,
                 initializer:
                     declaration.getInitializer() === void 0
                         ? void 0

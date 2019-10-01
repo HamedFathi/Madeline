@@ -23,6 +23,7 @@ export class ExportAssignmentExtractor {
                         path: pathInfo.path,
                         directory: pathInfo.directory,
                         file: pathInfo.file,
+                        extension: pathInfo.extension,
                         trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                         leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                         modules: new ModuleExtractor().extract(x),

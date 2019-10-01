@@ -35,6 +35,7 @@ export class DecoratorExtractor {
                 path: pathInfo.path,
                 directory: pathInfo.directory,
                 file: pathInfo.file,
+                extension: pathInfo.extension,
                 parameters:
                     x.getArguments().length === 0
                         ? void 0

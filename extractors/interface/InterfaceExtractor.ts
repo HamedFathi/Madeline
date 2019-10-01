@@ -30,6 +30,7 @@ export class InterfaceExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension: pathInfo.extension,
             modules: new ModuleExtractor().extract(node),
             typeParameters: this.typeParameterExtractor.extract(node, imports),
             hasComment: hasComment,

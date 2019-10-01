@@ -124,9 +124,27 @@ export * from './utilities/StringUtils';
 /*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
+import { Project } from 'ts-morph';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
-new AureliaSourceFileUtils().saveMerged(tsconfig);
+// new AureliaSourceFileUtils().saveMerged(tsconfig);
+const project = new Project({
+    tsConfigFilePath: tsconfig,
+});
+const sources = project
+    .getSourceFiles()
+    .filter(x => x.getFilePath().includes('src'))
+    .filter(x => !x.getFilePath().includes('__tests__'))
+    .filter(x => !x.getFilePath().includes('node_modules'))
+    .filter(x => !x.getFilePath().includes('dist'))
+    .filter(x => !x.getFilePath().includes('examples'))
+    .filter(x => !x.getFilePath().includes('e2e'));
+const src = new SourceFileExtractor().fetchAllExported(sources);
+if (src) {
+    const sum = new SummaryMaker().make(src, x => '');
+}
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');

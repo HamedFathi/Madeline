@@ -19,4 +19,5 @@ export interface ClassInfo {
     path: string;
     file: string;
     directory: string;
+    extension: string;
 }

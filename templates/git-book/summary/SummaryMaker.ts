@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { NamedExportInfo } from '../../../extractors/export/NamedExportInfo';
 import { MergedSourceFileInfo } from '../../../extractors/source-file/MergedSourceFileInfo';
 import { ClassSummaryMaker } from './ClassSummaryMaker';
+import { PathInfo } from '../../../utilities/PathInfo';
 
 /*
 # Table of contents
@@ -70,10 +71,10 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 export class SummaryMaker {
     constructor(private classMaker = new ClassSummaryMaker()) {}
 
-    public make(sourceFile: MergedSourceFileInfo, options: TemplateOptions): string {
+    public make(sourceFile: MergedSourceFileInfo, route: (path: PathInfo) => string): string {
         const lines: string[] = [];
         if (sourceFile.classes) {
-            const classes = this.classMaker.make(sourceFile.classes, options);
+            const classes = this.classMaker.make(sourceFile.classes, route);
             for (const c of classes) {
                 lines.push(c);
             }

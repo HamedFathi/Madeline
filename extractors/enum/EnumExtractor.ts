@@ -24,6 +24,7 @@ export class EnumExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension: pathInfo.extension,
             members: node.getMembers().map(x => {
                 return {
                     name: x.getName(),

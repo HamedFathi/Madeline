@@ -287,6 +287,7 @@ export class SourceFileExtractor {
                                     path: c.path,
                                     directory: c.directory,
                                     file: c.file,
+                                    extension:c.extension,
                                     id: getSha256(c.text)
                                 });
                             }
@@ -347,6 +348,7 @@ export class SourceFileExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension:pathInfo.extension,
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
             isInNodeModules: sourceFile.isInNodeModules(),
@@ -461,6 +463,7 @@ export class SourceFileExtractor {
                             path: info.path,
                             directory: info.directory,
                             file: info.file,
+                            extension:info.extension,
                             id: getSha256(info.text)
                         });
                     }
@@ -472,6 +475,7 @@ export class SourceFileExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension:pathInfo.extension,
             isDeclarationFile: sourceFile.isDeclarationFile(),
             isFromExternalLibrary: sourceFile.isFromExternalLibrary(),
             isInNodeModules: sourceFile.isInNodeModules(),

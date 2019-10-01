@@ -148,6 +148,7 @@ export class LiteralExtractor {
                     path: pathInfo.path,
                     directory: pathInfo.directory,
                     file: pathInfo.file,
+                    extension: pathInfo.extension,
                     typeReference: typeReference,
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
@@ -174,6 +175,7 @@ export class LiteralExtractor {
                     path: pathInfo.path,
                     directory: pathInfo.directory,
                     file: pathInfo.file,
+                    extension: pathInfo.extension,
                     isArrayLiteral: true,
                     text: node.getText(),
                     typeReference: typeReference,

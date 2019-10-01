@@ -4,5 +4,5 @@ export interface TemplateOptions {
     append: boolean;
     removeAtSignTag: boolean;
     route: (from: FromTypeInfo) => string | undefined;
-    url: string;
+    baseUrl: string;
 }

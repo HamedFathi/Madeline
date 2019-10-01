@@ -40,6 +40,7 @@ export class ClassExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension: pathInfo.extension,
         };
     }
 }

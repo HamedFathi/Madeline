@@ -20,5 +20,6 @@ export interface VariableInfo {
     path: string;
     file: string;
     directory: string;
+    extension: string;
     id: string;
 }

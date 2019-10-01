@@ -11,6 +11,7 @@ import { LiteralSummaryMaker } from './LiteralSummaryMaker';
 import { ExportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
 import { DestructuringSummaryMaker } from './DestructuringSummaryMaker';
 import { SummaryInfo } from './SummaryInfo';
+import { tab } from '../../../utilities/StringUtils';
 
 /*
 # Table of contents
@@ -146,6 +147,14 @@ export class SummaryMaker {
         return summaryDetailInfo;
     }
 
+    private beatifyName(name: string): string {
+        if (name.length <= 3) {
+            return name.toUpperCase();
+        } else {
+            return _.startCase(name.replace(/-/g, ' ')).replace(/\s+/g, '');
+        }
+    }
+
     public make(sourceFile: ExportedSourceFileInfo, fileExtension = '.md', baseUrl?: string): SummaryInfo[] {
         const result: SummaryInfo[] = [];
         const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
@@ -160,7 +169,7 @@ export class SummaryMaker {
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
-                title: parents[parents.length - 1],
+                title: this.beatifyName(parents[parents.length - 1]),
                 url: parents.join('/') + '/README' + fileExtension,
             });
             const sortedSummaryInfo = _(summaryInfo)
@@ -192,9 +201,17 @@ export class SummaryMaker {
     }
 
     public write(summaryInfo: SummaryInfo[], fileExtension = '.md', titles?: string[], baseUrl?: string): string {
-        for (const summary of summaryInfo) {
-            
+        const result: string[] = [];
+        if (titles) {
+            for (const title of titles) {
+                result.push(title);
+            }
         }
-        return '';
+        for (const summary of summaryInfo) {
+            const url = baseUrl ? `${baseUrl}/${summary.url}${fileExtension}` : `${summary.url}${fileExtension}`;
+            result.push(`${tab(summary.level)}* [${summary.title}](${url})`);
+        }
+        const output = result.join('\n');
+        return output;
     }
 }

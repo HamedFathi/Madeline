@@ -125,13 +125,14 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+/*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { Project } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
-const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 // new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
@@ -147,9 +148,11 @@ const sources = project
     .filter(x => !x.getFilePath().includes('e2e'));
 const src = new SourceFileExtractor().fetchAllExported(sources);
 if (src) {
-    const sum = new SummaryMaker().make(src, '.md');
+    const sum = new SummaryMaker().make(src);
+    const y = new SummaryMaker().write(sum);
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
+*/

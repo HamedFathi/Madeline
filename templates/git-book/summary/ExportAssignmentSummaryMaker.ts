@@ -1,5 +1,3 @@
-import { SourceFileInfo } from '../../../extractors/source-file/SourceFileInfo';
-import { TemplateOptions } from '../../TemplateOptions';
 import { ExportAssignmentInfo } from '../../../extractors/export-assignment/ExportAssignmentInfo';
 import { SummaryDetailInfo } from './SummaryDetailInfo';
 import { SummaryCategory } from './SummaryCategory';

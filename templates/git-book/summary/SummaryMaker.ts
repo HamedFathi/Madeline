@@ -86,7 +86,7 @@ export class SummaryMaker {
         private literalMaker = new LiteralSummaryMaker(),
         private destructuringMaker = new DestructuringSummaryMaker(),
         private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
-    ) {}
+    ) { }
 
     private getSummaryDetailInfo(sourceFile: ExportedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
         const summaryDetailInfo: SummaryDetailInfo[] = [];
@@ -200,7 +200,7 @@ export class SummaryMaker {
         return result;
     }
 
-    public write(summaryInfo: SummaryInfo[], fileExtension = '.md', titles?: string[], baseUrl?: string): string {
+    public write(summaryInfo: SummaryInfo[], titles?: string[], baseUrl?: string): string {
         const result: string[] = [];
         if (titles) {
             for (const title of titles) {
@@ -208,7 +208,7 @@ export class SummaryMaker {
             }
         }
         for (const summary of summaryInfo) {
-            const url = baseUrl ? `${baseUrl}/${summary.url}${fileExtension}` : `${summary.url}${fileExtension}`;
+            const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
             result.push(`${tab(summary.level)}* [${summary.title}](${url})`);
         }
         const output = result.join('\n');

@@ -47,7 +47,7 @@ import { getSha256 } from '../../utilities/HashUtils';
 import { LiteralExtractor } from '../literal/LiteralExtractor';
 import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
-import { MergedSourceFileInfo } from './MergedSourceFileInfo';
+import { ExportedSourceFileInfo } from './ExportedSourceFileInfo';
 
 export class SourceFileExtractor {
     private includeTags(
@@ -103,7 +103,7 @@ export class SourceFileExtractor {
         return result.length === 0 ? void 0 : result;
     }
 
-    public fetchAllExported(sourceFiles: SourceFile[]): MergedSourceFileInfo {
+    public fetchAllExported(sourceFiles: SourceFile[]): ExportedSourceFileInfo {
         const processed: string[] = [];
         const classes: SourceFileClassInfo[] = [];
         const enums: EnumInfo[] = [];

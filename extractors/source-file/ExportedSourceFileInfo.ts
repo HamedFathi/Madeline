@@ -7,7 +7,7 @@ import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { LiteralInfo } from '../literal/LiteralInfo';
 import { DestructuringInfo } from '../destructuring/DestructuringInfo';
-export interface MergedSourceFileInfo {
+export interface ExportedSourceFileInfo {
     classes: SourceFileClassInfo[] | undefined;
     enums: EnumInfo[] | undefined;
     functions: FunctionInfo[] | undefined;

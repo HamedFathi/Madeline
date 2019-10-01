@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { MergedSourceFileInfo } from '../../../extractors/source-file/MergedSourceFileInfo';
+import { ExportedSourceFileInfo } from '../../../extractors/source-file/ExportedSourceFileInfo';
 import { ClassSummaryMaker } from './ClassSummaryMaker';
 import { SummaryDetailInfo } from './SummaryDetailInfo';
 import { InterfaceSummaryMaker } from './InterfaceSummaryMaker';
@@ -85,7 +85,7 @@ export class SummaryMaker {
         private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
     ) {}
 
-    private getSummaryDetailInfo(sourceFile: MergedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
+    private getSummaryDetailInfo(sourceFile: ExportedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
         const summaryDetailInfo: SummaryDetailInfo[] = [];
         if (sourceFile.classes) {
             const classes = this.classMaker.make(sourceFile.classes, baseUrl);
@@ -144,7 +144,7 @@ export class SummaryMaker {
         return summaryDetailInfo;
     }
 
-    public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
+    public make(sourceFile: ExportedSourceFileInfo, baseUrl?: string): string {
         const lines: string[] = [];
         const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
         const summaryGroup = _(summaryDetailInfo)

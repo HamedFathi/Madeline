@@ -16,7 +16,6 @@ const allowedKinds: SyntaxKind[] = [
 ];
 
 export class DecoratorExtractor {
-
     public extract(
         node: DecoratableType,
         imports: ImportInfo[] | undefined,
@@ -40,11 +39,11 @@ export class DecoratorExtractor {
                     x.getArguments().length === 0
                         ? void 0
                         : x.getArguments().map(x => {
-                            return {
-                                value: x.getText(),
-                                type: new TypeExtractor().extract(x.getType(), void 0, void 0, imports),
-                            };
-                        }),
+                              return {
+                                  value: x.getText(),
+                                  type: new TypeExtractor().extract(x.getType(), void 0, void 0, imports),
+                              };
+                          }),
             };
         });
 

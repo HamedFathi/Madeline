@@ -113,7 +113,6 @@ export const BasicConfiguration = {
 };
 */
 export class LiteralExtractor {
-
     public extract(node: VariableStatement, imports: ImportInfo[] | undefined): LiteralInfo[] | undefined {
         const result: LiteralInfo[] = [];
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -315,23 +314,23 @@ export class LiteralExtractor {
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                type: new TypeExtractor().extract(
-                                    y.getType(),
-                                    y.getTypeNode(),
-                                    typeReference,
-                                    imports,
-                                ),
-                                modifiers:
-                                    y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
-                                isOptional: y.isOptional(),
-                                isRest: y.isRestParameter(),
-                                isParameterProperty: y.isParameterProperty(),
-                                initializer:
-                                    y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  type: new TypeExtractor().extract(
+                                      y.getType(),
+                                      y.getTypeNode(),
+                                      typeReference,
+                                      imports,
+                                  ),
+                                  modifiers:
+                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
+                                  isOptional: y.isOptional(),
+                                  isRest: y.isRestParameter(),
+                                  isParameterProperty: y.isParameterProperty(),
+                                  initializer:
+                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
+                              };
+                          }),
             };
         } else
             return {

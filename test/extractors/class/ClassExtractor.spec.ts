@@ -91,7 +91,7 @@ describe('Class Extractor', () => {
         ];
 
         const fakeDecoratorExtractor = {
-            extract: function (
+            extract: function(
                 /* eslint-disable */
                 node: DecoratableType,
                 imports: undefined,

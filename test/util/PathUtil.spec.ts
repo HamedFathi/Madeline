@@ -1,16 +1,14 @@
-import {assert} from 'chai';
+import { assert } from 'chai';
 import { getPathInfo } from '../../utilities/PathUtils';
 
-describe( 'path utils' , () =>{
+describe('path utils', () => {
+    it('should return directory and file name', () => {
+        const sut = '/dev/playground/sample.ts';
 
-    it('should return directory and file name' , () =>{
+        const result = getPathInfo(sut);
 
-        var sut = '/dev/playground/sample.ts';
-
-        var result = getPathInfo(sut);
-
-        assert.equal(result.file , "sample.ts");
-        assert.equal(result.directory , "/dev/playground");
+        assert.equal(result.file, 'sample.ts');
+        assert.equal(result.directory, '/dev/playground');
         assert.equal(result.path, sut);
     });
 });

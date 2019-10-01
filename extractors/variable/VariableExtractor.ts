@@ -21,7 +21,6 @@ import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 
 export class VariableExtractor {
-
     public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
         if (declarationList) {
@@ -106,23 +105,23 @@ export class VariableExtractor {
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                type: new TypeExtractor().extract(
-                                    y.getType(),
-                                    y.getTypeNode(),
-                                    typeReference,
-                                    imports,
-                                ),
-                                modifiers:
-                                    y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
-                                isOptional: y.isOptional(),
-                                isRest: y.isRestParameter(),
-                                isParameterProperty: y.isParameterProperty(),
-                                initializer:
-                                    y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  type: new TypeExtractor().extract(
+                                      y.getType(),
+                                      y.getTypeNode(),
+                                      typeReference,
+                                      imports,
+                                  ),
+                                  modifiers:
+                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
+                                  isOptional: y.isOptional(),
+                                  isRest: y.isRestParameter(),
+                                  isParameterProperty: y.isParameterProperty(),
+                                  initializer:
+                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
+                              };
+                          }),
             };
         } else return node.getText();
     }

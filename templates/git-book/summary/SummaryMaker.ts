@@ -4,14 +4,12 @@ import { ClassSummaryMaker } from './ClassSummaryMaker';
 import { SummaryDetailInfo } from './SummaryDetailInfo';
 import { InterfaceSummaryMaker } from './InterfaceSummaryMaker';
 import { EnumSummaryMaker } from './EnumSummaryMaker';
-import {
-    TypeAliasSummaryMaker,
-    FunctionSummaryMaker,
-    VariableSummaryMaker,
-    LiteralSummaryMaker,
-    DestructuringSummaryMaker,
-    ExportAssignmentSummaryMaker,
-} from '../../..';
+import { TypeAliasSummaryMaker } from './TypeAliasSummaryMaker';
+import { FunctionSummaryMaker } from './FunctionSummaryMaker';
+import { VariableSummaryMaker } from './VariableSummaryMaker';
+import { LiteralSummaryMaker } from './LiteralSummaryMaker';
+import { ExportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
+import { DestructuringSummaryMaker } from './DestructuringSummaryMaker';
 /*
 # Table of contents
 * [Why Aurelia](README.md)
@@ -87,63 +85,73 @@ export class SummaryMaker {
         private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
     ) {}
 
-    public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
-        const lines: string[] = [];
-        const info: SummaryDetailInfo[] = [];
+    private getSummaryDetailInfo(sourceFile: MergedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
+        const summaryDetailInfo: SummaryDetailInfo[] = [];
         if (sourceFile.classes) {
             const classes = this.classMaker.make(sourceFile.classes, baseUrl);
             for (const iterator of classes) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.interfaces) {
             const interfaces = this.interfaceMaker.make(sourceFile.interfaces, baseUrl);
             for (const iterator of interfaces) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.enums) {
             const enums = this.enumMaker.make(sourceFile.enums, baseUrl);
             for (const iterator of enums) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.typeAliases) {
             const typeAliases = this.typeAliasMaker.make(sourceFile.typeAliases, baseUrl);
             for (const iterator of typeAliases) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.functions) {
             const functions = this.functionMaker.make(sourceFile.functions, baseUrl);
             for (const iterator of functions) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.variables) {
             const variables = this.variableMaker.make(sourceFile.variables, baseUrl);
             for (const iterator of variables) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.literals) {
             const literals = this.literalMaker.make(sourceFile.literals, baseUrl);
             for (const iterator of literals) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.destructuring) {
             const destructuring = this.destructuringMaker.make(sourceFile.destructuring, baseUrl);
             for (const iterator of destructuring) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
         if (sourceFile.exportAssignments) {
             const assigns = this.exportAssignmentMaker.make(sourceFile.exportAssignments, baseUrl);
             for (const iterator of assigns) {
-                info.push(iterator);
+                summaryDetailInfo.push(iterator);
             }
         }
+        return summaryDetailInfo;
+    }
+
+    public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
+        const lines: string[] = [];
+        const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
+        const summaryGroup = _(summaryDetailInfo)
+            .groupBy(x => x.folders)
+            .values()
+            .value();
+
         return lines.join('\n');
     }
 }

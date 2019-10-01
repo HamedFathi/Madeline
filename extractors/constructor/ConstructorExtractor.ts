@@ -7,11 +7,15 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 
 export class ConstructorExtractor {
+
+    constructor(private typeScriptCommentExtractor = new TypescriptCommentExtractor()) {
+    }
+
     public extract(node: ConstructorDeclaration, imports: ImportInfo[] | undefined): ConstructorInfo {
         const isImplementation = node.isImplementation();
         const isOverload = node.isOverload();
-        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
-        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+        const trailingComments = this.typeScriptCommentExtractor.extract(node.getTrailingCommentRanges());
+        const leadingComments = this.typeScriptCommentExtractor.extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modifiers = node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText());
         const params: ConstructorParameterInfo[] = node.getParameters().map(x => {

@@ -14,5 +14,6 @@ export interface LiteralInfo {
     path: string;
     file: string;
     directory: string;
+    extension: string;
     id: string;
 }

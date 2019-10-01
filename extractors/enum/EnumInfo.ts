@@ -15,5 +15,6 @@ export interface EnumInfo {
     path: string;
     file: string;
     directory: string;
+    extension: string;
     id: string;
 }

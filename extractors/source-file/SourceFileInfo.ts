@@ -29,5 +29,6 @@ export interface SourceFileInfo {
     path: string;
     file: string;
     directory: string;
+    extension: string;
     id: string;
 }

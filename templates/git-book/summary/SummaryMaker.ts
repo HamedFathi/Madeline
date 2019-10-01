@@ -2,6 +2,9 @@ import { SourceFileInfo } from '../../../extractors/source-file/SourceFileInfo';
 import { TemplateOptions } from '../../TemplateOptions';
 import * as _ from 'lodash';
 import { NamedExportInfo } from '../../../extractors/export/NamedExportInfo';
+import { MergedSourceFileInfo } from '../../../extractors/source-file/MergedSourceFileInfo';
+import { ClassSummaryMaker } from './ClassSummaryMaker';
+import { PathInfo } from '../../../utilities/PathInfo';
 
 /*
 # Table of contents
@@ -66,36 +69,16 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
-    public make(packageSourceFiles: SourceFileInfo[], options: TemplateOptions): string {
+    constructor(private classMaker = new ClassSummaryMaker()) {}
+
+    public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
         const lines: string[] = [];
-        const allExports = _.flattenDeep(packageSourceFiles.filter(x => x.exports != undefined).map(x => x.exports));
-        if (allExports && allExports.length > 0) {
-            allExports.forEach(exported => {
-                if (exported) {
-                    // Check whole the source code.
-                    if (exported.hasAsterisk) {
-                    }
-                    // Check just the specific names.
-                    else {
-                        const names = exported.namedExports;
-                        const module = exported.moduleSpecifier;
-                        let sources: SourceFileInfo[] = [];
-                        if (module) {
-                            const fileName = module.substr(module.lastIndexOf('/') + 1);
-                            sources = packageSourceFiles.filter(
-                                x => x.file.substr(0, x.file.indexOf('.')) === fileName,
-                            );
-                        }
-                        if (names && sources.length > 0) {
-                            names.forEach(n => {
-                                const item = n.name;
-                            });
-                        }
-                    }
-                }
-            });
-            packageSourceFiles.forEach(sourceFile => {});
+        if (sourceFile.classes) {
+            const classes = this.classMaker.make(sourceFile.classes, baseUrl);
+            for (const c of classes) {
+                lines.push(c);
+            }
         }
-        return '';
+        return lines.join('\n');
     }
 }

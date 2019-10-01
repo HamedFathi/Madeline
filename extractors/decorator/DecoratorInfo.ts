@@ -9,4 +9,5 @@ export interface DecoratorInfo {
     file: string;
     directory: string;
     id: string;
+    extension: string;
 }

@@ -19,6 +19,7 @@ export interface FunctionInfo {
     hasComment: boolean;
     path: string;
     file: string;
+    extension: string;
     directory: string;
     id: string;
 }

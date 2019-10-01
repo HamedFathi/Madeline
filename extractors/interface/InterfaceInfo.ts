@@ -25,6 +25,7 @@ export interface InterfaceInfo {
     hasComment: boolean;
     path: string;
     file: string;
+    extension: string;
     directory: string;
     id: string;
 }

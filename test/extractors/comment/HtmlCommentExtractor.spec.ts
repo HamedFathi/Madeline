@@ -25,7 +25,9 @@ describe('HTML Extractor', () => {
         };
 
         mockJsDocExtractor = {
+            /* eslint-disable */
             extract: function(data: string, kind: CommentKind): CommentInfo {
+            /* eslint-disable */
                 return mockCommentInfo;
             },
         };

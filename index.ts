@@ -98,14 +98,19 @@ export * from './templates/api/type-parameter/TypeParameterTemplate';
 export * from './templates/api/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/api/type-parameter/TypeParameterToMdConverter';
 export * from './templates/api/type/TypeToMdConverter';
-export * from './templates/git-book/summary/ClassMaker';
-export * from './templates/git-book/summary/EnumMaker';
-export * from './templates/git-book/summary/ExportAssignmentMaker';
-export * from './templates/git-book/summary/FunctionMaker';
-export * from './templates/git-book/summary/InterfaceMaker';
+export * from './templates/git-book/summary/ClassSummaryMaker';
+export * from './templates/git-book/summary/DestructuringSummaryMaker';
+export * from './templates/git-book/summary/EnumSummaryMaker';
+export * from './templates/git-book/summary/ExportAssignmentSummaryMaker';
+export * from './templates/git-book/summary/FunctionSummaryMaker';
+export * from './templates/git-book/summary/InterfaceSummaryMaker';
+export * from './templates/git-book/summary/LiteralSummaryMaker';
+export * from './templates/git-book/summary/SummaryCategory';
+export * from './templates/git-book/summary/SummaryInfo';
 export * from './templates/git-book/summary/SummaryMaker';
-export * from './templates/git-book/summary/TypeAliasMaker';
-export * from './templates/git-book/summary/VariableMaker';
+export * from './templates/git-book/summary/SummaryRouter';
+export * from './templates/git-book/summary/TypeAliasSummaryMaker';
+export * from './templates/git-book/summary/VariableSummaryMaker';
 export * from './templates/TemplateOptions';
 export * from './utilities/AureliaSourceFileUtils';
 export * from './utilities/FsUtils';
@@ -122,9 +127,28 @@ export * from './utilities/StringUtils';
 /*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+import { Project } from 'ts-morph';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
+import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
+const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
-new AureliaSourceFileUtils().saveMerged(tsconfig);
+// new AureliaSourceFileUtils().saveMerged(tsconfig);
+const project = new Project({
+    tsConfigFilePath: tsconfig,
+});
+const sources = project
+    .getSourceFiles()
+    .filter(x => x.getFilePath().includes('src'))
+    .filter(x => !x.getFilePath().includes('__tests__'))
+    .filter(x => !x.getFilePath().includes('node_modules'))
+    .filter(x => !x.getFilePath().includes('dist'))
+    .filter(x => !x.getFilePath().includes('examples'))
+    .filter(x => !x.getFilePath().includes('e2e'));
+const src = new SourceFileExtractor().fetchAllExported(sources);
+if (src) {
+    const sum = new SummaryMaker().make(src, '');
+}
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');

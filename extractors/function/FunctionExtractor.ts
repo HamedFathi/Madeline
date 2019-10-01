@@ -9,7 +9,6 @@ import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 
 export class FunctionExtractor {
-
     public extractFromExpression(node: FunctionExpression, imports: ImportInfo[] | undefined): FunctionInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
@@ -26,6 +25,7 @@ export class FunctionExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension: pathInfo.extension,
             hasComment: hasComment,
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isGenerator: node.isGenerator(),
@@ -37,18 +37,18 @@ export class FunctionExtractor {
                 node.getParameters().length === 0
                     ? void 0
                     : node.getParameters().map(x => {
-                        return {
-                            name: x.getName(),
-                            text: x.getText(),
-                            type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
-                            modifiers:
-                                x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
-                            isOptional: x.isOptional(),
-                            isRest: x.isRestParameter(),
-                            isParameterProperty: x.isParameterProperty(),
-                            initializer: x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
-                        };
-                    }),
+                          return {
+                              name: x.getName(),
+                              text: x.getText(),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
+                              modifiers:
+                                  x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
+                              isOptional: x.isOptional(),
+                              isRest: x.isRestParameter(),
+                              isParameterProperty: x.isParameterProperty(),
+                              initializer: x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
+                          };
+                      }),
         };
         return result;
     }
@@ -73,6 +73,7 @@ export class FunctionExtractor {
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
+            extension: pathInfo.extension,
             isImplementation: node.isImplementation(),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
@@ -83,18 +84,18 @@ export class FunctionExtractor {
                 node.getParameters().length === 0
                     ? void 0
                     : node.getParameters().map(x => {
-                        return {
-                            name: x.getName(),
-                            text: x.getText(),
-                            type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
-                            modifiers:
-                                x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
-                            isOptional: x.isOptional(),
-                            isRest: x.isRestParameter(),
-                            isParameterProperty: x.isParameterProperty(),
-                            initializer: x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
-                        };
-                    }),
+                          return {
+                              name: x.getName(),
+                              text: x.getText(),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
+                              modifiers:
+                                  x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
+                              isOptional: x.isOptional(),
+                              isRest: x.isRestParameter(),
+                              isParameterProperty: x.isParameterProperty(),
+                              initializer: x.getInitializer() === void 0 ? void 0 : x.getInitializerOrThrow().getText(),
+                          };
+                      }),
         };
         return result;
     }

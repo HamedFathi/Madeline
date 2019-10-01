@@ -6,8 +6,8 @@ describe('path utils', () => {
         const sut = '/dev/playground/sample.ts';
 
         const result = getPathInfo(sut);
-
-        assert.equal(result.file, 'sample.ts');
+        assert.equal(result.extension, '.ts');
+        assert.equal(result.file, 'sample');
         assert.equal(result.directory, '/dev/playground');
         assert.equal(result.path, sut);
     });

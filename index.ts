@@ -105,7 +105,10 @@ export * from './templates/git-book/summary/ExportAssignmentSummaryMaker';
 export * from './templates/git-book/summary/FunctionSummaryMaker';
 export * from './templates/git-book/summary/InterfaceSummaryMaker';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
+export * from './templates/git-book/summary/SummaryCategory';
+export * from './templates/git-book/summary/SummaryInfo';
 export * from './templates/git-book/summary/SummaryMaker';
+export * from './templates/git-book/summary/SummaryRouter';
 export * from './templates/git-book/summary/TypeAliasSummaryMaker';
 export * from './templates/git-book/summary/VariableSummaryMaker';
 export * from './templates/TemplateOptions';
@@ -127,6 +130,7 @@ import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { Project } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
+import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
 const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 // new AureliaSourceFileUtils().saveMerged(tsconfig);
@@ -143,7 +147,7 @@ const sources = project
     .filter(x => !x.getFilePath().includes('e2e'));
 const src = new SourceFileExtractor().fetchAllExported(sources);
 if (src) {
-    const sum = new SummaryMaker().make(src, x => '');
+    const sum = new SummaryMaker().make(src, '');
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();

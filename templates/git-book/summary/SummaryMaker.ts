@@ -71,10 +71,10 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 export class SummaryMaker {
     constructor(private classMaker = new ClassSummaryMaker()) {}
 
-    public make(sourceFile: MergedSourceFileInfo, route: (path: PathInfo) => string): string {
+    public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
         const lines: string[] = [];
         if (sourceFile.classes) {
-            const classes = this.classMaker.make(sourceFile.classes, route);
+            const classes = this.classMaker.make(sourceFile.classes, baseUrl);
             for (const c of classes) {
                 lines.push(c);
             }

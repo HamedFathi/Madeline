@@ -4,7 +4,6 @@ import { ClassExtractor } from '../../../extractors/class/ClassExtractor';
 import { ModuleExtractor } from '../../../extractors/module/ModuleExtractor';
 import { DecoratorInfo } from '../../../extractors/decorator/DecoratorInfo';
 import { DecoratableType } from '../../../extractors/decorator/DecoratableType';
-import { stringify } from 'querystring';
 
 describe('Class Extractor', () => {
     let project: Project;
@@ -87,6 +86,7 @@ describe('Class Extractor', () => {
                 file: '',
                 directory: '',
                 id: '',
+                extension: '',
             },
         ];
 

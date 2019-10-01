@@ -18,7 +18,7 @@ export const summaryRouter = function(
         category: category,
         folders: folders,
         sourceFileName: pathInfo.file.toLowerCase(),
-        mdFileName: mdFileName.toLowerCase(),
+        mdFileName: mdFileName,
         baseUrl: baseUrl,
         path: '',
     };
@@ -27,7 +27,7 @@ export const summaryRouter = function(
         ...summaryInfo.folders,
         summaryInfo.sourceFileName,
         summaryInfo.category.toString().toLowerCase(),
-        summaryInfo.mdFileName,
+        summaryInfo.mdFileName.toLowerCase(),
     ];
     summaryInfo.path = path.filter(x => x !== '').join('/');
     return summaryInfo;

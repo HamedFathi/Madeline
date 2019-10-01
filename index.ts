@@ -125,7 +125,6 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-/*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { Project } from 'ts-morph';
@@ -148,10 +147,9 @@ const sources = project
     .filter(x => !x.getFilePath().includes('e2e'));
 const src = new SourceFileExtractor().fetchAllExported(sources);
 if (src) {
-    const sum = new SummaryMaker().make(src, '');
+    const sum = new SummaryMaker().make(src, '.md');
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
-*/

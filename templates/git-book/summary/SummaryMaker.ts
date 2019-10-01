@@ -182,12 +182,19 @@ export class SummaryMaker {
                         baseUrl: baseUrl,
                         level: parents.length + 1,
                         extension: fileExtension,
-                        title: iterator.mdFileName + fileExtension,
-                        url: iterator.path,
+                        title: iterator.mdFileName,
+                        url: iterator.path + fileExtension,
                     });
                 }
             }
         }
         return result;
+    }
+
+    public write(summaryInfo: SummaryInfo[], fileExtension = '.md', titles?: string[], baseUrl?: string): string {
+        for (const summary of summaryInfo) {
+            
+        }
+        return '';
     }
 }

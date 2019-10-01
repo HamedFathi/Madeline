@@ -1,6 +1,17 @@
 import * as _ from 'lodash';
 import { MergedSourceFileInfo } from '../../../extractors/source-file/MergedSourceFileInfo';
 import { ClassSummaryMaker } from './ClassSummaryMaker';
+import { SummaryDetailInfo } from './SummaryDetailInfo';
+import { InterfaceSummaryMaker } from './InterfaceSummaryMaker';
+import { EnumSummaryMaker } from './EnumSummaryMaker';
+import {
+    TypeAliasSummaryMaker,
+    FunctionSummaryMaker,
+    VariableSummaryMaker,
+    LiteralSummaryMaker,
+    DestructuringSummaryMaker,
+    ExportAssignmentSummaryMaker,
+} from '../../..';
 /*
 # Table of contents
 * [Why Aurelia](README.md)
@@ -64,13 +75,73 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
-    constructor(private classMaker = new ClassSummaryMaker()) {}
+    constructor(
+        private classMaker = new ClassSummaryMaker(),
+        private interfaceMaker = new InterfaceSummaryMaker(),
+        private enumMaker = new EnumSummaryMaker(),
+        private typeAliasMaker = new TypeAliasSummaryMaker(),
+        private functionMaker = new FunctionSummaryMaker(),
+        private variableMaker = new VariableSummaryMaker(),
+        private literalMaker = new LiteralSummaryMaker(),
+        private destructuringMaker = new DestructuringSummaryMaker(),
+        private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
+    ) {}
 
     public make(sourceFile: MergedSourceFileInfo, baseUrl?: string): string {
         const lines: string[] = [];
+        const info: SummaryDetailInfo[] = [];
         if (sourceFile.classes) {
             const classes = this.classMaker.make(sourceFile.classes, baseUrl);
-            for (const c of classes) {
+            for (const iterator of classes) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.interfaces) {
+            const interfaces = this.interfaceMaker.make(sourceFile.interfaces, baseUrl);
+            for (const iterator of interfaces) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.enums) {
+            const enums = this.enumMaker.make(sourceFile.enums, baseUrl);
+            for (const iterator of enums) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.typeAliases) {
+            const typeAliases = this.typeAliasMaker.make(sourceFile.typeAliases, baseUrl);
+            for (const iterator of typeAliases) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.functions) {
+            const functions = this.functionMaker.make(sourceFile.functions, baseUrl);
+            for (const iterator of functions) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.variables) {
+            const variables = this.variableMaker.make(sourceFile.variables, baseUrl);
+            for (const iterator of variables) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.literals) {
+            const literals = this.literalMaker.make(sourceFile.literals, baseUrl);
+            for (const iterator of literals) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.destructuring) {
+            const destructuring = this.destructuringMaker.make(sourceFile.destructuring, baseUrl);
+            for (const iterator of destructuring) {
+                info.push(iterator);
+            }
+        }
+        if (sourceFile.exportAssignments) {
+            const assigns = this.exportAssignmentMaker.make(sourceFile.exportAssignments, baseUrl);
+            for (const iterator of assigns) {
+                info.push(iterator);
             }
         }
         return lines.join('\n');

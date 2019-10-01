@@ -54,7 +54,7 @@ function nbsp(repetition?: number) {
 function tab(repetition?: number) {
     if (!repetition || repetition === 0) return '';
     const r = repetition && repetition > 0 ? repetition : 1;
-    return '\t'.repeat(r);
+    return '    '.repeat(r);
 }
 
 function getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {

@@ -10,6 +10,8 @@ import { VariableSummaryMaker } from './VariableSummaryMaker';
 import { LiteralSummaryMaker } from './LiteralSummaryMaker';
 import { ExportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
 import { DestructuringSummaryMaker } from './DestructuringSummaryMaker';
+import { tab } from '../../../utilities/StringUtils';
+
 /*
 # Table of contents
 * [Why Aurelia](README.md)
@@ -154,6 +156,14 @@ export class SummaryMaker {
         const lines: string[] = [];
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
+            lines.push(
+                tab(parents.length - 1) +
+                    '* [' +
+                    parents[parents.length - 1] +
+                    '](' +
+                    parents.join('/') +
+                    '/README.md)',
+            );
             const sortedSummaryInfo = _(summaryInfo)
                 .sortBy(x => x.category, x => x.mdFileName)
                 .groupBy(x => x.category)
@@ -161,11 +171,22 @@ export class SummaryMaker {
                 .value();
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
+                lines.push(
+                    tab(parents.length) + '* [' + category + '](' + parents.join('/') + '/' + category + '/README.md)',
+                );
                 for (const iterator of summary) {
-                    const a = 1;
+                    lines.push(
+                        tab(parents.length + 1) +
+                            '* [' +
+                            iterator.mdFileName.replace('.md', '') +
+                            '](' +
+                            iterator.path +
+                            ')',
+                    );
                 }
             }
         }
-        return lines.join('\n');
+        const result = lines.join('\n');
+        return result;
     }
 }

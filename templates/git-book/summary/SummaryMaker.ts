@@ -147,18 +147,23 @@ export class SummaryMaker {
     public make(sourceFile: ExportedSourceFileInfo, baseUrl?: string): string {
         const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
         const summaryGroup = _(summaryDetailInfo)
-            .sortBy(x => x.folders.join('/'))
+            .sortBy(x => x.folders)
             .groupBy(x => x.folders)
             .values()
             .value();
         const lines: string[] = [];
-        for (const summary of summaryGroup) {
-            const parents = summary[0].folders;
-            const sortedSummary = _(summary)
+        for (const summaryInfo of summaryGroup) {
+            const parents = summaryInfo[0].folders;
+            const sortedSummaryInfo = _(summaryInfo)
                 .sortBy(x => x.category, x => x.mdFileName)
+                .groupBy(x => x.category)
+                .values()
                 .value();
-            for (const iterator of sortedSummary) {
-                const a = 1;
+            for (const summary of sortedSummaryInfo) {
+                const category = summary[0].category;
+                for (const iterator of summary) {
+                    const a = 1;
+                }
             }
         }
         return lines.join('\n');

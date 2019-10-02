@@ -41,7 +41,8 @@
       "**/*.js"
     ],
     "reporter": [
-      "html"
+      "html",
+      "clover"
     ],
     "all": true
   },

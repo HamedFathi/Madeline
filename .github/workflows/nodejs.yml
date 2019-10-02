@@ -22,13 +22,13 @@ jobs:
         npm install
         npm run build --if-present
         npm test
-        npm coverage
+        npm run coverage --if-present
       env:
         CI: true
     - uses: actions/checkout@master
     - uses: codecov/codecov-action@v1.0.2
       with:
         token: ${{secrets.CODECOV_TOKEN}} #required
-        file: ./coverage.xml #optional
+        file: ./coverage/clover.xml #optional
         flags: unittests #optional
         name: codecov-umbrella #optional

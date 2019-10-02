@@ -101,7 +101,8 @@ describe('Constructor Extractor', () => {
 
         const sut = `export class G {
             constructor();
-            constructor(age: number);`;
+            constructor(age: number){};
+        }`;
 
         const file = project.createSourceFile('sample.ts', sut);
 

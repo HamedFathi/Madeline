@@ -17,10 +17,18 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: npm install, build, test, and coverage
       run: |
         npm install
         npm run build --if-present
         npm test
+        npm coverage
       env:
         CI: true
+    - uses: actions/checkout@master
+    - uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}} #required
+        file: ./coverage.xml #optional
+        flags: unittests #optional
+        name: codecov-umbrella #optional

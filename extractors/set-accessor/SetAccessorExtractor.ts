@@ -14,15 +14,14 @@ export class SetAccessorExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const typeParameters = new TypeParameterExtractor().extract(node, imports);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = node.getFullText();
         return {
-            id: getSha256(text + pathInfo.path),
+            id: getSha256(node.getFullText() + pathInfo.path),
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,
             extension: pathInfo.extension,
             name: node.getName(),
-            text: text,
+            text: node.getText(),
             parameter: node.getParameters().map(y => {
                 return {
                     name: y.getName(),

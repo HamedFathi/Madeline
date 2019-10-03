@@ -30,7 +30,6 @@ export class DestructuringExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const nodeText = node.getFullText();
         node.getDeclarations().forEach(declaration => {
             const elements: DestructuringElementInfo[] = [];
             const bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
@@ -60,7 +59,7 @@ export class DestructuringExtractor {
                     });
                 });
                 result.push({
-                    id: getSha256(nodeText + pathInfo.path),
+                    id: getSha256(node.getFullText + pathInfo.path),
                     isArrayDestructuring: isArrayDestructuring,
                     elements: elements,
                     initializer: initializer,
@@ -71,7 +70,7 @@ export class DestructuringExtractor {
                     modifiers: modifiers,
                     modules: modules,
                     typeReference: typeReference,
-                    text: nodeText,
+                    text: node.getText(),
                     hasComment: hasComment,
                     path: pathInfo.path,
                     directory: pathInfo.directory,

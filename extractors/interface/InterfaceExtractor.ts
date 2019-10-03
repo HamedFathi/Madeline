@@ -19,11 +19,10 @@ export class InterfaceExtractor {
         const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
         const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const text = node.getFullText();
         const result: InterfaceInfo = {
-            id: getSha256(text + pathInfo.path),
+            id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
-            text: text,
+            text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,

@@ -41,7 +41,6 @@ export class VariableExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
-        const text = node.getFullText();
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== void 0;
             let typeReference: string | undefined = void 0;
@@ -51,7 +50,7 @@ export class VariableExtractor {
                 typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
             }
             variables.push({
-                id: getSha256(text + pathInfo.path),
+                id: getSha256(node.getFullText() + pathInfo.path),
                 name: declaration.getName(),
                 type: new TypeExtractor().extract(
                     declaration.getType(),
@@ -74,7 +73,7 @@ export class VariableExtractor {
                 leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                 hasComment: hasComment,
                 modules: modules,
-                text: text,
+                text: node.getText(),
                 typeReference: typeReference,
             });
         });

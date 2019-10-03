@@ -7,14 +7,13 @@ export class ExportExtractor {
     public extract(sourceFile: SourceFile): ExportInfo[] | undefined {
         const result = sourceFile.getExportDeclarations().map(x => {
             const pathInfo = getPathInfo(x.getSourceFile().getFilePath());
-            const text = x.getFullText();
             return {
-                id: getSha256(text + pathInfo.path),
+                id: getSha256(x.getFullText() + pathInfo.path),
                 path: pathInfo.path,
                 directory: pathInfo.directory,
                 file: pathInfo.file,
                 extension: pathInfo.extension,
-                text: text,
+                text: x.getText(),
                 hasComment:
                     new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length !== 0 ||
                     new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length !== 0,
@@ -32,16 +31,16 @@ export class ExportExtractor {
                     x.getNamedExports().length === 0
                         ? void 0
                         : x.getNamedExports().map(y => {
-                              return {
-                                  name: y.getName(),
-                                  alias:
-                                      y.getSymbol() === void 0
-                                          ? void 0
-                                          : y.getName() === y.getSymbolOrThrow().getName()
-                                          ? void 0
-                                          : y.getSymbolOrThrow().getName(),
-                              };
-                          }),
+                            return {
+                                name: y.getName(),
+                                alias:
+                                    y.getSymbol() === void 0
+                                        ? void 0
+                                        : y.getName() === y.getSymbolOrThrow().getName()
+                                            ? void 0
+                                            : y.getSymbolOrThrow().getName(),
+                            };
+                        }),
             };
         });
         return result.length === 0 ? void 0 : result;

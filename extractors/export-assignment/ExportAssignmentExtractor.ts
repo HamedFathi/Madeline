@@ -16,10 +16,9 @@ export class ExportAssignmentExtractor {
                     const trailingComments = new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges());
                     const leadingComments = new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges());
                     const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-                    const text = node.getFullText();
                     const expression: ExportAssignmentInfo = {
-                        id: getSha256(text + pathInfo.path),
-                        text: text,
+                        id: getSha256(node.getFullText() + pathInfo.path),
+                        text: node.getText(),
                         hasComment: hasComment,
                         path: pathInfo.path,
                         directory: pathInfo.directory,

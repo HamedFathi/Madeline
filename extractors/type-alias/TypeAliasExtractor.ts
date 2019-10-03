@@ -13,11 +13,10 @@ export class TypeAliasExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = node.getFullText();
         return {
-            id: getSha256(text + pathInfo.path),
+            id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
-            text: text,
+            text: node.getText(),
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,

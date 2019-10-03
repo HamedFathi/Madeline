@@ -34,10 +34,9 @@ export class TypeParameterExtractor {
         imports: ImportInfo[] | undefined,
     ): TypeParameterInfo[] | undefined {
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = node.getFullText();
         const result = node.getTypeParameters().map(y => {
             return {
-                id: getSha256(text + pathInfo.path),
+                id: getSha256(node.getFullText() + pathInfo.path),
                 path: pathInfo.path,
                 directory: pathInfo.directory,
                 file: pathInfo.file,

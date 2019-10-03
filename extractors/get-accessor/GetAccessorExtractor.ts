@@ -13,10 +13,9 @@ export class GetAccessorExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const typeParameters = new TypeParameterExtractor().extract(node, imports);
-        const text = node.getFullText();
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         return {
-            id: getSha256(text + pathInfo.path),
+            id: getSha256(node.getFullText() + pathInfo.path),
             path: pathInfo.path,
             directory: pathInfo.directory,
             file: pathInfo.file,

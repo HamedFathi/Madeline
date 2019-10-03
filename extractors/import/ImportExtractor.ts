@@ -12,7 +12,7 @@ export class ImportExtractor {
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
                     const importDeclaration = node as ImportDeclaration;
-                    const textDeclaration = importDeclaration.getFullText();
+                    const textDeclaration = importDeclaration.getText();
                     const moduleValue = importDeclaration.getModuleSpecifierValue();
                     const namedImports = importDeclaration.getNamedImports();
                     const defaultImport = importDeclaration.getDefaultImport();
@@ -27,7 +27,7 @@ export class ImportExtractor {
                             }
                             const kind = ImportKind.NamedImport;
                             result.push({
-                                id: getSha256(textDeclaration + pathInfo.path),
+                                id: getSha256(importDeclaration.getFullText() + pathInfo.path),
                                 name: name,
                                 alias: alias,
                                 module: moduleValue,
@@ -46,7 +46,7 @@ export class ImportExtractor {
                         const alias = void 0;
                         const kind = ImportKind.DefaultImport;
                         result.push({
-                            id: getSha256(textDeclaration + pathInfo.path),
+                            id: getSha256(importDeclaration.getFullText() + pathInfo.path),
                             name: name,
                             alias: alias,
                             module: moduleValue,
@@ -64,7 +64,7 @@ export class ImportExtractor {
                         const alias = void 0;
                         const kind = ImportKind.NamespaceImport;
                         result.push({
-                            id: getSha256(textDeclaration + pathInfo.path),
+                            id: getSha256(importDeclaration.getFullText() + pathInfo.path),
                             name: name,
                             alias: alias,
                             module: moduleValue,
@@ -81,11 +81,11 @@ export class ImportExtractor {
                 case SyntaxKind.ImportEqualsDeclaration:
                     const importEquals = node as ImportEqualsDeclaration;
                     const moduleRefValue = importEquals.getModuleReference().getText();
-                    const text = importEquals.getFullText();
+                    const text = importEquals.getText();
                     const name = importEquals.getName();
                     const kind = ImportKind.ImportEquals;
                     result.push({
-                        id: getSha256(text + pathInfo.path),
+                        id: getSha256(importEquals.getFullText() + pathInfo.path),
                         name: name,
                         alias: void 0,
                         module: moduleRefValue,

@@ -10,16 +10,15 @@ export class EnumExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const nodeText = node.getFullText();
         return {
-            id: getSha256(nodeText + pathInfo.path),
+            id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             isConst: node.isConstEnum(),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
-            text: nodeText,
+            text: node.getText(),
             hasComment: hasComment,
             path: pathInfo.path,
             directory: pathInfo.directory,
@@ -29,7 +28,7 @@ export class EnumExtractor {
                 return {
                     name: x.getName(),
                     value: x.getValue(),
-                    text: x.getFullText(),
+                    text: x.getText(),
                     hasComment:
                         new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length !== 0 ||
                         new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length !== 0,

@@ -132,9 +132,10 @@ import { Project } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
+import * as fse from 'fs-extra';
 const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
-// new AureliaSourceFileUtils().saveMerged(tsconfig);
+let src = new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
     tsConfigFilePath: tsconfig,
 });
@@ -146,10 +147,11 @@ const sources = project
     .filter(x => !x.getFilePath().includes('dist'))
     .filter(x => !x.getFilePath().includes('examples'))
     .filter(x => !x.getFilePath().includes('e2e'));
-const src = new SourceFileExtractor().fetchAllExported(sources);
 if (src) {
     const sum = new SummaryMaker().make(src);
-    const y = new SummaryMaker().write(sum);
+    const md = new SummaryMaker().write(sum);
+    fse.outputFileSync('packages/SUMMARY.md', md);
+
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();

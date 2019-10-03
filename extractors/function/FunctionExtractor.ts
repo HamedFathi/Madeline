@@ -7,7 +7,6 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 
 export class FunctionExtractor {
     public extractFromExpression(node: FunctionExpression, imports: ImportInfo[] | undefined): FunctionInfo {
@@ -15,7 +14,7 @@ export class FunctionExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         const returnType =
             node.getReturnType() === void 0
                 ? void 0
@@ -59,7 +58,7 @@ export class FunctionExtractor {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         const returnType =
             node.getReturnType() === void 0
                 ? void 0

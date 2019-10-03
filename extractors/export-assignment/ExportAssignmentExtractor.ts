@@ -4,7 +4,6 @@ import { ExportAssignmentInfo } from './ExportAssignmentInfo';
 import { ExportAssignment, SyntaxKind, SourceFile } from 'ts-morph';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 export class ExportAssignmentExtractor {
     public extract(sourceFile: SourceFile): ExportAssignmentInfo[] | undefined {
         const result: ExportAssignmentInfo[] = [];
@@ -17,7 +16,7 @@ export class ExportAssignmentExtractor {
                     const trailingComments = new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges());
                     const leadingComments = new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges());
                     const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-                    const text = prettify(node.getFullText());
+                    const text = node.getFullText();
                     const expression: ExportAssignmentInfo = {
                         id: getSha256(text + pathInfo.path),
                         text: text,

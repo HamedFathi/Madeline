@@ -48,7 +48,6 @@ import { LiteralExtractor } from '../literal/LiteralExtractor';
 import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { ExportedSourceFileInfo } from './ExportedSourceFileInfo';
-import { prettify } from '../../utilities/PrettierUtils';
 export class SourceFileExtractor {
     private includeTags(
         node:
@@ -364,7 +363,7 @@ export class SourceFileExtractor {
             destructuring: destructuring.length === 0 ? void 0 : destructuring,
             exportAssignments: exportAssignments,
             exports: exports,
-            id: getSha256(prettify(sourceFile.getFullText())),
+            id: getSha256(sourceFile.getFullText()),
         };
         return result;
     }
@@ -491,7 +490,7 @@ export class SourceFileExtractor {
             destructuring: destructuring.length === 0 ? void 0 : destructuring,
             exportAssignments: exportAssignments,
             exports: exports,
-            id: getSha256(prettify(sourceFile.getFullText())),
+            id: getSha256(sourceFile.getFullText()),
         };
         return result;
     }

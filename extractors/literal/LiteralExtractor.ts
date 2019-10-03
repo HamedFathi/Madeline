@@ -33,7 +33,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 /*
 const obj = {
     propertyAssignment2: function(x: number) {},
@@ -119,7 +118,7 @@ export class LiteralExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = void 0;

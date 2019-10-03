@@ -7,7 +7,6 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 export class InterfaceExtractor {
     constructor(
         private typeParameterExtractor = new TypeParameterExtractor(),
@@ -20,7 +19,7 @@ export class InterfaceExtractor {
         const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
         const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         const result: InterfaceInfo = {
             id: getSha256(text + pathInfo.path),
             name: node.getName(),

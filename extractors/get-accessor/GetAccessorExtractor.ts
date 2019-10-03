@@ -5,7 +5,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
-import { prettify } from '../../utilities/PrettierUtils';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 export class GetAccessorExtractor {
@@ -14,7 +13,7 @@ export class GetAccessorExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const typeParameters = new TypeParameterExtractor().extract(node, imports);
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         return {
             id: getSha256(text + pathInfo.path),

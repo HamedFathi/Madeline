@@ -14,7 +14,6 @@ import {
 import { TypeParameterInfo } from './TypeParameterInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { ImportInfo } from '../import/ImportInfo';
-import { prettify } from '../../utilities/PrettierUtils';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 
@@ -35,7 +34,7 @@ export class TypeParameterExtractor {
         imports: ImportInfo[] | undefined,
     ): TypeParameterInfo[] | undefined {
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         const result = node.getTypeParameters().map(y => {
             return {
                 id: getSha256(text + pathInfo.path),

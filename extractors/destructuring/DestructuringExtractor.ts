@@ -5,7 +5,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 /*
 const { cooked, expressions } = expr;
 const {"some property": someProperty} = obj;
@@ -31,7 +30,7 @@ export class DestructuringExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const nodeText = prettify(node.getFullText());
+        const nodeText = node.getFullText();
         node.getDeclarations().forEach(declaration => {
             const elements: DestructuringElementInfo[] = [];
             const bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);

@@ -7,14 +7,13 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 export class TypeAliasExtractor {
     public extract(node: TypeAliasDeclaration, imports: ImportInfo[] | undefined): TypeAliasInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         return {
             id: getSha256(text + pathInfo.path),
             name: node.getName(),

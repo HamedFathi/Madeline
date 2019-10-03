@@ -1,7 +1,6 @@
 import { SyntaxKind, ImportDeclaration, SourceFile, ImportEqualsDeclaration } from 'ts-morph';
 import { ImportInfo } from './ImportInfo';
 import { ImportKind } from './ImportKind';
-import { prettify } from '../../utilities/PrettierUtils';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 
@@ -13,7 +12,7 @@ export class ImportExtractor {
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
                     const importDeclaration = node as ImportDeclaration;
-                    const textDeclaration = prettify(importDeclaration.getFullText());
+                    const textDeclaration = importDeclaration.getFullText();
                     const moduleValue = importDeclaration.getModuleSpecifierValue();
                     const namedImports = importDeclaration.getNamedImports();
                     const defaultImport = importDeclaration.getDefaultImport();
@@ -82,7 +81,7 @@ export class ImportExtractor {
                 case SyntaxKind.ImportEqualsDeclaration:
                     const importEquals = node as ImportEqualsDeclaration;
                     const moduleRefValue = importEquals.getModuleReference().getText();
-                    const text = prettify(importEquals.getFullText());
+                    const text = importEquals.getFullText();
                     const name = importEquals.getName();
                     const kind = ImportKind.ImportEquals;
                     result.push({

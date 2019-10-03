@@ -4,14 +4,13 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { prettify } from '../../utilities/PrettierUtils';
 export class EnumExtractor {
     public extract(node: EnumDeclaration): EnumInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const nodeText = prettify(node.getFullText());
+        const nodeText = node.getFullText();
         return {
             id: getSha256(nodeText + pathInfo.path),
             name: node.getName(),

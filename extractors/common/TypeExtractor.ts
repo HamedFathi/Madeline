@@ -12,7 +12,7 @@ export class TypeExtractor {
         imports: ImportInfo[] | undefined,
     ): TypeInfo {
         let value = '';
-        const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!]+)/gm;
+        const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!\s]+)/gm;
         const text = type.getText();
         const typeNodeText = typeNode === void 0 ? void 0 : typeNode.getText();
         const fromAll: FromTypeInfo[] = [];

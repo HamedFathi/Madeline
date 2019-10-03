@@ -1,14 +1,13 @@
 import { SourceFile } from 'ts-morph';
 import { ExportInfo } from './ExportInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
-import { prettify } from '../../utilities/PrettierUtils';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 export class ExportExtractor {
     public extract(sourceFile: SourceFile): ExportInfo[] | undefined {
         const result = sourceFile.getExportDeclarations().map(x => {
             const pathInfo = getPathInfo(x.getSourceFile().getFilePath());
-            const text = prettify(x.getFullText());
+            const text = x.getFullText();
             return {
                 id: getSha256(text + pathInfo.path),
                 path: pathInfo.path,

@@ -5,7 +5,6 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { SetAccessorInfo } from './SetAccessorInfo';
 import { ImportInfo } from '../import/ImportInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
-import { prettify } from '../../utilities/PrettierUtils';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 export class SetAccessorExtractor {
@@ -15,7 +14,7 @@ export class SetAccessorExtractor {
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const typeParameters = new TypeParameterExtractor().extract(node, imports);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const text = prettify(node.getFullText());
+        const text = node.getFullText();
         return {
             id: getSha256(text + pathInfo.path),
             path: pathInfo.path,

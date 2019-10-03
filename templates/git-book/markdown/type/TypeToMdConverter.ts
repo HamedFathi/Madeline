@@ -9,12 +9,13 @@ export class TypeToMdConverter {
     public convert(
         id: string,
         typeInfo: TypeInfo,
-        map: (id: string, from: FromTypeInfo[], baseUrl?: string) => TypeMapInfo,
+        map: (id: string, from: FromTypeInfo[], baseUrl?: string) => TypeMapInfo[],
         baseUrl?: string,
     ): string {
         if (typeInfo.from) {
             const typeMapInfo = map(id, typeInfo.from, baseUrl);
         } else {
+
         }
         return '';
     }

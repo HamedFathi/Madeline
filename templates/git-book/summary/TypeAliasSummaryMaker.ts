@@ -1,21 +1,14 @@
-import { SummaryDetailInfo } from './SummaryDetailInfo';
-import { SummaryCategory } from './SummaryCategory';
+import { SummaryMapInfo } from './SummaryMapInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
 import { PathInfo } from '../../../utilities/PathInfo';
-import { summaryRouter } from './SummaryRouter';
 import { TypeAliasInfo } from '../../../extractors/type-alias/TypeAliasInfo';
 
 export const typeAliasSummaryMaker = function make(
     typeAliases: TypeAliasInfo[],
-    map: (
-        id: string,
-        pathInfo: PathInfo,
-        category: SummaryCategory,
-        mdFileName: string,
-        baseUrl?: string,
-    ) => SummaryDetailInfo,
+    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
     baseUrl?: string,
-): SummaryDetailInfo[] {
-    const aliasInfo: SummaryDetailInfo[] = [];
+): SummaryMapInfo[] {
+    const aliasInfo: SummaryMapInfo[] = [];
     for (const ta of typeAliases) {
         const pInfo: PathInfo = {
             path: ta.path,
@@ -24,7 +17,7 @@ export const typeAliasSummaryMaker = function make(
             extension: ta.extension,
         };
         const mdFileName = ta.name;
-        const aliasSummary = map(ta.id, pInfo, SummaryCategory.TypeAliases, mdFileName, baseUrl);
+        const aliasSummary = map(ta.id, pInfo, TypeScope.TypeAliases, mdFileName, baseUrl);
         aliasInfo.push(aliasSummary);
     }
     return aliasInfo;

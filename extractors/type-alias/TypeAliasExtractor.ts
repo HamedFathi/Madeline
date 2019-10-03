@@ -7,6 +7,7 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 export class TypeAliasExtractor {
     public extract(node: TypeAliasDeclaration, imports: ImportInfo[] | undefined): TypeAliasInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -23,11 +24,11 @@ export class TypeAliasExtractor {
             extension: pathInfo.extension,
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
             initializer: node.getTypeNode() === void 0 ? '' : node.getTypeNodeOrThrow().getText(),
-            type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), void 0, imports),
+            type: new TypeExtractor().extract(node.getType(), TypeScope.TypeAliases, node.getTypeNode(), void 0, imports),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
-            typeParameters: new TypeParameterExtractor().extract(node, imports),
+            typeParameters: new TypeParameterExtractor().extract(node, TypeScope.TypeAliases, imports),
             hasComment: hasComment,
         };
     }

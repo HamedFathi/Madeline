@@ -1,20 +1,14 @@
 import { ExportAssignmentInfo } from '../../../extractors/export-assignment/ExportAssignmentInfo';
-import { SummaryDetailInfo } from './SummaryDetailInfo';
-import { SummaryCategory } from './SummaryCategory';
+import { SummaryMapInfo } from './SummaryMapInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
 import { PathInfo } from '../../../utilities/PathInfo';
 
 export const exportAssignmentSummaryMaker = function make(
     assignments: ExportAssignmentInfo[],
-    map: (
-        id: string,
-        pathInfo: PathInfo,
-        category: SummaryCategory,
-        mdFileName: string,
-        baseUrl?: string,
-    ) => SummaryDetailInfo,
+    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
     baseUrl?: string,
-): SummaryDetailInfo[] {
-    const assignmentsInfo: SummaryDetailInfo[] = [];
+): SummaryMapInfo[] {
+    const assignmentsInfo: SummaryMapInfo[] = [];
     for (const a of assignments) {
         const pInfo: PathInfo = {
             path: a.path,
@@ -23,7 +17,7 @@ export const exportAssignmentSummaryMaker = function make(
             extension: a.extension,
         };
         const mdFileName = '_';
-        const assignmentSummary = map(a.id, pInfo, SummaryCategory.ExportAssignments, mdFileName, baseUrl);
+        const assignmentSummary = map(a.id, pInfo, TypeScope.ExportAssignments, mdFileName, baseUrl);
         assignmentsInfo.push(assignmentSummary);
     }
     return assignmentsInfo;

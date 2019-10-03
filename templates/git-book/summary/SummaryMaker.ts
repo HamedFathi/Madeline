@@ -6,8 +6,8 @@ import * as _ from 'lodash';
 import { ExportedSourceFileInfo } from '../../../extractors/source-file/ExportedSourceFileInfo';
 import { SummaryInfo } from './SummaryInfo';
 import { tab } from '../../../utilities/StringUtils';
-import { SummaryDetailInfo } from './SummaryDetailInfo';
-import { SummaryCategory } from './SummaryCategory';
+import { SummaryMapInfo } from './SummaryMapInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
 import { PathInfo } from '../../../utilities/PathInfo';
 import { interfaceSummaryMaker } from './InterfaceSummaryMaker';
 import { enumSummaryMaker } from './EnumSummaryMaker';
@@ -83,68 +83,68 @@ export class SummaryMaker {
         map: (
             id: string,
             pathInfo: PathInfo,
-            category: SummaryCategory,
+            category: TypeScope,
             mdFileName: string,
             baseUrl?: string,
-        ) => SummaryDetailInfo,
+        ) => SummaryMapInfo,
         baseUrl?: string,
-    ): SummaryDetailInfo[] {
-        const summaryDetailInfo: SummaryDetailInfo[] = [];
+    ): SummaryMapInfo[] {
+        const SummaryMapInfo: SummaryMapInfo[] = [];
         if (sourceFile.classes) {
             const classes = classSummaryMaker(sourceFile.classes, map, baseUrl);
             for (const iterator of classes) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.interfaces) {
             const interfaces = interfaceSummaryMaker(sourceFile.interfaces, map, baseUrl);
             for (const iterator of interfaces) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.enums) {
             const enums = enumSummaryMaker(sourceFile.enums, map, baseUrl);
             for (const iterator of enums) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.typeAliases) {
             const typeAliases = typeAliasSummaryMaker(sourceFile.typeAliases, map, baseUrl);
             for (const iterator of typeAliases) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.functions) {
             const functions = functionSummaryMaker(sourceFile.functions, map, baseUrl);
             for (const iterator of functions) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.variables) {
             const variables = variableSummaryMaker(sourceFile.variables, map, baseUrl);
             for (const iterator of variables) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.literals) {
             const literals = literalSummaryMaker(sourceFile.literals, map, baseUrl);
             for (const iterator of literals) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.destructuring) {
             const destructuring = destructuringSummaryMaker(sourceFile.destructuring, map, baseUrl);
             for (const iterator of destructuring) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.exportAssignments) {
             const assigns = exportAssignmentSummaryMaker(sourceFile.exportAssignments, map, baseUrl);
             for (const iterator of assigns) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
-        return summaryDetailInfo;
+        return SummaryMapInfo;
     }
 
     private beatifyName(name: string): string {
@@ -160,16 +160,16 @@ export class SummaryMaker {
         map: (
             id: string,
             pathInfo: PathInfo,
-            category: SummaryCategory,
+            category: TypeScope,
             mdFileName: string,
             baseUrl?: string,
-        ) => SummaryDetailInfo,
+        ) => SummaryMapInfo,
         fileExtension = '.md',
         baseUrl?: string,
     ): SummaryInfo[] {
         const result: SummaryInfo[] = [];
-        const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
-        const summaryGroup = _(summaryDetailInfo)
+        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
+        const summaryGroup = _(SummaryMapInfo)
             .sortBy(x => x.folders)
             .groupBy(x => x.folders)
             .values()

@@ -1,20 +1,14 @@
 import { InterfaceInfo } from '../../../extractors/interface/InterfaceInfo';
-import { SummaryDetailInfo } from './SummaryDetailInfo';
-import { SummaryCategory } from './SummaryCategory';
+import { SummaryMapInfo } from './SummaryMapInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
 import { PathInfo } from '../../../utilities/PathInfo';
 
 export const interfaceSummaryMaker = function make(
     interfaces: InterfaceInfo[],
-    map: (
-        id: string,
-        pathInfo: PathInfo,
-        category: SummaryCategory,
-        mdFileName: string,
-        baseUrl?: string,
-    ) => SummaryDetailInfo,
+    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
     baseUrl?: string,
-): SummaryDetailInfo[] {
-    const interfacesInfo: SummaryDetailInfo[] = [];
+): SummaryMapInfo[] {
+    const interfacesInfo: SummaryMapInfo[] = [];
     for (const f of interfaces) {
         const pInfo: PathInfo = {
             path: f.path,
@@ -23,7 +17,7 @@ export const interfaceSummaryMaker = function make(
             extension: f.extension,
         };
         const mdFileName = f.name;
-        const interfaceSummary = map(f.id, pInfo, SummaryCategory.Interfaces, mdFileName, baseUrl);
+        const interfaceSummary = map(f.id, pInfo, TypeScope.Interfaces, mdFileName, baseUrl);
         interfacesInfo.push(interfaceSummary);
     }
     return interfacesInfo;

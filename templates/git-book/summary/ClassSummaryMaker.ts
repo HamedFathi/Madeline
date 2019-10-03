@@ -1,19 +1,13 @@
 import { SourceFileClassInfo } from '../../../extractors/source-file/SourceFileClassInfo';
 import { PathInfo } from '../../../utilities/PathInfo';
-import { SummaryCategory } from './SummaryCategory';
-import { SummaryDetailInfo } from './SummaryDetailInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
+import { SummaryMapInfo } from './SummaryMapInfo';
 export const classSummaryMaker = function make(
     classes: SourceFileClassInfo[],
-    map: (
-        id: string,
-        pathInfo: PathInfo,
-        category: SummaryCategory,
-        mdFileName: string,
-        baseUrl?: string,
-    ) => SummaryDetailInfo,
+    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
     baseUrl?: string,
-): SummaryDetailInfo[] {
-    const classSummaryInfo: SummaryDetailInfo[] = [];
+): SummaryMapInfo[] {
+    const classSummaryInfo: SummaryMapInfo[] = [];
     for (const c of classes) {
         const pInfo: PathInfo = {
             path: c.path,
@@ -22,7 +16,7 @@ export const classSummaryMaker = function make(
             extension: c.extension,
         };
         const mdFileName = c.name || '_';
-        const classSummary = map(c.id, pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
+        const classSummary = map(c.id, pInfo, TypeScope.Classes, mdFileName, baseUrl);
         classSummaryInfo.push(classSummary);
     }
     return classSummaryInfo;

@@ -1,3 +1,4 @@
+import { TypeScope } from './TypeScope';
 import { ImportInfo } from './../import/ImportInfo';
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
@@ -7,6 +8,7 @@ import { removeFirstAndLastQuote } from '../../utilities/StringUtils';
 export class TypeExtractor {
     public extract(
         type: Type,
+        typeScope: TypeScope,
         typeNode: TypeNode | undefined,
         typeReference: string | undefined,
         imports: ImportInfo[] | undefined,
@@ -68,6 +70,7 @@ export class TypeExtractor {
             typeNodeText: typeNodeText,
             typeReference: typeReference,
             from: fromAll.length === 0 ? void 0 : fromAll,
+            typeScope: typeScope,
         };
     }
 }

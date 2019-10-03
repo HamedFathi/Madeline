@@ -13,6 +13,7 @@ export * from './extractors/common/CallSignatureTypeInfo';
 export * from './extractors/common/FromTypeInfo';
 export * from './extractors/common/TypeExtractor';
 export * from './extractors/common/TypeInfo';
+export * from './extractors/common/TypeScope';
 export * from './extractors/constructor/ConstructorExtractor';
 export * from './extractors/constructor/ConstructorInfo';
 export * from './extractors/constructor/ConstructorParameterInfo';
@@ -97,6 +98,8 @@ export * from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplate';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterToMdConverter';
+export * from './templates/git-book/markdown/type/TypeMapInfo';
+export * from './templates/git-book/markdown/type/TypeMapper';
 export * from './templates/git-book/markdown/type/TypeToMdConverter';
 export * from './templates/git-book/summary/ClassSummaryMaker';
 export * from './templates/git-book/summary/DestructuringSummaryMaker';
@@ -105,11 +108,10 @@ export * from './templates/git-book/summary/ExportAssignmentSummaryMaker';
 export * from './templates/git-book/summary/FunctionSummaryMaker';
 export * from './templates/git-book/summary/InterfaceSummaryMaker';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
-export * from './templates/git-book/summary/SummaryCategory';
-export * from './templates/git-book/summary/SummaryDetailInfo';
 export * from './templates/git-book/summary/SummaryInfo';
 export * from './templates/git-book/summary/SummaryMaker';
-export * from './templates/git-book/summary/SummaryRouter';
+export * from './templates/git-book/summary/SummaryMapInfo';
+export * from './templates/git-book/summary/SummaryMapper';
 export * from './templates/git-book/summary/TypeAliasSummaryMaker';
 export * from './templates/git-book/summary/VariableSummaryMaker';
 export * from './templates/TemplateOptions';
@@ -125,17 +127,17 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-
+/*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { Project } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
-import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
 import * as fse from 'fs-extra';
+import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
 const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
-let src = new AureliaSourceFileUtils().saveMerged(tsconfig);
+const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
     tsConfigFilePath: tsconfig,
 });
@@ -148,12 +150,12 @@ const sources = project
     .filter(x => !x.getFilePath().includes('examples'))
     .filter(x => !x.getFilePath().includes('e2e'));
 if (src) {
-    const sum = new SummaryMaker().make(src,summaryRouter);
+    const sum = new SummaryMaker().make(src, summaryMapper);
     const md = new SummaryMaker().write(sum);
     fse.outputFileSync('packages/SUMMARY.md', md);
-
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
+*/

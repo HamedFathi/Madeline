@@ -1,21 +1,21 @@
 import { PathInfo } from '../../../utilities/PathInfo';
-import { SummaryDetailInfo } from './SummaryDetailInfo';
-import { SummaryCategory } from './SummaryCategory';
+import { SummaryMapInfo } from './SummaryMapInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
 
-export const summaryRouter = function(
+export const summaryMapper = function(
     id: string,
     pathInfo: PathInfo,
-    category: SummaryCategory,
+    category: TypeScope,
     mdFileName: string,
     baseUrl?: string,
-): SummaryDetailInfo {
+): SummaryMapInfo {
     const folders = pathInfo.directory
         .split('packages')[1]
         .split('/')
         .filter(x => x !== '' && x !== 'src')
         .map(x => x.toLowerCase());
 
-    const summaryInfo: SummaryDetailInfo = {
+    const summaryInfo: SummaryMapInfo = {
         id: id,
         category: category,
         folders: folders,

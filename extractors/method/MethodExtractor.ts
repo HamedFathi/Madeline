@@ -7,6 +7,7 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 export class MethodExtractor {
     public extract(node: MethodDeclaration, imports: ImportInfo[] | undefined): MethodInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -22,13 +23,19 @@ export class MethodExtractor {
             name: node.getName(),
             text: node.getText(),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(y => y.getText()),
-            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports),
+            returnType: new TypeExtractor().extract(
+                node.getReturnType(),
+                TypeScope.Classes,
+                node.getReturnTypeNode(),
+                void 0,
+                imports,
+            ),
             isGenerator: node.isGenerator(),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             hasComment: hasComment,
             decorators: new DecoratorExtractor().extract(node, imports),
-            typeParameters: new TypeParameterExtractor().extract(node, imports),
+            typeParameters: new TypeParameterExtractor().extract(node, TypeScope.Methods, imports),
             parameters:
                 node.getParameters().length === 0
                     ? void 0
@@ -36,7 +43,13 @@ export class MethodExtractor {
                           return {
                               name: y.getName(),
                               text: y.getText(),
-                              type: new TypeExtractor().extract(y.getType(), y.getTypeNode(), void 0, imports),
+                              type: new TypeExtractor().extract(
+                                  y.getType(),
+                                  TypeScope.Classes,
+                                  y.getTypeNode(),
+                                  void 0,
+                                  imports,
+                              ),
                               isOptional: y.isOptional(),
                               isRest: y.isRestParameter(),
                               isParameterProperty: y.isParameterProperty(),

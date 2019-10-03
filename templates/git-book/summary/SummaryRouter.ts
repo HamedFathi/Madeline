@@ -2,7 +2,8 @@ import { PathInfo } from '../../../utilities/PathInfo';
 import { SummaryDetailInfo } from './SummaryDetailInfo';
 import { SummaryCategory } from './SummaryCategory';
 
-export const summaryRouter = function(
+export const summaryRouter = function (
+    id: string,
     pathInfo: PathInfo,
     category: SummaryCategory,
     mdFileName: string,
@@ -15,6 +16,7 @@ export const summaryRouter = function(
         .map(x => x.toLowerCase());
 
     const summaryInfo: SummaryDetailInfo = {
+        id: id,
         category: category,
         folders: folders,
         sourceFileName: pathInfo.file.toLowerCase(),

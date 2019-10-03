@@ -14,7 +14,7 @@ export class ClassSummaryMaker {
                 extension: c.extension,
             };
             const mdFileName = c.name || c.id;
-            const classSummary = summaryRouter(pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
+            const classSummary = summaryRouter(c.id,pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
             classSummaryInfo.push(classSummary);
         }
         return classSummaryInfo;

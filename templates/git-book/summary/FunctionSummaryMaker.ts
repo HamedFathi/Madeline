@@ -15,7 +15,7 @@ export class FunctionSummaryMaker {
                 extension: f.extension,
             };
             const mdFileName = f.name || f.id;
-            const funcSummary = summaryRouter(pInfo, SummaryCategory.Functions, mdFileName, baseUrl);
+            const funcSummary = summaryRouter(f.id, pInfo, SummaryCategory.Functions, mdFileName, baseUrl);
             functionsInfo.push(funcSummary);
         }
         return functionsInfo;

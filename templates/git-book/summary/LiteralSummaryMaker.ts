@@ -14,7 +14,7 @@ export class LiteralSummaryMaker {
                 extension: l.extension,
             };
             const mdFileName = l.name;
-            const literalSummary = summaryRouter(pInfo, SummaryCategory.Literals, mdFileName, baseUrl);
+            const literalSummary = summaryRouter(l.id,pInfo, SummaryCategory.Literals, mdFileName, baseUrl);
             literalsInfo.push(literalSummary);
         }
         return literalsInfo;

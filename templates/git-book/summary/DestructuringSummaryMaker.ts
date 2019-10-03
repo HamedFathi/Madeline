@@ -14,7 +14,7 @@ export class DestructuringSummaryMaker {
                 extension: d.extension,
             };
             const mdFileName = d.id;
-            const destructuringSummary = summaryRouter(pInfo, SummaryCategory.Destructuring, mdFileName, baseUrl);
+            const destructuringSummary = summaryRouter(d.id, pInfo, SummaryCategory.Destructuring, mdFileName, baseUrl);
             destructions.push(destructuringSummary);
         }
         return destructions;

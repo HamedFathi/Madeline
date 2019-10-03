@@ -1,12 +1,12 @@
-import { CommentInfo } from '../../../extractors/comment/CommentInfo';
+import { TagInfo } from './../../../../extractors/comment/TagInfo';
 import { CommentToMdOption } from './CommentToMdOption';
 import { CommentGroup } from './CommentGroup';
-import { Nunjucks } from '../../../utilities/NunjucksUtils';
 import { COMMENT_TEMPLATE } from './CommentTemplate';
-import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
-import { TagInfo } from '../../../extractors/comment/TagInfo';
 import { CommentTemplateInfo } from './CommentTemplateInfo';
-import { TemplateOptions } from '../../TemplateOptions';
+import { CommentInfo } from '../../../../extractors/comment/CommentInfo';
+import { TemplateOptions } from '../../../TemplateOptions';
+import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
+import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 
 export class CommentToMdConverter {
     public convertAll(

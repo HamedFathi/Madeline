@@ -5,6 +5,9 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { prettify } from '../../utilities/PrettierUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 export class ConstructorExtractor {
     public extract(node: ConstructorDeclaration, imports: ImportInfo[] | undefined): ConstructorInfo {
@@ -14,6 +17,8 @@ export class ConstructorExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modifiers = node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText());
+        const text = prettify(node.getFullText());
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         const params: ConstructorParameterInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
@@ -28,6 +33,7 @@ export class ConstructorExtractor {
             };
         });
         return {
+            id: getSha256(text + pathInfo.path),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modifiers: modifiers,
@@ -35,8 +41,12 @@ export class ConstructorExtractor {
             isImplementation: isImplementation,
             isOverload: isOverload,
             parameters: params.length === 0 ? void 0 : params,
-            text: node.getText(),
+            text: text,
             hasComment: hasComment,
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
+            extension: pathInfo.extension,
         };
     }
 

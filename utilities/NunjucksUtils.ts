@@ -1,8 +1,8 @@
 import * as nj from 'nunjucks';
-import { CommentToMdConverter } from '../templates/api/comment/CommentToMdConverter';
 import { ObjectUtils } from './ObjectUtils';
 import { TagInfo } from '../extractors/comment/TagInfo';
 import { TemplateOptions } from '../templates/TemplateOptions';
+import { CommentToMdConverter } from '../templates/git-book/markdown/comment/CommentToMdConverter';
 /* eslint-disable */
 const mdTable = require('markdown-table');
 /* eslint-disable */

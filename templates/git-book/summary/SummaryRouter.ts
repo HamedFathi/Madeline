@@ -2,7 +2,7 @@ import { PathInfo } from '../../../utilities/PathInfo';
 import { SummaryDetailInfo } from './SummaryDetailInfo';
 import { SummaryCategory } from './SummaryCategory';
 
-export const summaryRouter = function (
+export const summaryRouter = function(
     id: string,
     pathInfo: PathInfo,
     category: SummaryCategory,

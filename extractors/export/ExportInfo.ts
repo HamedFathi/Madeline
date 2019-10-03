@@ -8,4 +8,9 @@ export interface ExportInfo {
     hasComment: boolean;
     text: string;
     hasAsterisk: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
+    extension: string;
 }

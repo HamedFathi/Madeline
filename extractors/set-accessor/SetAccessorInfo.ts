@@ -12,4 +12,9 @@ export interface SetAccessorInfo {
     decorators: DecoratorInfo[] | undefined;
     hasComment: boolean;
     typeParameters: TypeParameterInfo[] | undefined;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
+    extension: string;
 }

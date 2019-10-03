@@ -19,7 +19,7 @@ import { ImportInfo } from '../import/ImportInfo';
 import { VariableDeclaration } from 'ts-morph';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-
+import { prettify } from '../../utilities/PrettierUtils';
 export class VariableExtractor {
     public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
@@ -42,7 +42,7 @@ export class VariableExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
-        const text = node.getText();
+        const text = prettify(node.getFullText());
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== void 0;
             let typeReference: string | undefined = void 0;
@@ -52,7 +52,7 @@ export class VariableExtractor {
                 typeReference = typeRef === void 0 ? void 0 : typeRef.getText();
             }
             variables.push({
-                id: getSha256(node.getFullText() + pathInfo.path),
+                id: getSha256(text + pathInfo.path),
                 name: declaration.getName(),
                 type: new TypeExtractor().extract(
                     declaration.getType(),

@@ -5,15 +5,24 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { ImportInfo } from '../import/ImportInfo';
-
+import { prettify } from '../../utilities/PrettierUtils';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 export class MethodExtractor {
     public extract(node: MethodDeclaration, imports: ImportInfo[] | undefined): MethodInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const text = prettify(node.getFullText());
         return {
+            id: getSha256(text + pathInfo.path),
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
+            extension: pathInfo.extension,
             name: node.getName(),
-            text: node.getText(),
+            text: text,
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(y => y.getText()),
             returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports),
             isGenerator: node.isGenerator(),

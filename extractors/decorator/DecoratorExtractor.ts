@@ -5,6 +5,7 @@ import { DecoratableType } from './DecoratableType';
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { prettify } from '../../utilities/PrettierUtils';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -26,12 +27,13 @@ export class DecoratorExtractor {
             return void 0;
         }
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const text = prettify(node.getFullText());
         let decorators = node.getDecorators().map(x => {
             return {
-                id: getSha256(node.getFullText() + pathInfo.path),
+                id: getSha256(text + pathInfo.path),
                 isDecoratorFactory: x.isDecoratorFactory(),
                 name: x.getName(),
-                text: x.getText(),
+                text: text,
                 path: pathInfo.path,
                 directory: pathInfo.directory,
                 file: pathInfo.file,

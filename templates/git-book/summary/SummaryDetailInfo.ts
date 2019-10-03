@@ -1,7 +1,7 @@
 import { SummaryCategory } from './SummaryCategory';
 
 export interface SummaryDetailInfo {
-    id: string,
+    id: string;
     baseUrl: string | undefined;
     folders: string[];
     sourceFileName: string;

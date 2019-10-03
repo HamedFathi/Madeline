@@ -33,7 +33,7 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-
+import { prettify } from '../../utilities/PrettierUtils';
 /*
 const obj = {
     propertyAssignment2: function(x: number) {},
@@ -119,6 +119,7 @@ export class LiteralExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const text = prettify(node.getFullText());
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = void 0;
@@ -138,10 +139,10 @@ export class LiteralExtractor {
             if (objectLiteral) {
                 const elements = this.getExpressionInfo(objectLiteral, typeReference, imports);
                 result.push({
-                    id: getSha256(node.getFullText() + pathInfo.path),
+                    id: getSha256(text + pathInfo.path),
                     elements: [elements as LiteralExpressionInfo],
                     isArrayLiteral: false,
-                    text: node.getText(),
+                    text: text,
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
@@ -167,7 +168,7 @@ export class LiteralExtractor {
                     members.push(info as LiteralExpressionInfo);
                 });
                 result.push({
-                    id: getSha256(node.getFullText() + pathInfo.path),
+                    id: getSha256(text + pathInfo.path),
                     elements: members,
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
@@ -177,7 +178,7 @@ export class LiteralExtractor {
                     file: pathInfo.file,
                     extension: pathInfo.extension,
                     isArrayLiteral: true,
-                    text: node.getText(),
+                    text: text,
                     typeReference: typeReference,
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(

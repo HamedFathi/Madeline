@@ -15,7 +15,13 @@ export class ExportAssignmentSummaryMaker {
                 extension: a.extension,
             };
             const mdFileName = '_';
-            const assignmentSummary = summaryRouter(a.id,pInfo, SummaryCategory.ExportAssignments, mdFileName, baseUrl);
+            const assignmentSummary = summaryRouter(
+                a.id,
+                pInfo,
+                SummaryCategory.ExportAssignments,
+                mdFileName,
+                baseUrl,
+            );
             assignmentsInfo.push(assignmentSummary);
         }
         return assignmentsInfo;

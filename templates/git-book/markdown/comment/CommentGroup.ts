@@ -1,8 +1,8 @@
-import { TagInfo } from '../../../extractors/comment/TagInfo';
 import { CommentToMdOption } from './CommentToMdOption';
 import * as _ from 'lodash';
 import { TagInfoHeader } from './TagInfoHeader';
 import { CommentGroupInfo } from './CommentGroupInfo';
+import { TagInfo } from '../../../../extractors/comment/TagInfo';
 
 export class CommentGroup {
     public groupByTagName(tagsInfo: TagInfo[], options?: CommentToMdOption): CommentGroupInfo[] {

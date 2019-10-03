@@ -86,7 +86,7 @@ export class SummaryMaker {
         private literalMaker = new LiteralSummaryMaker(),
         private destructuringMaker = new DestructuringSummaryMaker(),
         private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
-    ) { }
+    ) {}
 
     private getSummaryDetailInfo(sourceFile: ExportedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
         const summaryDetailInfo: SummaryDetailInfo[] = [];

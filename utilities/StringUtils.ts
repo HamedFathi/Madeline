@@ -2,70 +2,84 @@
 const safeStringify = require('fast-safe-stringify');
 /* eslint-disable */
 
-export class StringUtils {
-    public isEmptyOrWhitespace(text: string): boolean {
-        return text === null || text.match(/^ *$/) !== null;
-    }
 
-    public convertToOneWhitespace(text: string): string {
-        return text.replace(/\s\s+/g, ' ');
-    }
+function isEmptyOrWhitespace(text: string): boolean {
+    return text === null || text.match(/^ *$/) !== null;
+}
 
-    public removeFirstAndLastQuote(text: any): any {
-        if (typeof text === 'string' && text[0] === '"' && text[text.length - 1] === '"') {
-            if (text[0] === '"') text = text.substring(1);
-            if (text[text.length - 1] === '"') text = text.substring(0, text.length - 1);
-            return text;
-        }
-        if (typeof text === 'string' && text[0] === "'" && text[text.length - 1] === "'") {
-            if (text[0] === "'") text = text.substring(1);
-            if (text[text.length - 1] === "'") text = text.substring(0, text.length - 1);
-            return text;
-        }
+function convertToOneWhitespace(text: string): string {
+    return text.replace(/\s\s+/g, ' ');
+}
+
+function removeFirstAndLastQuote(text: any): any {
+    if (typeof text === 'string' && text[0] === '"' && text[text.length - 1] === '"') {
+        if (text[0] === '"') text = text.substring(1);
+        if (text[text.length - 1] === '"') text = text.substring(0, text.length - 1);
         return text;
     }
-
-    public removeLineBreaks(text: string): string {
-        const result = text.replace(/(\r\n|\n|\r)/gm, '');
-        return result;
+    if (typeof text === 'string' && text[0] === "'" && text[text.length - 1] === "'") {
+        if (text[0] === "'") text = text.substring(1);
+        if (text[text.length - 1] === "'") text = text.substring(0, text.length - 1);
+        return text;
     }
-
-    public joinLines(text: string | string[], separator?: string): string {
-        const lines: string[] = [];
-        if (typeof text === 'string') {
-            return text;
-        } else {
-            text.forEach(line => {
-                const result = this.removeLineBreaks(line).trim();
-                lines.push(result);
-            });
-        }
-        const result = lines.join(separator);
-        return result;
-    }
-
-    public nbspGenerator(repetition?: number) {
-        if (!repetition || repetition === 0) return '';
-        const r = repetition && repetition > 0 ? repetition : 1;
-        return '&nbsp;'.repeat(r);
-    }
-
-    public getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
-        const afterStart = text.split(startDelimiter)[1];
-        if (afterStart !== undefined) {
-            const result = afterStart.split(endDelimiter)[0];
-            if (result !== undefined) {
-                return result;
-            }
-        }
-        return null;
-    }
-
-    public stringify(obj: unknown): string {
-        return JSON.stringify(obj, (k, v) => (v === undefined ? null : v));
-    }
-
-    public safeStringify(obj: unknown): string {
-        return safeStringify(obj);
-    }
+    return text;
 }
+
+function removeLineBreaks(text: string): string {
+    const result = text.replace(/(\r\n|\n|\r)/gm, '');
+    return result;
+}
+
+function joinLines(text: string | string[], separator: string = ' '): string {
+    const lines: string[] = [];
+    if (typeof text === 'string') {
+        return joinLines(text.split(/\r?\n/));
+    }
+
+    text.forEach(line => {
+        const result = removeLineBreaks(line).trim();
+        lines.push(result);
+    });
+
+    const result = lines.join(separator);
+    return result;
+}
+
+function nbsp(repetition?: number) {
+    if (!repetition || repetition === 0) return '';
+    const r = repetition && repetition > 0 ? repetition : 1;
+    return '&nbsp;'.repeat(r);
+}
+
+function tab(repetition?: number) {
+    if (!repetition || repetition === 0) return '';
+    const r = repetition && repetition > 0 ? repetition : 1;
+    return '    '.repeat(r);
+}
+
+function getBetweenChars(text: string, startDelimiter: string, endDelimiter: string): string | null {
+    const afterStart = text.split(startDelimiter)[1];
+    if (afterStart !== void 0) {
+        const result = afterStart.split(endDelimiter)[0];
+        if (result !== void 0) {
+            return result;
+        }
+    }
+    return null;
+}
+
+function stringify(obj: unknown): string {
+    return JSON.stringify(obj, (k, v) => (v === void 0 ? null : v));
+}
+
+export {
+    nbsp,
+    tab,
+    joinLines,
+    stringify,
+    getBetweenChars,
+    removeLineBreaks,
+    isEmptyOrWhitespace,
+    removeFirstAndLastQuote,
+    convertToOneWhitespace
+};

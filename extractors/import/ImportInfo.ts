@@ -6,4 +6,9 @@ export interface ImportInfo {
     kind: ImportKind;
     kindName: string;
     text: string;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
+    extension: string;
 }

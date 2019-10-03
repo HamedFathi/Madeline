@@ -7,4 +7,10 @@ export interface ExportInfo {
     leadingComments: CommentInfo[] | undefined;
     hasComment: boolean;
     text: string;
+    hasAsterisk: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
+    extension: string;
 }

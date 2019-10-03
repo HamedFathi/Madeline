@@ -23,4 +23,9 @@ export interface InterfaceInfo {
     modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    extension: string;
+    directory: string;
+    id: string;
 }

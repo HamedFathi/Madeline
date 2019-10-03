@@ -11,4 +11,9 @@ export interface LiteralInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    extension: string;
+    id: string;
 }

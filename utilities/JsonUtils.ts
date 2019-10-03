@@ -27,16 +27,16 @@ export class JsonUtils {
     }
 
     public isJsonLike(text: string): boolean {
-        return this.convertJsObjectToJson(text) !== undefined;
+        return this.convertJsObjectToJson(text) !== void 0;
     }
 
     public convertJsObjectToJson(jsObject: string): unknown {
         try {
             const obj = JSON.stringify(eval('(' + jsObject + ')'));
             const isJson = this.isJson(obj);
-            return isJson ? JSON.parse(obj) : undefined;
+            return isJson ? JSON.parse(obj) : void 0;
         } catch {
-            return undefined;
+            return void 0;
         }
     }
 

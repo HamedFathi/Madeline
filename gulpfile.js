@@ -1,7 +1,9 @@
+/* eslint-disable */
 const gulp = require('gulp');
 const clean = require('gulp-clean');
 const ts = require('gulp-typescript');
 const path = require('path');
+/* eslint-disable */
 
 const src = [
     path.join(__dirname, '**', '*.ts'),

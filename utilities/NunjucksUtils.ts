@@ -1,7 +1,8 @@
 import * as nj from 'nunjucks';
-import { CommentToMdConverter } from '../templates/comment/CommentToMdConverter';
 import { ObjectUtils } from './ObjectUtils';
 import { TagInfo } from '../extractors/comment/TagInfo';
+import { TemplateOptions } from '../templates/TemplateOptions';
+import { CommentToMdConverter } from '../templates/git-book/markdown/comment/CommentToMdConverter';
 /* eslint-disable */
 const mdTable = require('markdown-table');
 /* eslint-disable */
@@ -15,7 +16,7 @@ Nunjucks.addFilter('is_available', function (value: string | unknown[]) {
     return objUtils.isAvailable(value);
 });
 
-Nunjucks.addFilter('write', function (value: TagInfo[], append: boolean, headers?: string[]) {
+Nunjucks.addFilter('write', function (value: TagInfo[], options?: TemplateOptions, headers?: string[]) {
     let isDescriptionOnly = headers && headers.length === 1 && headers.includes('description') ? true : false;
     if (headers) {
         if (isDescriptionOnly) {
@@ -29,7 +30,7 @@ Nunjucks.addFilter('write', function (value: TagInfo[], append: boolean, headers
                 }
             });
             if (descriptions.length === 0) return "";
-            let description = append ? descriptions.join(' ') : descriptions.join('\n');
+            let description = (options && options.append) ? descriptions.join(' ') : descriptions.join('\n');
             return description;
         }
         const tb = new CommentToMdConverter().toMdTable(value, headers);

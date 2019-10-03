@@ -4,77 +4,99 @@ import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
-
+import { ImportInfo } from '../import/ImportInfo';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 export class InterfaceExtractor {
-    private readonly typeParameterExtractor = new TypeParameterExtractor();
+    constructor(
+        private typeParameterExtractor = new TypeParameterExtractor(),
+        private typescriptCommentExtractor = new TypescriptCommentExtractor(),
+        private typeExtractor = new TypeExtractor(),
+    ) {}
 
-    public extract(node: InterfaceDeclaration): InterfaceInfo {
-        const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
-        const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
+    public extract(node: InterfaceDeclaration, imports: ImportInfo[] | undefined): InterfaceInfo {
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const trailingComments = this.typescriptCommentExtractor.extract(node.getTrailingCommentRanges());
+        const leadingComments = this.typescriptCommentExtractor.extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const result: InterfaceInfo = {
+            id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
             text: node.getText(),
-            modifiers: node.getModifiers().length === 0 ? undefined : node.getModifiers().map(x => x.getText()),
-            trailingComments: trailingComments.length === 0 ? undefined : trailingComments,
-            leadingComments: leadingComments.length === 0 ? undefined : leadingComments,
+            modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(x => x.getText()),
+            trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
+            leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
+            path: pathInfo.path,
+            directory: pathInfo.directory,
+            file: pathInfo.file,
+            extension: pathInfo.extension,
             modules: new ModuleExtractor().extract(node),
-            typeParameters: this.typeParameterExtractor.extract(node),
+            typeParameters: this.typeParameterExtractor.extract(node, imports),
             hasComment: hasComment,
             properties:
                 node.getProperties().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getProperties().map(x => {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode()),
+                              type: this.typeExtractor.extract(x.getType(), x.getTypeNode(), undefined, imports),
                               isOptional: x.hasQuestionToken(),
                               trailingComments:
-                                  new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()),
                               leadingComments:
-                                  new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()),
                           };
                       }),
             methods:
                 node.getMethods().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getMethods().map(x => {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x),
-                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
+                              typeParameters: this.typeParameterExtractor.extract(x, imports),
+                              returnType: this.typeExtractor.extract(
+                                  x.getReturnType(),
+                                  x.getReturnTypeNode(),
+                                  void 0,
+                                  imports,
+                              ),
                               trailingComments:
-                                  new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()),
                               leadingComments:
-                                  new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()),
                               parameters:
                                   x.getParameters().length === 0
-                                      ? undefined
+                                      ? void 0
                                       : x.getParameters().map(y => {
                                             return {
                                                 name: y.getName(),
                                                 text: y.getText(),
-                                                type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
+                                                type: this.typeExtractor.extract(
+                                                    y.getType(),
+                                                    y.getTypeNode(),
+                                                    void 0,
+                                                    imports,
+                                                ),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
                                                 initializer:
-                                                    y.getInitializer() === undefined
-                                                        ? undefined
+                                                    y.getInitializer() === void 0
+                                                        ? void 0
                                                         : y.getInitializerOrThrow().getText(),
                                                 modifiers:
                                                     y.getModifiers().length === 0
-                                                        ? undefined
+                                                        ? void 0
                                                         : y.getModifiers().map(x => x.getText()),
                                             };
                                         }),
@@ -82,47 +104,57 @@ export class InterfaceExtractor {
                       }),
             extends:
                 node.getExtends().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getExtends().map(x => {
                           return {
                               name: x.getText(),
-                              type: new TypeExtractor().extract(x.getType()),
+                              type: this.typeExtractor.extract(x.getType(), undefined, undefined, imports),
                           };
                       }),
             callSignatures:
                 node.getCallSignatures().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getCallSignatures().map(x => {
                           return {
-                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
+                              returnType: this.typeExtractor.extract(
+                                  x.getReturnType(),
+                                  x.getReturnTypeNode(),
+                                  void 0,
+                                  imports,
+                              ),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x),
+                              typeParameters: this.typeParameterExtractor.extract(x, imports),
                               trailingComments:
-                                  new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()),
                               leadingComments:
-                                  new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()),
                               parameters:
                                   x.getParameters().length === 0
-                                      ? undefined
+                                      ? void 0
                                       : x.getParameters().map(y => {
                                             return {
                                                 name: y.getName(),
                                                 text: y.getText(),
-                                                type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
+                                                type: this.typeExtractor.extract(
+                                                    y.getType(),
+                                                    y.getTypeNode(),
+                                                    undefined,
+                                                    imports,
+                                                ),
                                                 modifiers:
                                                     y.getModifiers().length === 0
-                                                        ? undefined
+                                                        ? void 0
                                                         : y.getModifiers().map(x => x.getText()),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
                                                 initializer:
-                                                    y.getInitializer() === undefined
-                                                        ? undefined
+                                                    y.getInitializer() === void 0
+                                                        ? void 0
                                                         : y.getInitializerOrThrow().getText(),
                                             };
                                         }),
@@ -130,57 +162,72 @@ export class InterfaceExtractor {
                       }),
             indexers:
                 node.getIndexSignatures().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getIndexSignatures().map(x => {
                           return {
-                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
+                              returnType: this.typeExtractor.extract(
+                                  x.getReturnType(),
+                                  x.getReturnTypeNode(),
+                                  void 0,
+                                  imports,
+                              ),
                               text: x.getText(),
                               key: x.getKeyName(),
-                              value: new TypeExtractor().extract(x.getKeyType(), x.getKeyTypeNode()),
+                              value: this.typeExtractor.extract(x.getKeyType(), x.getKeyTypeNode(), void 0, imports),
                               trailingComments:
-                                  new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()),
                               leadingComments:
-                                  new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()),
                           };
                       }),
             constructors:
                 node.getConstructSignatures().length === 0
-                    ? undefined
+                    ? void 0
                     : node.getConstructSignatures().map(x => {
                           return {
-                              returnType: new TypeExtractor().extract(x.getReturnType(), x.getReturnTypeNode()),
+                              returnType: this.typeExtractor.extract(
+                                  x.getReturnType(),
+                                  x.getReturnTypeNode(),
+                                  void 0,
+                                  imports,
+                              ),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x),
+                              typeParameters: this.typeParameterExtractor.extract(x, imports),
                               trailingComments:
-                                  new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getTrailingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()),
                               leadingComments:
-                                  new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()).length === 0
-                                      ? undefined
-                                      : new TypescriptCommentExtractor().extract(x.getLeadingCommentRanges()),
+                                  this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()).length === 0
+                                      ? void 0
+                                      : this.typescriptCommentExtractor.extract(x.getLeadingCommentRanges()),
                               parameters:
                                   x.getParameters().length === 0
-                                      ? undefined
+                                      ? void 0
                                       : x.getParameters().map(y => {
                                             return {
                                                 name: y.getName(),
                                                 text: y.getText(),
-                                                type: new TypeExtractor().extract(y.getType(), y.getTypeNode()),
+                                                type: this.typeExtractor.extract(
+                                                    y.getType(),
+                                                    y.getTypeNode(),
+                                                    undefined,
+                                                    imports,
+                                                ),
                                                 modifiers:
                                                     y.getModifiers().length === 0
-                                                        ? undefined
+                                                        ? void 0
                                                         : y.getModifiers().map(x => x.getText()),
                                                 isOptional: y.isOptional(),
                                                 isRest: y.isRestParameter(),
                                                 isParameterProperty: y.isParameterProperty(),
                                                 initializer:
-                                                    y.getInitializer() === undefined
-                                                        ? undefined
+                                                    y.getInitializer() === void 0
+                                                        ? void 0
                                                         : y.getInitializerOrThrow().getText(),
                                             };
                                         }),

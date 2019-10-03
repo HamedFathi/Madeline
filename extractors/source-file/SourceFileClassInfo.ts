@@ -21,4 +21,9 @@ export interface SourceFileClassInfo {
     setAccessors: SetAccessorInfo[] | undefined;
     methods: MethodInfo[] | undefined;
     properties: PropertyInfo[] | undefined;
+    path: string;
+    file: string;
+    directory: string;
+    extension: string;
+    id: string;
 }

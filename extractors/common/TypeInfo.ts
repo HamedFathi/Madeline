@@ -1,7 +1,9 @@
-import { TypeDetailInfo } from './TypeDetailInfo';
+import { FromTypeInfo } from './FromTypeInfo';
+
 export interface TypeInfo {
+    value: string;
     text: string;
-    fullText: string;
-    details: TypeDetailInfo[] | undefined;
     typeNodeText: string | undefined;
+    typeReference: string | undefined;
+    from: FromTypeInfo[] | undefined;
 }

@@ -8,8 +8,14 @@ import {
     MethodSignature,
     FunctionExpression,
     TypeAliasDeclaration,
+    GetAccessorDeclaration,
+    SetAccessorDeclaration,
 } from 'ts-morph';
 import { TypeParameterInfo } from './TypeParameterInfo';
+import { TypeExtractor } from '../common/TypeExtractor';
+import { ImportInfo } from '../import/ImportInfo';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 export class TypeParameterExtractor {
     public extract(
@@ -22,21 +28,27 @@ export class TypeParameterExtractor {
             | InterfaceDeclaration
             | ClassDeclaration
             | FunctionDeclaration
-            | TypeAliasDeclaration,
+            | TypeAliasDeclaration
+            | GetAccessorDeclaration
+            | SetAccessorDeclaration,
+        imports: ImportInfo[] | undefined,
     ): TypeParameterInfo[] | undefined {
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         const result = node.getTypeParameters().map(y => {
             return {
+                id: getSha256(node.getFullText() + pathInfo.path),
+                path: pathInfo.path,
+                directory: pathInfo.directory,
+                file: pathInfo.file,
+                extension: pathInfo.extension,
                 name: y.getName(),
                 text: y.getText(),
                 constraint:
-                    y.getConstraint() === undefined
-                        ? undefined
-                        : y
-                              .getConstraintOrThrow()
-                              .getType()
-                              .getText(),
+                    y.getConstraint() === void 0
+                        ? void 0
+                        : new TypeExtractor().extract(y.getConstraintOrThrow().getType(), void 0, void 0, imports),
             };
         });
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 }

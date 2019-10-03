@@ -14,4 +14,9 @@ export interface TypeAliasInfo {
     type: TypeInfo;
     typeParameters: TypeParameterInfo[] | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    extension: string;
+    id: string;
 }

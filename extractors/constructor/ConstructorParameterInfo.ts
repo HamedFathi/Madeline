@@ -1,7 +1,7 @@
 import { TypeInfo } from '../common/TypeInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 
-export interface ConstructorParamInfo {
+export interface ConstructorParameterInfo {
     name: string;
     type: TypeInfo;
     modifiers: string[] | undefined;

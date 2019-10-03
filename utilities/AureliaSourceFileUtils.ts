@@ -1,69 +1,44 @@
-import * as path from 'path';
-import * as fs from 'fs';
 import * as fse from 'fs-extra';
-
-import { Project, ScriptTarget } from 'ts-morph';
-import { AureliaSourceFile } from './AureliaSourceFile';
+import { Project } from 'ts-morph';
 import { SourceFileExtractor } from '../extractors/source-file/SourceFileExtractor';
 export class AureliaSourceFileUtils {
-    private readonly PACKAGES = 'packages';
-    private readonly SOURCE = 'src';
-    private readonly EXCLUDES = ['__tests__', 'examples'];
-
-    public getSourceFiles(dirPath: string): AureliaSourceFile[] | undefined {
-        const sources: AureliaSourceFile[] = [];
-        const packageDir = path.join(dirPath, this.PACKAGES);
-        if (!this.isDirectoryExists(packageDir)) return undefined;
-        const packagesList = this.getDirectoriesList(packageDir, x => !this.EXCLUDES.includes(x));
-
-        packagesList.forEach(pkg => {
-            const srcDir = path.join(packageDir, pkg, this.SOURCE);
-            if (this.isDirectoryExists(srcDir)) {
-                const project = new Project({
-                    compilerOptions: {
-                        target: ScriptTarget.ES5,
-                    },
-                });
-                const glob = path.join(srcDir, '**', '*.ts');
-                project.addExistingSourceFiles(glob);
-                const sourceFiles = project.getSourceFiles();
-                sources.push({
-                    name: pkg,
-                    directory: srcDir,
-                    sourceFiles: sourceFiles,
-                });
-            }
+    public save(tsconfig: string, exported = true): void {
+        const project = new Project({
+            tsConfigFilePath: tsconfig,
         });
-        return sources.length === 0 ? undefined : sources;
-    }
-
-    public save(aureliaSourceFile: AureliaSourceFile[]): void {
-        const sourceFileExtractor = new SourceFileExtractor();
-        const saveDir = path.join(__dirname, '..', this.PACKAGES);
-        if (this.isDirectoryExists(saveDir)) {
-            fse.removeSync(saveDir);
-        }
-        aureliaSourceFile.forEach(source => {
-            const name = source.name;
-            source.sourceFiles.forEach(src => {
-                const source = sourceFileExtractor.extract(src);
-                if (source) {
-                    const filePath = path.join(this.PACKAGES, name, src.getFilePath().split('src')[1]) + '.json';
-                    fse.outputFileSync(filePath, JSON.stringify(source, null, 2));
-                }
+        const sources = project
+            .getSourceFiles()
+            .filter(x => x.getFilePath().includes('src'))
+            .filter(x => !x.getFilePath().includes('__tests__'))
+            .filter(x => !x.getFilePath().includes('node_modules'))
+            .filter(x => !x.getFilePath().includes('dist'))
+            .filter(x => !x.getFilePath().includes('examples'))
+            .filter(x => !x.getFilePath().includes('e2e'));
+        const extractor = new SourceFileExtractor();
+        const src = exported ? extractor.extractAllExported(sources) : extractor.extractAll(sources);
+        if (src) {
+            fse.removeSync('packages');
+            src.forEach(source => {
+                const path = ('packages' + (source.path.split('packages')[1] + '.json')).replace('/src', '');
+                fse.outputFileSync(path, JSON.stringify(source, null, 2));
             });
-        });
-    }
-
-    private isDirectoryExists(dirPath: string): boolean {
-        return fs.existsSync(dirPath);
-    }
-
-    private getDirectoriesList(dirPath: string, filter?: (x: string) => boolean): string[] {
-        let list = fs.readdirSync(dirPath).filter(f => fs.statSync(path.join(dirPath, f)).isDirectory());
-        if (filter) {
-            list = list.filter(x => filter(x));
         }
-        return list;
+    }
+    public saveMerged(tsconfig: string): void {
+        const project = new Project({
+            tsConfigFilePath: tsconfig,
+        });
+        const sources = project
+            .getSourceFiles()
+            .filter(x => x.getFilePath().includes('src'))
+            .filter(x => !x.getFilePath().includes('__tests__'))
+            .filter(x => !x.getFilePath().includes('node_modules'))
+            .filter(x => !x.getFilePath().includes('dist'))
+            .filter(x => !x.getFilePath().includes('examples'))
+            .filter(x => !x.getFilePath().includes('e2e'));
+        const extractor = new SourceFileExtractor();
+        const source = extractor.fetchAllExported(sources);
+        fse.removeSync('packages');
+        fse.outputFileSync('packages/merged.json', JSON.stringify(source, null, 2));
     }
 }

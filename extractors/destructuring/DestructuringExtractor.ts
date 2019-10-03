@@ -3,7 +3,8 @@ import { DestructuringInfo } from './DestructuringInfo';
 import { DestructuringElementInfo } from './DestructuringElementInfo';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
 import { ModuleExtractor } from '../module/ModuleExtractor';
-
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 /*
 const { cooked, expressions } = expr;
 const {"some property": someProperty} = obj;
@@ -13,7 +14,7 @@ var [x, , ...remaining] = [1, 2, 3, 4];
 
 let obj: any = {};
 interface x {
-  "some property": any;
+    "some property": any;
 }
 const { "some property": someProperty } = obj;
 const { "some property": someProperty } = obj as unknown as any as x;
@@ -28,28 +29,28 @@ export class DestructuringExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
-        const nodeText = node.getText();
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         node.getDeclarations().forEach(declaration => {
             const elements: DestructuringElementInfo[] = [];
             const bindingElements = declaration.getDescendantsOfKind(SyntaxKind.BindingElement);
             if (bindingElements.length > 0) {
-                let typeReference: string | undefined = undefined;
+                let typeReference: string | undefined = void 0;
                 const initValue = declaration.getInitializer();
                 const text = declaration.getText();
-                const initializer = initValue === undefined ? undefined : declaration.getInitializerOrThrow().getText();
+                const initializer = initValue === void 0 ? void 0 : declaration.getInitializerOrThrow().getText();
                 if (initValue) {
                     const typeRef = declaration.getDescendantsOfKind(SyntaxKind.TypeReference);
-                    typeReference = typeRef.length === 0 ? undefined : typeRef[0].getText();
+                    typeReference = typeRef.length === 0 ? void 0 : typeRef[0].getText();
                 }
                 const isArrayDestructuring =
                     declaration.getDescendantsOfKind(SyntaxKind.ArrayBindingPattern).length > 0;
                 bindingElements.forEach(element => {
                     const name = element.getName();
                     const propertyName =
-                        element.getPropertyNameNode() === undefined
-                            ? undefined
+                        element.getPropertyNameNode() === void 0
+                            ? void 0
                             : element.getPropertyNameNodeOrThrow().getText();
-                    const isRest = element.getDotDotDotToken() !== undefined;
+                    const isRest = element.getDotDotDotToken() !== void 0;
                     elements.push({
                         name: name,
                         propertyName: propertyName,
@@ -58,6 +59,7 @@ export class DestructuringExtractor {
                     });
                 });
                 result.push({
+                    id: getSha256(node.getFullText + pathInfo.path),
                     isArrayDestructuring: isArrayDestructuring,
                     elements: elements,
                     initializer: initializer,
@@ -68,11 +70,15 @@ export class DestructuringExtractor {
                     modifiers: modifiers,
                     modules: modules,
                     typeReference: typeReference,
-                    text: nodeText,
+                    text: node.getText(),
                     hasComment: hasComment,
+                    path: pathInfo.path,
+                    directory: pathInfo.directory,
+                    file: pathInfo.file,
+                    extension: pathInfo.extension,
                 });
             }
         });
-        return result.length === 0 ? undefined : result;
+        return result.length === 0 ? void 0 : result;
     }
 }

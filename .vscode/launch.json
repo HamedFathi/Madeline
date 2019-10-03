@@ -23,11 +23,12 @@
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "-r",
-                "ts-node/register",
+                "test/tshook.js",
                 "--timeout",
                 "999999",
                 "--colors",
-                "test/**/*.ts"
+                "test/**/*.ts",
+                "test/**/**/*.ts"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"

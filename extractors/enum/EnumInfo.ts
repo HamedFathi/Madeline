@@ -12,4 +12,9 @@ export interface EnumInfo {
     modules: ModuleInfo[] | undefined;
     text: string;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    extension: string;
+    id: string;
 }

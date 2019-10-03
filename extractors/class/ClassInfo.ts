@@ -4,6 +4,7 @@ import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 
 export interface ClassInfo {
+    id: string;
     name: string | undefined;
     text: string;
     modifiers: string[] | undefined;
@@ -15,4 +16,8 @@ export interface ClassInfo {
     modules: ModuleInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    extension: string;
 }

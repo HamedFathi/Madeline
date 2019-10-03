@@ -10,12 +10,13 @@ export * from './extractors/common/CallSignatureInfo';
 export * from './extractors/common/CallSignatureParameterInfo';
 export * from './extractors/common/CallSignatureParameterTypeInfo';
 export * from './extractors/common/CallSignatureTypeInfo';
-export * from './extractors/common/TypeDetailInfo';
+export * from './extractors/common/FromTypeInfo';
 export * from './extractors/common/TypeExtractor';
 export * from './extractors/common/TypeInfo';
 export * from './extractors/constructor/ConstructorExtractor';
 export * from './extractors/constructor/ConstructorInfo';
 export * from './extractors/constructor/ConstructorParameterInfo';
+export * from './extractors/decorator/DecoratableType';
 export * from './extractors/decorator/DecoratorExtractor';
 export * from './extractors/decorator/DecoratorInfo';
 export * from './extractors/decorator/DecoratorParameterInfo';
@@ -26,7 +27,7 @@ export * from './extractors/doc-coverage/CoverageCalculator';
 export * from './extractors/doc-coverage/CoverageCalculatorInfo';
 export * from './extractors/doc-coverage/CoverageExtractor';
 export * from './extractors/doc-coverage/CoverageExtractorInfo';
-export * from './extractors/doc-coverage/CoverageExtractorOption';
+export * from './extractors/doc-coverage/CoverageExtractorOptions';
 export * from './extractors/doc-coverage/CoverageResult';
 export * from './extractors/enum/EnumExtractor';
 export * from './extractors/enum/EnumInfo';
@@ -67,6 +68,7 @@ export * from './extractors/property/PropertyInfo';
 export * from './extractors/set-accessor/SetAccessorExtractor';
 export * from './extractors/set-accessor/SetAccessorInfo';
 export * from './extractors/set-accessor/SetAccessorParameterInfo';
+export * from './extractors/source-file/ExportedSourceFileInfo';
 export * from './extractors/source-file/SourceFileClassInfo';
 export * from './extractors/source-file/SourceFileCoverageInfo';
 export * from './extractors/source-file/SourceFileExtractor';
@@ -75,28 +77,82 @@ export * from './extractors/type-alias/TypeAliasExtractor';
 export * from './extractors/type-alias/TypeAliasInfo';
 export * from './extractors/type-parameter/TypeParameterExtractor';
 export * from './extractors/type-parameter/TypeParameterInfo';
-export * from './extractors/variable/CommonVariableInfo';
 export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
-export * from './templates/class/ClassToMdConverter';
-export * from './templates/comment/AlternativeTagOption';
-export * from './templates/comment/CommentGroup';
-export * from './templates/comment/CommentGroupInfo';
-export * from './templates/comment/CommentTemplate';
-export * from './templates/comment/CommentTemplateInfo';
-export * from './templates/comment/CommentToMdConverter';
-export * from './templates/comment/CommentToMdOption';
-export * from './templates/comment/TagInfoHeader';
-export * from './templates/module/ModuleTemplate';
-export * from './templates/module/ModuleTemplateInfo';
-export * from './templates/module/ModuleToMdConverter';
-export * from './templates/TemplateOption';
-export * from './utilities/AureliaSourceFile';
+export * from './templates/git-book/markdown/class/ClassToMdConverter';
+export * from './templates/git-book/markdown/comment/AlternativeTagOptions';
+export * from './templates/git-book/markdown/comment/CommentGroup';
+export * from './templates/git-book/markdown/comment/CommentGroupInfo';
+export * from './templates/git-book/markdown/comment/CommentTemplate';
+export * from './templates/git-book/markdown/comment/CommentTemplateInfo';
+export * from './templates/git-book/markdown/comment/CommentToMdConverter';
+export * from './templates/git-book/markdown/comment/CommentToMdOption';
+export * from './templates/git-book/markdown/comment/TagInfoHeader';
+export * from './templates/git-book/markdown/module/ModuleTemplate';
+export * from './templates/git-book/markdown/module/ModuleTemplateInfo';
+export * from './templates/git-book/markdown/module/ModuleToMdConverter';
+export * from './templates/git-book/markdown/type-alias/TypeAliasTemplate';
+export * from './templates/git-book/markdown/type-alias/TypeAliasTemplateInfo';
+export * from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
+export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplate';
+export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplateInfo';
+export * from './templates/git-book/markdown/type-parameter/TypeParameterToMdConverter';
+export * from './templates/git-book/markdown/type/TypeToMdConverter';
+export * from './templates/git-book/summary/ClassSummaryMaker';
+export * from './templates/git-book/summary/DestructuringSummaryMaker';
+export * from './templates/git-book/summary/EnumSummaryMaker';
+export * from './templates/git-book/summary/ExportAssignmentSummaryMaker';
+export * from './templates/git-book/summary/FunctionSummaryMaker';
+export * from './templates/git-book/summary/InterfaceSummaryMaker';
+export * from './templates/git-book/summary/LiteralSummaryMaker';
+export * from './templates/git-book/summary/SummaryCategory';
+export * from './templates/git-book/summary/SummaryDetailInfo';
+export * from './templates/git-book/summary/SummaryInfo';
+export * from './templates/git-book/summary/SummaryMaker';
+export * from './templates/git-book/summary/SummaryRouter';
+export * from './templates/git-book/summary/TypeAliasSummaryMaker';
+export * from './templates/git-book/summary/VariableSummaryMaker';
+export * from './templates/TemplateOptions';
 export * from './utilities/AureliaSourceFileUtils';
 export * from './utilities/FsUtils';
+export * from './utilities/HashUtils';
 export * from './utilities/JsonUtils';
 export * from './utilities/MarkdownUtils';
 export * from './utilities/NunjucksUtils';
 export * from './utilities/ObjectUtils';
+export * from './utilities/PathInfo';
+export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
+
+/*
+const Stopwatch = require('statman-stopwatch');
+import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
+import { Project } from 'ts-morph';
+import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
+import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
+import { summaryRouter } from './templates/git-book/summary/SummaryRouter';
+const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+const sw = new Stopwatch(true);
+// new AureliaSourceFileUtils().saveMerged(tsconfig);
+const project = new Project({
+    tsConfigFilePath: tsconfig,
+});
+const sources = project
+    .getSourceFiles()
+    .filter(x => x.getFilePath().includes('src'))
+    .filter(x => !x.getFilePath().includes('__tests__'))
+    .filter(x => !x.getFilePath().includes('node_modules'))
+    .filter(x => !x.getFilePath().includes('dist'))
+    .filter(x => !x.getFilePath().includes('examples'))
+    .filter(x => !x.getFilePath().includes('e2e'));
+const src = new SourceFileExtractor().fetchAllExported(sources);
+if (src) {
+    const sum = new SummaryMaker().make(src);
+    const y = new SummaryMaker().write(sum);
+}
+sw.stop();
+const delta = ((sw.read() as number) / 1000).toString();
+console.log(parseFloat(delta).toFixed(2) + 's');
+const a = 1;
+*/

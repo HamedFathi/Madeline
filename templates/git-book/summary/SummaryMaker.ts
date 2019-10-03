@@ -1,17 +1,19 @@
+import { exportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
+import { destructuringSummaryMaker } from './DestructuringSummaryMaker';
+import { functionSummaryMaker } from './FunctionSummaryMaker';
+import { classSummaryMaker } from './ClassSummaryMaker';
 import * as _ from 'lodash';
 import { ExportedSourceFileInfo } from '../../../extractors/source-file/ExportedSourceFileInfo';
-import { ClassSummaryMaker } from './ClassSummaryMaker';
-import { SummaryDetailInfo } from './SummaryDetailInfo';
-import { InterfaceSummaryMaker } from './InterfaceSummaryMaker';
-import { EnumSummaryMaker } from './EnumSummaryMaker';
-import { TypeAliasSummaryMaker } from './TypeAliasSummaryMaker';
-import { FunctionSummaryMaker } from './FunctionSummaryMaker';
-import { VariableSummaryMaker } from './VariableSummaryMaker';
-import { LiteralSummaryMaker } from './LiteralSummaryMaker';
-import { ExportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
-import { DestructuringSummaryMaker } from './DestructuringSummaryMaker';
 import { SummaryInfo } from './SummaryInfo';
 import { tab } from '../../../utilities/StringUtils';
+import { SummaryMapInfo } from './SummaryMapInfo';
+import { TypeScope } from '../../../extractors/common/TypeScope';
+import { PathInfo } from '../../../utilities/PathInfo';
+import { interfaceSummaryMaker } from './InterfaceSummaryMaker';
+import { enumSummaryMaker } from './EnumSummaryMaker';
+import { typeAliasSummaryMaker } from './TypeAliasSummaryMaker';
+import { literalSummaryMaker } from './LiteralSummaryMaker';
+import { variableSummaryMaker } from './VariableSummaryMaker';
 
 /*
 # Table of contents
@@ -76,75 +78,73 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
-    constructor(
-        private classMaker = new ClassSummaryMaker(),
-        private interfaceMaker = new InterfaceSummaryMaker(),
-        private enumMaker = new EnumSummaryMaker(),
-        private typeAliasMaker = new TypeAliasSummaryMaker(),
-        private functionMaker = new FunctionSummaryMaker(),
-        private variableMaker = new VariableSummaryMaker(),
-        private literalMaker = new LiteralSummaryMaker(),
-        private destructuringMaker = new DestructuringSummaryMaker(),
-        private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
-    ) {}
-
-    private getSummaryDetailInfo(sourceFile: ExportedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
-        const summaryDetailInfo: SummaryDetailInfo[] = [];
+    private getSummaryDetailInfo(
+        sourceFile: ExportedSourceFileInfo,
+        map: (
+            id: string,
+            pathInfo: PathInfo,
+            category: TypeScope,
+            mdFileName: string,
+            baseUrl?: string,
+        ) => SummaryMapInfo,
+        baseUrl?: string,
+    ): SummaryMapInfo[] {
+        const SummaryMapInfo: SummaryMapInfo[] = [];
         if (sourceFile.classes) {
-            const classes = this.classMaker.make(sourceFile.classes, baseUrl);
+            const classes = classSummaryMaker(sourceFile.classes, map, baseUrl);
             for (const iterator of classes) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.interfaces) {
-            const interfaces = this.interfaceMaker.make(sourceFile.interfaces, baseUrl);
+            const interfaces = interfaceSummaryMaker(sourceFile.interfaces, map, baseUrl);
             for (const iterator of interfaces) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.enums) {
-            const enums = this.enumMaker.make(sourceFile.enums, baseUrl);
+            const enums = enumSummaryMaker(sourceFile.enums, map, baseUrl);
             for (const iterator of enums) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.typeAliases) {
-            const typeAliases = this.typeAliasMaker.make(sourceFile.typeAliases, baseUrl);
+            const typeAliases = typeAliasSummaryMaker(sourceFile.typeAliases, map, baseUrl);
             for (const iterator of typeAliases) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.functions) {
-            const functions = this.functionMaker.make(sourceFile.functions, baseUrl);
+            const functions = functionSummaryMaker(sourceFile.functions, map, baseUrl);
             for (const iterator of functions) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.variables) {
-            const variables = this.variableMaker.make(sourceFile.variables, baseUrl);
+            const variables = variableSummaryMaker(sourceFile.variables, map, baseUrl);
             for (const iterator of variables) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.literals) {
-            const literals = this.literalMaker.make(sourceFile.literals, baseUrl);
+            const literals = literalSummaryMaker(sourceFile.literals, map, baseUrl);
             for (const iterator of literals) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.destructuring) {
-            const destructuring = this.destructuringMaker.make(sourceFile.destructuring, baseUrl);
+            const destructuring = destructuringSummaryMaker(sourceFile.destructuring, map, baseUrl);
             for (const iterator of destructuring) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
         if (sourceFile.exportAssignments) {
-            const assigns = this.exportAssignmentMaker.make(sourceFile.exportAssignments, baseUrl);
+            const assigns = exportAssignmentSummaryMaker(sourceFile.exportAssignments, map, baseUrl);
             for (const iterator of assigns) {
-                summaryDetailInfo.push(iterator);
+                SummaryMapInfo.push(iterator);
             }
         }
-        return summaryDetailInfo;
+        return SummaryMapInfo;
     }
 
     private beatifyName(name: string): string {
@@ -155,10 +155,21 @@ export class SummaryMaker {
         }
     }
 
-    public make(sourceFile: ExportedSourceFileInfo, fileExtension = '.md', baseUrl?: string): SummaryInfo[] {
+    public make(
+        sourceFile: ExportedSourceFileInfo,
+        map: (
+            id: string,
+            pathInfo: PathInfo,
+            category: TypeScope,
+            mdFileName: string,
+            baseUrl?: string,
+        ) => SummaryMapInfo,
+        fileExtension = '.md',
+        baseUrl?: string,
+    ): SummaryInfo[] {
         const result: SummaryInfo[] = [];
-        const summaryDetailInfo = this.getSummaryDetailInfo(sourceFile, baseUrl);
-        const summaryGroup = _(summaryDetailInfo)
+        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
+        const summaryGroup = _(SummaryMapInfo)
             .sortBy(x => x.folders)
             .groupBy(x => x.folders)
             .values()

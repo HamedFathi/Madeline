@@ -7,6 +7,7 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 
 export class ClassExtractor {
     constructor(
@@ -35,7 +36,7 @@ export class ClassExtractor {
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             decorators: decorators,
             modules: this.moduleExtractor.extract(node),
-            typeParameters: this.typeParameterExtractor.extract(node, imports),
+            typeParameters: this.typeParameterExtractor.extract(node,TypeScope.Classes, imports),
             hasComment: hasComment,
             path: pathInfo.path,
             directory: pathInfo.directory,

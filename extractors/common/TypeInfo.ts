@@ -1,4 +1,5 @@
 import { FromTypeInfo } from './FromTypeInfo';
+import { TypeScope } from './TypeScope';
 
 export interface TypeInfo {
     value: string;
@@ -6,4 +7,5 @@ export interface TypeInfo {
     typeNodeText: string | undefined;
     typeReference: string | undefined;
     from: FromTypeInfo[] | undefined;
+    typeScope: TypeScope;
 }

@@ -1,6 +1,7 @@
 import * as fse from 'fs-extra';
 import { Project } from 'ts-morph';
 import { SourceFileExtractor } from '../extractors/source-file/SourceFileExtractor';
+import { ExportedSourceFileInfo } from '../extractors/source-file/ExportedSourceFileInfo';
 export class AureliaSourceFileUtils {
     public save(tsconfig: string, exported = true): void {
         const project = new Project({
@@ -24,7 +25,7 @@ export class AureliaSourceFileUtils {
             });
         }
     }
-    public saveMerged(tsconfig: string): void {
+    public saveMerged(tsconfig: string): ExportedSourceFileInfo {
         const project = new Project({
             tsConfigFilePath: tsconfig,
         });
@@ -40,5 +41,6 @@ export class AureliaSourceFileUtils {
         const source = extractor.fetchAllExported(sources);
         fse.removeSync('packages');
         fse.outputFileSync('packages/merged.json', JSON.stringify(source, null, 2));
+        return source;
     }
 }

@@ -31,16 +31,16 @@ export class ExportExtractor {
                     x.getNamedExports().length === 0
                         ? void 0
                         : x.getNamedExports().map(y => {
-                            return {
-                                name: y.getName(),
-                                alias:
-                                    y.getSymbol() === void 0
-                                        ? void 0
-                                        : y.getName() === y.getSymbolOrThrow().getName()
-                                            ? void 0
-                                            : y.getSymbolOrThrow().getName(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  alias:
+                                      y.getSymbol() === void 0
+                                          ? void 0
+                                          : y.getName() === y.getSymbolOrThrow().getName()
+                                          ? void 0
+                                          : y.getSymbolOrThrow().getName(),
+                              };
+                          }),
             };
         });
         return result.length === 0 ? void 0 : result;

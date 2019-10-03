@@ -6,6 +6,7 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 export class PropertyExtractor {
     public extract(node: PropertyDeclaration, imports: ImportInfo[] | undefined): PropertyInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -20,7 +21,7 @@ export class PropertyExtractor {
             extension: pathInfo.extension,
             name: node.getName(),
             text: node.getText(),
-            type: new TypeExtractor().extract(node.getType(), node.getTypeNode(), void 0, imports),
+            type: new TypeExtractor().extract(node.getType(), TypeScope.Classes, node.getTypeNode(), void 0, imports),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(y => y.getText()),
             isOptional: node.hasQuestionToken(),
             initializer: node.getInitializer() === void 0 ? void 0 : node.getInitializerOrThrow().getText(),

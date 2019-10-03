@@ -5,6 +5,7 @@ import { DecoratableType } from './DecoratableType';
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 
 const allowedKinds: SyntaxKind[] = [
     SyntaxKind.ClassDeclaration,
@@ -42,7 +43,13 @@ export class DecoratorExtractor {
                         : x.getArguments().map(x => {
                               return {
                                   value: x.getText(),
-                                  type: new TypeExtractor().extract(x.getType(), void 0, void 0, imports),
+                                  type: new TypeExtractor().extract(
+                                      x.getType(),
+                                      TypeScope.Decorators,
+                                      void 0,
+                                      void 0,
+                                      imports,
+                                  ),
                               };
                           }),
             };

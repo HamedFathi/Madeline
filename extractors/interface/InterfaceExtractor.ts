@@ -7,6 +7,7 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 export class InterfaceExtractor {
     constructor(
         private typeParameterExtractor = new TypeParameterExtractor(),
@@ -31,7 +32,7 @@ export class InterfaceExtractor {
             file: pathInfo.file,
             extension: pathInfo.extension,
             modules: new ModuleExtractor().extract(node),
-            typeParameters: this.typeParameterExtractor.extract(node, imports),
+            typeParameters: this.typeParameterExtractor.extract(node, TypeScope.Interfaces, imports),
             hasComment: hasComment,
             properties:
                 node.getProperties().length === 0
@@ -40,7 +41,13 @@ export class InterfaceExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: this.typeExtractor.extract(x.getType(), x.getTypeNode(), undefined, imports),
+                              type: this.typeExtractor.extract(
+                                  x.getType(),
+                                  TypeScope.Interfaces,
+                                  x.getTypeNode(),
+                                  undefined,
+                                  imports,
+                              ),
                               isOptional: x.hasQuestionToken(),
                               trailingComments:
                                   this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
@@ -59,9 +66,14 @@ export class InterfaceExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x, imports),
+                              typeParameters: this.typeParameterExtractor.extract(
+                                  x,
+                                  TypeScope.MethodsOfInterface,
+                                  imports,
+                              ),
                               returnType: this.typeExtractor.extract(
                                   x.getReturnType(),
+                                  TypeScope.Interfaces,
                                   x.getReturnTypeNode(),
                                   void 0,
                                   imports,
@@ -83,6 +95,7 @@ export class InterfaceExtractor {
                                                 text: y.getText(),
                                                 type: this.typeExtractor.extract(
                                                     y.getType(),
+                                                    TypeScope.Interfaces,
                                                     y.getTypeNode(),
                                                     void 0,
                                                     imports,
@@ -108,7 +121,13 @@ export class InterfaceExtractor {
                     : node.getExtends().map(x => {
                           return {
                               name: x.getText(),
-                              type: this.typeExtractor.extract(x.getType(), undefined, undefined, imports),
+                              type: this.typeExtractor.extract(
+                                  x.getType(),
+                                  TypeScope.Interfaces,
+                                  undefined,
+                                  undefined,
+                                  imports,
+                              ),
                           };
                       }),
             callSignatures:
@@ -118,12 +137,17 @@ export class InterfaceExtractor {
                           return {
                               returnType: this.typeExtractor.extract(
                                   x.getReturnType(),
+                                  TypeScope.Interfaces,
                                   x.getReturnTypeNode(),
                                   void 0,
                                   imports,
                               ),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x, imports),
+                              typeParameters: this.typeParameterExtractor.extract(
+                                  x,
+                                  TypeScope.CallSignaturesOfInterface,
+                                  imports,
+                              ),
                               trailingComments:
                                   this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
                                       ? void 0
@@ -141,6 +165,7 @@ export class InterfaceExtractor {
                                                 text: y.getText(),
                                                 type: this.typeExtractor.extract(
                                                     y.getType(),
+                                                    TypeScope.Interfaces,
                                                     y.getTypeNode(),
                                                     undefined,
                                                     imports,
@@ -167,13 +192,20 @@ export class InterfaceExtractor {
                           return {
                               returnType: this.typeExtractor.extract(
                                   x.getReturnType(),
+                                  TypeScope.Interfaces,
                                   x.getReturnTypeNode(),
                                   void 0,
                                   imports,
                               ),
                               text: x.getText(),
                               key: x.getKeyName(),
-                              value: this.typeExtractor.extract(x.getKeyType(), x.getKeyTypeNode(), void 0, imports),
+                              value: this.typeExtractor.extract(
+                                  x.getKeyType(),
+                                  TypeScope.Interfaces,
+                                  x.getKeyTypeNode(),
+                                  void 0,
+                                  imports,
+                              ),
                               trailingComments:
                                   this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
                                       ? void 0
@@ -191,12 +223,17 @@ export class InterfaceExtractor {
                           return {
                               returnType: this.typeExtractor.extract(
                                   x.getReturnType(),
+                                  TypeScope.Interfaces,
                                   x.getReturnTypeNode(),
                                   void 0,
                                   imports,
                               ),
                               text: x.getText(),
-                              typeParameters: this.typeParameterExtractor.extract(x, imports),
+                              typeParameters: this.typeParameterExtractor.extract(
+                                  x,
+                                  TypeScope.ConstructorsOfInterface,
+                                  imports,
+                              ),
                               trailingComments:
                                   this.typescriptCommentExtractor.extract(x.getTrailingCommentRanges()).length === 0
                                       ? void 0
@@ -214,6 +251,7 @@ export class InterfaceExtractor {
                                                 text: y.getText(),
                                                 type: this.typeExtractor.extract(
                                                     y.getType(),
+                                                    TypeScope.Interfaces,
                                                     y.getTypeNode(),
                                                     undefined,
                                                     imports,

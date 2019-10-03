@@ -33,6 +33,7 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeScope } from '../common/TypeScope';
 /*
 const obj = {
     propertyAssignment2: function(x: number) {},
@@ -152,6 +153,7 @@ export class LiteralExtractor {
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
                         declaration.getType(),
+                        TypeScope.Literals,
                         declaration.getTypeNode(),
                         typeReference,
                         imports,
@@ -181,6 +183,7 @@ export class LiteralExtractor {
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
                         declaration.getType(),
+                        TypeScope.Literals,
                         declaration.getTypeNode(),
                         void 0,
                         imports,
@@ -219,6 +222,7 @@ export class LiteralExtractor {
                             : this.getExpressionInfo(propertyAssignment.getInitializerOrThrow(), void 0, imports);
                     const type = new TypeExtractor().extract(
                         propertyAssignment.getType(),
+                        TypeScope.Literals,
                         void 0,
                         typeReference,
                         imports,
@@ -236,6 +240,7 @@ export class LiteralExtractor {
                     const shorthandPropertyAssignment = x as ShorthandPropertyAssignment;
                     const type = new TypeExtractor().extract(
                         shorthandPropertyAssignment.getType(),
+                        TypeScope.Literals,
                         void 0,
                         typeReference,
                         imports,
@@ -253,6 +258,7 @@ export class LiteralExtractor {
                     const spreadAssignment = x as SpreadAssignment;
                     const type = new TypeExtractor().extract(
                         spreadAssignment.getType(),
+                        TypeScope.Literals,
                         void 0,
                         typeReference,
                         imports,
@@ -306,11 +312,16 @@ export class LiteralExtractor {
             return {
                 returnType: new TypeExtractor().extract(
                     callSignature.getReturnType(),
+                    TypeScope.Literals,
                     callSignature.getReturnTypeNode(),
                     typeReference,
                     imports,
                 ),
-                typeParameters: new TypeParameterExtractor().extract(callSignature, imports),
+                typeParameters: new TypeParameterExtractor().extract(
+                    callSignature,
+                    TypeScope.CallSignaturesOfLiteral,
+                    imports,
+                ),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? void 0
@@ -319,6 +330,7 @@ export class LiteralExtractor {
                                   name: y.getName(),
                                   type: new TypeExtractor().extract(
                                       y.getType(),
+                                      TypeScope.Literals,
                                       y.getTypeNode(),
                                       typeReference,
                                       imports,

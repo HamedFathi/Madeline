@@ -13,7 +13,7 @@ export class DestructuringSummaryMaker {
                 directory: d.directory,
                 extension: d.extension,
             };
-            const mdFileName = d.id;
+            const mdFileName = '_';
             const destructuringSummary = summaryRouter(d.id, pInfo, SummaryCategory.Destructuring, mdFileName, baseUrl);
             destructions.push(destructuringSummary);
         }

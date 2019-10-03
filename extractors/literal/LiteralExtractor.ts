@@ -33,7 +33,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-
 /*
 const obj = {
     propertyAssignment2: function(x: number) {},

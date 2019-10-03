@@ -18,7 +18,7 @@ const START_JS_DOC_UNUSUAL = '/*';
 const END_JS_DOC_UNUSUAL = '**/';
 const END_JS_DOC = '*/';
 
-const readJsDocLines = function (text: string): string[] {
+const readJsDocLines = function(text: string): string[] {
     const result = text
         .replace(START_JS_DOC, NOTHING)
         .replace(START_JS_DOC_UNUSUAL, NOTHING)
@@ -82,12 +82,12 @@ export class JsDocExtractor {
                     if (names && names[0] === DOUBLE_QUOTE && names[names.length - 1] === DOUBLE_QUOTE) {
                         names = names.substring(1);
                         names = names.substring(0, names.length - 1);
-                        names = names.replace(/\"\.\"/g, ".");
+                        names = names.replace(/\"\.\"/g, '.');
                     }
                     if (names && names[0] === SINGLE_QUOTE && names[names.length - 1] === SINGLE_QUOTE) {
                         names = names.substring(1);
                         names = names.substring(0, names.length - 1);
-                        names = names.replace(/\'\.\'/g, ".");
+                        names = names.replace(/\'\.\'/g, '.');
                     }
                     tags.push({
                         tag: tag,

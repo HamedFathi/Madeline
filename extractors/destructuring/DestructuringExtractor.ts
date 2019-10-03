@@ -5,7 +5,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-
 /*
 const { cooked, expressions } = expr;
 const {"some property": someProperty} = obj;
@@ -30,7 +29,6 @@ export class DestructuringExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const modules = new ModuleExtractor().extract(node);
-        const nodeText = node.getText();
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         node.getDeclarations().forEach(declaration => {
             const elements: DestructuringElementInfo[] = [];
@@ -61,7 +59,7 @@ export class DestructuringExtractor {
                     });
                 });
                 result.push({
-                    id: getSha256(node.getFullText() + pathInfo.path),
+                    id: getSha256(node.getFullText + pathInfo.path),
                     isArrayDestructuring: isArrayDestructuring,
                     elements: elements,
                     initializer: initializer,
@@ -72,7 +70,7 @@ export class DestructuringExtractor {
                     modifiers: modifiers,
                     modules: modules,
                     typeReference: typeReference,
-                    text: nodeText,
+                    text: node.getText(),
                     hasComment: hasComment,
                     path: pathInfo.path,
                     directory: pathInfo.directory,

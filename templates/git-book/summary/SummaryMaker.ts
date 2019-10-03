@@ -86,7 +86,7 @@ export class SummaryMaker {
         private literalMaker = new LiteralSummaryMaker(),
         private destructuringMaker = new DestructuringSummaryMaker(),
         private exportAssignmentMaker = new ExportAssignmentSummaryMaker(),
-    ) { }
+    ) {}
 
     private getSummaryDetailInfo(sourceFile: ExportedSourceFileInfo, baseUrl?: string): SummaryDetailInfo[] {
         const summaryDetailInfo: SummaryDetailInfo[] = [];
@@ -166,6 +166,7 @@ export class SummaryMaker {
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
             result.push({
+                id: undefined,
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
@@ -180,19 +181,21 @@ export class SummaryMaker {
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
                 result.push({
+                    id: undefined,
                     baseUrl: baseUrl,
                     level: parents.length,
                     extension: fileExtension,
                     title: category,
                     url: parents.join('/') + '/' + category + '/README' + fileExtension,
                 });
-                for (const iterator of summary) {
+                for (const s of summary) {
                     result.push({
+                        id: s.id,
                         baseUrl: baseUrl,
                         level: parents.length + 1,
                         extension: fileExtension,
-                        title: iterator.mdFileName,
-                        url: iterator.path + fileExtension,
+                        title: s.mdFileName,
+                        url: s.path + fileExtension,
                     });
                 }
             }

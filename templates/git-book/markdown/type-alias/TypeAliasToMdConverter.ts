@@ -1,21 +1,21 @@
-import { TypeAliasInfo } from '../../../extractors/type-alias/TypeAliasInfo';
-import { TemplateOptions } from '../../TemplateOptions';
+import { prettify } from './../../../../utilities/PrettierUtils';
+
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
-import { PrettierUtils } from '../../../utilities/PrettierUtils';
-import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { TypeAliasTemplateInfo } from './TypeAliasTemplateInfo';
 import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
 import { TypeParameterToMdConverter } from '../type-parameter/TypeParameterToMdConverter';
-import { Nunjucks } from '../../../utilities/NunjucksUtils';
 import { TYPE_ALIAS_TEMPLATE } from './TypeAliasTemplate';
+import { TypeAliasInfo } from '../../../../extractors/type-alias/TypeAliasInfo';
+import { TemplateOptions } from '../../../TemplateOptions';
+import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
+import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 
 export class TypeAliasToMdConverter {
     constructor(
         private commentToMdConverter = new CommentToMdConverter(),
         private moduleToMdConverter = new ModuleToMdConverter(),
         private typeParameterToMdConverter = new TypeParameterToMdConverter(),
-        private prettierUtils = new PrettierUtils(),
         private markdownUtils = new MarkdownUtils(),
     ) {}
     public convert(
@@ -52,7 +52,7 @@ export class TypeAliasToMdConverter {
             modules: modules,
             modifiers: typeAliasInfo.modifiers,
             name: typeAliasInfo.name,
-            text: this.prettierUtils.prettify(typeAliasInfo.text),
+            text: prettify(typeAliasInfo.text),
             type: typeAliasInfo.type,
             typeParameters: typeParameters,
             hasComment: typeAliasInfo.hasComment,

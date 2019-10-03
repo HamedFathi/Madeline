@@ -18,7 +18,7 @@ export class ExportAssignmentExtractor {
                     const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
                     const expression: ExportAssignmentInfo = {
                         id: getSha256(node.getFullText() + pathInfo.path),
-                        text: x.getText(),
+                        text: node.getText(),
                         hasComment: hasComment,
                         path: pathInfo.path,
                         directory: pathInfo.directory,

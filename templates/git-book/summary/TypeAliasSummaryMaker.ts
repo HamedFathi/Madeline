@@ -15,7 +15,7 @@ export class TypeAliasSummaryMaker {
                 extension: ta.extension,
             };
             const mdFileName = ta.name;
-            const aliasSummary = summaryRouter(pInfo, SummaryCategory.TypeAliases, mdFileName, baseUrl);
+            const aliasSummary = summaryRouter(ta.id, pInfo, SummaryCategory.TypeAliases, mdFileName, baseUrl);
             aliasInfo.push(aliasSummary);
         }
         return aliasInfo;

@@ -1,4 +1,4 @@
-import { TemplateOptions } from '../../TemplateOptions';
+import { TemplateOptions } from '../../../TemplateOptions';
 
 export interface ModuleTemplateInfo {
     name: string;

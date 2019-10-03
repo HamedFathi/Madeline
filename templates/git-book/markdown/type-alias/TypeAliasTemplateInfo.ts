@@ -1,5 +1,5 @@
-import { TypeInfo } from '../../../extractors/common/TypeInfo';
-import { TemplateOptions } from '../../TemplateOptions';
+import { TypeInfo } from '../../../../extractors/common/TypeInfo';
+import { TemplateOptions } from '../../../TemplateOptions';
 
 export interface TypeAliasTemplateInfo {
     name: string;

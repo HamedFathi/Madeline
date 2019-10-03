@@ -14,7 +14,7 @@ export class VariableSummaryMaker {
                 extension: v.extension,
             };
             const mdFileName = v.name;
-            const variableSummary = summaryRouter(pInfo, SummaryCategory.Variables, mdFileName, baseUrl);
+            const variableSummary = summaryRouter(v.id, pInfo, SummaryCategory.Variables, mdFileName, baseUrl);
             variablesInfo.push(variableSummary);
         }
         return variablesInfo;

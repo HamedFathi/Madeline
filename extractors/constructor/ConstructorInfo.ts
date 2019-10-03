@@ -10,4 +10,9 @@ export interface ConstructorInfo {
     leadingComments: CommentInfo[] | undefined;
     text: string;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
+    extension: string;
 }

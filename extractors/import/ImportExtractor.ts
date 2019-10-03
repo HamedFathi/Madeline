@@ -1,11 +1,14 @@
 import { SyntaxKind, ImportDeclaration, SourceFile, ImportEqualsDeclaration } from 'ts-morph';
 import { ImportInfo } from './ImportInfo';
 import { ImportKind } from './ImportKind';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 export class ImportExtractor {
     public extract(sourceFile: SourceFile): ImportInfo[] | undefined {
         const result: ImportInfo[] = [];
         sourceFile.forEachDescendant(node => {
+            const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
             switch (node.getKind()) {
                 case SyntaxKind.ImportDeclaration:
                     const importDeclaration = node as ImportDeclaration;
@@ -24,12 +27,17 @@ export class ImportExtractor {
                             }
                             const kind = ImportKind.NamedImport;
                             result.push({
+                                id: getSha256(importDeclaration.getFullText() + pathInfo.path),
                                 name: name,
                                 alias: alias,
                                 module: moduleValue,
                                 kind: kind,
                                 kindName: ImportKind[kind],
                                 text: textDeclaration,
+                                path: pathInfo.path,
+                                directory: pathInfo.directory,
+                                file: pathInfo.file,
+                                extension: pathInfo.extension,
                             });
                         });
                     }
@@ -38,12 +46,17 @@ export class ImportExtractor {
                         const alias = void 0;
                         const kind = ImportKind.DefaultImport;
                         result.push({
+                            id: getSha256(importDeclaration.getFullText() + pathInfo.path),
                             name: name,
                             alias: alias,
                             module: moduleValue,
                             kind: kind,
                             kindName: ImportKind[kind],
                             text: textDeclaration,
+                            path: pathInfo.path,
+                            directory: pathInfo.directory,
+                            file: pathInfo.file,
+                            extension: pathInfo.extension,
                         });
                     }
                     if (namespaceImport) {
@@ -51,12 +64,17 @@ export class ImportExtractor {
                         const alias = void 0;
                         const kind = ImportKind.NamespaceImport;
                         result.push({
+                            id: getSha256(importDeclaration.getFullText() + pathInfo.path),
                             name: name,
                             alias: alias,
                             module: moduleValue,
                             kind: kind,
                             kindName: ImportKind[kind],
                             text: textDeclaration,
+                            path: pathInfo.path,
+                            directory: pathInfo.directory,
+                            file: pathInfo.file,
+                            extension: pathInfo.extension,
                         });
                     }
                     break;
@@ -67,12 +85,17 @@ export class ImportExtractor {
                     const name = importEquals.getName();
                     const kind = ImportKind.ImportEquals;
                     result.push({
+                        id: getSha256(importEquals.getFullText() + pathInfo.path),
                         name: name,
                         alias: void 0,
                         module: moduleRefValue,
                         kind: kind,
                         kindName: ImportKind[kind],
                         text: text,
+                        path: pathInfo.path,
+                        directory: pathInfo.directory,
+                        file: pathInfo.file,
+                        extension: pathInfo.extension,
                     });
                     break;
             }

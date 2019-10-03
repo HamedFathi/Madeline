@@ -1,17 +1,16 @@
-import { ModuleInfo } from '../../../extractors/module/ModuleInfo';
-import { PrettierUtils } from '../../../utilities/PrettierUtils';
 import { MODULE_TEMPLATE } from './moduleTemplate';
 import { ModuleTemplateInfo } from './ModuleTemplateInfo';
-import { Nunjucks } from '../../../utilities/NunjucksUtils';
-import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
-import { TemplateOptions } from '../../TemplateOptions';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
+import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
+import { ModuleInfo } from '../../../../extractors/module/ModuleInfo';
+import { TemplateOptions } from '../../../TemplateOptions';
+import { prettify } from '../../../../utilities/PrettierUtils';
+import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 
 export class ModuleToMdConverter {
     constructor(
         private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter(),
-        private prettierUtils = new PrettierUtils(),
         private markdownUtils = new MarkdownUtils(),
     ) {}
     public convert(moduleInfo: ModuleInfo[], commentOptions?: CommentToMdOption, options?: TemplateOptions): string[] {
@@ -31,7 +30,7 @@ export class ModuleToMdConverter {
                 name: m.name,
                 type: m.isNamespace ? 'namespace' : 'module',
                 modifiers: m.modifiers,
-                text: this.prettierUtils.prettify(m.text),
+                text: prettify(m.text),
                 description: description.length === 0 ? void 0 : description,
                 options: options,
             };

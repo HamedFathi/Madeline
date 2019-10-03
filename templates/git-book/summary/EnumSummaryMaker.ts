@@ -15,7 +15,7 @@ export class EnumSummaryMaker {
                 extension: e.extension,
             };
             const mdFileName = e.name;
-            const enumSummary = summaryRouter(pInfo, SummaryCategory.Enums, mdFileName, baseUrl);
+            const enumSummary = summaryRouter(e.id, pInfo, SummaryCategory.Enums, mdFileName, baseUrl);
             enumsInfo.push(enumSummary);
         }
         return enumsInfo;

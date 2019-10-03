@@ -7,7 +7,6 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-
 export class InterfaceExtractor {
     constructor(
         private typeParameterExtractor = new TypeParameterExtractor(),

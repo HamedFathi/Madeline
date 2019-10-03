@@ -14,6 +14,8 @@ import {
 import { TypeParameterInfo } from './TypeParameterInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { ImportInfo } from '../import/ImportInfo';
+import { getPathInfo } from '../../utilities/PathUtils';
+import { getSha256 } from '../../utilities/HashUtils';
 
 export class TypeParameterExtractor {
     public extract(
@@ -31,8 +33,14 @@ export class TypeParameterExtractor {
             | SetAccessorDeclaration,
         imports: ImportInfo[] | undefined,
     ): TypeParameterInfo[] | undefined {
+        const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         const result = node.getTypeParameters().map(y => {
             return {
+                id: getSha256(node.getFullText() + pathInfo.path),
+                path: pathInfo.path,
+                directory: pathInfo.directory,
+                file: pathInfo.file,
+                extension: pathInfo.extension,
                 name: y.getName(),
                 text: y.getText(),
                 constraint:

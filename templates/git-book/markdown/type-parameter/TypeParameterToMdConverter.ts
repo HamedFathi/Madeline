@@ -1,9 +1,6 @@
-import { TemplateOptions } from '../../TemplateOptions';
-import { TypeParameterInfo } from '../../../extractors/type-parameter/TypeParameterInfo';
-import { TypeParameterTemplateInfo } from './TypeParameterTemplateInfo';
-import { TYPE_PARAMETER_TEMPLATE } from './TypeParameterTemplate';
-import { Nunjucks } from '../../../utilities/NunjucksUtils';
-import { MarkdownUtils } from '../../../utilities/MarkdownUtils';
+import { TypeParameterInfo } from './../../../../extractors/type-parameter/TypeParameterInfo';
+import { TemplateOptions } from './../../../TemplateOptions';
+import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 
 export class TypeParameterToMdConverter {
     constructor(private markdownUtils = new MarkdownUtils()) {}

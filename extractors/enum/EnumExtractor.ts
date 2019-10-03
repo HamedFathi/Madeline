@@ -4,7 +4,6 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-
 export class EnumExtractor {
     public extract(node: EnumDeclaration): EnumInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());

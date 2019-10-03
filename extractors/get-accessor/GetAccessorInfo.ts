@@ -12,4 +12,9 @@ export interface GetAccessorInfo {
     text: string;
     typeParameters: TypeParameterInfo[] | undefined;
     hasComment: boolean;
+    path: string;
+    file: string;
+    directory: string;
+    id: string;
+    extension: string;
 }

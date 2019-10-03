@@ -13,8 +13,8 @@ export class ClassSummaryMaker {
                 directory: c.directory,
                 extension: c.extension,
             };
-            const mdFileName = c.name || c.id;
-            const classSummary = summaryRouter(pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
+            const mdFileName = c.name || '_';
+            const classSummary = summaryRouter(c.id, pInfo, SummaryCategory.Classes, mdFileName, baseUrl);
             classSummaryInfo.push(classSummary);
         }
         return classSummaryInfo;

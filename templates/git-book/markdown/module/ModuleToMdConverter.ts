@@ -4,7 +4,6 @@ import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { ModuleInfo } from '../../../../extractors/module/ModuleInfo';
-import { TemplateOptions } from '../../../TemplateOptions';
 import { prettify } from '../../../../utilities/PrettierUtils';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 
@@ -13,17 +12,17 @@ export class ModuleToMdConverter {
         private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter(),
         private markdownUtils = new MarkdownUtils(),
     ) {}
-    public convert(moduleInfo: ModuleInfo[], commentOptions?: CommentToMdOption, options?: TemplateOptions): string[] {
+    public convert(moduleInfo: ModuleInfo[], commentOptions?: CommentToMdOption): string[] {
         const md: string[] = [];
         const converter = this.commentToMdConverter;
         moduleInfo.forEach(m => {
             const description: string[] = [];
             if (m.leadingComments) {
-                const leading = converter.convertAll(m.leadingComments, commentOptions, options);
+                const leading = converter.convertAll(m.leadingComments, commentOptions);
                 description.concat(leading);
             }
             if (m.trailingComments) {
-                const trailing = converter.convertAll(m.trailingComments, commentOptions, options);
+                const trailing = converter.convertAll(m.trailingComments, commentOptions);
                 description.concat(trailing);
             }
             const obj: ModuleTemplateInfo = {
@@ -32,7 +31,6 @@ export class ModuleToMdConverter {
                 modifiers: m.modifiers,
                 text: prettify(m.text),
                 description: description.length === 0 ? void 0 : description,
-                options: options,
             };
             const text = Nunjucks.renderString(MODULE_TEMPLATE, obj);
             const result = this.markdownUtils.purify(text);

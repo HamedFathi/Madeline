@@ -141,6 +141,7 @@ import * as fse from 'fs-extra';
 import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
 import { TypeToMdConverter } from './templates/git-book/markdown/type/TypeToMdConverter';
 import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
+import { TypeAliasToMdConverter } from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
 const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
@@ -153,16 +154,14 @@ if (src) {
     fse.outputFileSync('packages/SUMMARY.md', md);
     if (src.typeAliases) {
         src.typeAliases.forEach(s => {
-            s.type;
-            const x = new TypeToMdConverter().convert(
+            const x = new TypeAliasToMdConverter().convert(
                 s.id,
-                s.type,
+                s,
                 src,
                 typeMapper,
                 'https://gitbook-18.gitbook.io/au',
             );
-            console.log(x);
-            console.log('************************************************');
+            const a = 1;
         });
     }
 }

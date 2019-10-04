@@ -1,6 +1,6 @@
 export const COMMENT_TEMPLATE = `
 {% if description|is_available %}
-    {% if option and option.append %}
+    {% if append %}
         {{description|print('','','',' ')}}
 
     {% else %}
@@ -12,7 +12,7 @@ export const COMMENT_TEMPLATE = `
     {% if detail.title|is_available %}
         ### {{detail.title}}
 
-        {{detail.tags|write(option, detail.headers)}}
+        {{detail.tags|write(append, detail.headers)}}
         
     {% endif %}    
 {% endfor %}

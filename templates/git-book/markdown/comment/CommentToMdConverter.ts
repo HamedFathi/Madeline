@@ -4,24 +4,19 @@ import { CommentGroup } from './CommentGroup';
 import { COMMENT_TEMPLATE } from './CommentTemplate';
 import { CommentTemplateInfo } from './CommentTemplateInfo';
 import { CommentInfo } from '../../../../extractors/comment/CommentInfo';
-import { TemplateOptions } from '../../../TemplateOptions';
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 
 export class CommentToMdConverter {
-    public convertAll(
-        commentInfo: CommentInfo[],
-        commentOptions?: CommentToMdOption,
-        options?: TemplateOptions,
-    ): string[] {
+    public convertAll(commentInfo: CommentInfo[], commentOptions?: CommentToMdOption): string[] {
         const md: string[] = [];
         commentInfo.forEach(comment => {
-            const text = this.convert(comment, commentOptions, options);
+            const text = this.convert(comment, commentOptions);
             md.push(text);
         });
         return md;
     }
-    public convert(commentInfo: CommentInfo, commentOptions?: CommentToMdOption, options?: TemplateOptions): string {
+    public convert(commentInfo: CommentInfo, commentOptions?: CommentToMdOption): string {
         const result: string[] = [];
         // with tags
         if (commentInfo.tags) {
@@ -29,7 +24,7 @@ export class CommentToMdConverter {
             const commentTemplateInfo: CommentTemplateInfo = {
                 details: [],
                 description: commentInfo.description,
-                options: options,
+                append: commentOptions ? commentOptions.append : false,
             };
             groupedTags.forEach(groupedTag => {
                 if (commentTemplateInfo.details) {
@@ -45,7 +40,7 @@ export class CommentToMdConverter {
             if (commentInfo.description) {
                 const commentTemplateInfo: CommentTemplateInfo = {
                     details: void 0,
-                    options: options,
+                    append: commentOptions ? commentOptions.append : false,
                     description: commentInfo.description,
                 };
                 const text = Nunjucks.renderString(COMMENT_TEMPLATE, commentTemplateInfo);

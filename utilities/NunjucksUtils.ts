@@ -1,14 +1,13 @@
 import * as nj from 'nunjucks';
 import { ObjectUtils } from './ObjectUtils';
 import { TagInfo } from '../extractors/comment/TagInfo';
-import { TemplateOptions } from '../templates/TemplateOptions';
 import { CommentToMdConverter } from '../templates/git-book/markdown/comment/CommentToMdConverter';
 import { TypeDetailTemplateInfo } from '../templates/git-book/markdown/type/TypeDetailTemplateInfo';
 /* eslint-disable */
 const mdTable = require('markdown-table');
 /* eslint-disable */
 const objUtils = new ObjectUtils();
-const Nunjucks = new nj.Environment();
+const Nunjucks = nj.configure({ autoescape: false });
 function isDescriptionOnly(value: string[]): boolean {
     return value && value.length === 1 && value.includes('description') ? true : false;
 }
@@ -30,7 +29,7 @@ Nunjucks.addFilter('type_link', function (value: string, details: TypeDetailTemp
     }
 });
 
-Nunjucks.addFilter('write', function (value: TagInfo[], options?: TemplateOptions, headers?: string[]) {
+Nunjucks.addFilter('write', function (value: TagInfo[], append: boolean, headers?: string[]) {
     let isDescriptionOnly = headers && headers.length === 1 && headers.includes('description') ? true : false;
     if (headers) {
         if (isDescriptionOnly) {
@@ -44,7 +43,7 @@ Nunjucks.addFilter('write', function (value: TagInfo[], options?: TemplateOption
                 }
             });
             if (descriptions.length === 0) return "";
-            let description = (options && options.append) ? descriptions.join(' ') : descriptions.join('\n');
+            let description = append ? descriptions.join(' ') : descriptions.join('\n');
             return description;
         }
         const tb = new CommentToMdConverter().toMdTable(value, headers);

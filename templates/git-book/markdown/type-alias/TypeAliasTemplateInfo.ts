@@ -1,6 +1,3 @@
-import { TypeInfo } from '../../../../extractors/common/TypeInfo';
-import { TemplateOptions } from '../../../TemplateOptions';
-
 export interface TypeAliasTemplateInfo {
     name: string;
     text: string;
@@ -8,8 +5,7 @@ export interface TypeAliasTemplateInfo {
     initializer: string;
     description: string[] | undefined;
     modules: string[] | undefined;
-    type: TypeInfo;
+    type: string;
     typeParameters: string[] | undefined;
     hasComment: boolean;
-    options?: TemplateOptions;
 }

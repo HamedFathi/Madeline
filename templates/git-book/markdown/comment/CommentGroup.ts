@@ -42,6 +42,11 @@ export class CommentGroup {
     private getAlternativeTagName(tagInfo: TagInfo, options?: CommentToMdOption): string {
         let alternativeName = tagInfo.tag;
         if (options) {
+            alternativeName = options.removeAtSign
+                ? alternativeName.charAt(0) === '@'
+                    ? alternativeName.substr(1)
+                    : alternativeName
+                : alternativeName;
             if (options.alternatives) {
                 options.alternatives.forEach(obj => {
                     if (obj.name === tagInfo.tag) {

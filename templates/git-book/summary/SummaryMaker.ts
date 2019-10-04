@@ -7,7 +7,7 @@ import { ExportedSourceFileInfo } from '../../../extractors/source-file/Exported
 import { SummaryInfo } from './SummaryInfo';
 import { tab } from '../../../utilities/StringUtils';
 import { SummaryMapInfo } from './SummaryMapInfo';
-import { TypeScope } from '../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../extractors/common/TypeCategory';
 import { PathInfo } from '../../../utilities/PathInfo';
 import { interfaceSummaryMaker } from './InterfaceSummaryMaker';
 import { enumSummaryMaker } from './EnumSummaryMaker';
@@ -83,7 +83,7 @@ export class SummaryMaker {
         map: (
             id: string,
             pathInfo: PathInfo,
-            category: TypeScope,
+            category: TypeCategory,
             mdFileName: string,
             baseUrl?: string,
         ) => SummaryMapInfo,
@@ -160,7 +160,7 @@ export class SummaryMaker {
         map: (
             id: string,
             pathInfo: PathInfo,
-            category: TypeScope,
+            category: TypeCategory,
             mdFileName: string,
             baseUrl?: string,
         ) => SummaryMapInfo,

@@ -1,10 +1,16 @@
 import { LiteralInfo } from '../../../extractors/literal/LiteralInfo';
 import { SummaryMapInfo } from './SummaryMapInfo';
-import { TypeScope } from '../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../extractors/common/TypeCategory';
 import { PathInfo } from '../../../utilities/PathInfo';
 export const literalSummaryMaker = function make(
     literals: LiteralInfo[],
-    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
+    map: (
+        id: string,
+        pathInfo: PathInfo,
+        category: TypeCategory,
+        mdFileName: string,
+        baseUrl?: string,
+    ) => SummaryMapInfo,
     baseUrl?: string,
 ): SummaryMapInfo[] {
     const literalsInfo: SummaryMapInfo[] = [];
@@ -16,7 +22,7 @@ export const literalSummaryMaker = function make(
             extension: l.extension,
         };
         const mdFileName = l.name;
-        const literalSummary = map(l.id, pInfo, TypeScope.Literals, mdFileName, baseUrl);
+        const literalSummary = map(l.id, pInfo, TypeCategory.Literals, mdFileName, baseUrl);
         literalsInfo.push(literalSummary);
     }
     return literalsInfo;

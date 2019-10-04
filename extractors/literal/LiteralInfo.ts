@@ -1,3 +1,4 @@
+import { TypeCategory } from './../common/TypeCategory';
 import { LiteralExpressionInfo } from './LiteralExpressionInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
@@ -16,4 +17,5 @@ export interface LiteralInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
 }

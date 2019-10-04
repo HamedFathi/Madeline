@@ -7,6 +7,7 @@ import { InterfaceConstructorInfo } from './InterfaceConstructorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
+import { TypeCategory } from '../common/TypeCategory';
 
 export interface InterfaceInfo {
     name: string;
@@ -28,4 +29,5 @@ export interface InterfaceInfo {
     extension: string;
     directory: string;
     id: string;
+    typeCategory: TypeCategory;
 }

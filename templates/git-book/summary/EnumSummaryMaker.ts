@@ -1,11 +1,17 @@
 import { SummaryMapInfo } from './SummaryMapInfo';
-import { TypeScope } from '../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../extractors/common/TypeCategory';
 import { PathInfo } from '../../../utilities/PathInfo';
 import { EnumInfo } from '../../../extractors/enum/EnumInfo';
 
 export const enumSummaryMaker = function make(
     enums: EnumInfo[],
-    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
+    map: (
+        id: string,
+        pathInfo: PathInfo,
+        category: TypeCategory,
+        mdFileName: string,
+        baseUrl?: string,
+    ) => SummaryMapInfo,
     baseUrl?: string,
 ): SummaryMapInfo[] {
     const enumsInfo: SummaryMapInfo[] = [];
@@ -17,7 +23,7 @@ export const enumSummaryMaker = function make(
             extension: e.extension,
         };
         const mdFileName = e.name;
-        const enumSummary = map(e.id, pInfo, TypeScope.Enums, mdFileName, baseUrl);
+        const enumSummary = map(e.id, pInfo, TypeCategory.Enums, mdFileName, baseUrl);
         enumsInfo.push(enumSummary);
     }
     return enumsInfo;

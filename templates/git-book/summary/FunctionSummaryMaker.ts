@@ -1,11 +1,17 @@
 import { FunctionInfo } from '../../../extractors/function/FunctionInfo';
 import { SummaryMapInfo } from './SummaryMapInfo';
-import { TypeScope } from '../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../extractors/common/TypeCategory';
 import { PathInfo } from '../../../utilities/PathInfo';
 
 export const functionSummaryMaker = function make(
     functions: FunctionInfo[],
-    map: (id: string, pathInfo: PathInfo, category: TypeScope, mdFileName: string, baseUrl?: string) => SummaryMapInfo,
+    map: (
+        id: string,
+        pathInfo: PathInfo,
+        category: TypeCategory,
+        mdFileName: string,
+        baseUrl?: string,
+    ) => SummaryMapInfo,
     baseUrl?: string,
 ): SummaryMapInfo[] {
     const functionsInfo: SummaryMapInfo[] = [];
@@ -17,7 +23,7 @@ export const functionSummaryMaker = function make(
             extension: f.extension,
         };
         const mdFileName = f.name || '_';
-        const funcSummary = map(f.id, pInfo, TypeScope.Functions, mdFileName, baseUrl);
+        const funcSummary = map(f.id, pInfo, TypeCategory.Functions, mdFileName, baseUrl);
         functionsInfo.push(funcSummary);
     }
     return functionsInfo;

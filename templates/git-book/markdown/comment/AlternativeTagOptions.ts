@@ -2,7 +2,7 @@ export interface AlternativeTagOptions {
     name: string;
     alternative: string;
 }
-
+/*
 [
     {
         name: '@param',
@@ -13,3 +13,4 @@ export interface AlternativeTagOptions {
         alternative: 'beta',
     },
 ];
+*/

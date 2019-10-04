@@ -1,3 +1,4 @@
+import { TypeCategory } from './../common/TypeCategory';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
@@ -19,4 +20,5 @@ export interface TypeAliasInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
 }

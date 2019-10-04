@@ -1,21 +1,40 @@
+import { TYPE_TEMPLATE } from './TypeTemplate';
 import { TypeMapInfo } from './TypeMapInfo';
-import { TemplateOptions } from './../../../TemplateOptions';
 import { TypeInfo } from '../../../../extractors/common/TypeInfo';
-import { PathInfo } from '../../../../utilities/PathInfo';
 import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
-import { TypeScope } from '../../../../extractors/common/TypeScope';
+import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
+import { TypeTemplateInfo } from './TypeTemplateInfo';
+import { Nunjucks } from '../../../../utilities/NunjucksUtils';
+import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';
 
 export class TypeToMdConverter {
+    constructor(private markdownUtils = new MarkdownUtils()) {}
     public convert(
         id: string,
         typeInfo: TypeInfo,
-        map: (id: string, from: FromTypeInfo[], baseUrl?: string) => TypeMapInfo,
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
         baseUrl?: string,
     ): string {
+        const obj: TypeTemplateInfo = {
+            value: typeInfo.value,
+            details: [],
+        };
         if (typeInfo.from) {
-            const typeMapInfo = map(id, typeInfo.from, baseUrl);
+            const typeMapInfo = map(id, typeInfo.from, source, baseUrl);
+            typeMapInfo.forEach(info => {
+                if (obj.details) {
+                    obj.details.push({
+                        name: info.type,
+                        path: info.path,
+                    });
+                }
+            });
         } else {
+            obj.details = undefined;
         }
-        return '';
+        const text = Nunjucks.renderString(TYPE_TEMPLATE, obj);
+        const md = this.markdownUtils.purify(text);
+        return md;
     }
 }

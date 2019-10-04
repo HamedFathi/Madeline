@@ -7,13 +7,12 @@ import { ImportInfo } from '../import/ImportInfo';
 import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { TypeScope } from '../common/TypeScope';
 export class GetAccessorExtractor {
     public extract(node: GetAccessorDeclaration, imports: ImportInfo[] | undefined): GetAccessorInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
-        const typeParameters = new TypeParameterExtractor().extract(node, TypeScope.GetAccessors, imports);
+        const typeParameters = new TypeParameterExtractor().extract(node, imports);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
         return {
             id: getSha256(node.getFullText() + pathInfo.path),
@@ -23,13 +22,7 @@ export class GetAccessorExtractor {
             extension: pathInfo.extension,
             name: node.getName(),
             text: node.getText(),
-            returnType: new TypeExtractor().extract(
-                node.getReturnType(),
-                TypeScope.Classes,
-                node.getReturnTypeNode(),
-                void 0,
-                imports,
-            ),
+            returnType: new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports),
             modifiers: node.getModifiers().length === 0 ? void 0 : node.getModifiers().map(y => y.getText()),
             decorators: new DecoratorExtractor().extract(node, imports),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,

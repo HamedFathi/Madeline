@@ -7,7 +7,7 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { TypeScope } from '../common/TypeScope';
+import { TypeCategory } from '../common/TypeCategory';
 
 export class FunctionExtractor {
     public extractFromExpression(node: FunctionExpression, imports: ImportInfo[] | undefined): FunctionInfo {
@@ -18,13 +18,7 @@ export class FunctionExtractor {
         const returnType =
             node.getReturnType() === void 0
                 ? void 0
-                : new TypeExtractor().extract(
-                      node.getReturnType(),
-                      TypeScope.Functions,
-                      node.getReturnTypeNode(),
-                      void 0,
-                      imports,
-                  );
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
         const result: FunctionInfo = {
             id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
@@ -38,8 +32,9 @@ export class FunctionExtractor {
             isGenerator: node.isGenerator(),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
-            typeParameters: new TypeParameterExtractor().extract(node, TypeScope.Functions, imports),
+            typeParameters: new TypeParameterExtractor().extract(node, imports),
             returnType: returnType,
+            typeCategory: TypeCategory.Functions,
             parameters:
                 node.getParameters().length === 0
                     ? void 0
@@ -49,7 +44,7 @@ export class FunctionExtractor {
                               text: x.getText(),
                               type: new TypeExtractor().extract(
                                   x.getType(),
-                                  TypeScope.Functions,
+
                                   x.getTypeNode(),
                                   void 0,
                                   imports,
@@ -75,7 +70,7 @@ export class FunctionExtractor {
                 ? void 0
                 : new TypeExtractor().extract(
                       node.getReturnType(),
-                      TypeScope.Functions,
+
                       node.getReturnTypeNode(),
                       void 0,
                       imports,
@@ -93,11 +88,12 @@ export class FunctionExtractor {
             directory: pathInfo.directory,
             file: pathInfo.file,
             extension: pathInfo.extension,
+            typeCategory: TypeCategory.Functions,
             isImplementation: node.isImplementation(),
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
-            typeParameters: new TypeParameterExtractor().extract(node, TypeScope.Functions, imports),
+            typeParameters: new TypeParameterExtractor().extract(node, imports),
             returnType: returnType,
             parameters:
                 node.getParameters().length === 0
@@ -108,7 +104,7 @@ export class FunctionExtractor {
                               text: x.getText(),
                               type: new TypeExtractor().extract(
                                   x.getType(),
-                                  TypeScope.Functions,
+
                                   x.getTypeNode(),
                                   void 0,
                                   imports,

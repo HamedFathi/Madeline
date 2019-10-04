@@ -1,3 +1,4 @@
+import { TypeCategory } from './../common/TypeCategory';
 import { DecoratorParameterInfo } from './DecoratorParameterInfo';
 
 export interface DecoratorInfo {
@@ -10,4 +11,5 @@ export interface DecoratorInfo {
     directory: string;
     id: string;
     extension: string;
+    typeCategory: TypeCategory;
 }

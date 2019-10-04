@@ -89,6 +89,10 @@ export * from './templates/git-book/markdown/comment/CommentTemplateInfo';
 export * from './templates/git-book/markdown/comment/CommentToMdConverter';
 export * from './templates/git-book/markdown/comment/CommentToMdOption';
 export * from './templates/git-book/markdown/comment/TagInfoHeader';
+export * from './templates/git-book/markdown/enum/EnumMemberTemplateInfo';
+export * from './templates/git-book/markdown/enum/EnumTemplate';
+export * from './templates/git-book/markdown/enum/EnumTemplateInfo';
+export * from './templates/git-book/markdown/enum/EnumToMdConverter';
 export * from './templates/git-book/markdown/module/ModuleTemplate';
 export * from './templates/git-book/markdown/module/ModuleTemplateInfo';
 export * from './templates/git-book/markdown/module/ModuleToMdConverter';
@@ -142,6 +146,7 @@ import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
 import { TypeToMdConverter } from './templates/git-book/markdown/type/TypeToMdConverter';
 import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
 import { TypeAliasToMdConverter } from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
+import { EnumToMdConverter } from './templates/git-book/markdown/enum/EnumToMdConverter';
 const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
@@ -160,6 +165,14 @@ if (src) {
                 src,
                 typeMapper,
                 'https://gitbook-18.gitbook.io/au',
+            );
+            const a = 1;
+        });
+    }
+    if (src.enums) {
+        src.enums.forEach(s => {
+            const x = new EnumToMdConverter().convert(
+                s
             );
             const a = 1;
         });

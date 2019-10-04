@@ -1,5 +1,10 @@
 export const MODULE_TEMPLATE = `
-{{description|print('','','','\n\n')}}
+{% if description|is_available %}
+    **Summary:** 
+
+    {{description|print('','','','\n\n')}}
+
+{% endif %}
 
 **Name:**      
 

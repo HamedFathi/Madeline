@@ -1,15 +1,16 @@
 export const MODULE_TEMPLATE = `
-**Name**      {{name|print('-','\`','\`')}}
+**Name:**      
 
-**Type**      {{type|print('-','\`','\`')}}
+{{name|print('-','\`','\`')}}
 
-**Modifiers** {{modifiers|print('-','\`','\`')}}
+**Type:**      
+
+{{type|print('-','\`','\`')}}
+
+**Modifiers:** 
+
+{{modifiers|print('-','\`','\`')}}
 
 {{description|print('','','','\n\n')}}
 
-#### Source
-
-\`\`\`ts
-{{text}}
-\`\`\`
 `;

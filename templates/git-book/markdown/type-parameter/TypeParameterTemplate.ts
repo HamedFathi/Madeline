@@ -1,10 +1,16 @@
 export const TYPE_PARAMETER_TEMPLATE = `
-**Name**       {{name|print('-','\`','\`')}}
+**Name:**       
 
-**Text**       {{text|print('-','\`','\`')}}
+{{name|print('-','','')}}
+
+**Text:**       
+
+{{text|print('-','','')}}
 
 {% if constraint|is_available %}
-**constraint** {{constraint|print('-','\`','\`')}}
+**Constraint:** 
+
+{{constraint|print('-','','')}}
 {% endif %}
 
 `;

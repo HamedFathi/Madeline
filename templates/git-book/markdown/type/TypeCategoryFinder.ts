@@ -10,8 +10,6 @@ export const typeCategoryFinder = function(
         const result = source.classes.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('classes');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.Classes;
         }
@@ -38,8 +36,6 @@ export const typeCategoryFinder = function(
         const result = source.enums.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('enums');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.Enums;
         }
@@ -48,8 +44,6 @@ export const typeCategoryFinder = function(
         const result = source.functions.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('functions');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.Functions;
         }
@@ -58,8 +52,6 @@ export const typeCategoryFinder = function(
         const result = source.interfaces.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('interfaces');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.Interfaces;
         }
@@ -68,8 +60,6 @@ export const typeCategoryFinder = function(
         const result = source.literals.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('literals');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.Literals;
         }
@@ -78,8 +68,6 @@ export const typeCategoryFinder = function(
         const result = source.typeAliases.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('typeAliases');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.TypeAliases;
         }
@@ -88,8 +76,6 @@ export const typeCategoryFinder = function(
         const result = source.variables.filter(
             x => x.directory === from.directory && x.file === from.file && x.name === from.type,
         );
-        console.log('variables');
-        console.log(result.map(x => x.name));
         if (result && result.length > 0) {
             return TypeCategory.Variables;
         }

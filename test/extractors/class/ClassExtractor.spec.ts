@@ -88,12 +88,12 @@ describe('Class Extractor', () => {
                 directory: '',
                 id: '',
                 extension: '',
-                typeCategory: TypeCategory.Decorators
+                typeCategory: TypeCategory.Decorators,
             },
         ];
 
         const fakeDecoratorExtractor = {
-            extract: function (
+            extract: function(
                 /* eslint-disable */
                 node: DecoratableType,
                 imports: undefined,

@@ -1,4 +1,3 @@
-import { TypeCategory } from '../../../../extractors/common/TypeCategory';
 import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
 import { TypeMapInfo } from './TypeMapInfo';
 import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';

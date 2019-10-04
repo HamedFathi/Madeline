@@ -7,7 +7,6 @@ import { TypeParameterExtractor } from '../type-parameter/TypeParameterExtractor
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { TypeCategory } from '../common/TypeCategory';
 export class MethodExtractor {
     public extract(node: MethodDeclaration, imports: ImportInfo[] | undefined): MethodInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());

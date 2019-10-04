@@ -153,9 +153,16 @@ if (src) {
     fse.outputFileSync('packages/SUMMARY.md', md);
     if (src.typeAliases) {
         src.typeAliases.forEach(s => {
-            s.type
-            let x = new TypeToMdConverter().convert(s.id, s.type, src, typeMapper, 'https://gitbook-18.gitbook.io/au');
-            let y = 1;
+            s.type;
+            const x = new TypeToMdConverter().convert(
+                s.id,
+                s.type,
+                src,
+                typeMapper,
+                'https://gitbook-18.gitbook.io/au',
+            );
+            console.log(x);
+            console.log('************************************************');
         });
     }
 }

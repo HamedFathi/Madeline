@@ -5,7 +5,6 @@ import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { TypeTemplateInfo } from './TypeTemplateInfo';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
-import { TypeCategory } from '../../../../extractors/common/TypeCategory';
 import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';
 
 export class TypeToMdConverter {

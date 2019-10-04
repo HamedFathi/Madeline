@@ -14,7 +14,8 @@ export class AureliaSourceFileUtils {
             .filter(x => !x.getFilePath().includes('__e2e__'))
             .filter(x => !x.getFilePath().includes('node_modules'))
             .filter(x => !x.getFilePath().includes('dist'))
-            .filter(x => !x.getFilePath().includes('examples'));
+            .filter(x => !x.getFilePath().includes('examples'))
+            .filter(x => x.isDeclarationFile() === false);
         const extractor = new SourceFileExtractor();
         const src = exported ? extractor.extractAllExported(sources) : extractor.extractAll(sources);
         if (src) {
@@ -36,7 +37,8 @@ export class AureliaSourceFileUtils {
             .filter(x => !x.getFilePath().includes('__e2e__'))
             .filter(x => !x.getFilePath().includes('node_modules'))
             .filter(x => !x.getFilePath().includes('dist'))
-            .filter(x => !x.getFilePath().includes('examples'));
+            .filter(x => !x.getFilePath().includes('examples'))
+            .filter(x => x.isDeclarationFile() === false);
         const extractor = new SourceFileExtractor();
         const source = extractor.fetchAllExported(sources);
         fse.removeSync('packages');

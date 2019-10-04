@@ -224,8 +224,7 @@ export class SummaryMaker {
         for (const summary of summaryInfo) {
             const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
             const line = `${tab(summary.level)}* [${summary.title}](${url})`;
-            if(!result.includes(line))
-            {
+            if (!result.includes(line)) {
                 result.push(line);
             }
         }

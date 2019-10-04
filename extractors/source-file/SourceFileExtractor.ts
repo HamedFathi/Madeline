@@ -118,7 +118,7 @@ export class SourceFileExtractor {
             for (const src of sources) {
                 if (src.classes) {
                     for (const c of src.classes) {
-                        if (!processed.includes(c.id)) {
+                        if (!processed.includes(c.id) && c.extension !== '.d.ts') {
                             classes.push(c);
                         }
                         processed.push(c.id);
@@ -126,7 +126,7 @@ export class SourceFileExtractor {
                 }
                 if (src.enums) {
                     for (const e of src.enums) {
-                        if (!processed.includes(e.id)) {
+                        if (!processed.includes(e.id) && e.extension !== '.d.ts') {
                             enums.push(e);
                         }
                         processed.push(e.id);
@@ -134,7 +134,7 @@ export class SourceFileExtractor {
                 }
                 if (src.functions) {
                     for (const f of src.functions) {
-                        if (!processed.includes(f.id)) {
+                        if (!processed.includes(f.id) && f.extension !== '.d.ts') {
                             functions.push(f);
                         }
                         processed.push(f.id);
@@ -142,7 +142,7 @@ export class SourceFileExtractor {
                 }
                 if (src.typeAliases) {
                     for (const ta of src.typeAliases) {
-                        if (!processed.includes(ta.id)) {
+                        if (!processed.includes(ta.id) && ta.extension !== '.d.ts') {
                             typeAliases.push(ta);
                         }
                         processed.push(ta.id);
@@ -150,7 +150,7 @@ export class SourceFileExtractor {
                 }
                 if (src.interfaces) {
                     for (const i of src.interfaces) {
-                        if (!processed.includes(i.id)) {
+                        if (!processed.includes(i.id) && i.extension !== '.d.ts') {
                             interfaces.push(i);
                         }
                         processed.push(i.id);
@@ -158,7 +158,7 @@ export class SourceFileExtractor {
                 }
                 if (src.exportAssignments) {
                     for (const ex of src.exportAssignments) {
-                        if (!processed.includes(ex.id)) {
+                        if (!processed.includes(ex.id) && ex.extension !== '.d.ts') {
                             exportAssignments.push(ex);
                         }
                         processed.push(ex.id);
@@ -166,7 +166,7 @@ export class SourceFileExtractor {
                 }
                 if (src.variables) {
                     for (const v of src.variables) {
-                        if (!processed.includes(v.id)) {
+                        if (!processed.includes(v.id) && v.extension !== '.d.ts') {
                             variables.push(v);
                         }
                         processed.push(v.id);
@@ -174,7 +174,7 @@ export class SourceFileExtractor {
                 }
                 if (src.literals) {
                     for (const l of src.literals) {
-                        if (!processed.includes(l.id)) {
+                        if (!processed.includes(l.id) && l.extension !== '.d.ts') {
                             literals.push(l);
                         }
                         processed.push(l.id);
@@ -182,7 +182,7 @@ export class SourceFileExtractor {
                 }
                 if (src.destructuring) {
                     for (const d of src.destructuring) {
-                        if (!processed.includes(d.id)) {
+                        if (!processed.includes(d.id) && d.extension !== '.d.ts') {
                             destructuring.push(d);
                         }
                         processed.push(d.id);

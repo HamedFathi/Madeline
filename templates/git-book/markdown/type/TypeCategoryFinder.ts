@@ -7,16 +7,14 @@ export const typeCategoryFinder = function(
     source: ExportedSourceFileInfo,
 ): TypeCategory | undefined {
     if (source.classes) {
-        const result = source.classes.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.classes.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.Classes;
         }
     }
     /*
     if (source.destructuring) {
-        const result = source.destructuring.filter(x => x.directory === from.directory && x.file === from.file);
+        const result = source.destructuring.filter(x =>  x.file === from.file);
         console.log("destructuring");
         console.log(result.map(x=>x.id));
         if (result && result.length > 0) {
@@ -24,7 +22,7 @@ export const typeCategoryFinder = function(
         }
     }
     if (source.exportAssignments) {
-        const result = source.exportAssignments.filter(x => x.directory === from.directory && x.file === from.file);
+        const result = source.exportAssignments.filter(x =>  x.file === from.file);
         console.log("exportAssignments");
         console.log(result.map(x=>x.id));
         if (result && result.length > 0) {
@@ -33,49 +31,37 @@ export const typeCategoryFinder = function(
     }
     */
     if (source.enums) {
-        const result = source.enums.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.enums.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.Enums;
         }
     }
     if (source.functions) {
-        const result = source.functions.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.functions.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.Functions;
         }
     }
     if (source.interfaces) {
-        const result = source.interfaces.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.interfaces.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.Interfaces;
         }
     }
     if (source.literals) {
-        const result = source.literals.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.literals.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.Literals;
         }
     }
     if (source.typeAliases) {
-        const result = source.typeAliases.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.typeAliases.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.TypeAliases;
         }
     }
     if (source.variables) {
-        const result = source.variables.filter(
-            x => x.directory === from.directory && x.file === from.file && x.name === from.type,
-        );
+        const result = source.variables.filter(x => x.file === from.file && x.name === from.type);
         if (result && result.length > 0) {
             return TypeCategory.Variables;
         }

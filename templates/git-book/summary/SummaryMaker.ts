@@ -197,7 +197,7 @@ export class SummaryMaker {
                     level: parents.length,
                     extension: fileExtension,
                     title: category,
-                    url: parents.join('/') + '/' + category + '/README' + fileExtension,
+                    url: parents.join('/') + '/' + category.toLowerCase() + '/README' + fileExtension,
                 });
                 for (const s of summary) {
                     result.push({
@@ -223,7 +223,11 @@ export class SummaryMaker {
         }
         for (const summary of summaryInfo) {
             const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
-            result.push(`${tab(summary.level)}* [${summary.title}](${url})`);
+            const line = `${tab(summary.level)}* [${summary.title}](${url})`;
+            if(!result.includes(line))
+            {
+                result.push(line);
+            }
         }
         const output = result.join('\n');
         return output;

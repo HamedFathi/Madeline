@@ -2,18 +2,33 @@ import { PathInfo } from '../../../utilities/PathInfo';
 import { SummaryMapInfo } from './SummaryMapInfo';
 import { TypeCategory } from '../../../extractors/common/TypeCategory';
 
-export const summaryMapper = function(
+export const summaryMapper = function (
     id: string,
     pathInfo: PathInfo,
     category: TypeCategory,
     mdFileName: string,
     baseUrl?: string,
 ): SummaryMapInfo {
-    const folders = pathInfo.directory
-        .split('packages')[1]
-        .split('/')
-        .filter(x => x !== '' && x !== 'src')
-        .map(x => x.toLowerCase());
+
+    let folders: string[] = [];
+    if (pathInfo.directory.includes('@aurelia') && pathInfo.directory.includes('dist')) {
+        let dir = pathInfo.directory.substr(pathInfo.directory.lastIndexOf('@aurelia'));
+        folders = dir
+            .split('@aurelia')[1]
+            .split('/')
+            .filter(x => x !== '' && x !== 'dist')
+            .map(x => x.toLowerCase());
+    }
+    if (pathInfo.directory.includes('packages') && pathInfo.directory.includes('src')) {
+        let dir = pathInfo.directory.substr(pathInfo.directory.lastIndexOf('packages'));
+        folders = dir
+            .split('packages')[1]
+            .split('/')
+            .filter(x => x !== '' && x !== 'src')
+            .map(x => x.toLowerCase());
+    }
+
+
 
     const summaryInfo: SummaryMapInfo = {
         id: id,

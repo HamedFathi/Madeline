@@ -23,6 +23,7 @@ export const typeMapper = function(
             parts.forEach(p => {
                 pathParts.push(p.toLowerCase());
             });
+            pathParts.push(f.file.toLowerCase());
             pathParts.push(typeScope.toLowerCase());
             pathParts.push(f.type.toLowerCase());
         }
@@ -39,6 +40,7 @@ export const typeMapper = function(
         }
         const typeMap: TypeMapInfo = {
             id: id,
+            type: f.type,
             baseUrl: baseUrl,
             fromNodeModules: fromNodeModules,
             path: pathParts.join('/'),

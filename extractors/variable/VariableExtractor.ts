@@ -102,29 +102,33 @@ export class VariableExtractor {
                     typeReference,
                     imports,
                 ),
-                typeParameters: new TypeParameterExtractor().extract(callSignature, TypeScope.CallSignaturesOfVariable, imports),
+                typeParameters: new TypeParameterExtractor().extract(
+                    callSignature,
+                    TypeScope.CallSignaturesOfVariable,
+                    imports,
+                ),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? void 0
                         : callSignature.getParameters().map(y => {
-                            return {
-                                name: y.getName(),
-                                type: new TypeExtractor().extract(
-                                    y.getType(),
-                                    TypeScope.CallSignaturesOfVariable,
-                                    y.getTypeNode(),
-                                    typeReference,
-                                    imports,
-                                ),
-                                modifiers:
-                                    y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
-                                isOptional: y.isOptional(),
-                                isRest: y.isRestParameter(),
-                                isParameterProperty: y.isParameterProperty(),
-                                initializer:
-                                    y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
-                            };
-                        }),
+                              return {
+                                  name: y.getName(),
+                                  type: new TypeExtractor().extract(
+                                      y.getType(),
+                                      TypeScope.CallSignaturesOfVariable,
+                                      y.getTypeNode(),
+                                      typeReference,
+                                      imports,
+                                  ),
+                                  modifiers:
+                                      y.getModifiers().length === 0 ? void 0 : y.getModifiers().map(x => x.getText()),
+                                  isOptional: y.isOptional(),
+                                  isRest: y.isRestParameter(),
+                                  isParameterProperty: y.isParameterProperty(),
+                                  initializer:
+                                      y.getInitializer() === void 0 ? void 0 : y.getInitializerOrThrow().getText(),
+                              };
+                          }),
             };
         } else return node.getText();
     }

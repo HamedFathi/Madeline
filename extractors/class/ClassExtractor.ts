@@ -36,7 +36,7 @@ export class ClassExtractor {
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             decorators: decorators,
             modules: this.moduleExtractor.extract(node),
-            typeParameters: this.typeParameterExtractor.extract(node,TypeScope.Classes, imports),
+            typeParameters: this.typeParameterExtractor.extract(node, TypeScope.Classes, imports),
             hasComment: hasComment,
             path: pathInfo.path,
             directory: pathInfo.directory,

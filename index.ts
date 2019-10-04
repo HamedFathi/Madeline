@@ -98,8 +98,11 @@ export * from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplate';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterToMdConverter';
+export * from './templates/git-book/markdown/type/TypeDetailTemplateInfo';
 export * from './templates/git-book/markdown/type/TypeMapInfo';
 export * from './templates/git-book/markdown/type/TypeMapper';
+export * from './templates/git-book/markdown/type/TypeTemplate';
+export * from './templates/git-book/markdown/type/TypeTemplateInfo';
 export * from './templates/git-book/markdown/type/TypeToMdConverter';
 export * from './templates/git-book/summary/ClassSummaryMaker';
 export * from './templates/git-book/summary/DestructuringSummaryMaker';
@@ -135,24 +138,24 @@ import { SourceFileExtractor } from './extractors/source-file/SourceFileExtracto
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import * as fse from 'fs-extra';
 import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
+import { TypeToMdConverter } from './templates/git-book/markdown/type/TypeToMdConverter';
+import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
 const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
     tsConfigFilePath: tsconfig,
 });
-const sources = project
-    .getSourceFiles()
-    .filter(x => x.getFilePath().includes('src'))
-    .filter(x => !x.getFilePath().includes('__tests__'))
-    .filter(x => !x.getFilePath().includes('node_modules'))
-    .filter(x => !x.getFilePath().includes('dist'))
-    .filter(x => !x.getFilePath().includes('examples'))
-    .filter(x => !x.getFilePath().includes('e2e'));
 if (src) {
     const sum = new SummaryMaker().make(src, summaryMapper);
     const md = new SummaryMaker().write(sum);
     fse.outputFileSync('packages/SUMMARY.md', md);
+    if (src.typeAliases) {
+        src.typeAliases.forEach(s => {
+            s.type
+            let x = new TypeToMdConverter().convert(s.id, s.type, typeMapper, 'https://gitbook-18.gitbook.io/au');
+        });
+    }
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();

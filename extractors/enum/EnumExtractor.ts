@@ -4,6 +4,7 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeCategory } from '../common/TypeCategory';
 export class EnumExtractor {
     public extract(node: EnumDeclaration): EnumInfo {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
@@ -24,6 +25,7 @@ export class EnumExtractor {
             directory: pathInfo.directory,
             file: pathInfo.file,
             extension: pathInfo.extension,
+            typeCategory: TypeCategory.Enums,
             members: node.getMembers().map(x => {
                 return {
                     name: x.getName(),

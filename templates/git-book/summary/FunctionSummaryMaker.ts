@@ -22,7 +22,7 @@ export const functionSummaryMaker = function make(
             directory: f.directory,
             extension: f.extension,
         };
-        const mdFileName = f.name || '_';
+        const mdFileName = f.name || '_default';
         const funcSummary = map(f.id, pInfo, TypeCategory.Functions, mdFileName, baseUrl);
         functionsInfo.push(funcSummary);
     }

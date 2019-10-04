@@ -21,7 +21,7 @@ export const destructuringSummaryMaker = function make(
             directory: d.directory,
             extension: d.extension,
         };
-        const mdFileName = '_';
+        const mdFileName = '?';
         const destructuringSummary = map(d.id, pInfo, TypeCategory.Destructuring, mdFileName, baseUrl);
         destructions.push(destructuringSummary);
     }

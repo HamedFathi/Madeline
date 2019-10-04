@@ -21,7 +21,7 @@ export const classSummaryMaker = function make(
             directory: c.directory,
             extension: c.extension,
         };
-        const mdFileName = c.name || '_';
+        const mdFileName = c.name || '?';
         const classSummary = map(c.id, pInfo, TypeCategory.Classes, mdFileName, baseUrl);
         classSummaryInfo.push(classSummary);
     }

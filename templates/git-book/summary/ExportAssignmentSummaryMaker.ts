@@ -22,7 +22,7 @@ export const exportAssignmentSummaryMaker = function make(
             directory: a.directory,
             extension: a.extension,
         };
-        const mdFileName = '_';
+        const mdFileName = '?';
         const assignmentSummary = map(a.id, pInfo, TypeCategory.ExportAssignments, mdFileName, baseUrl);
         assignmentsInfo.push(assignmentSummary);
     }

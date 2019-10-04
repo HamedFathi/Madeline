@@ -9,11 +9,23 @@ export const summaryMapper = function(
     mdFileName: string,
     baseUrl?: string,
 ): SummaryMapInfo {
-    const folders = pathInfo.directory
-        .split('packages')[1]
-        .split('/')
-        .filter(x => x !== '' && x !== 'src')
-        .map(x => x.toLowerCase());
+    let folders: string[] = [];
+    if (pathInfo.directory.includes('@aurelia') && pathInfo.directory.includes('dist')) {
+        const dir = pathInfo.directory.substr(pathInfo.directory.lastIndexOf('@aurelia'));
+        folders = dir
+            .split('@aurelia')[1]
+            .split('/')
+            .filter(x => x !== '' && x !== 'dist')
+            .map(x => x.toLowerCase());
+    }
+    if (pathInfo.directory.includes('packages') && pathInfo.directory.includes('src')) {
+        const dir = pathInfo.directory.substr(pathInfo.directory.lastIndexOf('packages'));
+        folders = dir
+            .split('packages')[1]
+            .split('/')
+            .filter(x => x !== '' && x !== 'src')
+            .map(x => x.toLowerCase());
+    }
 
     const summaryInfo: SummaryMapInfo = {
         id: id,

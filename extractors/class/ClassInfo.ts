@@ -1,3 +1,4 @@
+import { TypeCategory } from './../common/TypeCategory';
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
@@ -20,4 +21,5 @@ export interface ClassInfo {
     file: string;
     directory: string;
     extension: string;
+    typeCategory: TypeCategory;
 }

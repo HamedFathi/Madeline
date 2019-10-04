@@ -1,3 +1,4 @@
+import { TypeCategory } from './../common/TypeCategory';
 import { FunctionParamInfo } from './FunctionParameterInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
@@ -22,4 +23,5 @@ export interface FunctionInfo {
     extension: string;
     directory: string;
     id: string;
+    typeCategory: TypeCategory;
 }

@@ -1,4 +1,4 @@
-export enum TypeScope {
+export enum TypeCategory {
     Classes = 'Classes',
     Interfaces = 'Interfaces',
     Enums = 'Enums',
@@ -9,7 +9,7 @@ export enum TypeScope {
     Destructuring = 'Destructuring',
     ExportAssignments = 'ExportAssignments',
     Decorators = 'Decorators',
-    GetAccessors = 'GetAccessors',
+    /*GetAccessors = 'GetAccessors',
     SetAccessors = 'SetAccessors',
     Methods = 'Methods',
     MethodsOfInterface = 'MethodsOfInterface',
@@ -17,5 +17,5 @@ export enum TypeScope {
     CallSignaturesOfLiteral = 'CallSignaturesOfLiteral',
     CallSignaturesOfVariable = 'CallSignaturesOfVariable',
     Constructors = 'Constructors',
-    ConstructorsOfInterface = 'ConstructorsOfInterface',
+    ConstructorsOfInterface = 'ConstructorsOfInterface',*/
 }

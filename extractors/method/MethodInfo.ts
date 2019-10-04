@@ -3,6 +3,7 @@ import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
+import { TypeCategory } from '../common/TypeCategory';
 export interface MethodInfo {
     name: string;
     text: string;

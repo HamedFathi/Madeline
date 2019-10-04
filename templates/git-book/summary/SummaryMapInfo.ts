@@ -1,11 +1,11 @@
-import { TypeScope } from '../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../extractors/common/TypeCategory';
 
 export interface SummaryMapInfo {
     id: string;
     baseUrl: string | undefined;
     folders: string[];
     sourceFileName: string;
-    category: TypeScope;
+    category: TypeCategory;
     mdFileName: string;
     path: string;
 }

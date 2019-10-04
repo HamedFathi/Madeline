@@ -1,4 +1,3 @@
-import { TypeScope } from './../common/TypeScope';
 import {
     MethodDeclaration,
     InterfaceDeclaration,
@@ -32,7 +31,6 @@ export class TypeParameterExtractor {
             | TypeAliasDeclaration
             | GetAccessorDeclaration
             | SetAccessorDeclaration,
-        typeScope: TypeScope,
         imports: ImportInfo[] | undefined,
     ): TypeParameterInfo[] | undefined {
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
@@ -48,13 +46,7 @@ export class TypeParameterExtractor {
                 constraint:
                     y.getConstraint() === void 0
                         ? void 0
-                        : new TypeExtractor().extract(
-                              y.getConstraintOrThrow().getType(),
-                              typeScope,
-                              void 0,
-                              void 0,
-                              imports,
-                          ),
+                        : new TypeExtractor().extract(y.getConstraintOrThrow().getType(), void 0, void 0, imports),
             };
         });
         return result.length === 0 ? void 0 : result;

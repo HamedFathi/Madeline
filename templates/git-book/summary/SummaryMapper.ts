@@ -1,11 +1,11 @@
 import { PathInfo } from '../../../utilities/PathInfo';
 import { SummaryMapInfo } from './SummaryMapInfo';
-import { TypeScope } from '../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../extractors/common/TypeCategory';
 
 export const summaryMapper = function(
     id: string,
     pathInfo: PathInfo,
-    category: TypeScope,
+    category: TypeCategory,
     mdFileName: string,
     baseUrl?: string,
 ): SummaryMapInfo {

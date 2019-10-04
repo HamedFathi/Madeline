@@ -4,6 +4,7 @@ import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { FunctionInfo } from '../function/FunctionInfo';
 import { CallSignatureInfo } from '../common/CallSignatureInfo';
+import { TypeCategory } from '../common/TypeCategory';
 export interface VariableInfo {
     name: string;
     type: TypeInfo;
@@ -22,4 +23,5 @@ export interface VariableInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
 }

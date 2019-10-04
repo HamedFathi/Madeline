@@ -11,9 +11,9 @@ export * from './extractors/common/CallSignatureParameterInfo';
 export * from './extractors/common/CallSignatureParameterTypeInfo';
 export * from './extractors/common/CallSignatureTypeInfo';
 export * from './extractors/common/FromTypeInfo';
+export * from './extractors/common/TypeCategory';
 export * from './extractors/common/TypeExtractor';
 export * from './extractors/common/TypeInfo';
-export * from './extractors/common/TypeScope';
 export * from './extractors/constructor/ConstructorExtractor';
 export * from './extractors/constructor/ConstructorInfo';
 export * from './extractors/constructor/ConstructorParameterInfo';
@@ -98,6 +98,7 @@ export * from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplate';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterTemplateInfo';
 export * from './templates/git-book/markdown/type-parameter/TypeParameterToMdConverter';
+export * from './templates/git-book/markdown/type/TypeCategoryFinder';
 export * from './templates/git-book/markdown/type/TypeDetailTemplateInfo';
 export * from './templates/git-book/markdown/type/TypeMapInfo';
 export * from './templates/git-book/markdown/type/TypeMapper';
@@ -153,7 +154,8 @@ if (src) {
     if (src.typeAliases) {
         src.typeAliases.forEach(s => {
             s.type
-            let x = new TypeToMdConverter().convert(s.id, s.type, typeMapper, 'https://gitbook-18.gitbook.io/au');
+            let x = new TypeToMdConverter().convert(s.id, s.type, src, typeMapper, 'https://gitbook-18.gitbook.io/au');
+            let y = 1;
         });
     }
 }

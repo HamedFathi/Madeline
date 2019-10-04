@@ -1,4 +1,3 @@
-import { TypeScope } from './TypeScope';
 import { ImportInfo } from './../import/ImportInfo';
 import { TypeInfo } from './TypeInfo';
 import { Type, TypeNode } from 'ts-morph';
@@ -6,9 +5,16 @@ import { FromTypeInfo } from './FromTypeInfo';
 import { removeFirstAndLastQuote } from '../../utilities/StringUtils';
 
 export class TypeExtractor {
+    private getAllRelatedImports(type: Type): string {
+        const intersectionTypes = type.getIntersectionTypes().map(x => x.getText());
+        const tupleTypes = type.getTupleElements().map(x => x.getText());
+        const unionTypes = type.getUnionTypes().map(x => x.getText());
+        const allRelatedImports = intersectionTypes.join(' ') + ' ' + tupleTypes.join(' ') + ' ' + unionTypes.join(' ');
+        return allRelatedImports;
+    }
+
     public extract(
         type: Type,
-        typeScope: TypeScope,
         typeNode: TypeNode | undefined,
         typeReference: string | undefined,
         imports: ImportInfo[] | undefined,
@@ -18,7 +24,7 @@ export class TypeExtractor {
         const text = type.getText();
         const typeNodeText = typeNode === void 0 ? void 0 : typeNode.getText();
         const fromAll: FromTypeInfo[] = [];
-        const allImports = text.match(regex);
+        const allImports = (text + ' ' + this.getAllRelatedImports(type)).match(regex);
         // Priorities
         // 1. typeReference
         // 2. typeNodeText
@@ -70,7 +76,6 @@ export class TypeExtractor {
             typeNodeText: typeNodeText,
             typeReference: typeReference,
             from: fromAll.length === 0 ? void 0 : fromAll,
-            typeScope: typeScope,
         };
     }
 }

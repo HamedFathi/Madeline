@@ -7,7 +7,6 @@ import { DecoratorExtractor } from '../decorator/DecoratorExtractor';
 import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { TypeScope } from '../common/TypeScope';
 
 export class ConstructorExtractor {
     public extract(node: ConstructorDeclaration, imports: ImportInfo[] | undefined): ConstructorInfo {
@@ -21,13 +20,7 @@ export class ConstructorExtractor {
         const params: ConstructorParameterInfo[] = node.getParameters().map(x => {
             return {
                 name: x.getName(),
-                type: new TypeExtractor().extract(
-                    x.getType(),
-                    TypeScope.Constructors,
-                    x.getTypeNode(),
-                    void 0,
-                    imports,
-                ),
+                type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
                 modifiers: x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
                 isOptional: x.isOptional(),
                 isRest: x.isRestParameter(),

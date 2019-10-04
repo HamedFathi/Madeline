@@ -1,15 +1,18 @@
-import { TypeScope } from '../../../../extractors/common/TypeScope';
+import { TypeCategory } from '../../../../extractors/common/TypeCategory';
 import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
 import { TypeMapInfo } from './TypeMapInfo';
+import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';
+import { typeCategoryFinder } from './typeCategoryFinder';
 
 export const typeMapper = function(
     id: string,
     from: FromTypeInfo[],
-    typeScope: TypeScope,
+    source: ExportedSourceFileInfo,
     baseUrl?: string,
 ): TypeMapInfo[] {
     const result: TypeMapInfo[] = [];
     for (const f of from) {
+        const category = typeCategoryFinder(f, source);
         const pathParts: string[] = [];
         let fromNodeModules = false;
         if (baseUrl) {
@@ -24,7 +27,9 @@ export const typeMapper = function(
                 pathParts.push(p.toLowerCase());
             });
             pathParts.push(f.file.toLowerCase());
-            pathParts.push(typeScope.toLowerCase());
+            if (category) {
+                pathParts.push(category.toLowerCase());
+            }
             pathParts.push(f.type.toLowerCase());
         }
         if (f.directory.includes('node_modules')) {

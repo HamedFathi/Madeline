@@ -19,7 +19,7 @@ import { ImportInfo } from '../import/ImportInfo';
 import { VariableDeclaration } from 'ts-morph';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
-import { TypeScope } from '../common/TypeScope';
+import { TypeCategory } from '../common/TypeCategory';
 export class VariableExtractor {
     public getVariableStatementByDeclaration(node: VariableDeclaration): VariableStatement | undefined {
         const declarationList = node.getParent();
@@ -55,7 +55,6 @@ export class VariableExtractor {
                 name: declaration.getName(),
                 type: new TypeExtractor().extract(
                     declaration.getType(),
-                    TypeScope.Variables,
                     declaration.getTypeNode(),
                     typeReference,
                     imports,
@@ -65,6 +64,7 @@ export class VariableExtractor {
                 directory: pathInfo.directory,
                 file: pathInfo.file,
                 extension: pathInfo.extension,
+                typeCategory: TypeCategory.Variables,
                 initializer:
                     declaration.getInitializer() === void 0
                         ? void 0
@@ -97,16 +97,11 @@ export class VariableExtractor {
             return {
                 returnType: new TypeExtractor().extract(
                     callSignature.getReturnType(),
-                    TypeScope.CallSignaturesOfVariable,
                     callSignature.getReturnTypeNode(),
                     typeReference,
                     imports,
                 ),
-                typeParameters: new TypeParameterExtractor().extract(
-                    callSignature,
-                    TypeScope.CallSignaturesOfVariable,
-                    imports,
-                ),
+                typeParameters: new TypeParameterExtractor().extract(callSignature, imports),
                 parameters:
                     callSignature.getParameters().length === 0
                         ? void 0
@@ -115,7 +110,6 @@ export class VariableExtractor {
                                   name: y.getName(),
                                   type: new TypeExtractor().extract(
                                       y.getType(),
-                                      TypeScope.CallSignaturesOfVariable,
                                       y.getTypeNode(),
                                       typeReference,
                                       imports,

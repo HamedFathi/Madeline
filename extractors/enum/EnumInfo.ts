@@ -1,6 +1,7 @@
 import { EnumMember } from './EnumMember';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
+import { TypeCategory } from '../common/TypeCategory';
 
 export interface EnumInfo {
     name: string;
@@ -17,4 +18,5 @@ export interface EnumInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
 }

@@ -156,6 +156,7 @@ import { TypeToMdConverter } from './templates/git-book/markdown/type/TypeToMdCo
 import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
 import { TypeAliasToMdConverter } from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
 import { EnumToMdConverter } from './templates/git-book/markdown/enum/EnumToMdConverter';
+import { FunctionToMdConverter } from './templates/git-book/markdown/function/FunctionToMdConverter';
 const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
@@ -166,9 +167,9 @@ if (src) {
     const sum = new SummaryMaker().make(src, summaryMapper);
     const md = new SummaryMaker().write(sum);
     fse.outputFileSync('packages/SUMMARY.md', md);
-    if (src.typeAliases) {
-        src.typeAliases.forEach(s => {
-            const x = new TypeAliasToMdConverter().convert(s, src, typeMapper, 'https://gitbook-18.gitbook.io/au');
+    if (src.functions) {
+        src.functions.forEach(s => {
+            const x = new FunctionToMdConverter().convert(s, src, typeMapper, 'https://gitbook-18.gitbook.io/au');
             const a = 1;
         });
     }

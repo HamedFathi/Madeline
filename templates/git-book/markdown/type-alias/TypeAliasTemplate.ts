@@ -28,7 +28,7 @@ export const TYPE_ALIAS_TEMPLATE = `
 {% if typeParameters|is_available %}
     **Type Parameter(s):** 
 
-    {{typeParameters|print('','','','\n\n')}}
+    {{typeParameters|print('','\`\`\`','\`\`\`','\n\n')}}
 
 {% endif %}
 

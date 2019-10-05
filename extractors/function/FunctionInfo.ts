@@ -1,5 +1,5 @@
 import { TypeCategory } from './../common/TypeCategory';
-import { FunctionParamInfo } from './FunctionParameterInfo';
+import { FunctionParameterInfo } from './FunctionParameterInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
@@ -14,7 +14,7 @@ export interface FunctionInfo {
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     modules?: ModuleInfo[] | undefined;
-    parameters: FunctionParamInfo[] | undefined;
+    parameters: FunctionParameterInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
     text: string;
     hasComment: boolean;

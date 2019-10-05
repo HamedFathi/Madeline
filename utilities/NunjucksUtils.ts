@@ -6,6 +6,8 @@ import { TypeDetailTemplateInfo } from '../templates/git-book/markdown/type/Type
 /* eslint-disable */
 const mdTable = require('markdown-table');
 /* eslint-disable */
+const MARK : string = '✔';
+const CROSS : string = '✘';
 const objUtils = new ObjectUtils();
 const Nunjucks = nj.configure({ autoescape: false });
 function isDescriptionOnly(value: string[]): boolean {
@@ -21,7 +23,17 @@ Nunjucks.addFilter('print_boolean', function (value:boolean): string {
     //return value ? '✓' : '⨯'
     //return value ? '☑' : '❎';
     //return value ? '✔':'✖';
-    return value ? '✔':'✘';
+    return value ? MARK:CROSS;
+});
+
+Nunjucks.addFilter('print_modifiers', function (modifiers:string[]): string {
+
+let result : string[] = [];
+    let values = modifiers.filter(x=>x !== 'export');
+    for (const v of values) {
+        result.push(`${MARK} ${v}`);
+    }
+    return result.join('\n');
 });
 
 Nunjucks.addFilter('type_link', function (value: string, details: TypeDetailTemplateInfo[] | undefined): string {

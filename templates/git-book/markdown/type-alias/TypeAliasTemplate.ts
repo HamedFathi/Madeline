@@ -14,9 +14,12 @@ export const TYPE_ALIAS_TEMPLATE = `
 
 {{type|print('-','','')}}
 
-**Modifier(s):** 
+{% if modifiers.length > 1 %}
+    **Modifier(s):** 
 
-{{modifiers|print('-','','')}}
+    {{modifiers|print_modifiers}}
+
+{% endif %}
 
 **Initializer:** 
 

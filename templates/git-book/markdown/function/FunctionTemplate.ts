@@ -6,27 +6,19 @@ export const FUNCTION_TEMPLATE = `
 
 {% endif %}
 
-**Name:**      
-
-{{name|print('-','','')}}
+**Name:** {{name|print('-','','')}}
 
 {% if modifiers.length > 1 %}
-    **Modifier(s):** 
-
-    {{modifiers|print_modifiers}}
+    **Modifier(s):** {{modifiers|print_modifiers}}
 
 {% endif %}
 
 {% if returnType|is_available %}
-    **Return Type:**      
-
-    {{returnType|print('-','','')}}
+    **Return Type:** {{returnType|print('-','','')}}
 
 {% endif %}
 
-**Attributes:**
-
-{{isGenerator|print_boolean}} Generator{% if isOverload|is_available %}{{isOverload|print_boolean|whitespace(5)}} Implementation{% endif %}{% if isImplementation|is_available %}{{isImplementation|print_boolean|whitespace(5)}} Overload{% endif %}
+**Attributes:** {{isGenerator|print_boolean}} Generator{% if isOverload|is_available %}{{isOverload|print_boolean|whitespace(5)}} Implementation{% endif %}{% if isImplementation|is_available %}{{isImplementation|print_boolean|whitespace(5)}} Overload{% endif %}
 
 {% if typeParameters|is_available %}
     **Type Parameter(s):** 
@@ -41,22 +33,16 @@ export const FUNCTION_TEMPLATE = `
         {{param.name|print('-','\`\`\`','\`\`\`','\n')|whitespace(5)}}
 
         {% if param.type|is_available %}
-            {{'**Type:**'|whitespace(5)}}
-
-            {{param.type|print('-','','')|whitespace(5)}}
+            {{'**Type:**'|whitespace(5)}}{{param.type|print('-','','')}}
     
         {% endif %}
 
         {% if param.modifiers %}
-            {{'**Modifier(s):**'|whitespace(5)}}
-
-            {{param.modifiers|print_modifiers|whitespace(5)}}
+            {{'**Modifier(s):**'|whitespace(5)}}{{param.modifiers|print_modifiers}}
 
         {% endif %}
 
-        {{'**Attributes:**'|whitespace(5)}}
-
-        {{isOptional|print_boolean|whitespace(5)}} Optional{{isRest|print_boolean|whitespace(5)}} Rest{{isParameterProperty|print_boolean|whitespace(5)}} Parameter Property
+        {{'**Attributes:**'|whitespace(5)}}{{isOptional|print_boolean}} Optional{{isRest|print_boolean|whitespace(5)}} Rest{{isParameterProperty|print_boolean|whitespace(5)}} Parameter Property
 
         {% if param.initializer|is_available %}
             {{'**Initializer:**'|whitespace(5)}}
@@ -69,9 +55,7 @@ export const FUNCTION_TEMPLATE = `
 {% endif %}
 
 {% if modules|is_available %}
-    **Module(s):** 
-
-    {{modules|print('','','','\n\n')}}
+    **Module(s):**{{modules|print('','','','\n\n')}}
 
 {% endif %}
 

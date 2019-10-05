@@ -160,13 +160,12 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-
 /*
+import { Project, ClassDeclaration, SyntaxKind, ScriptTarget, FunctionDeclaration, TypeGuards } from 'ts-morph';
 import { DecoratorExtractor } from './extractors/decorator/DecoratorExtractor';
 import { DecoratorToMdConverter } from './templates/git-book/markdown/decorator/DecoratorToMdConverter';
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-import { Project, ClassDeclaration, SyntaxKind, ScriptTarget } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import * as fse from 'fs-extra';
@@ -239,6 +238,38 @@ file.forEachDescendant(x => {
                 const yy = 1;
             }
             const a = 1;
+            break;
+    }
+});
+
+const sample2 = `
+function isFoo(arg: any): arg is Foo {
+    return arg.foo !== undefined;
+}
+`;
+
+const project2 = new Project({
+    compilerOptions: {
+        target: ScriptTarget.ES5,
+    },
+});
+const file = project2.createSourceFile('test.ts', sample2);
+file.forEachDescendant(x => {
+    switch (x.getKind()) {
+        case SyntaxKind.FunctionDeclaration:
+            let f = x as FunctionDeclaration;
+            let y = f.getReturnTypeNode();
+            if (y) {
+                if (TypeGuards.isTypePredicateNode(y)) {
+                    let name = y.getParameterNameNode().getText();
+                    let type = y.getTypeNode().getText();
+                    let text = y.getText();
+                    console.log(name);
+                    console.log(type);
+                    console.log(text);
+                    const a = 2;
+                }
+            }
             break;
     }
 });

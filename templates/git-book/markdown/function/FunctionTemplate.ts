@@ -26,16 +26,7 @@ export const FUNCTION_TEMPLATE = `
 
 **Attributes:**
 
-{{isGenerator|print_boolean}} Generator
-
-{% if isOverload|is_available %}
-    {{isOverload|print_boolean}} Implementation
-
-{% endif %}
-{% if isImplementation|is_available %}
-    {{isImplementation|print_boolean}} Overload
-
-{% endif %}
+{{isGenerator|print_boolean}} Generator{% if isOverload|is_available %}{{isOverload|print_boolean|whitespace(5)}} Implementation{% endif %}{% if isImplementation|is_available %}{{isImplementation|print_boolean|whitespace(5)}} Overload{% endif %}
 
 {% if typeParameters|is_available %}
     **Type Parameter(s):** 
@@ -45,37 +36,32 @@ export const FUNCTION_TEMPLATE = `
 {% endif %}
 
 {% if parameters|is_available %}
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Parameters:**
-
+    {{'**Parameters:**'|whitespace(5)}}
     {% for param in parameters %}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{param.name|print('-','\`\`\`','\`\`\`','\n')}}
+        {{param.name|print('-','\`\`\`','\`\`\`','\n')|whitespace(5)}}
 
         {% if param.type|is_available %}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Type:**      
-    
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{param.type|print('-','','')}}
+            {{'**Type:**'|whitespace(5)}}
+
+            {{param.type|print('-','','')|whitespace(5)}}
     
         {% endif %}
 
         {% if param.modifiers %}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Modifier(s):** 
+            {{'**Modifier(s):**'|whitespace(5)}}
 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{param.modifiers|print_modifiers}}
+            {{param.modifiers|print_modifiers|whitespace(5)}}
 
         {% endif %}
 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Attributes:**
+        {{'**Attributes:**'|whitespace(5)}}
 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{isOptional|print_boolean}} Optional
-
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{isRest|print_boolean}} Rest
-
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{isParameterProperty|print_boolean}} Parameter Property
+        {{isOptional|print_boolean|whitespace(5)}} Optional{{isRest|print_boolean|whitespace(5)}} Rest{{isParameterProperty|print_boolean|whitespace(5)}} Parameter Property
 
         {% if param.initializer|is_available %}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Initializer:**      
-    
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{param.initializer|print('-','','')}}
+            {{'**Initializer:**'|whitespace(5)}}
+
+            {{param.initializer|print('-','','')|whitespace(5)}}
     
         {% endif %}
 

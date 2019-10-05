@@ -3,6 +3,7 @@ import { ObjectUtils } from './ObjectUtils';
 import { TagInfo } from '../extractors/comment/TagInfo';
 import { CommentToMdConverter } from '../templates/git-book/markdown/comment/CommentToMdConverter';
 import { TypeDetailTemplateInfo } from '../templates/git-book/markdown/type/TypeDetailTemplateInfo';
+import { nbsp } from './StringUtils';
 /* eslint-disable */
 const mdTable = require('markdown-table');
 /* eslint-disable */
@@ -24,6 +25,10 @@ Nunjucks.addFilter('print_boolean', function (value:boolean): string {
     //return value ? '☑' : '❎';
     //return value ? '✔':'✖';
     return value ? MARK:CROSS;
+});
+
+Nunjucks.addFilter('whitespace', function (value:string, count:number): string {
+    return nbsp(count)+value;
 });
 
 Nunjucks.addFilter('print_modifiers', function (modifiers:string[]): string {

@@ -89,6 +89,13 @@ export * from './templates/git-book/markdown/comment/CommentTemplateInfo';
 export * from './templates/git-book/markdown/comment/CommentToMdConverter';
 export * from './templates/git-book/markdown/comment/CommentToMdOption';
 export * from './templates/git-book/markdown/comment/TagInfoHeader';
+export * from './templates/git-book/markdown/decorator/DecoratorParameterTemplateInfo';
+export * from './templates/git-book/markdown/decorator/DecoratorTemplate';
+export * from './templates/git-book/markdown/decorator/DecoratorTemplateInfo';
+export * from './templates/git-book/markdown/decorator/DecoratorToMdConverter';
+export * from './templates/git-book/markdown/destructuring/DestructuringTemplate';
+export * from './templates/git-book/markdown/destructuring/DestructuringTemplateInfo';
+export * from './templates/git-book/markdown/destructuring/DestructuringToMdConverter';
 export * from './templates/git-book/markdown/enum/EnumMemberTemplateInfo';
 export * from './templates/git-book/markdown/enum/EnumTemplate';
 export * from './templates/git-book/markdown/enum/EnumTemplateInfo';
@@ -136,9 +143,11 @@ export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
 /*
+import { DecoratorExtractor } from './extractors/decorator/DecoratorExtractor';
+import { DecoratorToMdConverter } from './templates/git-book/markdown/decorator/DecoratorToMdConverter';
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-import { Project } from 'ts-morph';
+import { Project, ClassDeclaration, SyntaxKind, ScriptTarget } from 'ts-morph';
 import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import * as fse from 'fs-extra';
@@ -147,7 +156,7 @@ import { TypeToMdConverter } from './templates/git-book/markdown/type/TypeToMdCo
 import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
 import { TypeAliasToMdConverter } from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
 import { EnumToMdConverter } from './templates/git-book/markdown/enum/EnumToMdConverter';
-const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
@@ -159,21 +168,13 @@ if (src) {
     fse.outputFileSync('packages/SUMMARY.md', md);
     if (src.typeAliases) {
         src.typeAliases.forEach(s => {
-            const x = new TypeAliasToMdConverter().convert(
-                s.id,
-                s,
-                src,
-                typeMapper,
-                'https://gitbook-18.gitbook.io/au',
-            );
+            const x = new TypeAliasToMdConverter().convert(s, src, typeMapper, 'https://gitbook-18.gitbook.io/au');
             const a = 1;
         });
     }
     if (src.enums) {
         src.enums.forEach(s => {
-            const x = new EnumToMdConverter().convert(
-                s
-            );
+            const x = new EnumToMdConverter().convert(s);
             const a = 1;
         });
     }
@@ -182,4 +183,43 @@ sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
+
+const decoratorSample = `
+@test1(1,'A',{w:2})
+export class A {
+    @test2({x:3},4)
+    d: number;
+    e: string = 'e';
+    f?: number = 5;
+    @test3({y:6},{z:7})
+    dec(@test4 g:number): number
+    {
+        return g;
+    }
+    @test5()
+    public get name(): string {
+        return 'decorator';
+    }
+}
+`;
+
+const project1 = new Project({
+    compilerOptions: {
+        target: ScriptTarget.ES5,
+    },
+});
+const file = project1.createSourceFile('test.ts', decoratorSample);
+file.forEachDescendant(x => {
+    switch (x.getKind()) {
+        case SyntaxKind.ClassDeclaration:
+            const dec = new DecoratorExtractor();
+            const decorator = dec.extract(x as ClassDeclaration, undefined);
+            if (decorator) {
+                const y = new DecoratorToMdConverter().convert(decorator, src, typeMapper);
+                const yy = 1;
+            }
+            const a = 1;
+            break;
+    }
+});
 */

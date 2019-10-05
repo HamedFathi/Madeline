@@ -16,6 +16,14 @@ Nunjucks.addFilter('is_available', function (value: string | unknown[]): boolean
     return objUtils.isAvailable(value);
 });
 
+Nunjucks.addFilter('print_boolean', function (value:boolean): string {
+    // return value ? '✔':'❌';
+    //return value ? '✓' : '⨯'
+    //return value ? '☑' : '❎';
+    //return value ? '✔':'✖';
+    return value ? '✔':'✘';
+});
+
 Nunjucks.addFilter('type_link', function (value: string, details: TypeDetailTemplateInfo[] | undefined): string {
     if (details) {
         details.forEach(detail => {
@@ -55,7 +63,9 @@ Nunjucks.addFilter('write', function (value: TagInfo[], append: boolean, headers
 
 Nunjucks.addFilter('print', function (value: string | unknown[], replacement: string, start: string, end: string, separator: string) {
     const s = start ? start : '';
+    const hasStartTripleBacktick = s.includes('```');
     const e = end ? end : '';
+    const hasEndTripleBacktick = e.includes('```');
     const r = replacement ? replacement : '';
     const p = separator ? separator : ', ';
     if (!value) {
@@ -71,7 +81,7 @@ Nunjucks.addFilter('print', function (value: string | unknown[], replacement: st
         const result = (value as unknown[]).map(x => s + x + e).join(p);
         return result;
     }
-    return s + value + e;
+    return (hasStartTripleBacktick ? '\n'+s+'\n': s) + value + (hasEndTripleBacktick ? '\n'+e+'\n': e);
 });
 
 export { Nunjucks };

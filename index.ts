@@ -80,7 +80,21 @@ export * from './extractors/type-parameter/TypeParameterExtractor';
 export * from './extractors/type-parameter/TypeParameterInfo';
 export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
+export * from './templates/git-book/markdown/class/ClassTemplate';
+export * from './templates/git-book/markdown/class/ClassTemplateInfo';
 export * from './templates/git-book/markdown/class/ClassToMdConverter';
+export * from './templates/git-book/markdown/class/GetAccessorsTemplate';
+export * from './templates/git-book/markdown/class/GetAccessorsTemplateInfo';
+export * from './templates/git-book/markdown/class/GetAccessorsToMdConverter';
+export * from './templates/git-book/markdown/class/MethodTemplate';
+export * from './templates/git-book/markdown/class/MethodTemplateInfo';
+export * from './templates/git-book/markdown/class/MethodToMdConverter';
+export * from './templates/git-book/markdown/class/PropertyTemplate';
+export * from './templates/git-book/markdown/class/PropertyTemplateInfo';
+export * from './templates/git-book/markdown/class/PropertyToMdConverter';
+export * from './templates/git-book/markdown/class/SetAccessorsTemplate';
+export * from './templates/git-book/markdown/class/SetAccessorsTemplateInfo';
+export * from './templates/git-book/markdown/class/SetAccessorsToMdConverter';
 export * from './templates/git-book/markdown/comment/AlternativeTagOptions';
 export * from './templates/git-book/markdown/comment/CommentGroup';
 export * from './templates/git-book/markdown/comment/CommentGroupInfo';
@@ -145,6 +159,7 @@ export * from './utilities/PathInfo';
 export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
+
 
 /*
 import { DecoratorExtractor } from './extractors/decorator/DecoratorExtractor';

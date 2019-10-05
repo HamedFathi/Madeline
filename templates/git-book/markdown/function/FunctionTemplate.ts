@@ -36,7 +36,7 @@ export const FUNCTION_TEMPLATE = `
 {% endif %}
 
 {% if parameters|is_available %}
-    {{'**Parameters:**'|whitespace(5)}}
+    ❱❱{{'**Parameters:**'|whitespace(2)}}
     {% for param in parameters %}
         {{param.name|print('-','\`\`\`','\`\`\`','\n')|whitespace(5)}}
 

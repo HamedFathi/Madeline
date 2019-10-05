@@ -45,7 +45,8 @@
       "**/**/*.spec.ts"
     ],
     "reporter": [
-      "html"
+      "html",
+      "clover"
     ],
     "all": true
   },

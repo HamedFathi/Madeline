@@ -48,12 +48,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(
-                                  x.getType(),
-                                  x.getTypeNode(),
-                                  void 0,
-                                  imports,
-                              ),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
                               modifiers:
                                   x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),

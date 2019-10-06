@@ -45,8 +45,8 @@ export class TypeExtractor {
     }
 
     private getInvolvedTypesAsFromTypeInfo(node: Node): FromTypeInfo[] | undefined {
-        let data = this.getInvolvedTypesAsString(node);
-        let result = this.getFromTypeInfo(data);
+        const data = this.getInvolvedTypesAsString(node);
+        const result = this.getFromTypeInfo(data);
         return result;
     }
 

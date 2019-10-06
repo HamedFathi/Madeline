@@ -1,10 +1,11 @@
-export interface PropertyTemplateInfo {
+export interface MethodParameterTemplateInfo {
     name: string;
     type: string;
+    text: string;
     modifiers: string[] | undefined;
     isOptional: boolean;
+    isRest: boolean;
+    isParameterProperty: boolean;
     initializer: string | undefined;
-    description: string[] | undefined;
     decorators: string | undefined;
-    text: string;
 }

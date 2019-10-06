@@ -82,18 +82,20 @@ export * from './extractors/variable/VariableInfo';
 export * from './templates/git-book/markdown/class/ClassTemplate';
 export * from './templates/git-book/markdown/class/ClassTemplateInfo';
 export * from './templates/git-book/markdown/class/ClassToMdConverter';
-export * from './templates/git-book/markdown/class/GetAccessorsTemplate';
-export * from './templates/git-book/markdown/class/GetAccessorsTemplateInfo';
-export * from './templates/git-book/markdown/class/GetAccessorsToMdConverter';
+export * from './templates/git-book/markdown/class/GetAccessorTemplate';
+export * from './templates/git-book/markdown/class/GetAccessorTemplateInfo';
+export * from './templates/git-book/markdown/class/GetAccessorToMdConverter';
+export * from './templates/git-book/markdown/class/MethodParameterTemplateInfo';
 export * from './templates/git-book/markdown/class/MethodTemplate';
 export * from './templates/git-book/markdown/class/MethodTemplateInfo';
 export * from './templates/git-book/markdown/class/MethodToMdConverter';
 export * from './templates/git-book/markdown/class/PropertyTemplate';
 export * from './templates/git-book/markdown/class/PropertyTemplateInfo';
 export * from './templates/git-book/markdown/class/PropertyToMdConverter';
-export * from './templates/git-book/markdown/class/SetAccessorsTemplate';
-export * from './templates/git-book/markdown/class/SetAccessorsTemplateInfo';
-export * from './templates/git-book/markdown/class/SetAccessorsToMdConverter';
+export * from './templates/git-book/markdown/class/SetAccessorParameterTemplateInfo';
+export * from './templates/git-book/markdown/class/SetAccessorTemplate';
+export * from './templates/git-book/markdown/class/SetAccessorTemplateInfo';
+export * from './templates/git-book/markdown/class/SetAccessorToMdConverter';
 export * from './templates/git-book/markdown/comment/AlternativeTagOptions';
 export * from './templates/git-book/markdown/comment/CommentGroup';
 export * from './templates/git-book/markdown/comment/CommentGroupInfo';
@@ -176,6 +178,37 @@ import { EnumToMdConverter } from './templates/git-book/markdown/enum/EnumToMdCo
 import { FunctionToMdConverter } from './templates/git-book/markdown/function/FunctionToMdConverter';
 const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
+
+const sample2 = `
+export function isBoolean(arg: unknown): arg is boolean {\n  return typeof arg === 'boolean';\n}
+`;
+
+const project2 = new Project({
+    compilerOptions: {
+        target: ScriptTarget.ES5,
+    },
+});
+const file2 = project2.createSourceFile('test.ts', sample2);
+file2.forEachDescendant(x => {
+    switch (x.getKind()) {
+        case SyntaxKind.FunctionDeclaration:
+            const f = x as FunctionDeclaration;
+            const y = f.getReturnTypeNode();
+            if (y) {
+                if (TypeGuards.isTypePredicateNode(y)) {
+                    const name = y.getParameterNameNode().getText();
+                    const type = y.getTypeNode().getText();
+                    const text = y.getText();
+                    console.log(name);
+                    console.log(type);
+                    console.log(text);
+                    const a = 2;
+                }
+            }
+            break;
+    }
+});
+
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
 const project = new Project({
     tsConfigFilePath: tsconfig,
@@ -237,38 +270,6 @@ file.forEachDescendant(x => {
                 const yy = 1;
             }
             const a = 1;
-            break;
-    }
-});
-
-const sample2 = `
-function isFoo(arg: any): arg is Foo {
-    return arg.foo !== undefined;
-}
-`;
-
-const project2 = new Project({
-    compilerOptions: {
-        target: ScriptTarget.ES5,
-    },
-});
-const file2 = project2.createSourceFile('test.ts', sample2);
-file2.forEachDescendant(x => {
-    switch (x.getKind()) {
-        case SyntaxKind.FunctionDeclaration:
-            let f = x as FunctionDeclaration;
-            let y = f.getReturnTypeNode();
-            if (y) {
-                if (TypeGuards.isTypePredicateNode(y)) {
-                    let name = y.getParameterNameNode().getText();
-                    let type = y.getTypeNode().getText();
-                    let text = y.getText();
-                    console.log(name);
-                    console.log(type);
-                    console.log(text);
-                    const a = 2;
-                }
-            }
             break;
     }
 });

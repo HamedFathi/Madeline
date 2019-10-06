@@ -12,7 +12,6 @@ export class GetAccessorToMdConverter {
     constructor(
         private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter(),
         private markdownUtils = new MarkdownUtils(),
-        private typeParameterToMdConverter = new TypeParameterToMdConverter(),
         private typeToMdConverter = new TypeToMdConverter(),
     ) {}
     public convert(

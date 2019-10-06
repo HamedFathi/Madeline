@@ -1,4 +1,4 @@
-import { MethodParamInfo } from './MethodParameterInfo';
+import { MethodParameterInfo } from './MethodParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
@@ -9,7 +9,7 @@ export interface MethodInfo {
     modifiers: string[] | undefined;
     returnType: TypeInfo;
     isGenerator: boolean;
-    parameters: MethodParamInfo[] | undefined;
+    parameters: MethodParameterInfo[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;
     decorators: DecoratorInfo[] | undefined;

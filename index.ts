@@ -142,6 +142,7 @@ export * from './templates/git-book/summary/ExportAssignmentSummaryMaker';
 export * from './templates/git-book/summary/FunctionSummaryMaker';
 export * from './templates/git-book/summary/InterfaceSummaryMaker';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
+export * from './templates/git-book/summary/SummaryIndexMaker';
 export * from './templates/git-book/summary/SummaryInfo';
 export * from './templates/git-book/summary/SummaryMaker';
 export * from './templates/git-book/summary/SummaryMapInfo';

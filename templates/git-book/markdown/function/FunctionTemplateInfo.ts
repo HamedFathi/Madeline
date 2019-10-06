@@ -9,6 +9,7 @@ export interface FunctionTemplateInfo {
     parameters: FunctionParameterTemplateInfo[] | undefined;
     typeParameters: string[] | undefined;
     name: string | undefined;
+    typeGuard: string | undefined;
     modifiers: string[] | undefined;
     description: string[] | undefined;
     text: string;

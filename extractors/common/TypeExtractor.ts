@@ -29,7 +29,7 @@ export class TypeExtractor {
     }
 
     private getFromTypeInfo(typeText: string[]): FromTypeInfo[] | undefined {
-        let result : FromTypeInfo[] = [];
+        const result: FromTypeInfo[] = [];
         const text = typeText.join(' ');
         const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!\s]+)/gm;
         const allImports = text.match(regex);

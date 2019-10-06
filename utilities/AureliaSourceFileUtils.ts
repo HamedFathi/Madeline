@@ -6,7 +6,6 @@ export class AureliaSourceFileUtils {
     public save(tsconfig: string, exported = true): void {
         const project = new Project({
             tsConfigFilePath: tsconfig,
-            
         });
         const sources = project
             .getSourceFiles()

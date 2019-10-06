@@ -59,7 +59,7 @@ export class FunctionToMdConverter {
                 });
             }
         }
-        const obj: FunctionTemplateInfo = {
+        const obj: FunctionTemplateInfo = {            
             name: functionInfo.name,
             text: prettify(functionInfo.text),
             description: description.length === 0 ? void 0 : description,
@@ -67,6 +67,7 @@ export class FunctionToMdConverter {
             isImplementation: functionInfo.isImplementation,
             isOverload: functionInfo.isOverload,
             modifiers: functionInfo.modifiers,
+            typeGuard:functionInfo.typeGuard,
             modules: functionInfo.modules
                 ? this.moduleToMdConverter.convert(functionInfo.modules, commentOptions)
                 : undefined,

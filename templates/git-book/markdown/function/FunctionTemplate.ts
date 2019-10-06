@@ -27,6 +27,11 @@ export const FUNCTION_TEMPLATE = `
 
 {% endif %}
 
+{% if typeGuard|is_available %}
+    **On:** {{typeGuard|print('-','','')}}
+
+{% endif %}
+
 {% if parameters|is_available %}
     ❱❱{{'**Parameters:**'|whitespace(2)}}
     {% for param in parameters %}

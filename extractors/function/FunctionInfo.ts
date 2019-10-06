@@ -16,7 +16,7 @@ export interface FunctionInfo {
     modules?: ModuleInfo[] | undefined;
     parameters: FunctionParameterInfo[] | undefined;
     typeParameters: TypeParameterInfo[] | undefined;
-    typeGuard: TypeInfo | undefined;
+    typeGuard: /*TypeInfo |*/ string | undefined;
     text: string;
     hasComment: boolean;
     path: string;

@@ -15,13 +15,15 @@ export class FunctionExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const typeGuard = TypeGuards.isTypePredicateNode(node)
-            ? new TypeExtractor().extract(node.getTypeNode().getType(), undefined, undefined, imports)
-            : undefined;
+        const returnTypeNode = node.getReturnTypeNode();
         const returnType =
             node.getReturnType() === void 0
                 ? void 0
                 : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
+        const typeGuard =
+            returnTypeNode && TypeGuards.isTypePredicateNode(returnTypeNode)
+                ? returnTypeNode.getTypeNode().getText()
+                : undefined;
         const result: FunctionInfo = {
             id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
@@ -48,7 +50,6 @@ export class FunctionExtractor {
                               text: x.getText(),
                               type: new TypeExtractor().extract(
                                   x.getType(),
-
                                   x.getTypeNode(),
                                   void 0,
                                   imports,
@@ -69,20 +70,16 @@ export class FunctionExtractor {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const returnTypeNode = node.getReturnTypeNode();
         const returnType =
             node.getReturnType() === void 0
                 ? void 0
-                : new TypeExtractor().extract(
-                      node.getReturnType(),
-
-                      node.getReturnTypeNode(),
-                      void 0,
-                      imports,
-                  );
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
-        const typeGuard = TypeGuards.isTypePredicateNode(node)
-            ? new TypeExtractor().extract(node.getTypeNode().getType(), undefined, undefined, imports)
-            : undefined;
+        const typeGuard =
+            returnTypeNode && TypeGuards.isTypePredicateNode(returnTypeNode)
+                ? returnTypeNode.getTypeNode().getText()
+                : undefined;
         const result: FunctionInfo = {
             id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),

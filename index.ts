@@ -8,7 +8,6 @@ export * from './extractors/comment/TagInfo';
 export * from './extractors/comment/TypescriptCommentExtractor';
 export * from './extractors/common/CallSignatureInfo';
 export * from './extractors/common/CallSignatureParameterInfo';
-export * from './extractors/common/CallSignatureParameterTypeInfo';
 export * from './extractors/common/CallSignatureTypeInfo';
 export * from './extractors/common/FromTypeInfo';
 export * from './extractors/common/TypeCategory';
@@ -253,8 +252,8 @@ const project2 = new Project({
         target: ScriptTarget.ES5,
     },
 });
-const file = project2.createSourceFile('test.ts', sample2);
-file.forEachDescendant(x => {
+const file2 = project2.createSourceFile('test.ts', sample2);
+file2.forEachDescendant(x => {
     switch (x.getKind()) {
         case SyntaxKind.FunctionDeclaration:
             let f = x as FunctionDeclaration;

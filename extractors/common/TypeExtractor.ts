@@ -12,8 +12,8 @@ export class TypeExtractor {
         const allRelatedImports = intersectionTypes.join(' ') + ' ' + tupleTypes.join(' ') + ' ' + unionTypes.join(' ');
         return allRelatedImports;
     }
-    private getInvolvedTypes(node: Node): string[] {
-        const list: string[] = [];
+    private getInvolvedTypesAsString(node: Node): string[] {
+        const result: string[] = [];
         const types = new Set<Type>();
         node.forEachDescendant(descendant => {
             if (TypeGuards.isTypedNode(descendant) || TypeGuards.isIdentifier(descendant))
@@ -22,10 +22,32 @@ export class TypeExtractor {
         });
         types.forEach(type => {
             if (!type.isAny() && !type.isUnknown() && !type.isNull() && !type.isNullable()) {
-                list.push(type.getText());
+                result.push(type.getText());
             }
         });
-        return list;
+        return result;
+    }
+
+    private getInvolvedTypes(node: Node): Type[] {
+        const result: Type[] = [];
+        const types = new Set<Type>();
+        node.forEachDescendant(descendant => {
+            if (TypeGuards.isTypedNode(descendant) || TypeGuards.isIdentifier(descendant))
+                types.add(descendant.getType());
+            else if (TypeGuards.isReturnTypedNode(descendant)) types.add(descendant.getReturnType());
+        });
+        types.forEach(type => {
+            if (!type.isAny() && !type.isUnknown() && !type.isNull() && !type.isNullable()) {
+                result.push(type);
+            }
+        });
+        return result;
+    }
+
+    private getInvolvedTypesAsFromTypeInfo(node: Node): FromTypeInfo[] | undefined {
+        let data = this.getInvolvedTypesAsString(node);
+        let result = this.getFromTypeInfo(data);
+        return result;
     }
 
     private getFromTypeInfo(typeText: string[]): FromTypeInfo[] | undefined {

@@ -147,7 +147,7 @@ export class SummaryMaker {
         return SummaryMapInfo;
     }
 
-    private beatifyName(name: string): string {
+    private beautifyName(name: string): string {
         if (name.length <= 3) {
             return name.toUpperCase();
         } else {
@@ -176,14 +176,15 @@ export class SummaryMaker {
             .value();
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
-            result.push({
+            const summaryInfoData = {
                 id: undefined,
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
-                title: this.beatifyName(parents[parents.length - 1]),
+                title: this.beautifyName(parents[parents.length - 1]),
                 url: parents.join('/') + '/README' + fileExtension,
-            });
+            };
+            result.push(summaryInfoData);
             const sortedSummaryInfo = _(summaryInfo)
                 .sortBy(x => x.category, x => x.mdFileName)
                 .groupBy(x => x.category)
@@ -191,23 +192,25 @@ export class SummaryMaker {
                 .value();
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
-                result.push({
+                const summaryData = {
                     id: undefined,
                     baseUrl: baseUrl,
                     level: parents.length,
                     extension: fileExtension,
                     title: category,
                     url: parents.join('/') + '/' + category.toLowerCase() + '/README' + fileExtension,
-                });
+                };
+                result.push(summaryData);
                 for (const s of summary) {
-                    result.push({
+                    const data = {
                         id: s.id,
                         baseUrl: baseUrl,
                         level: parents.length + 1,
                         extension: fileExtension,
                         title: s.mdFileName,
                         url: s.path + fileExtension,
-                    });
+                    };
+                    result.push(data);
                 }
             }
         }

@@ -162,116 +162,20 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-/*
-import { Project, ClassDeclaration, SyntaxKind, ScriptTarget, FunctionDeclaration, TypeGuards } from 'ts-morph';
-import { DecoratorExtractor } from './extractors/decorator/DecoratorExtractor';
-import { DecoratorToMdConverter } from './templates/git-book/markdown/decorator/DecoratorToMdConverter';
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
-import { SourceFileExtractor } from './extractors/source-file/SourceFileExtractor';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import * as fse from 'fs-extra';
 import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
-import { TypeToMdConverter } from './templates/git-book/markdown/type/TypeToMdConverter';
-import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
-import { TypeAliasToMdConverter } from './templates/git-book/markdown/type-alias/TypeAliasToMdConverter';
-import { EnumToMdConverter } from './templates/git-book/markdown/enum/EnumToMdConverter';
-import { FunctionToMdConverter } from './templates/git-book/markdown/function/FunctionToMdConverter';
-const tsconfig = 'E:/@All/Projects/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
-
-const sample2 = `
-export function isBoolean(arg: unknown): arg is boolean {\n  return typeof arg === 'boolean';\n}
-`;
-
-const project2 = new Project({
-    compilerOptions: {
-        target: ScriptTarget.ES5,
-    },
-});
-const file2 = project2.createSourceFile('test.ts', sample2);
-file2.forEachDescendant(x => {
-    switch (x.getKind()) {
-        case SyntaxKind.FunctionDeclaration:
-            const f = x as FunctionDeclaration;
-            const y = f.getReturnTypeNode();
-            if (y) {
-                if (TypeGuards.isTypePredicateNode(y)) {
-                    const name = y.getParameterNameNode().getText();
-                    const type = y.getTypeNode().getText();
-                    const text = y.getText();
-                    console.log(name);
-                    console.log(type);
-                    console.log(text);
-                    const a = 2;
-                }
-            }
-            break;
-    }
-});
-
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
-const project = new Project({
-    tsConfigFilePath: tsconfig,
-});
 if (src) {
     const sum = new SummaryMaker().make(src, summaryMapper);
     const md = new SummaryMaker().write(sum);
     fse.outputFileSync('packages/SUMMARY.md', md);
-    if (src.functions) {
-        src.functions.forEach(s => {
-            const x = new FunctionToMdConverter().convert(s, src, typeMapper, 'https://gitbook-18.gitbook.io/au');
-            const a = 1;
-        });
-    }
-    if (src.enums) {
-        src.enums.forEach(s => {
-            const x = new EnumToMdConverter().convert(s);
-            const a = 1;
-        });
-    }
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
-
-const decoratorSample = `
-@test1(1,'A',{w:2})
-export class A {
-    @test2({x:3},4)
-    d: number;
-    e: string = 'e';
-    f?: number = 5;
-    @test3({y:6},{z:7})
-    dec(@test4 g:number): number
-    {
-        return g;
-    }
-    @test5()
-    public get name(): string {
-        return 'decorator';
-    }
-}
-`;
-
-const project1 = new Project({
-    compilerOptions: {
-        target: ScriptTarget.ES5,
-    },
-});
-const file = project1.createSourceFile('test.ts', decoratorSample);
-file.forEachDescendant(x => {
-    switch (x.getKind()) {
-        case SyntaxKind.ClassDeclaration:
-            const dec = new DecoratorExtractor();
-            const decorator = dec.extract(x as ClassDeclaration, undefined);
-            if (decorator) {
-                const y = new DecoratorToMdConverter().convert(decorator, src, typeMapper);
-                const yy = 1;
-            }
-            const a = 1;
-            break;
-    }
-});
-*/

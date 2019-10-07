@@ -155,6 +155,24 @@ export class SummaryMaker {
         }
     }
 
+    public getSummaryGroup(sourceFile: ExportedSourceFileInfo,
+        map: (
+            id: string,
+            pathInfo: PathInfo,
+            category: TypeCategory,
+            mdFileName: string,
+            baseUrl?: string,
+        ) => SummaryMapInfo,
+        baseUrl?: string, ): SummaryMapInfo[][] {
+        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
+        const summaryGroup = _(SummaryMapInfo)
+            .sortBy(x => x.folders)
+            .groupBy(x => x.folders)
+            .values()
+            .value();
+        return summaryGroup;
+    }
+
     public make(
         sourceFile: ExportedSourceFileInfo,
         map: (
@@ -168,20 +186,19 @@ export class SummaryMaker {
         baseUrl?: string,
     ): SummaryInfo[] {
         const result: SummaryInfo[] = [];
-        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
-        const summaryGroup = _(SummaryMapInfo)
-            .sortBy(x => x.folders)
-            .groupBy(x => x.folders)
-            .values()
-            .value();
+        let summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
+            const parentsInfo = parents.join('/').toLowerCase();
+            const title = this.beautifyName(parents[parents.length - 1]);
             const summaryInfoData = {
                 id: undefined,
+                parent: parents.length <= 1 ? undefined : [...parents].splice(-1, 1).join('/').toLowerCase(),
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
-                title: this.beautifyName(parents[parents.length - 1]),
+                title: title,
+                scope: parentsInfo,
                 url: parents.join('/') + '/README' + fileExtension,
             };
             result.push(summaryInfoData);
@@ -192,25 +209,30 @@ export class SummaryMaker {
                 .value();
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
-                const summaryData = {
+                const parentsWithCategoryInfo = [...parents, category].join('/').toLowerCase();
+                const sortedSummaryInfoData = {
                     id: undefined,
+                    parent: parentsInfo,
                     baseUrl: baseUrl,
                     level: parents.length,
                     extension: fileExtension,
                     title: category,
+                    scope: parentsWithCategoryInfo,
                     url: parents.join('/') + '/' + category.toLowerCase() + '/README' + fileExtension,
                 };
-                result.push(summaryData);
+                result.push(sortedSummaryInfoData);
                 for (const s of summary) {
-                    const data = {
+                    const summaryData = {
                         id: s.id,
+                        parent: parentsWithCategoryInfo,
                         baseUrl: baseUrl,
                         level: parents.length + 1,
                         extension: fileExtension,
                         title: s.mdFileName,
+                        scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
                         url: s.path + fileExtension,
                     };
-                    result.push(data);
+                    result.push(summaryData);
                 }
             }
         }

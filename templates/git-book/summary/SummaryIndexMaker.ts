@@ -8,7 +8,20 @@ import * as _ from 'lodash';
 import { isIP } from 'net';
 
 export class SummaryIndexMaker {
-    constructor(private summaryMaker = new SummaryMaker()) { }
+    constructor(private summaryMaker = new SummaryMaker()) {}
+
+    private groupBy(array: SummaryInfo[], func : (x:SummaryInfo)=> unknown[]) {
+        const groups: any = {};
+        array.forEach(function(o) {
+            const group = JSON.stringify(func(o));
+            groups[group] = groups[group] || [];
+            groups[group].push(o);
+        });
+        return Object.keys(groups).map(function(group) {
+            return groups[group];
+        });
+    }
+
     public make(
         sourceFile: ExportedSourceFileInfo,
         map: (
@@ -20,6 +33,9 @@ export class SummaryIndexMaker {
         ) => SummaryMapInfo,
         baseUrl: string,
     ): SummaryInfo[] {
+
+        let data = this.summaryMaker.make(sourceFile,map,'',baseUrl);
+        //let y = this.groupBy(data, x => [x.level,x.title,x.]
         return [];
     }
 }

@@ -155,24 +155,6 @@ export class SummaryMaker {
         }
     }
 
-    public getSummaryGroup(sourceFile: ExportedSourceFileInfo,
-        map: (
-            id: string,
-            pathInfo: PathInfo,
-            category: TypeCategory,
-            mdFileName: string,
-            baseUrl?: string,
-        ) => SummaryMapInfo,
-        baseUrl?: string, ): SummaryMapInfo[][] {
-        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
-        const summaryGroup = _(SummaryMapInfo)
-            .sortBy(x => x.folders)
-            .groupBy(x => x.folders)
-            .values()
-            .value();
-        return summaryGroup;
-    }
-
     public make(
         sourceFile: ExportedSourceFileInfo,
         map: (
@@ -186,22 +168,22 @@ export class SummaryMaker {
         baseUrl?: string,
     ): SummaryInfo[] {
         const result: SummaryInfo[] = [];
-        let summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
+        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
+        const summaryGroup = _(SummaryMapInfo)
+            .sortBy(x => x.folders)
+            .groupBy(x => x.folders)
+            .values()
+            .value();
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
-            const parentsInfo = parents.join('/').toLowerCase();
-            const title = this.beatifyName(parents[parents.length - 1]);
-            const summaryInfoData = {
+            result.push({
                 id: undefined,
-                parent: parents.length <= 1 ? undefined : parents.splice(-1, 1).join('/').toLowerCase(),
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
-                title: title,
-                scope: parentsInfo,
+                title: this.beatifyName(parents[parents.length - 1]),
                 url: parents.join('/') + '/README' + fileExtension,
-            };
-            result.push(summaryInfoData);
+            });
             const sortedSummaryInfo = _(summaryInfo)
                 .sortBy(x => x.category, x => x.mdFileName)
                 .groupBy(x => x.category)
@@ -209,30 +191,23 @@ export class SummaryMaker {
                 .value();
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
-                const parentsWithCategoryInfo = [...parents, category].join('/').toLowerCase();
-                const sortedSummaryInfoData = {
+                result.push({
                     id: undefined,
-                    parent: parentsInfo,
                     baseUrl: baseUrl,
                     level: parents.length,
                     extension: fileExtension,
                     title: category,
-                    scope: parentsWithCategoryInfo,
                     url: parents.join('/') + '/' + category.toLowerCase() + '/README' + fileExtension,
-                };
-                result.push(sortedSummaryInfoData);
+                });
                 for (const s of summary) {
-                    const summaryData = {
+                    result.push({
                         id: s.id,
-                        parent: parentsWithCategoryInfo,
                         baseUrl: baseUrl,
                         level: parents.length + 1,
                         extension: fileExtension,
                         title: s.mdFileName,
-                        scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
                         url: s.path + fileExtension,
-                    };
-                    result.push(summaryData);
+                    });
                 }
             }
         }

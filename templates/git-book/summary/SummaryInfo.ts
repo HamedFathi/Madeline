@@ -5,6 +5,4 @@ export interface SummaryInfo {
     baseUrl?: string;
     url: string;
     extension?: string;
-    parent: string | undefined;
-    scope: string | undefined;
 }

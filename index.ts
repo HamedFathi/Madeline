@@ -141,6 +141,7 @@ export * from './templates/git-book/summary/EnumSummaryMaker';
 export * from './templates/git-book/summary/ExportAssignmentSummaryMaker';
 export * from './templates/git-book/summary/FunctionSummaryMaker';
 export * from './templates/git-book/summary/InterfaceSummaryMaker';
+export * from './templates/git-book/summary/ItemKind';
 export * from './templates/git-book/summary/LiteralSummaryMaker';
 export * from './templates/git-book/summary/SummaryIndexMaker';
 export * from './templates/git-book/summary/SummaryInfo';
@@ -162,11 +163,13 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
+/*
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import * as fse from 'fs-extra';
 import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
+import { SummaryIndexMaker } from './templates/git-book/summary/SummaryIndexMaker';
 const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
 const sw = new Stopwatch(true);
 const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
@@ -174,8 +177,10 @@ if (src) {
     const sum = new SummaryMaker().make(src, summaryMapper);
     const md = new SummaryMaker().write(sum);
     fse.outputFileSync('packages/SUMMARY.md', md);
+    const index = new SummaryIndexMaker().make(src, summaryMapper, '');
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
+*/

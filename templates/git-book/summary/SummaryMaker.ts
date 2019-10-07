@@ -1,3 +1,4 @@
+import { ItemKind } from './ItemKind';
 import { exportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
 import { destructuringSummaryMaker } from './DestructuringSummaryMaker';
 import { functionSummaryMaker } from './FunctionSummaryMaker';
@@ -155,7 +156,8 @@ export class SummaryMaker {
         }
     }
 
-    public getSummaryGroup(sourceFile: ExportedSourceFileInfo,
+    public getSummaryGroup(
+        sourceFile: ExportedSourceFileInfo,
         map: (
             id: string,
             pathInfo: PathInfo,
@@ -163,7 +165,8 @@ export class SummaryMaker {
             mdFileName: string,
             baseUrl?: string,
         ) => SummaryMapInfo,
-        baseUrl?: string, ): SummaryMapInfo[][] {
+        baseUrl?: string,
+    ): SummaryMapInfo[][] {
         const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
         const summaryGroup = _(SummaryMapInfo)
             .sortBy(x => x.folders)
@@ -183,23 +186,31 @@ export class SummaryMaker {
             baseUrl?: string,
         ) => SummaryMapInfo,
         fileExtension = '.md',
+        generalMdName = 'README',
         baseUrl?: string,
     ): SummaryInfo[] {
         const result: SummaryInfo[] = [];
-        let summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
+        const summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
             const parentsInfo = parents.join('/').toLowerCase();
             const title = this.beautifyName(parents[parents.length - 1]);
             const summaryInfoData = {
                 id: undefined,
-                parent: parents.length <= 1 ? undefined : [...parents].splice(-1, 1).join('/').toLowerCase(),
+                parent:
+                    parents.length <= 1
+                        ? undefined
+                        : [...parents]
+                              .splice(-1, 1)
+                              .join('/')
+                              .toLowerCase(),
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
                 title: title,
                 scope: parentsInfo,
-                url: parents.join('/') + '/README' + fileExtension,
+                url: parents.join('/') + '/' + generalMdName + fileExtension,
+                itemKind: parents.length <= 1 ? ItemKind.Root : ItemKind.MiddleItems,
             };
             result.push(summaryInfoData);
             const sortedSummaryInfo = _(summaryInfo)
@@ -218,7 +229,8 @@ export class SummaryMaker {
                     extension: fileExtension,
                     title: category,
                     scope: parentsWithCategoryInfo,
-                    url: parents.join('/') + '/' + category.toLowerCase() + '/README' + fileExtension,
+                    url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName + fileExtension,
+                    itemKind: ItemKind.MiddleItems,
                 };
                 result.push(sortedSummaryInfoData);
                 for (const s of summary) {
@@ -231,6 +243,7 @@ export class SummaryMaker {
                         title: s.mdFileName,
                         scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
                         url: s.path + fileExtension,
+                        itemKind: ItemKind.LastItem,
                     };
                     result.push(summaryData);
                 }

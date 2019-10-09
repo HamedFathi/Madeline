@@ -1,0 +1,2 @@
+export const EXPORTED_SOURCE_FILE_TEMPLATE = `
+`;

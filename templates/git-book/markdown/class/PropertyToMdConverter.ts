@@ -61,9 +61,8 @@ export class PropertyToMdConverter {
     ): string[] | undefined {
         const result: string[] = [];
         propertiesInfo.forEach(propertyInfo => {
-            const text = Nunjucks.renderString(PROPERTY_TEMPLATE, propertyInfo);
-            const md = this.markdownUtils.purify(text);
-            result.push(md);
+            const text = this.convert(propertyInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
         });
         return result.length === 0 ? void 0 : result;
     }

@@ -1,4 +1,4 @@
-export const DESTRUCTURING_TEMPLATE = `
+export const VARIABLE_TEMPLATE = `
 {% if description|is_available %}
     **Summary:** 
 
@@ -6,7 +6,11 @@ export const DESTRUCTURING_TEMPLATE = `
 
 {% endif %}
 
-**Attributes:** {{isArrayDestructuring|print_boolean}} Array{{isArrayDestructuring|print_boolean}} Array
+**Name:** {{name|print('-','','')}}
+
+**Kind:** ✔ {{kindName}}
+
+**Type:** {{type|print('-','','')}}
 
 {% if typeReference|is_available %}
     **Type Reference:** 
@@ -27,16 +31,8 @@ export const DESTRUCTURING_TEMPLATE = `
 
 {% endif %}
 
-{% if elements|is_available %}
-    {{**Element(s):**}}
-    {% for element in elements %}
-        {{element|print('','','','\n')}}
-
-    {% endfor %}
-{% endif %}
-
 {% if modules|is_available %}
-    **Module(s):** {{modules|print('','','','\n\n')}}
+    **Module(s):**{{modules|print('','','','\n\n')}}
 
 {% endif %}
 

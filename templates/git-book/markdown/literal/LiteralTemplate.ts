@@ -1,4 +1,4 @@
-export const DESTRUCTURING_TEMPLATE = `
+export const LITERAL_TEMPLATE = `
 {% if description|is_available %}
     **Summary:** 
 
@@ -6,24 +6,16 @@ export const DESTRUCTURING_TEMPLATE = `
 
 {% endif %}
 
-**Attributes:** {{isArrayDestructuring|print_boolean}} Array{{isArrayDestructuring|print_boolean}} Array
+**Name:** {{name|print('-','','')}}
+
+**Type:** {{type|print('-','','')}}
+
+**Attribute:** {{isArrayLiteral|print_boolean}} Array Literal
 
 {% if typeReference|is_available %}
     **Type Reference:** 
 
     {{typeReference|print('','','','')}}
-
-{% endif %}
-
-{% if initializer|is_available %}
-    **Initializer:** 
-
-    {{initializer|print('','','','')}}
-
-{% endif %}
-
-{% if modifiers.length > 1 %}
-    **Modifier(s):** {{modifiers|print_modifiers}}
 
 {% endif %}
 

@@ -34,4 +34,19 @@ export class TypeParameterToMdConverter {
         const md = this.markdownUtils.purify(text);
         return md;
     }
+
+    public convertAll(
+        id: string,
+        typeParametersInfo: TypeParameterInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+    ): string[] | undefined {
+        const result: string[] = [];
+        typeParametersInfo.forEach(typeParameterInfo => {
+            const text = this.convert(id, typeParameterInfo, source, map, baseUrl);
+            result.push(text);
+        });
+        return result.length === 0 ? void 0 : result;
+    }
 }

@@ -7,8 +7,6 @@ import { TypeToMdConverter } from '../type/TypeToMdConverter';
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 import { CALL_SIGNATURE_PARAMETER_TEMPLATE } from './CallSignatureParameterTemplate';
-import { CommentToMdOption } from '../comment/CommentToMdOption';
-
 export class CallSignatureParameterToMdConverter {
     constructor(
         private typeToMdConverter: TypeToMdConverter = new TypeToMdConverter(),

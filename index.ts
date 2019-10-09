@@ -113,6 +113,9 @@ export * from './templates/git-book/markdown/decorator/DecoratorParameterTemplat
 export * from './templates/git-book/markdown/decorator/DecoratorTemplate';
 export * from './templates/git-book/markdown/decorator/DecoratorTemplateInfo';
 export * from './templates/git-book/markdown/decorator/DecoratorToMdConverter';
+export * from './templates/git-book/markdown/destructuring/DestructuringElementTemplate';
+export * from './templates/git-book/markdown/destructuring/DestructuringElementTemplateInfo';
+export * from './templates/git-book/markdown/destructuring/DestructuringElementToMdConverter';
 export * from './templates/git-book/markdown/destructuring/DestructuringTemplate';
 export * from './templates/git-book/markdown/destructuring/DestructuringTemplateInfo';
 export * from './templates/git-book/markdown/destructuring/DestructuringToMdConverter';

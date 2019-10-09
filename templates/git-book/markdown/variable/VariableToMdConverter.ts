@@ -28,11 +28,11 @@ export class VariableToMdConverter {
         private callSignatureToMdConverter = new CallSignatureToMdConverter(),
     ) {}
 
-    private isCallSignatureInfo(object: any): object is CallSignatureInfo {
+    private isCallSignatureInfo(/* eslint-disable */object: any/* eslint-disable */): object is CallSignatureInfo {
         return !('isGenerator' in object);
     }
 
-    private isFunctionInfo(object: any): object is FunctionInfo {
+    private isFunctionInfo(/* eslint-disable */object: any/* eslint-disable */): object is FunctionInfo {
         return 'isGenerator' in object;
     }
 

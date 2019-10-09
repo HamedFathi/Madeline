@@ -34,6 +34,7 @@ import { ImportInfo } from '../import/ImportInfo';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 import { TypeCategory } from '../common/TypeCategory';
+import { ModuleExtractor } from '../module/ModuleExtractor';
 /*
 const obj = {
     propertyAssignment2: function(x: number) {},
@@ -119,6 +120,7 @@ export class LiteralExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const modules = new ModuleExtractor().extract(node);
         node.getDeclarations().forEach(declaration => {
             const hasTypeReference = declaration.getInitializerIfKind(SyntaxKind.AsExpression) !== undefined;
             let typeReference: string | undefined = void 0;
@@ -150,6 +152,7 @@ export class LiteralExtractor {
                     file: pathInfo.file,
                     extension: pathInfo.extension,
                     typeCategory: TypeCategory.Literals,
+                    modules: modules,
                     typeReference: typeReference,
                     name: declaration.getName(),
                     type: new TypeExtractor().extract(
@@ -174,6 +177,7 @@ export class LiteralExtractor {
                     trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
                     leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
                     hasComment: hasComment,
+                    modules: modules,
                     path: pathInfo.path,
                     directory: pathInfo.directory,
                     file: pathInfo.file,

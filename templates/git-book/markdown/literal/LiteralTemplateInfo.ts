@@ -7,4 +7,5 @@ export interface LiteralTemplateInfo {
     type: string;
     description: string[] | undefined;
     hasComment: boolean;
+    modules: string[] | undefined;
 }

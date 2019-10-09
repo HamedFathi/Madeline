@@ -10,6 +10,7 @@ import { LiteralExpressionToMdConverter } from './LiteralExpressionToMdConverter
 import { LiteralTemplateInfo } from './LiteralTemplateInfo';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 import { LITERAL_TEMPLATE } from './LiteralTemplate';
+import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
 
 export class LiteralToMdConverter {
     constructor(
@@ -17,6 +18,7 @@ export class LiteralToMdConverter {
         private markdownUtils = new MarkdownUtils(),
         private literalExpressionToMdConverter = new LiteralExpressionToMdConverter(),
         private commentToMdConverter: CommentToMdConverter = new CommentToMdConverter(),
+        private moduleToMdConverter = new ModuleToMdConverter(),
     ) {}
     public convert(
         literalInfo: LiteralInfo,
@@ -34,7 +36,9 @@ export class LiteralToMdConverter {
             const trailing = this.commentToMdConverter.convertAll(literalInfo.trailingComments, commentOptions);
             description.concat(trailing);
         }
-
+        const modules = literalInfo.modules
+            ? this.moduleToMdConverter.convert(literalInfo.modules, commentOptions)
+            : undefined;
         const obj: LiteralTemplateInfo = {
             name: literalInfo.name,
             description: description.length === 0 ? void 0 : description,
@@ -43,6 +47,7 @@ export class LiteralToMdConverter {
             hasComment: literalInfo.hasComment,
             typeReference: literalInfo.typeReference,
             isArrayLiteral: literalInfo.isArrayLiteral,
+            modules: modules,
             elements: this.literalExpressionToMdConverter.convertAll(
                 literalInfo.elements,
                 source,

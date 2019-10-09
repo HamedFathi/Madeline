@@ -1,0 +1,1 @@
+export const LITERAL_ASSIGNMENT_TEMPLATE = ``;

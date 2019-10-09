@@ -148,6 +148,15 @@ export * from './templates/git-book/markdown/interface/InterfacePropertyToMdConv
 export * from './templates/git-book/markdown/interface/InterfaceTemplate';
 export * from './templates/git-book/markdown/interface/InterfaceTemplateInfo';
 export * from './templates/git-book/markdown/interface/InterfaceToMdConverter';
+export * from './templates/git-book/markdown/literal/LiteralAssignmentTemplate';
+export * from './templates/git-book/markdown/literal/LiteralAssignmentTemplateInfo';
+export * from './templates/git-book/markdown/literal/LiteralAssignmentToMdConverter';
+export * from './templates/git-book/markdown/literal/LiteralExpressionTemplate';
+export * from './templates/git-book/markdown/literal/LiteralExpressionTemplateInfo';
+export * from './templates/git-book/markdown/literal/LiteralExpressionToMdConverter';
+export * from './templates/git-book/markdown/literal/LiteralTemplate';
+export * from './templates/git-book/markdown/literal/LiteralTemplateInfo';
+export * from './templates/git-book/markdown/literal/LiteralToMdConverter';
 export * from './templates/git-book/markdown/module/ModuleTemplate';
 export * from './templates/git-book/markdown/module/ModuleTemplateInfo';
 export * from './templates/git-book/markdown/module/ModuleToMdConverter';

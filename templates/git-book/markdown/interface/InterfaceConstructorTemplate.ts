@@ -1,0 +1,2 @@
+export const INTERFACE_CONSTRUCTOR_TEMPLATE = `
+`;

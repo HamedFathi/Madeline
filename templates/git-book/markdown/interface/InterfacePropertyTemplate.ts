@@ -1,0 +1,2 @@
+export const INTERFACE_PROPERTY_TEMPLATE = `
+`;

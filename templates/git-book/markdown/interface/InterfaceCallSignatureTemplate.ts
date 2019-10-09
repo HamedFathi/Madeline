@@ -1,0 +1,2 @@
+export const INTERFACE_CALL_SIGNATURE_TEMPLATE = `
+`;

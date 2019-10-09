@@ -1,6 +1,5 @@
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
-import { TypeParameterToMdConverter } from '../type-parameter/TypeParameterToMdConverter';
 import { TypeToMdConverter } from '../type/TypeToMdConverter';
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { VariableInfo } from '../../../../extractors/variable/VariableInfo';
@@ -16,6 +15,7 @@ import { FunctionInfo } from '../../../../extractors/function/FunctionInfo';
 import { CallSignatureInfo } from '../../../../extractors/common/CallSignatureInfo';
 import { ObjectUtils } from '../../../../utilities/ObjectUtils';
 import { FunctionToMdConverter } from '../function/FunctionToMdConverter';
+import { CallSignatureToMdConverter } from '../call-signature/CallSignatureToMdConverter';
 
 export class VariableToMdConverter {
     constructor(
@@ -25,6 +25,7 @@ export class VariableToMdConverter {
         private markdownUtils = new MarkdownUtils(),
         private objectUtils = new ObjectUtils(),
         private functionToMdConverter = new FunctionToMdConverter(),
+        private callSignatureToMdConverter = new CallSignatureToMdConverter(),
     ) {}
 
     private isCallSignatureInfo(object: any): object is CallSignatureInfo {
@@ -59,6 +60,12 @@ export class VariableToMdConverter {
         let initializer: string | undefined = undefined;
         if (variableInfo.initializer) {
             if (this.isCallSignatureInfo(variableInfo.initializer)) {
+                initializer = this.callSignatureToMdConverter.convert(
+                    variableInfo.initializer as CallSignatureInfo,
+                    source,
+                    map,
+                    baseUrl,
+                );
             }
             if (this.isFunctionInfo(variableInfo.initializer)) {
                 initializer = this.functionToMdConverter.convert(

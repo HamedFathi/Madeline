@@ -1,5 +1,4 @@
-export interface CallSignatureParameterTemplateInfo
-{
+export interface CallSignatureParameterTemplateInfo {
     name: string | undefined;
     type: string;
     isOptional: boolean;

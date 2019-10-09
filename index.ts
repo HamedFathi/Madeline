@@ -8,7 +8,6 @@ export * from './extractors/comment/TagInfo';
 export * from './extractors/comment/TypescriptCommentExtractor';
 export * from './extractors/common/CallSignatureInfo';
 export * from './extractors/common/CallSignatureParameterInfo';
-export * from './extractors/common/CallSignatureTypeInfo';
 export * from './extractors/common/FromTypeInfo';
 export * from './extractors/common/TypeCategory';
 export * from './extractors/common/TypeExtractor';
@@ -79,6 +78,12 @@ export * from './extractors/type-parameter/TypeParameterExtractor';
 export * from './extractors/type-parameter/TypeParameterInfo';
 export * from './extractors/variable/VariableExtractor';
 export * from './extractors/variable/VariableInfo';
+export * from './templates/git-book/markdown/call-signature/CallSignatureParameterTemplate';
+export * from './templates/git-book/markdown/call-signature/CallSignatureParameterTemplateInfo';
+export * from './templates/git-book/markdown/call-signature/CallSignatureParameterToMdConverter';
+export * from './templates/git-book/markdown/call-signature/CallSignatureTemplate';
+export * from './templates/git-book/markdown/call-signature/CallSignatureTemplateInfo';
+export * from './templates/git-book/markdown/call-signature/CallSignatureToMdConverter';
 export * from './templates/git-book/markdown/class/ClassTemplate';
 export * from './templates/git-book/markdown/class/ClassTemplateInfo';
 export * from './templates/git-book/markdown/class/ClassToMdConverter';
@@ -159,6 +164,9 @@ export * from './templates/git-book/markdown/type/TypeMapper';
 export * from './templates/git-book/markdown/type/TypeTemplate';
 export * from './templates/git-book/markdown/type/TypeTemplateInfo';
 export * from './templates/git-book/markdown/type/TypeToMdConverter';
+export * from './templates/git-book/markdown/variable/VariableTemplate';
+export * from './templates/git-book/markdown/variable/VariableTemplateInfo';
+export * from './templates/git-book/markdown/variable/VariableToMdConverter';
 export * from './templates/git-book/summary/ClassSummaryMaker';
 export * from './templates/git-book/summary/DestructuringSummaryMaker';
 export * from './templates/git-book/summary/EnumSummaryMaker';
@@ -186,7 +194,6 @@ export * from './utilities/PathInfo';
 export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
-
 
 /*
 const Stopwatch = require('statman-stopwatch');

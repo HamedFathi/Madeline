@@ -1,4 +1,4 @@
-export const TYPE_ALIAS_TEMPLATE = `
+export const SET_ACCESSOR_TEMPLATE = `
 {% if description|is_available %}
     **Summary:** 
 
@@ -14,16 +14,19 @@ export const TYPE_ALIAS_TEMPLATE = `
 
 {{type|print('-','','')}}
 
-{% if modifiers.length > 1 %}
+{% if modifiers|is_available %}
     **Modifier(s):** 
 
     {{modifiers|print_modifiers}}
 
 {% endif %}
 
-**Initializer:** 
+{% if decorators|is_available %}
+    **Decorator(s):** 
 
-{{initializer|print('-','','')}}
+    {{decorators|print('-','','')}}
+
+{% endif %}
 
 {% if typeParameters|is_available %}
     **Type Parameter(s):** 
@@ -32,11 +35,8 @@ export const TYPE_ALIAS_TEMPLATE = `
 
 {% endif %}
 
-{% if modules|is_available %}
-    **Module(s):** 
+**Parameter Name:** {{parameter.name|print('-','','')}}
 
-    {{modules|print('','','','\n\n')}}
-
-{% endif %}
+**Parameter Type:** {{parameter.type|print('-','','')}}
 
 `;

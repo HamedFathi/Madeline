@@ -1,4 +1,4 @@
-import { FunctionDeclaration, FunctionExpression } from 'ts-morph';
+import { FunctionDeclaration, FunctionExpression, TypeGuards } from 'ts-morph';
 import { FunctionInfo } from './FunctionInfo';
 import { TypeExtractor } from '../common/TypeExtractor';
 import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtractor';
@@ -15,10 +15,15 @@ export class FunctionExtractor {
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const returnTypeNode = node.getReturnTypeNode();
         const returnType =
             node.getReturnType() === void 0
                 ? void 0
                 : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
+        const typeGuard =
+            returnTypeNode && TypeGuards.isTypePredicateNode(returnTypeNode)
+                ? returnTypeNode.getTypeNode().getText()
+                : undefined;
         const result: FunctionInfo = {
             id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
@@ -34,6 +39,7 @@ export class FunctionExtractor {
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             typeParameters: new TypeParameterExtractor().extract(node, imports),
             returnType: returnType,
+            typeGuard: typeGuard,
             typeCategory: TypeCategory.Functions,
             parameters:
                 node.getParameters().length === 0
@@ -42,13 +48,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(
-                                  x.getType(),
-
-                                  x.getTypeNode(),
-                                  void 0,
-                                  imports,
-                              ),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
                               modifiers:
                                   x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),
@@ -65,17 +65,16 @@ export class FunctionExtractor {
         const trailingComments = new TypescriptCommentExtractor().extract(node.getTrailingCommentRanges());
         const leadingComments = new TypescriptCommentExtractor().extract(node.getLeadingCommentRanges());
         const hasComment = trailingComments.length !== 0 || leadingComments.length !== 0;
+        const returnTypeNode = node.getReturnTypeNode();
         const returnType =
             node.getReturnType() === void 0
                 ? void 0
-                : new TypeExtractor().extract(
-                      node.getReturnType(),
-
-                      node.getReturnTypeNode(),
-                      void 0,
-                      imports,
-                  );
+                : new TypeExtractor().extract(node.getReturnType(), node.getReturnTypeNode(), void 0, imports);
         const pathInfo = getPathInfo(node.getSourceFile().getFilePath());
+        const typeGuard =
+            returnTypeNode && TypeGuards.isTypePredicateNode(returnTypeNode)
+                ? returnTypeNode.getTypeNode().getText()
+                : undefined;
         const result: FunctionInfo = {
             id: getSha256(node.getFullText() + pathInfo.path),
             name: node.getName(),
@@ -93,6 +92,7 @@ export class FunctionExtractor {
             trailingComments: trailingComments.length === 0 ? void 0 : trailingComments,
             leadingComments: leadingComments.length === 0 ? void 0 : leadingComments,
             modules: new ModuleExtractor().extract(node),
+            typeGuard: typeGuard,
             typeParameters: new TypeParameterExtractor().extract(node, imports),
             returnType: returnType,
             parameters:
@@ -102,13 +102,7 @@ export class FunctionExtractor {
                           return {
                               name: x.getName(),
                               text: x.getText(),
-                              type: new TypeExtractor().extract(
-                                  x.getType(),
-
-                                  x.getTypeNode(),
-                                  void 0,
-                                  imports,
-                              ),
+                              type: new TypeExtractor().extract(x.getType(), x.getTypeNode(), void 0, imports),
                               modifiers:
                                   x.getModifiers().length === 0 ? void 0 : x.getModifiers().map(y => y.getText()),
                               isOptional: x.isOptional(),

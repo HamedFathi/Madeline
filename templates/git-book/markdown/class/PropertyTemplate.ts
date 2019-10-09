@@ -1,4 +1,4 @@
-export const TYPE_ALIAS_TEMPLATE = `
+export const PROPERTY_TEMPLATE = `
 {% if description|is_available %}
     **Summary:** 
 
@@ -10,11 +10,13 @@ export const TYPE_ALIAS_TEMPLATE = `
 
 {{name|print('-','','')}}
 
+**Attributes:** {{isOptional|print_boolean}} Optional
+
 **Type:**      
 
 {{type|print('-','','')}}
 
-{% if modifiers.length > 1 %}
+{% if modifiers|is_available %}
     **Modifier(s):** 
 
     {{modifiers|print_modifiers}}
@@ -25,17 +27,10 @@ export const TYPE_ALIAS_TEMPLATE = `
 
 {{initializer|print('-','','')}}
 
-{% if typeParameters|is_available %}
-    **Type Parameter(s):** 
+{% if decorators|is_available %}
+    **Decorator(s):** 
 
-    {{typeParameters|print('','\`\`\`','\`\`\`','\n\n')}}
-
-{% endif %}
-
-{% if modules|is_available %}
-    **Module(s):** 
-
-    {{modules|print('','','','\n\n')}}
+    {{decorators|print('-','','')}}
 
 {% endif %}
 

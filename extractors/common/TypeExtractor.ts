@@ -1,6 +1,6 @@
 import { ImportInfo } from './../import/ImportInfo';
 import { TypeInfo } from './TypeInfo';
-import { Type, TypeNode } from 'ts-morph';
+import { Type, TypeNode, TypeGuards, Node } from 'ts-morph';
 import { FromTypeInfo } from './FromTypeInfo';
 import { removeFirstAndLastQuote } from '../../utilities/StringUtils';
 
@@ -11,6 +11,73 @@ export class TypeExtractor {
         const unionTypes = type.getUnionTypes().map(x => x.getText());
         const allRelatedImports = intersectionTypes.join(' ') + ' ' + tupleTypes.join(' ') + ' ' + unionTypes.join(' ');
         return allRelatedImports;
+    }
+    private getInvolvedTypesAsString(node: Node): string[] {
+        const result: string[] = [];
+        const types = new Set<Type>();
+        node.forEachDescendant(descendant => {
+            if (TypeGuards.isTypedNode(descendant) || TypeGuards.isIdentifier(descendant))
+                types.add(descendant.getType());
+            else if (TypeGuards.isReturnTypedNode(descendant)) types.add(descendant.getReturnType());
+        });
+        types.forEach(type => {
+            if (!type.isAny() && !type.isUnknown() && !type.isNull() && !type.isNullable()) {
+                result.push(type.getText());
+            }
+        });
+        return result;
+    }
+
+    private getInvolvedTypes(node: Node): Type[] {
+        const result: Type[] = [];
+        const types = new Set<Type>();
+        node.forEachDescendant(descendant => {
+            if (TypeGuards.isTypedNode(descendant) || TypeGuards.isIdentifier(descendant))
+                types.add(descendant.getType());
+            else if (TypeGuards.isReturnTypedNode(descendant)) types.add(descendant.getReturnType());
+        });
+        types.forEach(type => {
+            if (!type.isAny() && !type.isUnknown() && !type.isNull() && !type.isNullable()) {
+                result.push(type);
+            }
+        });
+        return result;
+    }
+
+    private getInvolvedTypesAsFromTypeInfo(node: Node): FromTypeInfo[] | undefined {
+        const data = this.getInvolvedTypesAsString(node);
+        const result = this.getFromTypeInfo(data);
+        return result;
+    }
+
+    private getFromTypeInfo(typeText: string[]): FromTypeInfo[] | undefined {
+        const result: FromTypeInfo[] = [];
+        const text = typeText.join(' ');
+        const regex = /import\((.+?)\)\.([^;>,\[\]\)\(<{}&!\s]+)/gm;
+        const allImports = text.match(regex);
+        if (allImports) {
+            allImports.forEach(imp => {
+                const rgx = /import\((.+?)\)\.(.+)/g;
+                const groups = rgx.exec(imp);
+                if (groups) {
+                    const gr0: string = removeFirstAndLastQuote(groups[0] as string);
+                    const gr1: string = removeFirstAndLastQuote(groups[1] as string);
+                    const gr2: string = removeFirstAndLastQuote(groups[2] as string);
+                    const dir: string = gr1.substring(0, gr1.lastIndexOf('/'));
+                    const file: string = gr1.replace(dir, '').substring(1);
+                    const from: FromTypeInfo = {
+                        import: gr0,
+                        path: gr1,
+                        type: gr2,
+                        directory: dir,
+                        file: file,
+                        importAliases: undefined,
+                    };
+                    result.push(from);
+                }
+            });
+        }
+        return result.length === 0 ? undefined : result;
     }
 
     public extract(

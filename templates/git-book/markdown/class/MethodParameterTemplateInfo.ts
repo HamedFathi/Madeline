@@ -1,12 +1,11 @@
-import { TypeInfo } from '../common/TypeInfo';
-
-export interface FunctionParameterInfo {
+export interface MethodParameterTemplateInfo {
     name: string;
+    type: string;
+    text: string;
     modifiers: string[] | undefined;
-    type: TypeInfo;
     isOptional: boolean;
     isRest: boolean;
     isParameterProperty: boolean;
     initializer: string | undefined;
-    text: string;
+    decorators: string | undefined;
 }

@@ -3,9 +3,12 @@ import { ObjectUtils } from './ObjectUtils';
 import { TagInfo } from '../extractors/comment/TagInfo';
 import { CommentToMdConverter } from '../templates/git-book/markdown/comment/CommentToMdConverter';
 import { TypeDetailTemplateInfo } from '../templates/git-book/markdown/type/TypeDetailTemplateInfo';
+import { nbsp } from './StringUtils';
 /* eslint-disable */
 const mdTable = require('markdown-table');
 /* eslint-disable */
+const MARK : string = '✔';
+const CROSS : string = '✘';
 const objUtils = new ObjectUtils();
 const Nunjucks = nj.configure({ autoescape: false });
 function isDescriptionOnly(value: string[]): boolean {
@@ -14,6 +17,28 @@ function isDescriptionOnly(value: string[]): boolean {
 
 Nunjucks.addFilter('is_available', function (value: string | unknown[]): boolean {
     return objUtils.isAvailable(value);
+});
+
+Nunjucks.addFilter('print_boolean', function (value:boolean): string {
+    // return value ? '✔':'❌';
+    //return value ? '✓' : '⨯'
+    //return value ? '☑' : '❎';
+    //return value ? '✔':'✖';
+    return value ? MARK:CROSS;
+});
+
+Nunjucks.addFilter('whitespace', function (value:string, count:number): string {
+    return nbsp(count)+value;
+});
+
+Nunjucks.addFilter('print_modifiers', function (modifiers:string[]): string {
+
+let result : string[] = [];
+    let values = modifiers.filter(x=>x !== 'export');
+    for (const v of values) {
+        result.push(`${MARK} ${v}`);
+    }
+    return result.join('\n');
 });
 
 Nunjucks.addFilter('type_link', function (value: string, details: TypeDetailTemplateInfo[] | undefined): string {
@@ -55,7 +80,9 @@ Nunjucks.addFilter('write', function (value: TagInfo[], append: boolean, headers
 
 Nunjucks.addFilter('print', function (value: string | unknown[], replacement: string, start: string, end: string, separator: string) {
     const s = start ? start : '';
+    const hasStartTripleBacktick = s.includes('```');
     const e = end ? end : '';
+    const hasEndTripleBacktick = e.includes('```');
     const r = replacement ? replacement : '';
     const p = separator ? separator : ', ';
     if (!value) {
@@ -71,7 +98,7 @@ Nunjucks.addFilter('print', function (value: string | unknown[], replacement: st
         const result = (value as unknown[]).map(x => s + x + e).join(p);
         return result;
     }
-    return s + value + e;
+    return (hasStartTripleBacktick ? '\n'+s+'\n': s) + value + (hasEndTripleBacktick ? '\n'+e+'\n': e);
 });
 
 export { Nunjucks };

@@ -1,2 +1,2 @@
-export const INTERFACE_TEMPLATE = `
+export const INTERFACE_METHOD_TEMPLATE = `
 `;

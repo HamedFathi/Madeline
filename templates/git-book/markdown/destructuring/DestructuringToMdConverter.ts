@@ -15,7 +15,7 @@ export class DestructuringToMdConverter {
         private moduleToMdConverter = new ModuleToMdConverter(),
         private destructuringElementToMdConverter = new DestructuringElementToMdConverter(),
         private markdownUtils = new MarkdownUtils(),
-    ) { }
+    ) {}
     public convert(destructuringInfo: DestructuringInfo, commentOptions?: CommentToMdOption): string {
         const description: string[] = [];
         if (destructuringInfo.leadingComments) {

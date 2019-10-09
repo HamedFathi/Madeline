@@ -47,7 +47,7 @@ export const FUNCTION_TEMPLATE = `
 
         {% endif %}
 
-        {{'**Attributes:**'|whitespace(5)}}{{isOptional|print_boolean}} Optional{{isRest|print_boolean|whitespace(5)}} Rest{{isParameterProperty|print_boolean|whitespace(5)}} Parameter Property
+        {{'**Attributes:**'|whitespace(5)}}{{param.isOptional|print_boolean}} Optional{{param.isRest|print_boolean|whitespace(5)}} Rest{{param.isParameterProperty|print_boolean|whitespace(5)}} Parameter Property
 
         {% if param.initializer|is_available %}
             {{'**Initializer:**'|whitespace(5)}}

@@ -21,6 +21,13 @@ export const SET_ACCESSOR_TEMPLATE = `
 
 {% endif %}
 
+{% if decorators|is_available %}
+    **Decorator(s):** 
+
+    {{decorators|print('-','','')}}
+
+{% endif %}
+
 {% if typeParameters|is_available %}
     **Type Parameter(s):** 
 

@@ -8,7 +8,7 @@ import { SummaryMaker } from './SummaryMaker';
 import * as _ from 'lodash';
 
 export class SummaryIndexMaker {
-    constructor(private summaryMaker = new SummaryMaker(), private objUtils = new ObjectUtils()) { }
+    constructor(private summaryMaker = new SummaryMaker(), private objUtils = new ObjectUtils()) {}
 
     public make(
         sourceFile: ExportedSourceFileInfo,

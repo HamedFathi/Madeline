@@ -14,12 +14,12 @@ export class ObjectUtils {
 
     public multipleGroupBy<T>(array: T[], func: (x: T) => unknown[]): T[][] {
         const groups: any = {};
-        array.forEach(function (o) {
+        array.forEach(function(o) {
             const group = JSON.stringify(func(o));
             groups[group] = groups[group] || [];
             groups[group].push(o);
         });
-        return Object.keys(groups).map(function (group) {
+        return Object.keys(groups).map(function(group) {
             return groups[group];
         });
     }

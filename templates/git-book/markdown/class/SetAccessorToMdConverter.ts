@@ -67,4 +67,19 @@ export class SetAccessorsToMdConverter {
         const md = this.markdownUtils.purify(text);
         return md;
     }
+    public convertAll(
+        setAccessorsInfo: SetAccessorInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ): string[] | undefined {
+        const result: string[] = [];
+        setAccessorsInfo.forEach(setAccessorInfo => {
+            const text = Nunjucks.renderString(SET_ACCESSOR_TEMPLATE, setAccessorInfo);
+            const md = this.markdownUtils.purify(text);
+            result.push(md);
+        });
+        return result.length === 0 ? void 0 : result;
+    }
 }

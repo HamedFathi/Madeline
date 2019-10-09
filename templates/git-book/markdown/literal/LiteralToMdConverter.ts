@@ -1,4 +1,1 @@
-export class LiteralToMdConverter
-{
-    
-}
+export class LiteralToMdConverter {}

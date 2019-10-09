@@ -1,7 +1,7 @@
 import { InterfaceParameterTemplateInfo } from './InterfaceParameterTemplateInfo';
 
 export interface InterfaceMethodTemplateInfo {
-    parameters: InterfaceParameterTemplateInfo[] | undefined;
+    parameters: string[] | undefined;
     returnType: string;
     text: string;
     description: string[] | undefined;

@@ -13,7 +13,9 @@ export class ObjectUtils {
     }
 
     public multipleGroupBy<T>(array: T[], func: (x: T) => unknown[]): T[][] {
+        /* eslint-disable */
         const groups: any = {};
+        /* eslint-disable */
         array.forEach(function(o) {
             const group = JSON.stringify(func(o));
             groups[group] = groups[group] || [];

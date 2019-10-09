@@ -76,9 +76,8 @@ export class SetAccessorsToMdConverter {
     ): string[] | undefined {
         const result: string[] = [];
         setAccessorsInfo.forEach(setAccessorInfo => {
-            const text = Nunjucks.renderString(SET_ACCESSOR_TEMPLATE, setAccessorInfo);
-            const md = this.markdownUtils.purify(text);
-            result.push(md);
+            const text = this.convert(setAccessorInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
         });
         return result.length === 0 ? void 0 : result;
     }

@@ -5,7 +5,6 @@ import { PathInfo } from '../../../utilities/PathInfo';
 import { ExportedSourceFileInfo } from '../../../extractors/source-file/ExportedSourceFileInfo';
 import { SummaryInfo } from './SummaryInfo';
 import { SummaryMaker } from './SummaryMaker';
-import * as _ from 'lodash';
 
 export class SummaryIndexMaker {
     constructor(private summaryMaker = new SummaryMaker(), private objUtils = new ObjectUtils()) {}

@@ -91,9 +91,8 @@ export class MethodToMdConverter {
     ): string[] | undefined {
         const result: string[] = [];
         methodsInfo.forEach(methodInfo => {
-            const text = Nunjucks.renderString(METHOD_TEMPLATE, methodInfo);
-            const md = this.markdownUtils.purify(text);
-            result.push(md);
+            const text = this.convert(methodInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
         });
         return result.length === 0 ? void 0 : result;
     }

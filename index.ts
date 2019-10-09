@@ -125,6 +125,9 @@ export * from './templates/git-book/markdown/interface/InterfaceCallSignatureToM
 export * from './templates/git-book/markdown/interface/InterfaceConstructorTemplate';
 export * from './templates/git-book/markdown/interface/InterfaceConstructorTemplateInfo';
 export * from './templates/git-book/markdown/interface/InterfaceConstructorToMdConverter';
+export * from './templates/git-book/markdown/interface/InterfaceExtendsTemplate';
+export * from './templates/git-book/markdown/interface/InterfaceExtendsTemplateInfo';
+export * from './templates/git-book/markdown/interface/InterfaceExtendsToMdConverter';
 export * from './templates/git-book/markdown/interface/InterfaceIndexerTemplate';
 export * from './templates/git-book/markdown/interface/InterfaceIndexerTemplateInfo';
 export * from './templates/git-book/markdown/interface/InterfaceIndexerToMdConverter';
@@ -183,6 +186,7 @@ export * from './utilities/PathInfo';
 export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
+
 
 /*
 const Stopwatch = require('statman-stopwatch');

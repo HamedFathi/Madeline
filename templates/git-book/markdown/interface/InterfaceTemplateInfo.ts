@@ -5,7 +5,7 @@ export interface InterfaceTemplateInfo {
     typeParameters: string[] | undefined;
     modules: string[] | undefined;
     text: string;
-    extends: string | undefined;
+    extends: string[] | undefined;
     constructors: string[] | undefined;
     properties: string[] | undefined;
     methods: string[] | undefined;

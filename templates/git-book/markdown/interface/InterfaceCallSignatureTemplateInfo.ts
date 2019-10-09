@@ -1,5 +1,3 @@
-import { InterfaceParameterTemplateInfo } from './InterfaceParameterTemplateInfo';
-
 export interface InterfaceCallSignatureTemplateInfo {
     parameters: string[] | undefined;
     returnType: string;

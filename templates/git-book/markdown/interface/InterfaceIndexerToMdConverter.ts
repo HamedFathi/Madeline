@@ -50,4 +50,19 @@ export class InterfaceIndexerToMdConverter {
         const md = this.markdownUtils.purify(text);
         return md;
     }
+
+    public convertAll(
+        interfaceIndexersInfo: InterfaceIndexerInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ): string[] | undefined {
+        const result: string[] = [];
+        interfaceIndexersInfo.forEach(interfaceIndexerInfo => {
+            const text = this.convert(interfaceIndexerInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
+        });
+        return result.length === 0 ? void 0 : result;
+    }
 }

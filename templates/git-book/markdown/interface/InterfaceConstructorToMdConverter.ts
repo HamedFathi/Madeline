@@ -1,7 +1,6 @@
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
-import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
 import { TypeParameterToMdConverter } from '../type-parameter/TypeParameterToMdConverter';
 import { TypeToMdConverter } from '../type/TypeToMdConverter';
 import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';
@@ -55,7 +54,6 @@ export class InterfaceConstructorToMdConverter {
                       source,
                       map,
                       baseUrl,
-                      commentOptions,
                   )
                 : undefined,
             description: description.length === 0 ? undefined : description,
@@ -66,5 +64,20 @@ export class InterfaceConstructorToMdConverter {
         const text = Nunjucks.renderString(INTERFACE_CONSTRUCTOR_TEMPLATE, obj);
         const md = this.markdownUtils.purify(text);
         return md;
+    }
+
+    public convertAll(
+        interfaceConstructorsInfo: InterfaceConstructorInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ): string[] | undefined {
+        const result: string[] = [];
+        interfaceConstructorsInfo.forEach(interfaceConstructorInfo => {
+            const text = this.convert(interfaceConstructorInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
+        });
+        return result.length === 0 ? void 0 : result;
     }
 }

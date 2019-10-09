@@ -1,12 +1,11 @@
 import { assert } from 'chai';
-import { Project, ScriptTarget, SyntaxKind, ClassDeclaration, CommentRange, ConstructorDeclaration } from 'ts-morph';
+import { Project, ScriptTarget, SyntaxKind, CommentRange, ConstructorDeclaration } from 'ts-morph';
 import { ConstructorExtractor } from '../../../extractors/constructor/ConstructorExtractor';
 import { TypescriptCommentExtractor } from '../../../extractors/comment/TypescriptCommentExtractor';
 import { CommentInfo } from '../../../extractors/comment/CommentInfo';
 import { CommentKind } from '../../../extractors/comment/CommentKind';
 import { JsDocExtractor } from '../../../extractors/comment/JsDocExtractor';
 import { ConstructorInfo } from '../../../extractors/constructor/ConstructorInfo';
-import { forEach } from 'traverse';
 
 describe('Constructor Extractor', () => {
     let project: Project;

@@ -1,8 +1,6 @@
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
-import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
-import { TypeParameterToMdConverter } from '../type-parameter/TypeParameterToMdConverter';
 import { TypeToMdConverter } from '../type/TypeToMdConverter';
 import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';
 import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
@@ -47,5 +45,20 @@ export class InterfacePropertyToMdConverter {
         const text = Nunjucks.renderString(INTERFACE_PROPERTY_TEMPLATE, obj);
         const md = this.markdownUtils.purify(text);
         return md;
+    }
+
+    public convertAll(
+        interfacePropertiesInfo: InterfacePropertyInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ): string[] | undefined {
+        const result: string[] = [];
+        interfacePropertiesInfo.forEach(interfacePropertyInfo => {
+            const text = this.convert(interfacePropertyInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
+        });
+        return result.length === 0 ? void 0 : result;
     }
 }

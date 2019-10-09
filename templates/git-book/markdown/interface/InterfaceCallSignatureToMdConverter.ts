@@ -1,7 +1,6 @@
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
-import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
 import { TypeParameterToMdConverter } from '../type-parameter/TypeParameterToMdConverter';
 import { TypeToMdConverter } from '../type/TypeToMdConverter';
 import { ExportedSourceFileInfo } from '../../../../extractors/source-file/ExportedSourceFileInfo';
@@ -9,7 +8,6 @@ import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
 import { TypeMapInfo } from '../type/TypeMapInfo';
 import { InterfaceCallSignatureInfo } from '../../../../extractors/interface/InterfaceCallSignatureInfo';
 import { InterfaceCallSignatureTemplateInfo } from './InterfaceCallSignatureTemplateInfo';
-import { InterfaceParameterInfo } from '../../../../extractors/interface/InterfaceParameterInfo';
 import { InterfaceParameterToMdConverter } from './InterfaceParameterToMdConverter';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 import { INTERFACE_CALL_SIGNATURE_TEMPLATE } from './InterfaceCallSignatureTemplate';
@@ -56,7 +54,6 @@ export class InterfaceCallSignatureToMdConverter {
                       source,
                       map,
                       baseUrl,
-                      commentOptions,
                   )
                 : undefined,
             description: description.length === 0 ? undefined : description,
@@ -67,5 +64,19 @@ export class InterfaceCallSignatureToMdConverter {
         const text = Nunjucks.renderString(INTERFACE_CALL_SIGNATURE_TEMPLATE, obj);
         const md = this.markdownUtils.purify(text);
         return md;
+    }
+    public convertAll(
+        interfaceCallSignaturesInfo: InterfaceCallSignatureInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ): string[] | undefined {
+        const result: string[] = [];
+        interfaceCallSignaturesInfo.forEach(interfaceCallSignatureInfo => {
+            const text = this.convert(interfaceCallSignatureInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
+        });
+        return result.length === 0 ? void 0 : result;
     }
 }

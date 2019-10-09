@@ -43,13 +43,7 @@ export class InterfaceMethodToMdConverter {
             : undefined;
         const obj: InterfaceMethodTemplateInfo = {
             parameters: interfaceMethodInfo.parameters
-                ? this.interfaceParameterToMdConverter.convertAll(
-                      interfaceMethodInfo.parameters,
-                      source,
-                      map,
-                      baseUrl,
-                      commentOptions,
-                  )
+                ? this.interfaceParameterToMdConverter.convertAll(interfaceMethodInfo.parameters, source, map, baseUrl)
                 : undefined,
             description: description.length === 0 ? undefined : description,
             typeParameters: typeParameters,
@@ -60,5 +54,20 @@ export class InterfaceMethodToMdConverter {
         const text = Nunjucks.renderString(INTERFACE_METHOD_TEMPLATE, obj);
         const md = this.markdownUtils.purify(text);
         return md;
+    }
+
+    public convertAll(
+        interfaceMethodsInfo: InterfaceMethodInfo[],
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ): string[] | undefined {
+        const result: string[] = [];
+        interfaceMethodsInfo.forEach(interfaceMethodInfo => {
+            const text = this.convert(interfaceMethodInfo, source, map, baseUrl, commentOptions);
+            result.push(text);
+        });
+        return result.length === 0 ? void 0 : result;
     }
 }

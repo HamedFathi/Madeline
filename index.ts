@@ -213,7 +213,6 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
@@ -221,32 +220,28 @@ import * as fse from 'fs-extra';
 import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
 import { SummaryIndexMaker } from './templates/git-book/summary/SummaryIndexMaker';
 import { SummaryInfo } from './templates/git-book/summary/SummaryInfo';
-const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+import { tab } from './utilities/StringUtils';
+
+const tsconfigWindows = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.json';
+
+const sm = new SummaryMaker();
+
 const sw = new Stopwatch(true);
-const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
+const src = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
+
 if (src) {
-    const sum = new SummaryMaker().make(src, summaryMapper);
-    const md = new SummaryMaker().write(sum);
 
-    const x = [...sum];
-    var z = makeHierarchical(x);
+    const sum = sm.make(src, summaryMapper);
+    // const md = sm.write(sum);
+    let summaryMD = sm.toMD(sum);
 
-    fse.outputFileSync('packages/SUMMARY.md', md);
-    const index = new SummaryIndexMaker().make(src, summaryMapper, '');
+    console.log(summaryMD);
+
+    // fse.outputFileSync('packages/SUMMARY.md', md);
+    // const index = new SummaryIndexMaker().make(src, summaryMapper, '');
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
-
-
-function makeHierarchical(sum: SummaryInfo[]){
-
-    sum.forEach(node => {
-        node.children = sum.filter(x=>x.parent === node.scope);
-    });
-
-    var z = sum.filter(x=>!x.parent);
-    return z;
-
-}

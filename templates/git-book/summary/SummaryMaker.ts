@@ -196,14 +196,14 @@ export class SummaryMaker {
             const parentsInfo = parents.join('/').toLowerCase();
             const title = this.beautifyName(parents[parents.length - 1]);
             let x = parents.length <= 1
-                        ? undefined
-                        : [...parents]
-                              .splice(0,parents.length - 1)
-                              .join('/')
-                              .toLowerCase();
+                ? undefined
+                : [...parents]
+                    .splice(0, parents.length - 1)
+                    .join('/')
+                    .toLowerCase();
             const summaryInfoData = {
                 id: undefined,
-                parent:x,                    
+                parent: x,
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
@@ -250,10 +250,34 @@ export class SummaryMaker {
             }
         }
         result.forEach(node => {
-            node.children = result.filter(x=>x.parent === node.scope);
+            node.children = result.filter(x => x.parent === node.scope);
         });
-        result = result.filter(x=>!x.parent);
+        result = result.filter(x => !x.parent);
         return result;
+    }
+
+    public toMD(summaryInfos: SummaryInfo[]) {
+        let summaryMD = '';
+        summaryInfos.forEach(el => {
+            summaryMD += this.convertToMD(el);
+        });
+
+        return summaryMD;
+    }
+
+    private convertToMD(summary: SummaryInfo, baseUrl: string = '') {
+
+        let result = '';
+        const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
+        result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
+
+        if (summary.children) {
+            for (let child of summary.children) {
+                result += this.convertToMD(child);
+            }
+        }
+
+        return `${result}`;
     }
 
     public write(summaryInfo: SummaryInfo[], titles?: string[], baseUrl?: string): string {

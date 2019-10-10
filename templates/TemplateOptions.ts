@@ -3,3 +3,4 @@ export interface TemplateOptions {
     removeAtSignTag: boolean;
     baseUrl: string;
 }
+

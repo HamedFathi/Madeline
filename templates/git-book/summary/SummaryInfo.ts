@@ -10,4 +10,5 @@ export interface SummaryInfo {
     parent: string | undefined;
     scope: string;
     itemKind: ItemKind;
+    children?: SummaryInfo[] | undefined;
 }

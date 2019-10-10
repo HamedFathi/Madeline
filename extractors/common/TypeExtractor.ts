@@ -49,7 +49,6 @@ export class TypeExtractor {
         const result = this.getFromTypeInfo(data);
         return result;
     }
-
     private getFromTypeInfo(typeText: string[]): FromTypeInfo[] | undefined {
         const result: FromTypeInfo[] = [];
         const text = typeText.join(' ');

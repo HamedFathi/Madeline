@@ -189,21 +189,21 @@ export class SummaryMaker {
         generalMdName = 'README',
         baseUrl?: string,
     ): SummaryInfo[] {
-        const result: SummaryInfo[] = [];
+        let result: SummaryInfo[] = [];
         const summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
             const parentsInfo = parents.join('/').toLowerCase();
             const title = this.beautifyName(parents[parents.length - 1]);
-            const summaryInfoData = {
-                id: undefined,
-                parent:
-                    parents.length <= 1
+            let x = parents.length <= 1
                         ? undefined
                         : [...parents]
-                              .splice(-1, 1)
+                              .splice(0,parents.length - 1)
                               .join('/')
-                              .toLowerCase(),
+                              .toLowerCase();
+            const summaryInfoData = {
+                id: undefined,
+                parent:x,                    
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
@@ -249,6 +249,10 @@ export class SummaryMaker {
                 }
             }
         }
+        result.forEach(node => {
+            node.children = result.filter(x=>x.parent === node.scope);
+        });
+        result = result.filter(x=>!x.parent);
         return result;
     }
 

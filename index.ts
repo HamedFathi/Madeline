@@ -232,11 +232,14 @@ const src = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
 
 if (src) {
 
-    const sum = sm.make(src, summaryMapper);
+    const sum = sm.make(src, 'https://gitbook-18.gitbook.io/au', summaryMapper);
     // const md = sm.write(sum);
     let summaryMD = sm.toMD(sum);
 
-    console.log(summaryMD);
+    fse.outputFileSync('packages/SUMMARY.md', summaryMD);
+    save(sum);
+
+    console.log(sum[2].markdownText);
 
     // fse.outputFileSync('packages/SUMMARY.md', md);
     // const index = new SummaryIndexMaker().make(src, summaryMapper, '');
@@ -245,3 +248,20 @@ sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
+
+function save(summaryInfos: SummaryInfo[]) {
+    summaryInfos.forEach(el => {
+        saveMdFiles(el);
+    });
+}
+
+function saveMdFiles(summary: SummaryInfo) {
+
+    fse.outputFileSync(`packages/${summary.url}.md`, summary.markdownText);
+
+    if (summary.children) {
+        for (let child of summary.children) {
+            saveMdFiles(child);
+        }
+    }
+}

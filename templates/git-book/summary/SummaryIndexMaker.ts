@@ -20,7 +20,7 @@ export class SummaryIndexMaker {
         ) => SummaryMapInfo,
         baseUrl: string,
     ): SummaryInfo[] {
-        const data = this.summaryMaker.make(sourceFile, map, '', baseUrl);
+        // const data = this.summaryMaker.make(sourceFile, map, '', baseUrl);
         //let x = this.objUtils.multipleGroupBy(data, x => [x.level, x.parent]);
         return [];
     }

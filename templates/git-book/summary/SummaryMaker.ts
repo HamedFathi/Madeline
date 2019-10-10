@@ -15,6 +15,7 @@ import { enumSummaryMaker } from './EnumSummaryMaker';
 import { typeAliasSummaryMaker } from './TypeAliasSummaryMaker';
 import { literalSummaryMaker } from './LiteralSummaryMaker';
 import { variableSummaryMaker } from './VariableSummaryMaker';
+import { stringify } from 'querystring';
 
 /*
 # Table of contents
@@ -178,6 +179,7 @@ export class SummaryMaker {
 
     public make(
         sourceFile: ExportedSourceFileInfo,
+        baseUrl: string,
         map: (
             id: string,
             pathInfo: PathInfo,
@@ -186,8 +188,7 @@ export class SummaryMaker {
             baseUrl?: string,
         ) => SummaryMapInfo,
         fileExtension = '.md',
-        generalMdName = 'README',
-        baseUrl?: string,
+        generalMdName = 'README'
     ): SummaryInfo[] {
         let result: SummaryInfo[] = [];
         const summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
@@ -209,7 +210,7 @@ export class SummaryMaker {
                 extension: fileExtension,
                 title: title,
                 scope: parentsInfo,
-                url: parents.join('/') + '/' + generalMdName + fileExtension,
+                url: parents.join('/') + '/' + generalMdName,
                 itemKind: parents.length <= 1 ? ItemKind.Root : ItemKind.MiddleItems,
             };
             result.push(summaryInfoData);
@@ -229,7 +230,7 @@ export class SummaryMaker {
                     extension: fileExtension,
                     title: category,
                     scope: parentsWithCategoryInfo,
-                    url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName + fileExtension,
+                    url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName,
                     itemKind: ItemKind.MiddleItems,
                 };
                 result.push(sortedSummaryInfoData);
@@ -242,7 +243,7 @@ export class SummaryMaker {
                         extension: fileExtension,
                         title: s.mdFileName,
                         scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
-                        url: s.path + fileExtension,
+                        url: s.path,
                         itemKind: ItemKind.LastItem,
                     };
                     result.push(summaryData);
@@ -262,18 +263,22 @@ export class SummaryMaker {
             summaryMD += this.convertToMD(el);
         });
 
-        return summaryMD;
+        const baseUrl = summaryInfos[0].baseUrl as string;
+        const regex = new RegExp(baseUrl, `g`);
+
+        return summaryMD.replace(regex, '');
     }
 
-    private convertToMD(summary: SummaryInfo, baseUrl: string = '') {
+    private convertToMD(summary: SummaryInfo) {
 
         let result = '';
-        const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
+        const url = summary.baseUrl ? `${summary.level ? summary.baseUrl : ''}${summary.url}` : `${summary.url}`;
         result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
 
         if (summary.children) {
             for (let child of summary.children) {
-                result += this.convertToMD(child);
+                summary.markdownText = this.convertToMD(child);
+                result += summary.markdownText;
             }
         }
 

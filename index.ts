@@ -228,11 +228,11 @@ const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.j
 const sm = new SummaryMaker();
 
 const sw = new Stopwatch(true);
-const src = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
+const exportedSourceFile = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
 
-if (src) {
+if (exportedSourceFile) {
 
-    const sum = sm.make(src, 'https://gitbook-18.gitbook.io/au', summaryMapper);
+    const sum = sm.make(exportedSourceFile, 'https://gitbook-18.gitbook.io/au/', summaryMapper);
     // const md = sm.write(sum);
     let summaryMD = sm.toMD(sum);
 

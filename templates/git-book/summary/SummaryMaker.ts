@@ -16,6 +16,7 @@ import { typeAliasSummaryMaker } from './TypeAliasSummaryMaker';
 import { literalSummaryMaker } from './LiteralSummaryMaker';
 import { variableSummaryMaker } from './VariableSummaryMaker';
 import { stringify } from 'querystring';
+import { ExportedSourceFileToMdConverter } from '../../..';
 
 /*
 # Table of contents
@@ -80,6 +81,9 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
+
+    private exportedSourceFileToMdConverter: ExportedSourceFileToMdConverter = new ExportedSourceFileToMdConverter();
+
     private getSummaryDetailInfo(
         sourceFile: ExportedSourceFileInfo,
         map: (
@@ -271,16 +275,23 @@ export class SummaryMaker {
 
     private convertToMD(summary: SummaryInfo) {
 
+        if(summary.scope === 'debug/literals'){
+const x = 10;
+        }
+
         let result = '';
-        const url = summary.baseUrl ? `${summary.level ? summary.baseUrl : ''}${summary.url}` : `${summary.url}`;
+        const url = `${summary.level ? summary.baseUrl : ''}${summary.url}`;
         result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
 
         if (summary.children) {
             for (let child of summary.children) {
-                summary.markdownText = this.convertToMD(child);
-                result += summary.markdownText;
+                summary.markdownText = ( summary.markdownText || '') + this.convertToMD(child);
             }
+        }else{
+            // const indexResult = this.exportedSourceFileToMdConverter.convert()
         }
+
+        result += summary.markdownText || '';
 
         return `${result}`;
     }

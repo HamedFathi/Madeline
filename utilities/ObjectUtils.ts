@@ -11,6 +11,21 @@ export class ObjectUtils {
         }
         return result;
     }
+
+    public multipleGroupBy<T>(array: T[], func: (x: T) => unknown[]): T[][] {
+        /* eslint-disable */
+        const groups: any = {};
+        /* eslint-disable */
+        array.forEach(function(o) {
+            const group = JSON.stringify(func(o));
+            groups[group] = groups[group] || [];
+            groups[group].push(o);
+        });
+        return Object.keys(groups).map(function(group) {
+            return groups[group];
+        });
+    }
+
     public isFunction(value: unknown): boolean {
         if (value instanceof Function) {
             return true;

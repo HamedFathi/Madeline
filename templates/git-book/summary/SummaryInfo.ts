@@ -1,3 +1,5 @@
+import { ItemKind } from './ItemKind';
+
 export interface SummaryInfo {
     id: string | undefined;
     level: number;
@@ -5,4 +7,7 @@ export interface SummaryInfo {
     baseUrl?: string;
     url: string;
     extension?: string;
+    parent: string | undefined;
+    scope: string;
+    itemKind: ItemKind;
 }

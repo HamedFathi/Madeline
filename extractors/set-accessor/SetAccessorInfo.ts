@@ -1,11 +1,11 @@
 import { CommentInfo } from '../comment/CommentInfo';
 import { DecoratorInfo } from '../decorator/DecoratorInfo';
-import { SetAccessorParamInfo } from './SetAccessorParameterInfo';
+import { SetAccessorParameterInfo } from './SetAccessorParameterInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface SetAccessorInfo {
     name: string;
     text: string;
-    parameter: SetAccessorParamInfo;
+    parameter: SetAccessorParameterInfo;
     modifiers: string[] | undefined;
     trailingComments: CommentInfo[] | undefined;
     leadingComments: CommentInfo[] | undefined;

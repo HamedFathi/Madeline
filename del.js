@@ -12,5 +12,7 @@ del.sync([
     'test/extractors/**/*.map',
     'index.js',
     'index.js.map',
-    'dist'
+    'dist',
+    '.nyc_output',
+    'coverage',
 ]);

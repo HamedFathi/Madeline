@@ -1,6 +1,6 @@
 import { TypeInfo } from '../common/TypeInfo';
 
-export interface SetAccessorParamInfo {
+export interface SetAccessorParameterInfo {
     name: string;
     modifiers: string[] | undefined;
     type: TypeInfo;

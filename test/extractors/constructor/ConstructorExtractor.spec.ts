@@ -1,35 +1,33 @@
-import { assert } from "chai";
-import { Project, ScriptTarget, SyntaxKind, ClassDeclaration, CommentRange, ConstructorDeclaration } from 'ts-morph';
+import { assert } from 'chai';
+import { Project, ScriptTarget, SyntaxKind, CommentRange, ConstructorDeclaration } from 'ts-morph';
 import { ConstructorExtractor } from '../../../extractors/constructor/ConstructorExtractor';
-import { TypescriptCommentExtractor } from "../../../extractors/comment/TypescriptCommentExtractor";
-import { CommentInfo } from "../../../extractors/comment/CommentInfo";
-import { CommentKind } from "../../../extractors/comment/CommentKind";
-import { JsDocExtractor } from "../../../extractors/comment/JsDocExtractor";
-import { ConstructorInfo } from "../../../extractors/constructor/ConstructorInfo";
-import { forEach } from "traverse";
+import { TypescriptCommentExtractor } from '../../../extractors/comment/TypescriptCommentExtractor';
+import { CommentInfo } from '../../../extractors/comment/CommentInfo';
+import { CommentKind } from '../../../extractors/comment/CommentKind';
+import { JsDocExtractor } from '../../../extractors/comment/JsDocExtractor';
+import { ConstructorInfo } from '../../../extractors/constructor/ConstructorInfo';
 
 describe('Constructor Extractor', () => {
-
     let project: Project;
     let extractor: ConstructorExtractor;
 
-    let mockCommentInfo: CommentInfo[] = [
+    const mockCommentInfo: CommentInfo[] = [
         {
-            text: "comment1",
+            text: 'comment1',
             kind: CommentKind.JsSingleLine,
             kindName: 'SingleLine',
             description: ['Comment1 description'],
-            tags: undefined
+            tags: undefined,
         },
         {
-            text: "comment1",
+            text: 'comment1',
             kind: CommentKind.JsMultiLine,
             kindName: 'MultiLine',
             description: ['Comment1 description'],
-            tags: undefined
+            tags: undefined,
         },
     ];
-    let mockJsDocExtractor: JsDocExtractor = {
+    const mockJsDocExtractor: JsDocExtractor = {
         /* eslint-disable */
         extract: function (data: string, kind: CommentKind): CommentInfo {
             /* eslint-disable */

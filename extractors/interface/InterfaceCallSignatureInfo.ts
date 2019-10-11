@@ -1,9 +1,9 @@
-import { InterfaceParamInfo } from './InterfaceParameterInfo';
+import { InterfaceParameterInfo } from './InterfaceParameterInfo';
 import { TypeInfo } from '../common/TypeInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface InterfaceCallSignatureInfo {
-    parameters: InterfaceParamInfo[] | undefined;
+    parameters: InterfaceParameterInfo[] | undefined;
     returnType: TypeInfo;
     text: string;
     trailingComments: CommentInfo[] | undefined;

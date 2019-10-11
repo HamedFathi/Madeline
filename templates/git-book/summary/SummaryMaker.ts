@@ -1,3 +1,4 @@
+import { ItemKind } from './ItemKind';
 import { exportAssignmentSummaryMaker } from './ExportAssignmentSummaryMaker';
 import { destructuringSummaryMaker } from './DestructuringSummaryMaker';
 import { functionSummaryMaker } from './FunctionSummaryMaker';
@@ -147,12 +148,32 @@ export class SummaryMaker {
         return SummaryMapInfo;
     }
 
-    private beatifyName(name: string): string {
+    private beautifyName(name: string): string {
         if (name.length <= 3) {
             return name.toUpperCase();
         } else {
             return _.startCase(name.replace(/-/g, ' ')).replace(/\s+/g, '');
         }
+    }
+
+    public getSummaryGroup(
+        sourceFile: ExportedSourceFileInfo,
+        map: (
+            id: string,
+            pathInfo: PathInfo,
+            category: TypeCategory,
+            mdFileName: string,
+            baseUrl?: string,
+        ) => SummaryMapInfo,
+        baseUrl?: string,
+    ): SummaryMapInfo[][] {
+        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
+        const summaryGroup = _(SummaryMapInfo)
+            .sortBy(x => x.folders)
+            .groupBy(x => x.folders)
+            .values()
+            .value();
+        return summaryGroup;
     }
 
     public make(
@@ -165,25 +186,33 @@ export class SummaryMaker {
             baseUrl?: string,
         ) => SummaryMapInfo,
         fileExtension = '.md',
+        generalMdName = 'README',
         baseUrl?: string,
     ): SummaryInfo[] {
         const result: SummaryInfo[] = [];
-        const SummaryMapInfo = this.getSummaryDetailInfo(sourceFile, map, baseUrl);
-        const summaryGroup = _(SummaryMapInfo)
-            .sortBy(x => x.folders)
-            .groupBy(x => x.folders)
-            .values()
-            .value();
+        const summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
-            result.push({
+            const parentsInfo = parents.join('/').toLowerCase();
+            const title = this.beautifyName(parents[parents.length - 1]);
+            const summaryInfoData = {
                 id: undefined,
+                parent:
+                    parents.length <= 1
+                        ? undefined
+                        : [...parents]
+                              .splice(-1, 1)
+                              .join('/')
+                              .toLowerCase(),
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
-                title: this.beatifyName(parents[parents.length - 1]),
-                url: parents.join('/') + '/README' + fileExtension,
-            });
+                title: title,
+                scope: parentsInfo,
+                url: parents.join('/') + '/' + generalMdName + fileExtension,
+                itemKind: parents.length <= 1 ? ItemKind.Root : ItemKind.MiddleItems,
+            };
+            result.push(summaryInfoData);
             const sortedSummaryInfo = _(summaryInfo)
                 .sortBy(x => x.category, x => x.mdFileName)
                 .groupBy(x => x.category)
@@ -191,23 +220,32 @@ export class SummaryMaker {
                 .value();
             for (const summary of sortedSummaryInfo) {
                 const category = summary[0].category;
-                result.push({
+                const parentsWithCategoryInfo = [...parents, category].join('/').toLowerCase();
+                const sortedSummaryInfoData = {
                     id: undefined,
+                    parent: parentsInfo,
                     baseUrl: baseUrl,
                     level: parents.length,
                     extension: fileExtension,
                     title: category,
-                    url: parents.join('/') + '/' + category.toLowerCase() + '/README' + fileExtension,
-                });
+                    scope: parentsWithCategoryInfo,
+                    url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName + fileExtension,
+                    itemKind: ItemKind.MiddleItems,
+                };
+                result.push(sortedSummaryInfoData);
                 for (const s of summary) {
-                    result.push({
+                    const summaryData = {
                         id: s.id,
+                        parent: parentsWithCategoryInfo,
                         baseUrl: baseUrl,
                         level: parents.length + 1,
                         extension: fileExtension,
                         title: s.mdFileName,
+                        scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
                         url: s.path + fileExtension,
-                    });
+                        itemKind: ItemKind.LastItem,
+                    };
+                    result.push(summaryData);
                 }
             }
         }

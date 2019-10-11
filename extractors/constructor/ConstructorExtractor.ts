@@ -9,9 +9,7 @@ import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
 
 export class ConstructorExtractor {
-
-    constructor(private typeScriptCommentExtractor = new TypescriptCommentExtractor()) {
-    }
+    constructor(private typeScriptCommentExtractor = new TypescriptCommentExtractor()) {}
 
     public extract(node: ConstructorDeclaration, imports: ImportInfo[] | undefined): ConstructorInfo {
         const isImplementation = node.isImplementation();

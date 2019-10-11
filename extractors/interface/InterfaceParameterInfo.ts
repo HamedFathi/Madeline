@@ -1,6 +1,6 @@
 import { TypeInfo } from '../common/TypeInfo';
 
-export interface InterfaceParamInfo {
+export interface InterfaceParameterInfo {
     name: string | undefined;
     type: TypeInfo;
     isOptional: boolean;

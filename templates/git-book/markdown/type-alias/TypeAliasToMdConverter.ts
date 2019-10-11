@@ -22,7 +22,6 @@ export class TypeAliasToMdConverter {
         private markdownUtils = new MarkdownUtils(),
     ) {}
     public convert(
-        id: string,
         typeAliasInfo: TypeAliasInfo,
         source: ExportedSourceFileInfo,
         map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
@@ -43,10 +42,10 @@ export class TypeAliasToMdConverter {
             : undefined;
         const typeParameters = typeAliasInfo.typeParameters
             ? typeAliasInfo.typeParameters.map(x =>
-                  this.typeParameterToMdConverter.convert(id, x, source, map, baseUrl),
+                  this.typeParameterToMdConverter.convert(typeAliasInfo.id, x, source, map, baseUrl),
               )
             : undefined;
-        const type = this.typeToMdConverter.convert(id, typeAliasInfo.type, source, map, baseUrl);
+        const type = this.typeToMdConverter.convert(typeAliasInfo.id, typeAliasInfo.type, source, map, baseUrl);
 
         const obj: TypeAliasTemplateInfo = {
             initializer: typeAliasInfo.initializer,

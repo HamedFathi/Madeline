@@ -14,8 +14,11 @@ export const MODULE_TEMPLATE = `
 
 {{type|print('-','','')}}
 
-**Modifiers:** 
+{% if modifiers.length > 1 %}
+    **Modifier(s):** 
 
-{{modifiers|print('-','','')}}
+    {{modifiers|print_modifiers}}
+
+{% endif %}
 
 `;

@@ -205,9 +205,9 @@ export class SummaryMaker {
                 parents.length <= 1
                     ? undefined
                     : [...parents]
-                          .splice(0, parents.length - 1)
-                          .join('/')
-                          .toLowerCase();
+                        .splice(0, parents.length - 1)
+                        .join('/')
+                        .toLowerCase();
             const summaryInfoData = {
                 id: undefined,
                 parent: x,
@@ -288,11 +288,11 @@ export class SummaryMaker {
         if (summary.children && summary.children.length > 0) {
             for (const child of summary.children) {
                 summary.markdownText = (summary.markdownText || '') + this.convertToMD(child);
+                if (child.itemKind !== 2) {
+                    result += summary.markdownText || '';
+                }
             }
-        } else {
         }
-
-        result += summary.markdownText || '';
 
         return `${result}`;
     }

@@ -228,13 +228,13 @@ import { VariableExtractor } from './extractors/variable/VariableExtractor';
 import { VariableToMdConverter } from './templates/git-book/markdown/variable/VariableToMdConverter';
 import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
 
-const tsconfigWindows = 'D:/@Git/aurelia/packages/tsconfig-build.json';
-//const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.json';
+// const tsconfigWindows = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.json';
 
 const sm = new SummaryMaker();
 
 const sw = new Stopwatch(true);
-const exportedSourceFile = new AureliaSourceFileUtils().saveMerged(tsconfigWindows);
+const exportedSourceFile = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
 
 
 /*

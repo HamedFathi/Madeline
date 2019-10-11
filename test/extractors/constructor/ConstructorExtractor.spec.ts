@@ -118,7 +118,56 @@ describe('Constructor Extractor', () => {
 
         assert.isFalse(result[1].isParameterLess);
         assert.isTrue(result[1].isImplementation);
-    })
+    });
+
+    it('should list arguments of the implemented constructor', () => {
+
+        const sut = `export class G {
+            constructor();
+            constructor(age: number){};
+        }`;
+
+        const file = project.createSourceFile('sample.ts', sut);
+
+        const result: ConstructorInfo[] = [];
+        file.forEachDescendant(node => {
+            if (node.getKind() === SyntaxKind.Constructor) {
+                result.push(extractor.extract(node as ConstructorDeclaration, []));
+            }
+        });
+
+        assert.equal(result.length, 2);
+
+        assert.isFalse(result[1].isParameterLess);
+        assert.isTrue(result[1].isImplementation);
+
+        assert.equal(result[1].parameters.length , 1);
+    });
+
+    it('should list arguments of the overloaded constructor as zero', () => {
+
+        const sut = `export class G {
+            constructor();
+            constructor(age: number){};
+        }`;
+
+        const file = project.createSourceFile('sample.ts', sut);
+
+        const result: ConstructorInfo[] = [];
+        file.forEachDescendant(node => {
+            if (node.getKind() === SyntaxKind.Constructor) {
+                result.push(extractor.extract(node as ConstructorDeclaration, []));
+            }
+        });
+
+        assert.equal(result.length, 2);
+
+        assert.isTrue(result[0].isParameterLess);
+        assert.isFalse(result[0].isImplementation);
+
+        assert.equal(result[0].parameters, void 0 );
+    });
+
 
 });
 

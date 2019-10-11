@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { getSha256, getSha512 } from '../../utilities/HashUtils';
+import { getSha256, getSha512 } from '../../src/utils/HashUtils';
 
 
 describe('hash utils', () => {

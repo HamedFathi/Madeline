@@ -6,7 +6,7 @@ const path = require('path');
 /* eslint-disable */
 
 const src = [
-    path.join(__dirname, '**', '*.ts'),
+    path.join(__dirname , 'src', '**', '*.ts'),
     '!' + path.join(__dirname, 'test', '**', '*.ts'),
     '!' + path.join(__dirname, 'node_modules', '**', '*.ts'),
 ];

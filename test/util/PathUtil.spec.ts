@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { getPathInfo } from '../../utilities/PathUtils';
+import { getPathInfo } from '../../src/utils/PathUtils';
 
 describe('path utils', () => {
     it('should return directory and file name', () => {

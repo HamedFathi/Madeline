@@ -21,10 +21,10 @@
         "emitDecoratorMetadata": true,
         "skipLibCheck": true
     },
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
         "@utils/*": [
-            "utilities/*"
+            "utils/*"
         ]
     },
 

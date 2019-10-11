@@ -1,4 +1,4 @@
-import * as stringUtils from '../../utilities/StringUtils';
+import * as stringUtils from '../../src/utils/StringUtils';
 
 import { assert } from 'chai';
 

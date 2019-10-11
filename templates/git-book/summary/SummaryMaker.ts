@@ -274,11 +274,6 @@ export class SummaryMaker {
     }
 
     private convertToMD(summary: SummaryInfo) {
-
-        if(summary.scope === 'debug/literals'){
-const x = 10;
-        }
-
         let result = '';
         const url = `${summary.level ? summary.baseUrl : ''}${summary.url}`;
         result = `${tab(summary.level)}* [${summary.title}](${url})\n`;

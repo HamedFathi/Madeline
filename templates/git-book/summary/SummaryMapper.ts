@@ -37,9 +37,9 @@ export const summaryMapper = function(
         path: '',
     };
     const path = [
-        summaryInfo.baseUrl,
+        // summaryInfo.baseUrl,
         ...summaryInfo.folders,
-        summaryInfo.sourceFileName,
+        // summaryInfo.sourceFileName,
         summaryInfo.category.toString().toLowerCase(),
         summaryInfo.mdFileName.toLowerCase(),
     ];

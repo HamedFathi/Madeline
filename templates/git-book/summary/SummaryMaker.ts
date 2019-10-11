@@ -19,6 +19,7 @@ import { ExportedSourceFileToMdConverter } from '../markdown/source/ExportedSour
 import * as fse from 'fs-extra';
 import { NodeToMdConverter } from './NodeToMdConverter';
 import { typeMapper } from '../markdown/type/TypeMapper';
+import { summaryMapper } from './SummaryMapper';
 
 /*
 # Table of contents
@@ -288,10 +289,8 @@ export class SummaryMaker {
         if (summary.children && summary.children.length > 0) {
             for (const child of summary.children) {
                 summary.markdownText = (summary.markdownText || '') + this.convertToMD(child);
-                if (child.itemKind !== 2) {
-                    result += summary.markdownText || '';
-                }
             }
+            result += summary.markdownText || '';
         }
 
         return `${result}`;

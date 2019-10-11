@@ -6,6 +6,17 @@ import { DecoratorInfo } from '../decorator/DecoratorInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { SetAccessorInfo } from '../set-accessor/SetAccessorInfo';
+import { ClassInfo } from '../class/ClassInfo';
+import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
+import { FunctionInfo } from '../function/FunctionInfo';
+import { DestructuringInfo } from '../destructuring/DestructuringInfo';
+import { EnumInfo } from '../enum/EnumInfo';
+import { TypeAliasInfo } from '../type-alias/TypeAliasInfo';
+import { InterfaceInfo } from '../interface/InterfaceInfo';
+import { LiteralInfo } from '../literal/LiteralInfo';
+import { VariableInfo } from '../variable/VariableInfo';
+import { TypeCategory } from '../common/TypeCategory';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface SourceFileClassInfo {
     name: string | undefined;
     text: string;
@@ -26,4 +37,6 @@ export interface SourceFileClassInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
+    typeParameters: TypeParameterInfo[] | undefined;
 }

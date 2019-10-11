@@ -1,5 +1,6 @@
 import { ModuleInfo } from '../module/ModuleInfo';
 import { CommentInfo } from '../comment/CommentInfo';
+import { TypeCategory } from '../common/TypeCategory';
 
 export interface ExportAssignmentInfo {
     trailingComments: CommentInfo[] | undefined;
@@ -13,4 +14,5 @@ export interface ExportAssignmentInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
 }

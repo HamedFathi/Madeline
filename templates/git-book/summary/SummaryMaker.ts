@@ -15,6 +15,11 @@ import { enumSummaryMaker } from './EnumSummaryMaker';
 import { typeAliasSummaryMaker } from './TypeAliasSummaryMaker';
 import { literalSummaryMaker } from './LiteralSummaryMaker';
 import { variableSummaryMaker } from './VariableSummaryMaker';
+import { ExportedSourceFileToMdConverter } from '../markdown/source/ExportedSourceFileToMdConverter';
+import * as fse from 'fs-extra';
+import { NodeToMdConverter } from './NodeToMdConverter';
+import { typeMapper } from '../markdown/type/TypeMapper';
+import { summaryMapper } from './SummaryMapper';
 
 /*
 # Table of contents
@@ -79,6 +84,8 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
+    private exportedSourceFileToMdConverter: ExportedSourceFileToMdConverter = new ExportedSourceFileToMdConverter();
+
     private getSummaryDetailInfo(
         sourceFile: ExportedSourceFileInfo,
         map: (
@@ -178,6 +185,7 @@ export class SummaryMaker {
 
     public make(
         sourceFile: ExportedSourceFileInfo,
+        baseUrl: string,
         map: (
             id: string,
             pathInfo: PathInfo,
@@ -187,30 +195,32 @@ export class SummaryMaker {
         ) => SummaryMapInfo,
         fileExtension = '.md',
         generalMdName = 'README',
-        baseUrl?: string,
     ): SummaryInfo[] {
-        const result: SummaryInfo[] = [];
+        let result: SummaryInfo[] = [];
         const summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
         for (const summaryInfo of summaryGroup) {
             const parents = summaryInfo[0].folders;
             const parentsInfo = parents.join('/').toLowerCase();
             const title = this.beautifyName(parents[parents.length - 1]);
+            const x =
+                parents.length <= 1
+                    ? undefined
+                    : [...parents]
+                        .splice(0, parents.length - 1)
+                        .join('/')
+                        .toLowerCase();
             const summaryInfoData = {
                 id: undefined,
-                parent:
-                    parents.length <= 1
-                        ? undefined
-                        : [...parents]
-                              .splice(-1, 1)
-                              .join('/')
-                              .toLowerCase(),
+                parent: x,
                 baseUrl: baseUrl,
                 level: parents.length - 1,
                 extension: fileExtension,
                 title: title,
                 scope: parentsInfo,
-                url: parents.join('/') + '/' + generalMdName + fileExtension,
+                url: parents.join('/') + '/' + generalMdName,
                 itemKind: parents.length <= 1 ? ItemKind.Root : ItemKind.MiddleItems,
+                node: undefined,
+                markdownText: undefined,
             };
             result.push(summaryInfoData);
             const sortedSummaryInfo = _(summaryInfo)
@@ -229,8 +239,10 @@ export class SummaryMaker {
                     extension: fileExtension,
                     title: category,
                     scope: parentsWithCategoryInfo,
-                    url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName + fileExtension,
+                    url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName,
                     itemKind: ItemKind.MiddleItems,
+                    node: undefined,
+                    markdownText: undefined,
                 };
                 result.push(sortedSummaryInfoData);
                 for (const s of summary) {
@@ -242,31 +254,60 @@ export class SummaryMaker {
                         extension: fileExtension,
                         title: s.mdFileName,
                         scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
-                        url: s.path + fileExtension,
+                        url: s.path,
                         itemKind: ItemKind.LastItem,
+                        node: s.node,
+                        markdownText: NodeToMdConverter(s.node, sourceFile, typeMapper, baseUrl),
                     };
                     result.push(summaryData);
                 }
             }
         }
+        result.forEach(node => {
+            node.children = result.filter(x => x.parent === node.scope);
+        });
+        result = result.filter(x => !x.parent);
         return result;
     }
 
-    public write(summaryInfo: SummaryInfo[], titles?: string[], baseUrl?: string): string {
-        const result: string[] = [];
-        if (titles) {
-            for (const title of titles) {
-                result.push(title);
+    public createSummary(summaryInfos: SummaryInfo[]): string {
+        let summaryMD = '';
+        summaryInfos.forEach(el => {
+            summaryMD += this.convertToMD(el);
+        });
+
+        const baseUrl = summaryInfos[0].baseUrl as string;
+        const regex = new RegExp(baseUrl, `g`);
+
+        return summaryMD.replace(regex, '').replace( /\)/g  , '.md)');
+    }
+    private convertToMD(summary: SummaryInfo): string {
+        let result = '';
+        const url = `${summary.level ? summary.baseUrl : ''}${summary.url}`;
+        result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
+
+        if (summary.children && summary.children.length > 0) {
+            for (const child of summary.children) {
+                summary.markdownText = (summary.markdownText || '') + this.convertToMD(child);
+            }
+            result += summary.markdownText || '';
+        }
+
+        return `${result}`;
+    }
+
+    public save(summaryInfos: SummaryInfo[]) {
+        summaryInfos.forEach(el => {
+            this.saveMdFiles(el);
+        });
+    }
+    private saveMdFiles(summary: SummaryInfo) {
+        fse.outputFileSync(`packages/${summary.url}.md`, summary.markdownText);
+
+        if (summary.children) {
+            for (const child of summary.children) {
+                this.saveMdFiles(child);
             }
         }
-        for (const summary of summaryInfo) {
-            const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
-            const line = `${tab(summary.level)}* [${summary.title}](${url})`;
-            if (!result.includes(line)) {
-                result.push(line);
-            }
-        }
-        const output = result.join('\n');
-        return output;
     }
 }

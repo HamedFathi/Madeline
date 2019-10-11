@@ -24,6 +24,7 @@ export const exportAssignmentSummaryMaker = function make(
         };
         const mdFileName = '?';
         const assignmentSummary = map(a.id, pInfo, TypeCategory.ExportAssignments, mdFileName, baseUrl);
+        assignmentSummary.node = a;
         assignmentsInfo.push(assignmentSummary);
     }
     return assignmentsInfo;

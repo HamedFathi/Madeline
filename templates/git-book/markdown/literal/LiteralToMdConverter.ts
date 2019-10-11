@@ -39,6 +39,11 @@ export class LiteralToMdConverter {
         const modules = literalInfo.modules
             ? this.moduleToMdConverter.convert(literalInfo.modules, commentOptions)
             : undefined;
+
+        if(literalInfo.name === 'DebugTracer')
+        {
+            const a =1;
+        }
         const obj: LiteralTemplateInfo = {
             name: literalInfo.name,
             description: description.length === 0 ? void 0 : description,

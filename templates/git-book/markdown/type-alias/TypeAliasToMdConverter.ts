@@ -1,4 +1,3 @@
-import { prettify } from './../../../../utilities/PrettierUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { TypeAliasTemplateInfo } from './TypeAliasTemplateInfo';
@@ -52,7 +51,7 @@ export class TypeAliasToMdConverter {
             modules: modules,
             modifiers: typeAliasInfo.modifiers,
             name: typeAliasInfo.name,
-            text: prettify(typeAliasInfo.text),
+            text: typeAliasInfo.text,
             type: type,
             typeParameters: typeParameters,
             hasComment: typeAliasInfo.hasComment,

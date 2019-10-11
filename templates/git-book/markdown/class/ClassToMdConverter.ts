@@ -19,6 +19,7 @@ import { PropertyToMdConverter } from './PropertyToMdConverter';
 import { GetAccessorToMdConverter } from './GetAccessorToMdConverter';
 import { SetAccessorsToMdConverter } from './SetAccessorToMdConverter';
 import { MethodToMdConverter } from './MethodToMdConverter';
+import { SourceFileClassInfo } from '../../../../extractors/source-file/SourceFileClassInfo';
 
 export class ClassToMdConverter {
     constructor(
@@ -32,6 +33,89 @@ export class ClassToMdConverter {
         private setAccessorsToMdConverter = new SetAccessorsToMdConverter(),
         private methodToMdConverter = new MethodToMdConverter(),
     ) {}
+
+    public convertSourceFileClassInfo(
+        sourceFileClassInfo: SourceFileClassInfo,
+        source: ExportedSourceFileInfo,
+        map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],
+        baseUrl?: string,
+        commentOptions?: CommentToMdOption,
+    ) {
+        const description: string[] = [];
+        if (sourceFileClassInfo.leadingComments) {
+            const leading = this.commentToMdConverter.convertAll(sourceFileClassInfo.leadingComments, commentOptions);
+            description.concat(leading);
+        }
+        if (sourceFileClassInfo.trailingComments) {
+            const trailing = this.commentToMdConverter.convertAll(sourceFileClassInfo.trailingComments, commentOptions);
+            description.concat(trailing);
+        }
+        const decorators: string | undefined = sourceFileClassInfo.decorators
+            ? this.decoratorToMdConverter.convert(sourceFileClassInfo.decorators, source, map, baseUrl)
+            : undefined;
+        const typeParameters = sourceFileClassInfo.typeParameters
+            ? sourceFileClassInfo.typeParameters.map(x =>
+                  this.typeParameterToMdConverter.convert(sourceFileClassInfo.id, x, source, map, baseUrl),
+              )
+            : undefined;
+        const obj: ClassTemplateInfo = {
+            name: sourceFileClassInfo.name,
+            description: description.length === 0 ? void 0 : description,
+            decorators: decorators,
+            extends: sourceFileClassInfo.extends,
+            implements: sourceFileClassInfo.implements,
+            modules: sourceFileClassInfo.modules
+                ? this.moduleToMdConverter.convert(sourceFileClassInfo.modules, commentOptions)
+                : undefined,
+            modifiers: sourceFileClassInfo.modifiers,
+            text: sourceFileClassInfo.text,
+            typeParameters: typeParameters,
+            properties:
+                !sourceFileClassInfo.properties || sourceFileClassInfo.properties.length === 0
+                    ? void 0
+                    : this.propertyToMdConverter.convertAll(
+                          sourceFileClassInfo.properties as PropertyInfo[],
+                          source,
+                          map,
+                          baseUrl,
+                          commentOptions,
+                      ),
+            methods:
+                !sourceFileClassInfo.methods || sourceFileClassInfo.methods.length === 0
+                    ? void 0
+                    : this.methodToMdConverter.convertAll(
+                          sourceFileClassInfo.methods as MethodInfo[],
+                          source,
+                          map,
+                          baseUrl,
+                          commentOptions,
+                      ),
+            getAccessors:
+                !sourceFileClassInfo.getAccessors || sourceFileClassInfo.getAccessors.length === 0
+                    ? void 0
+                    : this.getAccessorToMdConverter.convertAll(
+                          sourceFileClassInfo.getAccessors as GetAccessorInfo[],
+                          source,
+                          map,
+                          baseUrl,
+                          commentOptions,
+                      ),
+            setAccessors:
+                !sourceFileClassInfo.setAccessors || sourceFileClassInfo.setAccessors.length === 0
+                    ? void 0
+                    : this.setAccessorsToMdConverter.convertAll(
+                          sourceFileClassInfo.setAccessors as SetAccessorInfo[],
+                          source,
+                          map,
+                          baseUrl,
+                          commentOptions,
+                      ),
+        };
+        const text = Nunjucks.renderString(CLASS_TEMPLATE, obj);
+        const md = this.markdownUtils.purify(text);
+        return md;
+    }
+
     public convert(
         classInfo: ClassInfo,
         propertiesInfo: PropertyInfo[],

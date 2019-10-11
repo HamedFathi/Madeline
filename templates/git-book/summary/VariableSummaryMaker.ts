@@ -23,6 +23,7 @@ export const variableSummaryMaker = function make(
         };
         const mdFileName = v.name;
         const variableSummary = map(v.id, pInfo, TypeCategory.Variables, mdFileName, baseUrl);
+        variableSummary.node = v;
         variablesInfo.push(variableSummary);
     }
     return variablesInfo;

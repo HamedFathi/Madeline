@@ -15,15 +15,16 @@ export const interfaceSummaryMaker = function make(
     baseUrl?: string,
 ): SummaryMapInfo[] {
     const interfacesInfo: SummaryMapInfo[] = [];
-    for (const f of interfaces) {
+    for (const i of interfaces) {
         const pInfo: PathInfo = {
-            path: f.path,
-            file: f.file,
-            directory: f.directory,
-            extension: f.extension,
+            path: i.path,
+            file: i.file,
+            directory: i.directory,
+            extension: i.extension,
         };
-        const mdFileName = f.name;
-        const interfaceSummary = map(f.id, pInfo, TypeCategory.Interfaces, mdFileName, baseUrl);
+        const mdFileName = i.name;
+        const interfaceSummary = map(i.id, pInfo, TypeCategory.Interfaces, mdFileName, baseUrl);
+        interfaceSummary.node = i;
         interfacesInfo.push(interfaceSummary);
     }
     return interfacesInfo;

@@ -5,6 +5,7 @@ import { TypescriptCommentExtractor } from '../comment/TypescriptCommentExtracto
 import { ModuleExtractor } from '../module/ModuleExtractor';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeCategory } from '../common/TypeCategory';
 /*
 const { cooked, expressions } = expr;
 const {"some property": someProperty} = obj;
@@ -76,6 +77,7 @@ export class DestructuringExtractor {
                     directory: pathInfo.directory,
                     file: pathInfo.file,
                     extension: pathInfo.extension,
+                    typeCategory: TypeCategory.Destructuring,
                 });
             }
         });

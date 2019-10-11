@@ -28,7 +28,7 @@ export const DESTRUCTURING_TEMPLATE = `
 {% endif %}
 
 {% if elements|is_available %}
-    {{**Element(s):**}}
+    **Element(s):**
     {% for element in elements %}
         {{element|print('','','','\n')}}
 

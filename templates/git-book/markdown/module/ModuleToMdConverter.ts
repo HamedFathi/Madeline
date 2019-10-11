@@ -4,7 +4,6 @@ import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { ModuleInfo } from '../../../../extractors/module/ModuleInfo';
-import { prettify } from '../../../../utilities/PrettierUtils';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 
 export class ModuleToMdConverter {
@@ -29,7 +28,7 @@ export class ModuleToMdConverter {
                 name: m.name,
                 type: m.isNamespace ? 'namespace' : 'module',
                 modifiers: m.modifiers,
-                text: prettify(m.text),
+                text: m.text,
                 description: description.length === 0 ? void 0 : description,
             };
             const text = Nunjucks.renderString(MODULE_TEMPLATE, obj);

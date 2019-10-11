@@ -48,6 +48,7 @@ import { LiteralExtractor } from '../literal/LiteralExtractor';
 import { DestructuringExtractor } from '../destructuring/DestructuringExtractor';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { ExportedSourceFileInfo } from './ExportedSourceFileInfo';
+import { TypeCategory } from '../common/TypeCategory';
 export class SourceFileExtractor {
     private includeTags(
         node:
@@ -287,7 +288,9 @@ export class SourceFileExtractor {
                                     directory: c.directory,
                                     file: c.file,
                                     extension: c.extension,
-                                    id: getSha256(c.text)
+                                    id: getSha256(c.text),
+                                    typeCategory:TypeCategory.Classes,
+                                    typeParameters:c.typeParameters
                                 });
                             }
                         }
@@ -463,7 +466,9 @@ export class SourceFileExtractor {
                             directory: info.directory,
                             file: info.file,
                             extension: info.extension,
-                            id: getSha256(info.text)
+                            id: getSha256(info.text),
+                            typeCategory:TypeCategory.Classes,
+                            typeParameters:info.typeParameters
                         });
                     }
                     break;

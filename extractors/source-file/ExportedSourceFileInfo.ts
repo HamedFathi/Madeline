@@ -7,6 +7,7 @@ import { VariableInfo } from '../variable/VariableInfo';
 import { ExportAssignmentInfo } from '../export-assignment/ExportAssignmentInfo';
 import { LiteralInfo } from '../literal/LiteralInfo';
 import { DestructuringInfo } from '../destructuring/DestructuringInfo';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface ExportedSourceFileInfo {
     classes: SourceFileClassInfo[] | undefined;
     enums: EnumInfo[] | undefined;

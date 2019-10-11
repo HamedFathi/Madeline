@@ -213,24 +213,79 @@ export * from './utilities/PathUtils';
 export * from './utilities/PrettierUtils';
 export * from './utilities/StringUtils';
 
-/*
+
+
+
+
+
 const Stopwatch = require('statman-stopwatch');
 import { AureliaSourceFileUtils } from './utilities/AureliaSourceFileUtils';
 import { SummaryMaker } from './templates/git-book/summary/SummaryMaker';
 import * as fse from 'fs-extra';
 import { summaryMapper } from './templates/git-book/summary/SummaryMapper';
-import { SummaryIndexMaker } from './templates/git-book/summary/SummaryIndexMaker';
-const tsconfig = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+import { Project, ScriptTarget, SyntaxKind, VariableStatement } from 'ts-morph';
+import { VariableExtractor } from './extractors/variable/VariableExtractor';
+import { VariableToMdConverter } from './templates/git-book/markdown/variable/VariableToMdConverter';
+import { typeMapper } from './templates/git-book/markdown/type/TypeMapper';
+
+// const tsconfigWindows = 'D:/@Git/aurelia/packages/tsconfig-build.json';
+const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.json';
+
+const sm = new SummaryMaker();
+
 const sw = new Stopwatch(true);
-const src = new AureliaSourceFileUtils().saveMerged(tsconfig);
-if (src) {
-    const sum = new SummaryMaker().make(src, summaryMapper);
-    const md = new SummaryMaker().write(sum);
-    fse.outputFileSync('packages/SUMMARY.md', md);
-    const index = new SummaryIndexMaker().make(src, summaryMapper, '');
+const exportedSourceFile = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
+
+
+/*
+const varSample = `
+export const DebugConfiguration = {
+    register(container?: IContainer): void {
+      Reporter.write(2);
+      Object.assign(RuntimeReporter, Reporter);
+      enableImprovedExpressionDebugging();
+    }
+  };"  
+`;
+
+const project = new Project({
+    compilerOptions: {
+        target: ScriptTarget.ES5
+    }
+});
+const file = project.createSourceFile("test.ts", varSample);
+
+file.forEachDescendant(x => {
+    switch (x.getKind()) {
+        case SyntaxKind.VariableStatement:
+            let varVisitor = new VariableExtractor();
+            let vars = varVisitor.extract(<VariableStatement>x,undefined);
+            if(vars)
+            {
+                for (const v of vars) {
+                    
+                    let yyy = new VariableToMdConverter().convert(v,exportedSourceFile,typeMapper);
+                }
+                const yyyyy= 1;
+            }
+            break;
+    }
+});*/
+
+if (exportedSourceFile) {
+    const sum = sm.make(exportedSourceFile, 'https://hf2020.gitbook.io/au/', summaryMapper);
+    // const md = sm.write(sum);
+
+    const summaryMD = sm.createSummary(sum);
+    fse.outputFileSync('packages/SUMMARY.md', summaryMD);
+    sm.save(sum);
+
+    console.log(sum[2].markdownText);
+
+    // fse.outputFileSync('packages/SUMMARY.md', md);
+    // const index = new SummaryIndexMaker().make(src, summaryMapper, '');
 }
 sw.stop();
 const delta = ((sw.read() as number) / 1000).toString();
 console.log(parseFloat(delta).toFixed(2) + 's');
 const a = 1;
-*/

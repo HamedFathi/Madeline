@@ -35,11 +35,12 @@ export const summaryMapper = function(
         mdFileName: mdFileName,
         baseUrl: baseUrl,
         path: '',
+        node: undefined,
     };
     const path = [
-        summaryInfo.baseUrl,
+        // summaryInfo.baseUrl,
         ...summaryInfo.folders,
-        summaryInfo.sourceFileName,
+        // summaryInfo.sourceFileName,
         summaryInfo.category.toString().toLowerCase(),
         summaryInfo.mdFileName.toLowerCase(),
     ];

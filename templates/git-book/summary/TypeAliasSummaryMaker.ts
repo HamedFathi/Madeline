@@ -24,6 +24,7 @@ export const typeAliasSummaryMaker = function make(
         };
         const mdFileName = ta.name;
         const aliasSummary = map(ta.id, pInfo, TypeCategory.TypeAliases, mdFileName, baseUrl);
+        aliasSummary.node = ta;
         aliasInfo.push(aliasSummary);
     }
     return aliasInfo;

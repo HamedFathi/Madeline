@@ -15,7 +15,7 @@ export class ExportedSourceFileToMdConverter {
         private typeToMdConverter = new TypeToMdConverter(),
         private markdownUtils = new MarkdownUtils(),
         private functionToMdConverter = new FunctionToMdConverter(),
-    ) { }
+    ) {}
     public convert(
         exportedSourceFileInfo: ExportedSourceFileInfo,
         map: (id: string, from: FromTypeInfo[], source: ExportedSourceFileInfo, baseUrl?: string) => TypeMapInfo[],

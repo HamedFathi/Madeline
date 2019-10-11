@@ -263,7 +263,7 @@ export class SummaryMaker {
         return result;
     }
 
-    public toMD(summaryInfos: SummaryInfo[]) {
+    public createSummary(summaryInfos: SummaryInfo[]): string {
         let summaryMD = '';
         summaryInfos.forEach(el => {
             summaryMD += this.convertToMD(el);
@@ -274,8 +274,7 @@ export class SummaryMaker {
 
         return summaryMD.replace(regex, '');
     }
-
-    private convertToMD(summary: SummaryInfo) {
+    private convertToMD(summary: SummaryInfo): string {
         let result = '';
         const url = `${summary.level ? summary.baseUrl : ''}${summary.url}`;
         result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
@@ -293,21 +292,19 @@ export class SummaryMaker {
         return `${result}`;
     }
 
-    public write(summaryInfo: SummaryInfo[], titles?: string[], baseUrl?: string): string {
-        const result: string[] = [];
-        if (titles) {
-            for (const title of titles) {
-                result.push(title);
+    public save(summaryInfos: SummaryInfo[]) {
+        summaryInfos.forEach(el => {
+            this.saveMdFiles(el);
+        });
+    }
+    private saveMdFiles(summary: SummaryInfo) {
+
+        fse.outputFileSync(`packages/${summary.url}.md`, summary.markdownText);
+
+        if (summary.children) {
+            for (let child of summary.children) {
+                this.saveMdFiles(child);
             }
         }
-        for (const summary of summaryInfo) {
-            const url = baseUrl ? `${baseUrl}/${summary.url}` : `${summary.url}`;
-            const line = `${tab(summary.level)}* [${summary.title}](${url})`;
-            if (!result.includes(line)) {
-                result.push(line);
-            }
-        }
-        const output = result.join('\n');
-        return output;
     }
 }

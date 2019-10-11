@@ -26,9 +26,9 @@
     "build": "./node_modules/.bin/gulp build",
     "clean": "node del.js",
     "make-index": "node make-index.js",
-    "test-watch": "mocha  -r  test/tshook.js --watch-extensions ts --watch -R min --timeout 10000 test/**/*.spec.ts test/**/**/*.spec.ts",
-    "test": "mocha -r  test/tshook.js --timeout 10000 test/**/*.spec.ts test/**/**/*.spec.ts",
-    "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha  -r  test/tshook.js --timeout 10000 test/**/*.spec.ts test/**/**/*.spec.ts && nyc report",
+    "test-watch": "mocha  -r  scripts/tshook.js --watch-extensions ts --watch -R min --timeout 10000 test/**/*.spec.ts",
+    "test": "mocha -r  scripts/tshook.js --timeout 10000 test/**/*.spec.ts",
+    "coverage": "nyc -r lcov -e .ts -x \"*.ts\" mocha  -r  scripts/tshook.js --timeout 10000 test/**/*.spec.ts && nyc report",
     "eslint": "./node_modules/.bin/eslint --fix ./**/*.ts"
   },
   "nyc": {
@@ -39,10 +39,7 @@
     "exclude": [
       "**/*.d.ts",
       "**/*.js",
-      "**/*.spec.ts",
-      "**/**/*.d.ts",
-      "**/**/*.js",
-      "**/**/*.spec.ts"
+      "**/*.spec.ts"
     ],
     "reporter": [
       "html",

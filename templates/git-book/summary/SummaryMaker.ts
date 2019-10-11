@@ -279,7 +279,7 @@ export class SummaryMaker {
         const baseUrl = summaryInfos[0].baseUrl as string;
         const regex = new RegExp(baseUrl, `g`);
 
-        return summaryMD.replace(regex, '');
+        return summaryMD.replace(regex, '').replace( /\)/g  , '.md)');
     }
     private convertToMD(summary: SummaryInfo): string {
         let result = '';

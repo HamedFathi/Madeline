@@ -273,7 +273,7 @@ file.forEachDescendant(x => {
 });*/
 
 if (exportedSourceFile) {
-    const sum = sm.make(exportedSourceFile, 'https://gitbook-18.gitbook.io/au/', summaryMapper);
+    const sum = sm.make(exportedSourceFile, 'https://hf2020.gitbook.io/au/', summaryMapper);
     // const md = sm.write(sum);
 
     const summaryMD = sm.createSummary(sum);

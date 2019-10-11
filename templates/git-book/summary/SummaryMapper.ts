@@ -35,6 +35,7 @@ export const summaryMapper = function(
         mdFileName: mdFileName,
         baseUrl: baseUrl,
         path: '',
+        node: undefined,
     };
     const path = [
         // summaryInfo.baseUrl,

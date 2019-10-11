@@ -24,6 +24,7 @@ export const enumSummaryMaker = function make(
         };
         const mdFileName = e.name;
         const enumSummary = map(e.id, pInfo, TypeCategory.Enums, mdFileName, baseUrl);
+        enumSummary.node = e;
         enumsInfo.push(enumSummary);
     }
     return enumsInfo;

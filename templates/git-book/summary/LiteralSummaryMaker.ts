@@ -23,6 +23,7 @@ export const literalSummaryMaker = function make(
         };
         const mdFileName = l.name;
         const literalSummary = map(l.id, pInfo, TypeCategory.Literals, mdFileName, baseUrl);
+        literalSummary.node = l;
         literalsInfo.push(literalSummary);
     }
     return literalsInfo;

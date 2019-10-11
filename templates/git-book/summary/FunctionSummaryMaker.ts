@@ -24,6 +24,7 @@ export const functionSummaryMaker = function make(
         };
         const mdFileName = f.name || '_default';
         const funcSummary = map(f.id, pInfo, TypeCategory.Functions, mdFileName, baseUrl);
+        funcSummary.node = f;
         functionsInfo.push(funcSummary);
     }
     return functionsInfo;

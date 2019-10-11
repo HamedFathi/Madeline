@@ -15,8 +15,7 @@ import { enumSummaryMaker } from './EnumSummaryMaker';
 import { typeAliasSummaryMaker } from './TypeAliasSummaryMaker';
 import { literalSummaryMaker } from './LiteralSummaryMaker';
 import { variableSummaryMaker } from './VariableSummaryMaker';
-import { stringify } from 'querystring';
-import { ExportedSourceFileToMdConverter } from '../../..';
+import { ExportedSourceFileToMdConverter } from '../markdown/source/ExportedSourceFileToMdConverter';
 
 /*
 # Table of contents
@@ -81,7 +80,6 @@ https://gitbook-18.gitbook.io/au/kernel/di/functions/transientdecorator
 */
 
 export class SummaryMaker {
-
     private exportedSourceFileToMdConverter: ExportedSourceFileToMdConverter = new ExportedSourceFileToMdConverter();
 
     private getSummaryDetailInfo(
@@ -192,7 +190,7 @@ export class SummaryMaker {
             baseUrl?: string,
         ) => SummaryMapInfo,
         fileExtension = '.md',
-        generalMdName = 'README'
+        generalMdName = 'README',
     ): SummaryInfo[] {
         let result: SummaryInfo[] = [];
         const summaryGroup = this.getSummaryGroup(sourceFile, map, baseUrl);
@@ -200,12 +198,13 @@ export class SummaryMaker {
             const parents = summaryInfo[0].folders;
             const parentsInfo = parents.join('/').toLowerCase();
             const title = this.beautifyName(parents[parents.length - 1]);
-            let x = parents.length <= 1
-                ? undefined
-                : [...parents]
-                    .splice(0, parents.length - 1)
-                    .join('/')
-                    .toLowerCase();
+            const x =
+                parents.length <= 1
+                    ? undefined
+                    : [...parents]
+                          .splice(0, parents.length - 1)
+                          .join('/')
+                          .toLowerCase();
             const summaryInfoData = {
                 id: undefined,
                 parent: x,
@@ -216,6 +215,7 @@ export class SummaryMaker {
                 scope: parentsInfo,
                 url: parents.join('/') + '/' + generalMdName,
                 itemKind: parents.length <= 1 ? ItemKind.Root : ItemKind.MiddleItems,
+                node: undefined,
             };
             result.push(summaryInfoData);
             const sortedSummaryInfo = _(summaryInfo)
@@ -236,6 +236,7 @@ export class SummaryMaker {
                     scope: parentsWithCategoryInfo,
                     url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName,
                     itemKind: ItemKind.MiddleItems,
+                    node: undefined,
                 };
                 result.push(sortedSummaryInfoData);
                 for (const s of summary) {
@@ -249,6 +250,7 @@ export class SummaryMaker {
                         scope: [parentsWithCategoryInfo, s.mdFileName].join('/').toLowerCase(),
                         url: s.path,
                         itemKind: ItemKind.LastItem,
+                        node: s.node,
                     };
                     result.push(summaryData);
                 }
@@ -279,10 +281,10 @@ export class SummaryMaker {
         result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
 
         if (summary.children) {
-            for (let child of summary.children) {
-                summary.markdownText = ( summary.markdownText || '') + this.convertToMD(child);
+            for (const child of summary.children) {
+                summary.markdownText = (summary.markdownText || '') + this.convertToMD(child);
             }
-        }else{
+        } else {
             // const indexResult = this.exportedSourceFileToMdConverter.convert()
         }
 

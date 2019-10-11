@@ -223,18 +223,17 @@ import { SummaryInfo } from './templates/git-book/summary/SummaryInfo';
 import { tab } from './utilities/StringUtils';
 
 const tsconfigWindows = 'D:/@Git/aurelia/packages/tsconfig-build.json';
-const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.json';
+//const tsconfigMac = '/Users/shahab/dev/aurelia/aurelia/packages/tsconfig-build.json';
 
 const sm = new SummaryMaker();
 
 const sw = new Stopwatch(true);
-const exportedSourceFile = new AureliaSourceFileUtils().saveMerged(tsconfigMac);
+const exportedSourceFile = new AureliaSourceFileUtils().saveMerged(tsconfigWindows);
 
 if (exportedSourceFile) {
-
     const sum = sm.make(exportedSourceFile, 'https://gitbook-18.gitbook.io/au/', summaryMapper);
     // const md = sm.write(sum);
-    let summaryMD = sm.toMD(sum);
+    const summaryMD = sm.toMD(sum);
 
     fse.outputFileSync('packages/SUMMARY.md', summaryMD);
     save(sum);
@@ -256,11 +255,10 @@ function save(summaryInfos: SummaryInfo[]) {
 }
 
 function saveMdFiles(summary: SummaryInfo) {
-
     fse.outputFileSync(`packages/${summary.url}.md`, summary.markdownText);
 
     if (summary.children) {
-        for (let child of summary.children) {
+        for (const child of summary.children) {
             saveMdFiles(child);
         }
     }

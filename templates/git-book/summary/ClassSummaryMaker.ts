@@ -23,6 +23,7 @@ export const classSummaryMaker = function make(
         };
         const mdFileName = c.name || '?';
         const classSummary = map(c.id, pInfo, TypeCategory.Classes, mdFileName, baseUrl);
+        classSummary.node = c;
         classSummaryInfo.push(classSummary);
     }
     return classSummaryInfo;

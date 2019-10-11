@@ -23,6 +23,7 @@ export const destructuringSummaryMaker = function make(
         };
         const mdFileName = '?';
         const destructuringSummary = map(d.id, pInfo, TypeCategory.Destructuring, mdFileName, baseUrl);
+        destructuringSummary.node = d;
         destructions.push(destructuringSummary);
     }
     return destructions;

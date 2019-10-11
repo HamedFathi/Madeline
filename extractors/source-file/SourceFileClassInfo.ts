@@ -15,6 +15,8 @@ import { TypeAliasInfo } from '../type-alias/TypeAliasInfo';
 import { InterfaceInfo } from '../interface/InterfaceInfo';
 import { LiteralInfo } from '../literal/LiteralInfo';
 import { VariableInfo } from '../variable/VariableInfo';
+import { TypeCategory } from '../common/TypeCategory';
+import { TypeParameterInfo } from '../type-parameter/TypeParameterInfo';
 export interface SourceFileClassInfo {
     name: string | undefined;
     text: string;
@@ -35,4 +37,6 @@ export interface SourceFileClassInfo {
     directory: string;
     extension: string;
     id: string;
+    typeCategory: TypeCategory;
+    typeParameters: TypeParameterInfo[] | undefined;
 }

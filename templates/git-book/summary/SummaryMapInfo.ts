@@ -18,7 +18,7 @@ export interface SummaryMapInfo {
     category: TypeCategory;
     mdFileName: string;
     path: string;
-    node:
+    node?:
         | SourceFileClassInfo
         | DestructuringInfo
         | EnumInfo
@@ -27,6 +27,5 @@ export interface SummaryMapInfo {
         | InterfaceInfo
         | LiteralInfo
         | TypeAliasInfo
-        | VariableInfo
-        | undefined;
+        | VariableInfo;
 }

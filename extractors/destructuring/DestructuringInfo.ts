@@ -2,6 +2,7 @@ import { DestructuringElementInfo } from './DestructuringElementInfo';
 import { CommentInfo } from '../comment/CommentInfo';
 import { ModuleInfo } from '../module/ModuleInfo';
 import { VariableDeclarationKind } from 'ts-morph';
+import { TypeCategory } from '../common/TypeCategory';
 export interface DestructuringInfo {
     isArrayDestructuring: boolean;
     elements: DestructuringElementInfo[];
@@ -20,4 +21,5 @@ export interface DestructuringInfo {
     directory: string;
     id: string;
     extension: string;
+    typeCategory: TypeCategory;
 }

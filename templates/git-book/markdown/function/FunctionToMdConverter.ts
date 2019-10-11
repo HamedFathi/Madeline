@@ -3,7 +3,6 @@ import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { FunctionInfo } from '../../../../extractors/function/FunctionInfo';
 import { FunctionTemplateInfo } from './FunctionTemplateInfo';
-import { prettify } from '../../../../utilities/PrettierUtils';
 import { ModuleToMdConverter } from '../module/ModuleToMdConverter';
 import { TypeParameterToMdConverter } from '../type-parameter/TypeParameterToMdConverter';
 import { TypeToMdConverter } from '../type/TypeToMdConverter';
@@ -44,7 +43,10 @@ export class FunctionToMdConverter {
               )
             : undefined;
         const parameters: FunctionParameterTemplateInfo[] = [];
-
+if(functionInfo.name === "preprocess")
+{
+    const a = 1;
+}
         if (functionInfo.parameters) {
             for (const param of functionInfo.parameters) {
                 parameters.push({
@@ -61,7 +63,7 @@ export class FunctionToMdConverter {
         }
         const obj: FunctionTemplateInfo = {
             name: functionInfo.name,
-            text: prettify(functionInfo.text),
+            text: functionInfo.text,
             description: description.length === 0 ? void 0 : description,
             isGenerator: functionInfo.isGenerator,
             isImplementation: functionInfo.isImplementation,

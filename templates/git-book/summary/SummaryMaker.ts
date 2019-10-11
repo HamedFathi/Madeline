@@ -16,6 +16,9 @@ import { typeAliasSummaryMaker } from './TypeAliasSummaryMaker';
 import { literalSummaryMaker } from './LiteralSummaryMaker';
 import { variableSummaryMaker } from './VariableSummaryMaker';
 import { ExportedSourceFileToMdConverter } from '../markdown/source/ExportedSourceFileToMdConverter';
+import * as fse from 'fs-extra';
+import { NodeToMdConverter } from './NodeToMdConverter';
+import { typeMapper } from '../markdown/type/TypeMapper';
 
 /*
 # Table of contents
@@ -216,6 +219,7 @@ export class SummaryMaker {
                 url: parents.join('/') + '/' + generalMdName,
                 itemKind: parents.length <= 1 ? ItemKind.Root : ItemKind.MiddleItems,
                 node: undefined,
+                markdownText: undefined,
             };
             result.push(summaryInfoData);
             const sortedSummaryInfo = _(summaryInfo)
@@ -237,6 +241,7 @@ export class SummaryMaker {
                     url: parents.join('/') + '/' + category.toLowerCase() + '/' + generalMdName,
                     itemKind: ItemKind.MiddleItems,
                     node: undefined,
+                    markdownText: undefined,
                 };
                 result.push(sortedSummaryInfoData);
                 for (const s of summary) {
@@ -251,6 +256,7 @@ export class SummaryMaker {
                         url: s.path,
                         itemKind: ItemKind.LastItem,
                         node: s.node,
+                        markdownText: NodeToMdConverter(s.node, sourceFile, typeMapper, baseUrl),
                     };
                     result.push(summaryData);
                 }
@@ -279,12 +285,11 @@ export class SummaryMaker {
         const url = `${summary.level ? summary.baseUrl : ''}${summary.url}`;
         result = `${tab(summary.level)}* [${summary.title}](${url})\n`;
 
-        if (summary.children) {
+        if (summary.children && summary.children.length > 0) {
             for (const child of summary.children) {
                 summary.markdownText = (summary.markdownText || '') + this.convertToMD(child);
             }
         } else {
-            // const indexResult = this.exportedSourceFileToMdConverter.convert()
         }
 
         result += summary.markdownText || '';
@@ -298,11 +303,10 @@ export class SummaryMaker {
         });
     }
     private saveMdFiles(summary: SummaryInfo) {
-
         fse.outputFileSync(`packages/${summary.url}.md`, summary.markdownText);
 
         if (summary.children) {
-            for (let child of summary.children) {
+            for (const child of summary.children) {
                 this.saveMdFiles(child);
             }
         }

@@ -63,7 +63,7 @@ export const typeMapper = function(
             !f.directory.includes('src') &&
             !f.directory.includes('@types')
         ) {
-            const dir = f.directory.substr(f.directory.lastIndexOf('packages'));
+            const dir = f.directory.substr(f.directory.lastIndexOf('node_modules'));
             const parts = dir
                 .split('node_modules')[1]
                 .split('/')
@@ -80,7 +80,7 @@ export const typeMapper = function(
             !f.directory.includes('src') &&
             f.directory.includes('@types')
         ) {
-            const dir = f.directory.substr(f.directory.lastIndexOf('packages'));
+            const dir = f.directory.substr(f.directory.lastIndexOf('node_modules'));
             const parts = dir
                 .split('node_modules')[1]
                 .split('/')

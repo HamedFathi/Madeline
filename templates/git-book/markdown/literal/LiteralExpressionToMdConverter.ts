@@ -64,7 +64,7 @@ export class LiteralExpressionToMdConverter {
             assignments: assignments.length === 0 ? undefined : assignments,
             getAccessors: getAccessors.length === 0 ? undefined : getAccessors,
             setAccessors: setAccessors.length === 0 ? undefined : setAccessors,
-            methods: assignments.length === 0 ? undefined : methods,
+            methods: methods.length === 0 ? undefined : methods,
         };
         const text = Nunjucks.renderString(LITERAL_EXPRESSION_TEMPLATE, obj);
         const md = this.markdownUtils.purify(text);

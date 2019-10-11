@@ -23,18 +23,18 @@ export class LiteralAssignmentToMdConverter {
         private objectUtils = new ObjectUtils(),
         private functionToMdConverter = new FunctionToMdConverter(),
         private callSignatureToMdConverter = new CallSignatureToMdConverter(),
-        private literalExpressionToMdConverter = new LiteralExpressionToMdConverter(),
+        /*private literalExpressionToMdConverter = new LiteralExpressionToMdConverter(),*/
     ) {}
     private isCallSignatureInfo(/* eslint-disable */object: any/* eslint-disable */): object is CallSignatureInfo {
-        return !('isGenerator' in object);
+        return  object &&this.objectUtils.isObject(object) && !('isGenerator' in object) &&('returnType' in object) ;
     }
 
     private isFunctionInfo(/* eslint-disable */object: any/* eslint-disable */): object is FunctionInfo {
-        return 'isGenerator' in object;
+        return  object &&this.objectUtils.isObject(object) && 'isGenerator' in object;
     }
 
     private isLiteralExpressionInfo(/* eslint-disable */object: any/* eslint-disable */): object is LiteralExpressionInfo {
-        return 'isObjectLiteral' in object;
+        return  object &&this.objectUtils.isObject(object) && 'isObjectLiteral' in object;
     }
 
     public convert(
@@ -66,14 +66,16 @@ export class LiteralAssignmentToMdConverter {
             if (this.objectUtils.isString(literalAssignmentInfo.value)) {
                 value = literalAssignmentInfo.value as string;
             }
+            // TODO
             if (this.isLiteralExpressionInfo(literalAssignmentInfo.value)) {
-                value = this.literalExpressionToMdConverter.convert(
+                /*value = this.literalExpressionToMdConverter.convert(
                     literalAssignmentInfo.value as LiteralExpressionInfo,
                     source,
                     map,
                     baseUrl,
                     commentOptions,
-                );
+                );*/
+                value = "HAMED_KHAN";
             }
         }
         const obj: LiteralAssignmentTemplateInfo = {

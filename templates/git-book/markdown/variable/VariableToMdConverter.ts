@@ -8,7 +8,6 @@ import { FromTypeInfo } from '../../../../extractors/common/FromTypeInfo';
 import { TypeMapInfo } from '../type/TypeMapInfo';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { VariableTemplateInfo } from './VariableTemplateInfo';
-import { prettify } from '../../../../utilities/PrettierUtils';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 import { VARIABLE_TEMPLATE } from './VariableTemplate';
 import { FunctionInfo } from '../../../../extractors/function/FunctionInfo';
@@ -29,11 +28,11 @@ export class VariableToMdConverter {
     ) {}
 
     private isCallSignatureInfo(/* eslint-disable */object: any/* eslint-disable */): object is CallSignatureInfo {
-        return !('isGenerator' in object);
+        return  object && this.objectUtils.isObject(object) && !('isGenerator' in object);
     }
 
     private isFunctionInfo(/* eslint-disable */object: any/* eslint-disable */): object is FunctionInfo {
-        return 'isGenerator' in object;
+        return  object && this.objectUtils.isObject(object) &&'isGenerator' in object;
     }
 
     public convert(
@@ -85,7 +84,7 @@ export class VariableToMdConverter {
             modules: modules,
             modifiers: variableInfo.modifiers,
             name: variableInfo.name,
-            text: prettify(variableInfo.text),
+            text: variableInfo.text,
             kindName: variableInfo.kindName,
             type: type,
             typeReference: variableInfo.typeReference,

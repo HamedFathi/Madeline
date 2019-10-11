@@ -5,7 +5,6 @@ import { MarkdownUtils } from '../../../../utilities/MarkdownUtils';
 import { CommentToMdConverter } from '../comment/CommentToMdConverter';
 import { CommentToMdOption } from '../comment/CommentToMdOption';
 import { DestructuringInfo } from '../../../../extractors/destructuring/DestructuringInfo';
-import { prettify } from '../../../../utilities/PrettierUtils';
 import { Nunjucks } from '../../../../utilities/NunjucksUtils';
 import { DESTRUCTURING_TEMPLATE } from './DestructuringTemplate';
 
@@ -33,7 +32,7 @@ export class DestructuringToMdConverter {
             initializer: destructuringInfo.initializer,
             modules: modules,
             modifiers: destructuringInfo.modifiers,
-            text: prettify(destructuringInfo.text),
+            text: destructuringInfo.text,
             description: description.length === 0 ? undefined : description,
             isArrayDestructuring: destructuringInfo.isArrayDestructuring,
             kindName: destructuringInfo.kindName,

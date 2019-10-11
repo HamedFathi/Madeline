@@ -4,6 +4,7 @@ import { ExportAssignmentInfo } from './ExportAssignmentInfo';
 import { ExportAssignment, SyntaxKind, SourceFile } from 'ts-morph';
 import { getPathInfo } from '../../utilities/PathUtils';
 import { getSha256 } from '../../utilities/HashUtils';
+import { TypeCategory } from '../common/TypeCategory';
 export class ExportAssignmentExtractor {
     public extract(sourceFile: SourceFile): ExportAssignmentInfo[] | undefined {
         const result: ExportAssignmentInfo[] = [];
@@ -19,6 +20,7 @@ export class ExportAssignmentExtractor {
                     const expression: ExportAssignmentInfo = {
                         id: getSha256(node.getFullText() + pathInfo.path),
                         text: node.getText(),
+                        typeCategory: TypeCategory.ExportAssignments,
                         hasComment: hasComment,
                         path: pathInfo.path,
                         directory: pathInfo.directory,

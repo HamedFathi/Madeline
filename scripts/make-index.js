@@ -3,7 +3,7 @@ const glob = require('glob');
 const fs = require('fs');
 /* eslint-disable */
 
-glob('./*(extractors|templates|utilities)/**/*.ts', function(er, files) {
+glob('./src/**/*.ts', function(er, files) {
     if (er) {
         return console.log(err);
     }

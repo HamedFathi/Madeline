@@ -5,7 +5,6 @@ export interface PathInfo {
     extension: string;
 }
 
-
 const getPathInfo = function(path: string): PathInfo {
     const d = path.substr(0, path.lastIndexOf('/'));
     let f = path.substr(path.lastIndexOf('/') + 1);

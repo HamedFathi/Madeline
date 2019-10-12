@@ -2,7 +2,6 @@ import { assert } from 'chai';
 
 import { getSha256, getSha512 } from '../../src/utils/HashUtils';
 
-
 describe('hash utils', () => {
     it('should return sh256 of the specified string', () => {
         const sut = 'hello world';
